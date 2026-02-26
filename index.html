@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brownie Bliss — Happiness in Every Bite</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="home">
+
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+        BITE &nbsp; ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <span class="logo-name">Brownie Bliss</span>
+                <span class="logo-sub">Homemade Treats</span>
+            </a>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#birthday">Birthday Cakes</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="hero-badge">Homemade Treats · Happiness in every bite</span>
+                <h1 class="hero-title">
+                    Freshly Baked <em>Delights</em><br>Delivered to You
+                </h1>
+                <p class="hero-desc">Authentic recipes, traditional methods, the finest ingredients — baked with love
+                    and served
+                    with care, every single day.</p>
+                <a href="#products" class="hero-cta" style="text-decoration: none;">
+                    Explore Our Menu &rarr;
+                </a>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+                        alt="Red Velvet Cake">
+                    <div class="hero-card-label">🎂 Signature Cakes</div>
+                </div>
+                <div class="hero-card">
+                    <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+                        alt="Brownies">
+                    <div class="hero-card-label">🍫 Brownies</div>
+                </div>
+                <div class="hero-card">
+                    <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
+                    <div class="hero-card-label">🍮 Desserts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES STRIP -->
+    <div class="values-strip" id="about">
+        <div class="values-inner">
+            <div class="value-item">
+                <span class="value-icon">📖</span>
+                <div class="value-text">
+                    <strong>Authentic Recipes</strong>
+                    <span>Traditional home-style methods</span>
+                </div>
+            </div>
+            <div class="value-item">
+                <span class="value-icon">❤️</span>
+                <div class="value-text">
+                    <strong>Baked with Love</strong>
+                    <span>Every product crafted with passion</span>
+                </div>
+            </div>
+            <div class="value-item">
+                <span class="value-icon">✅</span>
+                <div class="value-text">
+                    <strong>Committed to Quality</strong>
+                    <span>Premium ingredients, always</span>
+                </div>
+            </div>
+            <div class="value-item">
+                <span class="value-icon">💛</span>
+                <div class="value-text">
+                    <strong>Honestly Priced</strong>
+                    <span>Best products at fair prices</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products-section" id="products" style="padding: 100px 30px; background: var(--cream);">
+        <div class="products-inner">
+            <div class="section-header">
+                <span class="section-label">Hand-picked for you</span>
+                <h2 class="section-title">Our <em>Full Range</em></h2>
+            </div>
+
+            <div class="filter-tabs" style="margin-bottom: 60px;">
+                <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+                <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
+                <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
+                <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
+                <button class="filter-tab" onclick="filterProducts('pastries', this)">Pastries</button>
+                <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- BIRTHDAY CAKES SECTION -->
+    <section class="birthday-section" id="birthday"
+        style="padding: 100px 30px; background: var(--cream-dark); min-height: 80vh;">
+        <div
+            style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+            <div class="birthday-visual">
+                <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+                    alt="Birthday Cake"
+                    style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+            </div>
+            <div class="birthday-card"
+                style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+                <span class="section-label">Celebrate with Us</span>
+                <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+                <p
+                    style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+                    Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
+                    size to get
+                    started.
+                </p>
+
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+                        Flavor</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <button class="filter-tab active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
+                        (kg)</label>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
+                        <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
+                        <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
+                        <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
+                        on Cake</label>
+                    <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
+                        style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+                    <div>
+                        <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                            starts
+                            from</span>
+                        <span id="cakePrice"
+                            style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                            850</span>
+                    </div>
+                    <button class="hero-cta" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
+                        Reserve Now &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-name">Brownie Bliss</span>
+                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+                    </div>
+                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
+                        and cookies in Krishnagiri.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigate</h4>
+                    <a href="#home">Home</a>
+                    <a href="#products">Our Products</a>
+                    <a href="#birthday">Birthday Cakes</a>
+                    <a href="#contact">Contact Us</a>
+                    <a href="#">Blogs</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Refund Policy</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Nutritional Info</a>
+                    <a href="#">Corporate Gifting</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <a href="tel:08072596340">+91 8072596340</a>
+                    <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+                    <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
+                    <div style="margin-top:16px; font-size:12px; opacity:0.5; line-height:1.6;">
+                        92, Poongavanam street,<br>Krishnagiri
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+                <span>Made with ❤️ in Krishnagiri</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+                Order via WhatsApp
+            </button>
+            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+        </div>
+    </div>
+
+
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <span>🛒</span>
+        <span id="toastMsg">Item added to cart!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

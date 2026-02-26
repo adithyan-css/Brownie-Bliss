@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Cakes — Customize Your Celebration</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+        BITE &nbsp; ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <span class="logo-name">Brownie Bliss</span>
+                <span class="logo-sub">Homemade Treats</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html">Products</a>
+                <a href="birthday.html">Birthday Cakes</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- BIRTHDAY CAKES SECTION -->
+    <section class="birthday-section" id="birthday"
+        style="padding: 100px 30px; background: var(--cream-dark); min-height: 80vh;">
+        <div
+            style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+            <div class="birthday-visual">
+                <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+                    alt="Birthday Cake"
+                    style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+            </div>
+            <div class="birthday-card"
+                style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+                <span class="section-label">Celebrate with Us</span>
+                <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+                <p
+                    style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+                    Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
+                    size to get
+                    started.
+                </p>
+
+                <div style="margin-bottom: 24px;">
+                    <label
+                        style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+                        Flavor</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <button class="filter-tab active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+                        <button class="filter-tab" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <label
+                        style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
+                        (kg)</label>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
+                        <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
+                        <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
+                        <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                    </div>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+                    <div>
+                        <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                            starts
+                            from</span>
+                        <span id="cakePrice"
+                            style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                            850</span>
+                    </div>
+                    <button class="hero-cta" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
+                        Reserve Now &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-name">Brownie Bliss</span>
+                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+                    </div>
+                    <p>Hand-crafted with love in Krishnagiri. One unwavering passion for quality.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <a href="tel:08072596340">+91 8072596340</a>
+                    <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="phone-modal-overlay" id="phoneModal">
+        <div class="phone-modal">
+            <h3>📱 Send Order</h3>
+            <div class="phone-input-wrap">
+                <span class="phone-prefix">+91</span>
+                <input class="phone-input" id="phoneInput" type="tel" placeholder="9876543210" maxlength="10">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-cancel" onclick="closePhoneModal()">Cancel</button>
+                <button class="modal-confirm" onclick="confirmWhatsApp()">Send to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span>🛒</span>
+        <span id="toastMsg">Item added!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

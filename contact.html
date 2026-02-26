@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — Brownie Bliss Patisserie</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+        BITE &nbsp; ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <span class="logo-name">Brownie Bliss</span>
+                <span class="logo-sub">Homemade Treats</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html">Products</a>
+                <a href="birthday.html">Birthday Cakes</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTACT SECTION -->
+    <section style="padding: 100px 30px; background: var(--white); min-height: 70vh;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+            <div>
+                <span class="section-label">Get In Touch</span>
+                <h2 class="section-title" style="margin-bottom: 30px;">We'd Love to <em>Hear from You</em></h2>
+                <div style="margin-bottom: 40px;">
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--brown-dark); margin-bottom: 10px;">
+                        Our Location</h4>
+                    <p style="color: var(--text-mid); line-height: 1.6;">92, Poongavanam Street,<br>Krishnagiri, Tamil
+                        Nadu</p>
+                </div>
+                <div style="margin-bottom: 40px;">
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--brown-dark); margin-bottom: 10px;">
+                        Contact Details</h4>
+                    <p style="color: var(--text-mid); line-height: 1.6;">
+                        <strong>Entrepreneur:</strong> A.R. Shanmugapriya<br>
+                        <strong>Phone:</strong> <a href="tel:08072596340"
+                            style="color: inherit; text-decoration: none;">+91 8072596340</a><br>
+                        <strong>Email:</strong> <a href="mailto:gpriya26185@gmail.com"
+                            style="color: inherit; text-decoration: none;">gpriya26185@gmail.com</a><br>
+                        <strong>Instagram:</strong> <a href="https://instagram.com/brownie_bliss_" target="_blank"
+                            style="color: inherit; text-decoration: none;">@brownie_bliss_</a>
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--brown-dark); margin-bottom: 10px;">
+                        Operating Hours</h4>
+                    <p style="color: var(--text-mid); line-height: 1.6;">
+                        Monday – Saturday: 9:00 AM – 9:00 PM<br>
+                        Sunday: 10:00 AM – 7:00 PM
+                    </p>
+                </div>
+            </div>
+            <div style="background: var(--cream); padding: 50px; border-radius: 4px; box-shadow: var(--shadow);">
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--brown-dark); margin-bottom: 20px;">Send
+                    us a Message</h3>
+                <form onsubmit="event.preventDefault(); showToast('Message sent! We will get back to you soon. 😊');"
+                    style="display: flex; flex-direction: column; gap: 20px;">
+                    <input type="text" placeholder="Your Name"
+                        style="padding: 14px; border: 1px solid var(--cream-dark); width: 100%; outline: none;"
+                        required>
+                    <input type="email" placeholder="Your Email"
+                        style="padding: 14px; border: 1px solid var(--cream-dark); width: 100%; outline: none;"
+                        required>
+                    <textarea placeholder="How can we help?"
+                        style="padding: 14px; border: 1px solid var(--cream-dark); width: 100%; height: 120px; outline: none; resize: vertical;"
+                        required></textarea>
+                    <button type="submit" class="hero-cta" style="width: 100%; justify-content: center;">Send
+                        Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-name">Brownie Bliss</span>
+                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+                    </div>
+                    <p>Hand-crafted with love in Krishnagiri.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigate</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="products.html">Our Products</a>
+                    <a href="birthday.html">Birthday Cakes</a>
+                    <a href="contact.html">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="phone-modal-overlay" id="phoneModal">
+        <div class="phone-modal">
+            <h3>📱 Send Order</h3>
+            <div class="phone-input-wrap">
+                <span class="phone-prefix">+91</span>
+                <input class="phone-input" id="phoneInput" type="tel" placeholder="9876543210" maxlength="10">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-cancel" onclick="closePhoneModal()">Cancel</button>
+                <button class="modal-confirm" onclick="confirmWhatsApp()">Send to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span>🛒</span>
+        <span id="toastMsg">Item added!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

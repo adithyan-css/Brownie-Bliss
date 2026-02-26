@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products — Freshly Baked Delights</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+        BITE &nbsp; ✨</div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <span class="logo-name">Brownie Bliss</span>
+                <span class="logo-sub">Homemade Treats</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="products.html">Products</a>
+                <a href="birthday.html">Birthday Cakes</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products-section" id="products" style="padding: 60px 30px; min-height: 80vh;">
+        <div class="products-inner">
+            <div class="section-header">
+                <span class="section-label">Hand-picked for you</span>
+                <h2 class="section-title">Our <em>Full Range</em></h2>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+                <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
+                <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
+                <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
+                <button class="filter-tab" onclick="filterProducts('pastries', this)">Pastries</button>
+                <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-name">Brownie Bliss</span>
+                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+                    </div>
+                    <p>Hand-crafted with love in Krishnagiri. One unwavering passion for quality and taste.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Get In Touch</h4>
+                    <a href="tel:08072596340">+91 8072596340</a>
+                    <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="phone-modal-overlay" id="phoneModal">
+        <div class="phone-modal">
+            <h3>📱 Send Order</h3>
+            <div class="phone-input-wrap">
+                <span class="phone-prefix">+91</span>
+                <input class="phone-input" id="phoneInput" type="tel" placeholder="9876543210" maxlength="10">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-cancel" onclick="closePhoneModal()">Cancel</button>
+                <button class="modal-confirm" onclick="confirmWhatsApp()">Send to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span>🛒</span>
+        <span id="toastMsg">Item added!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
