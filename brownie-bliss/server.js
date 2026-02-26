@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const axios = require('axios');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
@@ -92,12 +94,32 @@ app.post('/api/send-otp', async (req, res) => {
 
     await Otp.create({ phone, otp, expires_at });
 
-    console.log(`📱 OTP for ${phone}: ${otp}`); // Remove in production
+    // --- FAST2SMS INTEGRATION ---
+    const apiKey = process.env.FAST2SMS_API_KEY;
+    if (apiKey && apiKey !== 'your_actual_api_key_here') {
+      try {
+        await axios.get('https://www.fast2sms.com/dev/bulkV2', {
+          params: {
+            route: 'otp',
+            variables_values: otp,
+            numbers: phone,
+          },
+          headers: {
+            authorization: apiKey
+          }
+        });
+        console.log(`✅ SMS sent to ${phone}`);
+      } catch (smsErr) {
+        console.error('❌ Fast2SMS Error:', smsErr.response ? smsErr.response.data : smsErr.message);
+        // We continue anyway so the user can use the console log in dev if needed
+      }
+    } else {
+      console.log(`📱 [DEMO MODE] OTP for ${phone}: ${otp}`);
+    }
 
     res.json({
       success: true,
       message: 'OTP sent successfully',
-      demo_otp: otp, // ⚠️ REMOVE in production
     });
   } catch (err) {
     console.error(err);
@@ -259,6 +281,5 @@ app.get('/api/stats', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n🍫 Brownie Bliss Server running at http://localhost:${PORT}`);
   console.log(`📋 Admin Panel: http://localhost:${PORT}/admin.html`);
-  console.log(`🛍️  Shop:        http://localhost:${PORT}/index.html`);
-  console.log(`🗄️  MongoDB URI:  ${MONGO_URI}\n`);
+  console.log(`🛍️  Shop:        http://localhost:${PORT}/index.html\n`);
 });

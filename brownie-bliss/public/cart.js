@@ -1,11 +1,11 @@
 // ─── CONFIG ────────────────────────────────────────────────────────────────────
 const API_BASE = 'http://localhost:3000/api';
 // Change this to your WhatsApp business number (with country code, no +)
-const BUSINESS_WHATSAPP = '919876543210'; 
+const BUSINESS_WHATSAPP = '919876543210';
 
 // ─── CART STATE ────────────────────────────────────────────────────────────────
 let cart = JSON.parse(localStorage.getItem('bb_cart') || '[]');
-let checkoutState = { name:'', phone:'', address:'', city:'', pincode:'', verified:false, currentStep:1 };
+let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
 
 function saveCart() { localStorage.setItem('bb_cart', JSON.stringify(cart)); }
 
@@ -95,7 +95,7 @@ function closeCart() {
 function openCheckout() {
   if (cart.length === 0) { showToast('Add items first!'); return; }
   closeCart();
-  checkoutState = { name:'', phone:'', address:'', city:'', pincode:'', verified:false, currentStep:1 };
+  checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
   showCheckoutStep(1);
   document.getElementById('checkoutOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -108,7 +108,7 @@ function closeCheckout() {
 
 function showCheckoutStep(n) {
   checkoutState.currentStep = n;
-  [1,2,3,4].forEach(i => {
+  [1, 2, 3, 4].forEach(i => {
     const step = document.getElementById(`checkStep${i}`);
     const ind = document.getElementById(`step${i}ind`);
     if (step) step.classList.toggle('hidden', i !== n);
@@ -133,40 +133,14 @@ async function sendOTP() {
   checkoutState.name = name;
   checkoutState.phone = phone;
 
-  showToast('Sending OTP...');
-
-  try {
-    const res = await fetch(`${API_BASE}/send-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    });
-    const data = await res.json();
-
-    if (data.success) {
-      document.getElementById('otpPhoneDisp').textContent = `+91 ${phone}`;
-      // Show demo OTP (remove in production)
-      if (data.demo_otp) {
-        const demoBox = document.getElementById('demoOtpBox');
-        if (demoBox) {
-          demoBox.innerHTML = `<div class="demo-note">📋 Demo OTP: <strong>${data.demo_otp}</strong></div>`;
-          demoBox.style.display = 'block';
-        }
-      }
-      document.querySelectorAll('.otp-box').forEach(b => b.value = '');
-      showCheckoutStep(2);
-      setTimeout(() => document.querySelectorAll('.otp-box')[0]?.focus(), 100);
-      showToast('OTP sent!');
-    } else {
-      showToast(data.message || 'Failed to send OTP');
-    }
-  } catch(e) {
-    showToast('Server error. Is the backend running?');
-  }
+  // Bypassing OTP
+  checkoutState.verified = true;
+  showCheckoutStep(3);
+  setTimeout(() => document.getElementById('custAddr')?.focus(), 100);
 }
 
 function otpNext(input, idx) {
-  input.value = input.value.replace(/\D/,'');
+  input.value = input.value.replace(/\D/, '');
   if (input.value && idx < 5) {
     document.querySelectorAll('.otp-box')[idx + 1]?.focus();
   }
@@ -195,11 +169,11 @@ async function verifyOTP() {
       setTimeout(() => document.getElementById('custAddr')?.focus(), 100);
     } else {
       showToast(data.message || 'Invalid OTP. Try again.');
-      document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.classList.add('shake'); });
+      document.querySelectorAll('.otp-box').forEach(b => { b.value = ''; b.classList.add('shake'); });
       setTimeout(() => document.querySelectorAll('.otp-box').forEach(b => b.classList.remove('shake')), 500);
       document.querySelectorAll('.otp-box')[0]?.focus();
     }
-  } catch(e) {
+  } catch (e) {
     showToast('Server error');
   }
 }
@@ -259,18 +233,18 @@ async function placeOrder() {
     if (data.success) {
       const orderId = data.order_id;
       sendWhatsApp(orderId);
-      
+
       // Clear cart
       cart = [];
       saveCart();
       updateCartBadge();
       closeCheckout();
-      
+
       showToast(`🎉 Order ${orderId} placed!`);
     } else {
       showToast('Failed to place order. Try again.');
     }
-  } catch(e) {
+  } catch (e) {
     showToast('Server error. Please try again.');
   }
 }

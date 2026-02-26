@@ -257,30 +257,10 @@ async function sendOTP() {
 
     checkoutState.name = name;
     checkoutState.phone = phone;
-    showToast('Sending verification code...');
 
-    try {
-        const res = await fetch(`${API_BASE}/send-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone })
-        });
-        const data = await res.json();
-        if (data.success) {
-            document.getElementById('otpPhoneDisp').textContent = `+91 ${phone}`;
-            if (data.demo_otp) {
-                const demoBox = document.getElementById('demoOtpBox');
-                demoBox.innerHTML = `<div class="demo-note">📋 Demo Code: <strong>${data.demo_otp}</strong></div>`;
-                demoBox.style.display = 'block';
-            }
-            showCheckoutStep(2);
-            showToast('Verification code sent!');
-        } else {
-            showToast(data.message || 'Failed to send OTP');
-        }
-    } catch (e) {
-        showToast('Server error. Make sure backend is running.');
-    }
+    // Bypassing OTP
+    checkoutState.verified = true;
+    showCheckoutStep(3);
 }
 
 function otpNext(input, idx) {
