@@ -1,186 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel — Brownie Bliss</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script>
+    if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+      window.location.href = 'admin-login.html';
+    }
+    function logoutAdmin() {
+      sessionStorage.removeItem('adminLoggedIn');
+      window.location.href = 'admin-login.html';
+    }
+  </script>
 </head>
+
 <body class="admin-page">
 
-<!-- ADMIN NAV -->
-<nav class="admin-nav">
-  <div style="display:flex;align-items:center;gap:12px">
-    <span style="font-size:24px">🍫</span>
-    <div>
-      <div class="brand-name" style="font-family:'Playfair Display',serif">Brownie Bliss</div>
-      <div style="font-size:11px;opacity:0.6;letter-spacing:1px">Admin Panel</div>
-    </div>
-  </div>
-  <div style="display:flex;align-items:center;gap:16px">
-    <span class="admin-badge">ADMIN</span>
-    <a href="index.html" style="color:rgba(253,246,237,0.7);font-size:13px;text-decoration:none;">← View Shop</a>
-    <button onclick="refreshOrders()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;">⟳ Refresh</button>
-  </div>
-</nav>
-
-<div class="admin-body">
-
-  <!-- STATS -->
-  <div class="stats-grid" id="statsGrid">
-    <div class="stat-card">
-      <div class="stat-label">Total Orders <span class="stat-icon">📋</span></div>
-      <div class="stat-value" id="statTotal">—</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Pending Orders <span class="stat-icon">⏳</span></div>
-      <div class="stat-value" id="statPending">—</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Confirmed / Paid <span class="stat-icon">✅</span></div>
-      <div class="stat-value" id="statPaid">—</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Total Revenue <span class="stat-icon">💰</span></div>
-      <div class="stat-value" id="statRevenue">—</div>
-    </div>
-  </div>
-
-  <!-- ORDERS TABLE -->
-  <div class="orders-panel">
-    <div class="panel-head">
-      <h2>All Orders</h2>
-      <div class="orders-filter">
-        <button class="of-btn active" onclick="filterOrders('all',this)">All</button>
-        <button class="of-btn" onclick="filterOrders('pending',this)">⏳ Pending</button>
-        <button class="of-btn" onclick="filterOrders('confirmed',this)">✅ Confirmed</button>
-        <button class="of-btn" onclick="filterOrders('delivered',this)">🚚 Delivered</button>
-      </div>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="orders-table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Payment</th>
-            <th>Order Status</th>
-            <th>Date & Time</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="ordersTableBody">
-          <tr><td colspan="8" style="text-align:center;padding:40px;color:#aaa;">Loading orders...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-</div>
-
-<!-- ORDER DETAIL MODAL -->
-<div class="detail-modal-overlay" id="detailOverlay">
-  <div class="detail-modal">
-    <div class="detail-modal-head">
+  <!-- ADMIN NAV -->
+  <nav class="admin-nav" style="display:flex;justify-content:space-between;align-items:center;">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:24px">🍫</span>
       <div>
-        <h3 id="detailOrderId">Order Details</h3>
-        <div id="detailDate" style="font-size:12px;color:#888;margin-top:4px"></div>
-      </div>
-      <button onclick="closeDetail()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
-    </div>
-    <div class="detail-modal-body" id="detailBody"></div>
-    <div class="detail-modal-foot" id="detailFoot"></div>
-  </div>
-</div>
-
-<!-- RECEIPT MODAL -->
-<div class="detail-modal-overlay" id="receiptOverlay">
-  <div class="detail-modal">
-    <div class="detail-modal-head">
-      <h3>🧾 Order Receipt</h3>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button onclick="printReceipt()" style="background:var(--brown);color:white;border:none;padding:7px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600">🖨️ Print</button>
-        <button onclick="closeReceipt()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
+        <div class="brand-name" style="font-family:'Playfair Display',serif;display:flex;align-items:center;gap:8px;">
+          Brownie Bliss
+          <span class="admin-badge" style="margin:0;padding:2px 8px;font-size:10px;">ADMIN</span>
+        </div>
+        <div style="font-size:11px;opacity:0.6;letter-spacing:1px">Admin Panel</div>
       </div>
     </div>
-    <div class="detail-modal-body" id="receiptBody"></div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <button onclick="toggleSidebar()"
+        style="background:none;border:none;color:white;font-size:24px;cursor:pointer;line-height:1;">
+        ☰
+      </button>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR MENU -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:24px">🍫</span>
+        <div class="brand-name" style="font-family:'Playfair Display',serif;color:white;font-size:20px;">Menu</div>
+      </div>
+      <button onclick="toggleSidebar()"
+        style="background:none;border:none;color:white;font-size:20px;cursor:pointer;">✕</button>
+    </div>
+    <div class="sidebar-links">
+      <a href="index.html" class="sidebar-nav-btn" style="text-decoration:none;">← View Shop</a>
+      <button onclick="switchTab('orders')" id="tabOrders" class="sidebar-nav-btn active">Orders</button>
+      <button onclick="switchTab('products')" id="tabProducts" class="sidebar-nav-btn">Products & Pricing</button>
+      <button onclick="refreshOrders()" class="sidebar-nav-btn">⟳ Refresh Data</button>
+    </div>
+    <div class="sidebar-footer">
+      <button onclick="logoutAdmin()" class="sidebar-nav-btn" style="color:#e53e3e;">Logout</button>
+    </div>
+  </aside>
+
+  <div class="admin-body">
+
+    <!-- STATS -->
+    <div id="ordersSection">
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-label">Total Orders <span class="stat-icon">📋</span></div>
+          <div class="stat-value" id="statTotal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Orders <span class="stat-icon">⏳</span></div>
+          <div class="stat-value" id="statPending">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Confirmed / Paid <span class="stat-icon">✅</span></div>
+          <div class="stat-value" id="statPaid">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Revenue <span class="stat-icon">💰</span></div>
+          <div class="stat-value" id="statRevenue">—</div>
+        </div>
+      </div>
+
+      <!-- ORDERS TABLE -->
+      <div class="orders-panel">
+        <div class="panel-head">
+          <h2>All Orders</h2>
+          <div class="orders-filter">
+            <button class="of-btn active" onclick="filterOrders('all',this)">All</button>
+            <button class="of-btn" onclick="filterOrders('pending',this)">⏳ Pending</button>
+            <button class="of-btn" onclick="filterOrders('confirmed',this)">✅ Confirmed</button>
+            <button class="of-btn" onclick="filterOrders('preparing',this)">👨‍🍳 Preparing</button>
+            <button class="of-btn" onclick="filterOrders('delivered',this)">🚚 Delivered</button>
+            <button class="of-btn" onclick="filterOrders('cancelled',this)">❌ Cancelled</button>
+          </div>
+        </div>
+        <div class="table-container" style="overflow-x:auto">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Order Status</th>
+                <th>Date & Time</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td colspan="8" style="text-align:center;padding:40px;color:#aaa;">Loading orders...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS TABLE -->
+    <div class="orders-panel" id="productsSection" style="display:none;">
+      <div class="panel-head" style="display:flex;justify-content:space-between;align-items:center;">
+        <h2>Products & Pricing</h2>
+        <button onclick="openAddProductModal()" class="btn-confirm"
+          style="padding:10px 20px; font-size:14px; border-radius:30px; background:var(--gold); color:var(--brown-dark);">+
+          Add New Product</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price (₹)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody">
+            <tr>
+              <td colspan="5" style="text-align:center;padding:40px;color:#aaa;">Loading products...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+  <!-- ORDER DETAIL MODAL -->
+  <div class="detail-modal-overlay" id="detailOverlay">
+    <div class="detail-modal">
+      <div class="detail-modal-head">
+        <div>
+          <h3 id="detailOrderId">Order Details</h3>
+          <div id="detailDate" style="font-size:12px;color:#888;margin-top:4px"></div>
+        </div>
+        <button onclick="closeDetail()"
+          style="background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
+      </div>
+      <div class="detail-modal-body" id="detailBody"></div>
+      <div class="detail-modal-foot" id="detailFoot"></div>
+    </div>
+  </div>
 
-<script>
-const API = 'http://localhost:3000/api';
-let allOrders = [];
-let currentFilter = 'all';
+  <!-- RECEIPT MODAL -->
+  <div class="detail-modal-overlay" id="receiptOverlay">
+    <div class="detail-modal">
+      <div class="detail-modal-head">
+        <h3>🧾 Order Receipt</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button onclick="printReceipt()"
+            style="background:var(--brown);color:white;border:none;padding:7px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600">🖨️
+            Print</button>
+          <button onclick="closeReceipt()"
+            style="background:none;border:none;font-size:20px;cursor:pointer;color:#888">✕</button>
+        </div>
+      </div>
+      <div class="detail-modal-body" id="receiptBody"></div>
+    </div>
+  </div>
 
-// ─── LOAD STATS ────────────────────────────────────────────────────────────────
-async function loadStats() {
-  try {
-    const res = await fetch(`${API}/stats`);
-    const data = await res.json();
-    if (data.success) {
-      const s = data.stats;
-      document.getElementById('statTotal').textContent = s.total_orders || 0;
-      document.getElementById('statPending').textContent = s.pending_orders || 0;
-      document.getElementById('statPaid').textContent = s.paid_orders || 0;
-      document.getElementById('statRevenue').textContent = `₹${(s.total_revenue || 0).toLocaleString('en-IN')}`;
+  <!-- ADD PRODUCT MODAL -->
+  <div class="detail-modal-overlay" id="addProductOverlay">
+    <div class="detail-modal">
+      <div class="detail-modal-head">
+        <h3>➕ Add New Product</h3>
+        <button onclick="closeAddProductModal()"
+          style="background:none;border:none;font-size:24px;cursor:pointer;color:#888">✕</button>
+      </div>
+      <div class="detail-modal-body" style="padding:24px;">
+        <div style="display:grid;gap:16px;">
+          <div>
+            <label
+              style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Product
+              Type</label>
+            <select id="newProdType"
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+              <option value="standard">Standard (Brownies, Cakes, etc.)</option>
+              <option value="birthday">Birthday Cake Base</option>
+            </select>
+          </div>
+          <div>
+            <label
+              style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Product
+              Name</label>
+            <input type="text" id="newProdName" placeholder="e.g. Mint Choco Brownie"
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+          </div>
+          <div id="categoryGroup">
+            <label
+              style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Category</label>
+            <select id="newProdCategory"
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+              <option value="cakes">Cakes</option>
+              <option value="brownies" selected>Brownies</option>
+              <option value="cookies">Cookies</option>
+              <option value="desserts">Desserts</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <label
+                style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Price
+                (₹)</label>
+              <input type="number" id="newProdPrice" placeholder="0"
+                style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Emoji</label>
+              <input type="text" id="newProdEmoji" placeholder="🍫"
+                style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+            </div>
+          </div>
+          <div>
+            <label
+              style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Image
+              URL</label>
+            <input type="text" id="newProdImg" placeholder="https://..."
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+          </div>
+          <button onclick="submitNewProduct()" class="btn-confirm"
+            style="margin-top:10px;padding:14px;font-size:14px;border-radius:6px;">Add Product to Menu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = '/api'; // Using relative path for better compatibility
+    let allOrders = [];
+    let currentFilter = 'all';
+    let allProducts = [];
+
+    // ─── SIDEBAR & TAB SWITCHING ───────────────────────────────────────────────────
+    function toggleSidebar() {
+      document.getElementById('adminSidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
     }
-  } catch(e) { console.error(e); }
-}
 
-// ─── LOAD ORDERS ───────────────────────────────────────────────────────────────
-async function loadOrders() {
-  try {
-    const res = await fetch(`${API}/orders`);
-    const data = await res.json();
-    if (data.success) {
-      allOrders = data.orders;
-      renderOrders(currentFilter);
+    function switchTab(tab) {
+      if (tab === 'orders') {
+        document.getElementById('ordersSection').style.display = 'block';
+        document.getElementById('productsSection').style.display = 'none';
+        document.getElementById('tabOrders').classList.add('active');
+        document.getElementById('tabProducts').classList.remove('active');
+        loadOrders();
+        loadStats();
+      } else {
+        document.getElementById('ordersSection').style.display = 'none';
+        document.getElementById('productsSection').style.display = 'block';
+        document.getElementById('tabProducts').classList.add('active');
+        document.getElementById('tabOrders').classList.remove('active');
+        loadProducts();
+      }
+
+      // Close sidebar after switching tabs on mobile/desktop
+      document.getElementById('adminSidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
     }
-  } catch(e) {
-    document.getElementById('ordersTableBody').innerHTML =
-      '<tr><td colspan="8" style="text-align:center;padding:40px;color:#e53e3e">⚠️ Cannot connect to server. Make sure the backend is running.</td></tr>';
-  }
-}
 
-function refreshOrders() {
-  loadStats();
-  loadOrders();
-  showToast('Refreshed!');
-}
+    // ─── LOAD STATS ────────────────────────────────────────────────────────────────
+    async function loadStats() {
+      try {
+        const res = await fetch(`${API}/stats`);
+        const data = await res.json();
+        if (data.success) {
+          const s = data.stats;
+          document.getElementById('statTotal').textContent = s.total_orders || 0;
+          document.getElementById('statPending').textContent = s.pending_orders || 0;
+          document.getElementById('statPaid').textContent = s.paid_orders || 0;
+          document.getElementById('statRevenue').textContent = `₹${(s.total_revenue || 0).toLocaleString('en-IN')}`;
+        }
+      } catch (e) { console.error(e); }
+    }
 
-function filterOrders(filter, el) {
-  currentFilter = filter;
-  document.querySelectorAll('.of-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  renderOrders(filter);
-}
+    // ─── LOAD ORDERS ───────────────────────────────────────────────────────────────
+    async function loadOrders() {
+      try {
+        const res = await fetch(`${API}/orders`);
+        const data = await res.json();
+        if (data.success) {
+          allOrders = data.orders;
+          renderOrders(currentFilter);
+        }
+      } catch (e) {
+        document.getElementById('ordersTableBody').innerHTML =
+          '<tr><td colspan="8" style="text-align:center;padding:40px;color:#e53e3e">⚠️ Cannot connect to server. Make sure the backend is running.</td></tr>';
+      }
+    }
 
-function renderOrders(filter) {
-  let orders = allOrders;
-  if (filter !== 'all') {
-    orders = allOrders.filter(o => o.status === filter || o.payment_status === filter);
-  }
+    function refreshOrders() {
+      loadStats();
+      loadOrders();
+      showToast('Refreshed!');
+    }
 
-  const tbody = document.getElementById('ordersTableBody');
-  if (orders.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#aaa">No orders found</td></tr>`;
-    return;
-  }
+    function filterOrders(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.of-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderOrders(filter);
+    }
 
-  tbody.innerHTML = orders.map(o => {
-    const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
-    const itemsSummary = items.map(i => `${i.emoji||'🍫'}${i.name} ×${i.qty}`).join(', ');
-    const dt = new Date(o.created_at);
-    const dateStr = dt.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-    const timeStr = dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    function renderOrders(filter) {
+      let orders = allOrders;
+      if (filter !== 'all') {
+        orders = allOrders.filter(o => o.status === filter || o.payment_status === filter);
+      }
 
-    return `<tr>
+      const tbody = document.getElementById('ordersTableBody');
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#aaa">No orders found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => {
+        const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
+        const itemsSummary = items.map(i => `${i.emoji || '🍫'}${i.name} ×${i.qty}`).join(', ');
+        const dt = new Date(o.created_at);
+        const dateStr = dt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        const timeStr = dt.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+        return `<tr>
       <td><div class="order-id">${o.order_id}</div></td>
       <td>
         <div class="customer-name">${o.customer_name}</div>
@@ -188,116 +360,136 @@ function renderOrders(filter) {
       </td>
       <td style="font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${itemsSummary}</td>
       <td style="font-weight:700;color:var(--brown-light)">₹${o.total.toLocaleString('en-IN')}</td>
-      <td><span class="status-pill ${o.payment_status==='paid'?'pay-paid':'pay-unpaid'}">${o.payment_status==='paid'?'✅ Paid':'⏳ Unpaid'}</span></td>
+      <td><span class="status-pill ${o.payment_status === 'paid' ? 'pay-paid' : 'pay-unpaid'}">${o.payment_status === 'paid' ? '✅ Paid' : '⏳ Unpaid'}</span></td>
       <td>
         <select class="status-select" onchange="updateStatus('${o.order_id}',this.value)" 
           style="font-size:12px;padding:4px 8px;border:1px solid #ddd;border-radius:6px;cursor:pointer">
-          <option value="pending" ${o.status==='pending'?'selected':''}>⏳ Pending</option>
-          <option value="confirmed" ${o.status==='confirmed'?'selected':''}>✅ Confirmed</option>
-          <option value="preparing" ${o.status==='preparing'?'selected':''}>👨‍🍳 Preparing</option>
-          <option value="delivered" ${o.status==='delivered'?'selected':''}>🚚 Delivered</option>
-          <option value="cancelled" ${o.status==='cancelled'?'selected':''}>❌ Cancelled</option>
+          <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+          <option value="confirmed" ${o.status === 'confirmed' ? 'selected' : ''}>✅ Confirmed</option>
+          <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>👨‍🍳 Preparing</option>
+          <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>🚚 Delivered</option>
+          <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
         </select>
       </td>
       <td style="font-size:12px;color:#888">${dateStr}<br>${timeStr}</td>
       <td>
         <div class="action-row">
-          ${o.payment_status !== 'paid' ? `<button class="btn-confirm" onclick="confirmPayment('${o.order_id}')">✅ Confirm Payment</button>` : `<button class="btn-view" onclick="viewReceipt('${o.order_id}')">🧾 Receipt</button>`}
+          ${o.payment_status !== 'paid' && o.status !== 'cancelled' ? `<button class="btn-confirm" onclick="confirmPayment('${o.order_id}')">✅ Confirm Payment</button>` : o.payment_status === 'paid' ? `<button class="btn-view" onclick="viewReceipt('${o.order_id}')">🧾 Receipt</button>` : ''}
           <button class="btn-view" onclick="viewOrder('${o.order_id}')">👁 View</button>
+          ${o.status !== 'cancelled' && o.status !== 'delivered' ? `<button class="btn-view" onclick="cancelOrder('${o.order_id}')" style="background:#dc3545;color:white;border:none">❌ Cancel</button>` : ''}
         </div>
       </td>
     </tr>`;
-  }).join('');
-}
-
-// ─── CONFIRM PAYMENT ───────────────────────────────────────────────────────────
-async function confirmPayment(orderId) {
-  if (!confirm(`Confirm payment received for order ${orderId}?`)) return;
-
-  try {
-    const res = await fetch(`${API}/orders/${orderId}/confirm-payment`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ notes: 'Payment confirmed via WhatsApp' })
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast('✅ Payment confirmed!');
-      loadStats();
-      loadOrders();
-      // Ask to view receipt
-      setTimeout(() => {
-        if (confirm('Payment confirmed! 🎉\nGenerate receipt for customer?')) {
-          viewReceipt(orderId);
-        }
-      }, 500);
+      }).join('');
     }
-  } catch(e) {
-    showToast('Error confirming payment');
-  }
-}
 
-// ─── UPDATE STATUS ─────────────────────────────────────────────────────────────
-async function updateStatus(orderId, status) {
-  try {
-    await fetch(`${API}/orders/${orderId}/status`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status })
-    });
-    showToast(`Status updated to "${status}"`);
-    loadOrders();
-  } catch(e) {
-    showToast('Error updating status');
-  }
-}
+    // ─── CONFIRM PAYMENT ───────────────────────────────────────────────────────────
+    async function confirmPayment(orderId) {
+      if (!confirm(`Confirm payment received for order ${orderId}?`)) return;
 
-// ─── VIEW ORDER DETAIL ─────────────────────────────────────────────────────────
-function viewOrder(orderId) {
-  const order = allOrders.find(o => o.order_id === orderId);
-  if (!order) return;
+      try {
+        const res = await fetch(`${API}/orders/${orderId}/confirm-payment`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ notes: 'Payment confirmed via WhatsApp' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Payment confirmed!');
+          loadStats();
+          loadOrders();
+          // Ask to view receipt
+          setTimeout(() => {
+            if (confirm('Payment confirmed! 🎉\nGenerate receipt for customer?')) {
+              viewReceipt(orderId);
+            }
+          }, 500);
+        }
+      } catch (e) {
+        showToast('Error confirming payment');
+      }
+    }
 
-  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
-  const dt = new Date(order.created_at);
+    // ─── UPDATE STATUS ─────────────────────────────────────────────────────────────
+    async function updateStatus(orderId, status) {
+      try {
+        await fetch(`${API}/orders/${orderId}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        showToast(`Status updated to "${status}"`);
+        loadOrders();
+      } catch (e) {
+        showToast('Error updating status');
+      }
+    }
 
-  document.getElementById('detailOrderId').textContent = `Order: ${order.order_id}`;
-  document.getElementById('detailDate').textContent = dt.toLocaleString('en-IN', { dateStyle:'full', timeStyle:'short' });
+    // ─── CANCEL ORDER ─────────────────────────────────────────────────────────────
+    async function cancelOrder(orderId) {
+      if (!confirm(`Are you sure you want to cancel order ${orderId}?`)) return;
+      try {
+        const res = await fetch(`${API}/orders/${orderId}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'cancelled' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('❌ Order cancelled');
+          loadOrders();
+        }
+      } catch (e) {
+        showToast('Error cancelling order');
+      }
+    }
 
-  document.getElementById('detailBody').innerHTML = `
+    // ─── VIEW ORDER DETAIL ─────────────────────────────────────────────────────────
+    function viewOrder(orderId) {
+      const order = allOrders.find(o => o.order_id === orderId);
+      if (!order) return;
+
+      const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+      const dt = new Date(order.created_at);
+
+      document.getElementById('detailOrderId').textContent = `Order: ${order.order_id}`;
+      document.getElementById('detailDate').textContent = dt.toLocaleString('en-IN', { dateStyle: 'full', timeStyle: 'short' });
+
+      document.getElementById('detailBody').innerHTML = `
     <div class="info-grid">
       <div class="info-item"><label>Customer Name</label><span>${order.customer_name}</span></div>
       <div class="info-item"><label>Phone</label><span>+91 ${order.phone}</span></div>
       <div class="info-item" style="grid-column:span 2"><label>Delivery Address</label><span>${order.address}, ${order.city} - ${order.pincode}</span></div>
-      <div class="info-item"><label>Payment</label><span class="status-pill ${order.payment_status==='paid'?'pay-paid':'pay-unpaid'}" style="font-size:12px">${order.payment_status==='paid'?'✅ Paid':'⏳ Unpaid'}</span></div>
+      <div class="info-item"><label>Payment</label><span class="status-pill ${order.payment_status === 'paid' ? 'pay-paid' : 'pay-unpaid'}" style="font-size:12px">${order.payment_status === 'paid' ? '✅ Paid' : '⏳ Unpaid'}</span></div>
       <div class="info-item"><label>Order Status</label><span>${order.status}</span></div>
       ${order.confirmed_at ? `<div class="info-item" style="grid-column:span 2"><label>Confirmed At</label><span>${new Date(order.confirmed_at).toLocaleString('en-IN')}</span></div>` : ''}
     </div>
     <div class="items-list">
       <h4>Items Ordered</h4>
-      ${items.map(i => `<div class="item-row"><span>${i.emoji||'🍫'} ${i.name} × ${i.qty}</span><span>₹${i.price * i.qty}</span></div>`).join('')}
+      ${items.map(i => `<div class="item-row"><span>${i.emoji || '🍫'} ${i.name} × ${i.qty}</span><span>₹${i.price * i.qty}</span></div>`).join('')}
       <div class="items-total"><span>Total</span><span>₹${order.total.toLocaleString('en-IN')}</span></div>
     </div>
   `;
 
-  document.getElementById('detailFoot').innerHTML = order.payment_status !== 'paid'
-    ? `<button class="btn-confirm" style="width:100%;padding:12px;font-size:14px" onclick="confirmPayment('${order.order_id}');closeDetail()">✅ Confirm Payment Received</button>`
-    : `<button class="btn-view" style="width:100%;padding:12px;font-size:14px" onclick="closeDetail();viewReceipt('${order.order_id}')">🧾 Generate Receipt</button>`;
+      document.getElementById('detailFoot').innerHTML = order.payment_status !== 'paid'
+        ? `<button class="btn-confirm" style="width:100%;padding:12px;font-size:14px" onclick="confirmPayment('${order.order_id}');closeDetail()">✅ Confirm Payment Received</button>`
+        : `<button class="btn-view" style="width:100%;padding:12px;font-size:14px" onclick="closeDetail();viewReceipt('${order.order_id}')">🧾 Generate Receipt</button>`;
 
-  document.getElementById('detailOverlay').classList.add('open');
-}
+      document.getElementById('detailOverlay').classList.add('open');
+    }
 
-function closeDetail() { document.getElementById('detailOverlay').classList.remove('open'); }
+    function closeDetail() { document.getElementById('detailOverlay').classList.remove('open'); }
 
-// ─── RECEIPT ───────────────────────────────────────────────────────────────────
-function viewReceipt(orderId) {
-  const order = allOrders.find(o => o.order_id === orderId);
-  if (!order) return;
+    // ─── RECEIPT ───────────────────────────────────────────────────────────────────
+    function viewReceipt(orderId) {
+      const order = allOrders.find(o => o.order_id === orderId);
+      if (!order) return;
 
-  const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
-  const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
-  const confirmedDate = order.confirmed_at ? new Date(order.confirmed_at).toLocaleString('en-IN', { dateStyle:'medium', timeStyle:'short' }) : '—';
+      const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
+      const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+      const confirmedDate = order.confirmed_at ? new Date(order.confirmed_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '—';
 
-  document.getElementById('receiptBody').innerHTML = `
+      document.getElementById('receiptBody').innerHTML = `
     <div class="receipt-container">
       <div class="receipt-head">
         <div style="font-size:36px;margin-bottom:8px">🍫</div>
@@ -314,7 +506,7 @@ function viewReceipt(orderId) {
         <hr class="receipt-divider">
         ${items.map(i => `
           <div class="receipt-row">
-            <span>${i.emoji||'🍫'} ${i.name} × ${i.qty}</span>
+            <span>${i.emoji || '🍫'} ${i.name} × ${i.qty}</span>
             <strong>₹${(i.price * i.qty).toLocaleString('en-IN')}</strong>
           </div>
         `).join('')}
@@ -334,15 +526,15 @@ function viewReceipt(orderId) {
     </div>
   `;
 
-  document.getElementById('receiptOverlay').classList.add('open');
-}
+      document.getElementById('receiptOverlay').classList.add('open');
+    }
 
-function closeReceipt() { document.getElementById('receiptOverlay').classList.remove('open'); }
+    function closeReceipt() { document.getElementById('receiptOverlay').classList.remove('open'); }
 
-function printReceipt() {
-  const content = document.getElementById('receiptBody').innerHTML;
-  const win = window.open('', '_blank', 'width=560,height=800');
-  win.document.write(`
+    function printReceipt() {
+      const content = document.getElementById('receiptBody').innerHTML;
+      const win = window.open('', '_blank', 'width=560,height=800');
+      win.document.write(`
     <!DOCTYPE html>
     <html>
     <head>
@@ -354,23 +546,195 @@ function printReceipt() {
     <body>${content}<br><button class="no-print" onclick="window.print()" style="display:block;margin:16px auto;padding:10px 24px;background:#3b1a08;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">🖨️ Print Receipt</button></body>
     </html>
   `);
-  win.document.close();
-}
+      win.document.close();
+    }
 
-// ─── TOAST ─────────────────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
+    // ─── PRODUCTS ──────────────────────────────────────────────────────────────────
+    async function loadProducts() {
+      try {
+        const res = await fetch(`${API}/products`);
+        const data = await res.json();
+        if (data.success) {
+          allProducts = data.products;
+          renderProducts();
+        }
+      } catch (e) {
+        document.getElementById('productsTableBody').innerHTML =
+          '<tr><td colspan="5" style="text-align:center;padding:40px;color:#e53e3e">⚠️ Cannot load products.</td></tr>';
+      }
+    }
 
-// ─── INIT ──────────────────────────────────────────────────────────────────────
-loadStats();
-loadOrders();
+    function renderProducts() {
+      const tbody = document.getElementById('productsTableBody');
+      if (allProducts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:#aaa">No products found</td></tr>`;
+        return;
+      }
 
-// Auto refresh every 30 seconds
-setInterval(() => { loadStats(); loadOrders(); }, 30000);
-</script>
+      tbody.innerHTML = allProducts.map(p => `
+        <tr>
+          <td>
+            <div>
+              <img src="${p.img}" alt="${p.name}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;">
+            </div>
+          </td>
+          <td style="font-weight:600;color:var(--brown-dark)">
+            <div id="name_view_${p._id}">
+              ${p.emoji || ''} ${p.name}
+              <button onclick="toggleEditProduct('${p._id}')" class="btn-outline" style="padding:2px 6px;font-size:10px;margin-left:8px;border:1px solid #ddd;">✎</button>
+            </div>
+            <div id="name_edit_${p._id}" style="display:none;">
+              <input type="text" id="input_name_${p._id}" value="${p.name}" style="width:140px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-size:12px;">
+            </div>
+          </td>
+          <td style="text-transform:uppercase;font-size:12px;letter-spacing:1px;color:#888;">${p.type === 'birthday' ? 'Birthday Cake' : p.category}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="color:#888;font-size:14px;">₹</span>
+              <input type="number" id="price_${p._id}" value="${p.price}" style="width:80px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-weight:600;">
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button onclick="saveProduct('${p._id}')" class="btn-confirm" style="padding:6px 14px;font-size:12px;">Save</button>
+              <button onclick="deleteProduct('${p._id}')" style="background:#dc3545;color:white;padding:6px 14px;border:none;border-radius:6px;cursor:pointer;font-family:'DM Sans';font-size:12px;font-weight:600;" title="Delete Product">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function toggleEditProduct(id) {
+      const nameView = document.getElementById(`name_view_${id}`);
+      const nameEdit = document.getElementById(`name_edit_${id}`);
+
+      const isEditing = nameEdit.style.display === 'block';
+
+      if (isEditing) {
+        nameView.style.display = 'block';
+        nameEdit.style.display = 'none';
+      } else {
+        nameView.style.display = 'none';
+        nameEdit.style.display = 'block';
+      }
+    }
+
+    async function saveProduct(id) {
+      const priceInput = document.getElementById(`price_${id}`);
+      const newPrice = Number(priceInput.value);
+
+      const payload = { price: newPrice };
+
+      // Optional fields if they are being displayed/edited
+      const nameInput = document.getElementById(`input_name_${id}`);
+      if (nameInput) payload.name = nameInput.value;
+
+      if (isNaN(newPrice) || newPrice < 0) {
+        showToast('Invalid price');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/products/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Price updated!');
+          loadProducts(); // Refresh the list
+        } else {
+          showToast('Failed to update price');
+        }
+      } catch (e) {
+        showToast('Error updating details');
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!id) return showToast('Invalid Product ID');
+      if (!confirm('Are you sure you want to permanently delete this product?')) return;
+
+      try {
+        console.log(`Frontend: Requesting delete for ${id}`);
+        const res = await fetch(`${API}/products/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('🗑️ Product deleted');
+          loadProducts(); // refresh table
+        } else {
+          showToast('Failed: ' + (data.message || 'Unknown error'));
+        }
+      } catch (e) {
+        console.error('Delete error:', e);
+        showToast('Error deleting product. Check console.');
+      }
+    }
+
+    // ─── ADD PRODUCT ─────────────────────────────────────────────────────────────
+    function openAddProductModal() {
+      document.getElementById('addProductOverlay').classList.add('open');
+    }
+
+    function closeAddProductModal() {
+      document.getElementById('addProductOverlay').classList.remove('open');
+    }
+
+    async function submitNewProduct() {
+      const type = document.getElementById('newProdType').value;
+      const name = document.getElementById('newProdName').value;
+      const category = document.getElementById('newProdCategory').value;
+      const price = Number(document.getElementById('newProdPrice').value);
+      const emoji = document.getElementById('newProdEmoji').value;
+      const img = document.getElementById('newProdImg').value;
+
+      if (!name || isNaN(price) || price < 0) {
+        showToast('Please fill in required fields correctly');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/products`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type, name, category: type === 'birthday' ? 'cakes' : category, price, emoji, img })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Product added successfully!');
+          closeAddProductModal();
+          // Reset form
+          document.getElementById('newProdName').value = '';
+          document.getElementById('newProdPrice').value = '';
+          document.getElementById('newProdImg').value = '';
+          loadProducts(); // refresh table
+        } else {
+          showToast('Failed to add product');
+        }
+      } catch (e) {
+        showToast('Error adding product');
+      }
+    }
+
+    // ─── TOAST ─────────────────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ─── INIT ──────────────────────────────────────────────────────────────────────
+    loadStats();
+    loadOrders();
+
+    // Auto refresh every 30 seconds
+    setInterval(() => { loadStats(); loadOrders(); }, 30000);
+  </script>
 </body>
+
 </html>

@@ -2,25 +2,44 @@
 const API_BASE = 'http://localhost:3000/api';
 
 // --- PRODUCTS DATA ---
-const products = [
-    // CAKES
-    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "🎂", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "🍰", img: "https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619" },
-    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "🍍", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
+let products = [];
+let bdayCakes = {};
 
-    // BROWNIES
-    { id: 4, name: "Overload Brownie", category: "brownies", price: 120, emoji: "🍫", img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
-    { id: 5, name: "Walnut Fudge", category: "brownies", price: 95, emoji: "🥜", img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181" },
-    { id: 6, name: "Classic Choco", category: "brownies", price: 80, emoji: "🍫", img: "https://theobroma.in/cdn/shop/files/eggless-theo-overload-brownie-6.jpg?v=1681320427" },
+async function loadProducts() {
+    try {
+        const res = await fetch(`${API_BASE}/products`);
+        const data = await res.json();
+        if (data.success) {
+            products = data.products.filter(p => p.type === 'standard').map(p => ({
+                id: p.id_ref,
+                name: p.name,
+                category: p.category,
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            }));
 
-    // DESSERTS
-    { id: 7, name: "Chocolate Mousse", category: "desserts", price: 150, emoji: "🍮", img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" },
-    { id: 8, name: "Tiramisu Jar", category: "desserts", price: 180, emoji: "☕", img: "https://theobroma.in/cdn/shop/files/TiramisuPastry_400x400.jpg?v=1711125219" },
+            const bd = data.products.filter(p => p.type === 'birthday');
+            bd.forEach(p => {
+                bdayCakes[p.id_ref] = {
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img
+                };
+            });
 
-    // COOKIES
-    { id: 9, name: "Choco Chip Cookies", category: "cookies", price: 250, emoji: "🍪", img: "https://theobroma.in/cdn/shop/files/Cookie-04_400x400.jpg?v=1701416744" },
-    { id: 10, name: "Almond Biscotti", category: "cookies", price: 300, emoji: "🥖", img: "https://theobroma.in/cdn/shop/files/Cookie-01_400x400.jpg?v=1681320427" }
-];
+            // Re-render UI now that data is loaded
+            if (document.getElementById('productsGrid')) {
+                filterProducts('all');
+            }
+            if (document.getElementById('cakePrice')) {
+                calculateBdayPrice();
+            }
+        }
+    } catch (e) {
+        console.error('Error loading products from database:', e);
+    }
+}
 
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
@@ -425,14 +444,7 @@ function filterProducts(category, btn) {
 // --- BIRTHDAY CAKE BUILDER ---
 let selectedFlavor = 'Red Velvet';
 let selectedWeight = '1.0';
-const bdayCakes = {
-    'Red Velvet': { price: 850, emoji: "🎂", img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
-    'Dutch Truffle': { price: 950, emoji: "🍰", img: 'https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619' },
-    'Pineapple': { price: 675, emoji: "🍍", img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
-    'Chocoholic': { price: 900, emoji: "🍫", img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267' },
-    'Black Forest': { price: 750, emoji: "🌲", img: 'https://theobroma.in/cdn/shop/files/BlackForestCakehalfkg_Square_400x400.jpg?v=1711124458' },
-    'Cheesecake': { price: 1200, emoji: "🧀", img: 'https://theobroma.in/cdn/shop/files/BlueberryCheesecakeCup_400x400.jpg?v=1711514632' }
-};
+// bdayCakes object is now populated dynamically via loadProducts()
 
 function updateBirthdayCake(flavor) {
     selectedFlavor = flavor;
@@ -456,12 +468,14 @@ function setCakeWeight(weight) {
 }
 
 function calculateBdayPrice() {
+    if (!bdayCakes[selectedFlavor]) return; // Wait until loaded
     const finalPrice = bdayCakes[selectedFlavor].price * parseFloat(selectedWeight);
     const priceEl = document.getElementById('cakePrice');
     if (priceEl) priceEl.textContent = `₹ ${Math.round(finalPrice)}`;
 }
 
 function addBirthdayToCart() {
+    if (!bdayCakes[selectedFlavor]) return; // Wait until loaded
     const finalPrice = bdayCakes[selectedFlavor].price * parseFloat(selectedWeight);
     const msgInput = document.getElementById('cakeMessage');
     const message = msgInput ? msgInput.value.trim() : '';
@@ -493,10 +507,5 @@ function showToast(msg) {
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
+    loadProducts(); // Load and then automatically re-render main grid/birthday block
 });
