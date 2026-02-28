@@ -17,18 +17,20 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/brownie_bl
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── CONNECT TO MONGODB ────────────────────────────────────────────────────────
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log('✅ Connected to MongoDB'))
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+    seedProducts();
+  })
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
     console.error('   Make sure MongoDB is running or set MONGO_URI env variable.');
-    process.exit(1);
   });
 
 // ─── SCHEMAS ───────────────────────────────────────────────────────────────────
@@ -108,7 +110,7 @@ async function seedProducts() {
     console.log('🌱 Seeded initial products to database');
   }
 }
-seedProducts();
+// seedProducts();
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────────
 function generateOrderId() {
@@ -424,5 +426,12 @@ app.get('/api/stats', async (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
 // ─── START ─────────────────────────────────────────────────────────────────────
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  });
+}
+
 module.exports = serverless(app);
