@@ -419,5 +419,9 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
+// Serve homepage explicitly (IMPORTANT for Vercel)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 // ─── START ─────────────────────────────────────────────────────────────────────
 module.exports = app;
