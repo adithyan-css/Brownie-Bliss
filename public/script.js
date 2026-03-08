@@ -1,5 +1,5 @@
 // --- CONFIG ---
-const API_BASE = window.location.origin + '/api';
+// API_BASE is defined in cart.js
 
 // --- PRODUCTS DATA ---
 let products = [];
