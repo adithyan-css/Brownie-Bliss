@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Brownie Bliss</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      min-height: calc(100vh - 72px - 200px);
+    }
+
+    .dashboard-header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--cream-dark);
+    }
+
+    .dashboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 8px;
+    }
+
+    .dashboard-subtitle {
+      color: var(--text-mid);
+      font-size: 14px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .dashboard-panel {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--cream-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--cream);
+      border-radius: var(--radius-md);
+    }
+
+    .info-label {
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--brown-dark);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 14px;
+      color: var(--text-dark);
+      word-break: break-all;
+    }
+
+    .edit-btn {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-start;
+      margin-top: 12px;
+    }
+
+    .edit-btn:hover {
+      background: var(--cream);
+      transform: translateY(-1px);
+    }
+
+    .logout-btn {
+      background: #d9534f;
+      color: var(--white);
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-start;
+      margin-top: 12px;
+    }
+
+    .logout-btn:hover {
+      background: #c9302c;
+      transform: translateY(-1px);
+    }
+
+    .address-item {
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      border-left: 4px solid var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .address-label {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--brown-dark);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .address-text {
+      font-size: 13px;
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .address-actions {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .address-actions button {
+      background: none;
+      border: none;
+      color: var(--gold);
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.2s;
+      padding: 0;
+      font-family: inherit;
+    }
+
+    .address-actions button:hover {
+      color: var(--brown-dark);
+    }
+
+    .add-address-btn {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+
+    .add-address-btn:hover {
+      background: var(--cream);
+      transform: translateY(-1px);
+    }
+
+    .orders-section {
+      grid-column: 1 / -1;
+    }
+
+    .order-item {
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .order-id {
+      font-weight: 600;
+      color: var(--brown-dark);
+      font-size: 13px;
+    }
+
+    .order-status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+      background: rgba(240, 173, 78, 0.2);
+      color: #8a6d3b;
+    }
+
+    .status-confirmed {
+      background: rgba(92, 184, 92, 0.2);
+      color: #3c763d;
+    }
+
+    .status-preparing {
+      background: rgba(51, 122, 183, 0.2);
+      color: #31708f;
+    }
+
+    .status-delivered {
+      background: rgba(92, 184, 92, 0.2);
+      color: #3c763d;
+    }
+
+    .order-details {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-bottom: 8px;
+    }
+
+    .order-items {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-dark);
+      margin: 8px 0;
+    }
+
+    .order-total {
+      font-weight: 600;
+      color: var(--brown-dark);
+      font-size: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-mid);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--cream-dark);
+    }
+
+    .tab {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-mid);
+      position: relative;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s;
+    }
+
+    .tab.active {
+      color: var(--brown-dark);
+      border-bottom-color: var(--gold);
+    }
+
+    .tab:hover {
+      color: var(--brown-dark);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-mid);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--cream-dark);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-title {
+        font-size: 24px;
+      }
+
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">My Dashboard</h1>
+      <p class="dashboard-subtitle">Manage your profile, addresses, and orders</p>
+    </div>
+
+    <div id="loadingDiv" class="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 12px;">Loading your dashboard...</p>
+    </div>
+
+    <div id="dashboardContent" style="display: none;">
+      <div class="dashboard-grid">
+        <!-- Profile Panel -->
+        <div class="dashboard-panel">
+          <h2 class="panel-title">👤 Profile Information</h2>
+          <div class="panel-content">
+            <div class="info-row">
+              <span class="info-label">Name</span>
+              <span class="info-value" id="profileName">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email</span>
+              <span class="info-value" id="profileEmail">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Phone</span>
+              <span class="info-value" id="profilePhone">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email Status</span>
+              <span class="info-value">
+                <span id="emailStatus">Not Verified</span>
+              </span>
+            </div>
+            <button class="edit-btn" onclick="window.location.href='profile-edit.html'">Edit Profile</button>
+            <button class="logout-btn" onclick="logout()">Sign Out</button>
+          </div>
+        </div>
+
+        <!-- Saved Addresses Panel -->
+        <div class="dashboard-panel">
+          <h2 class="panel-title">📍 Saved Addresses</h2>
+          <div class="panel-content" id="addressesList">
+            <p style="color: var(--text-mid); font-size: 13px;">Loading addresses...</p>
+          </div>
+          <button class="add-address-btn" onclick="window.location.href='address-form.html'">+ Add New Address</button>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="dashboard-panel orders-section">
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab('all')">All Orders</button>
+            <button class="tab" onclick="switchTab('pending')">Pending</button>
+            <button class="tab" onclick="switchTab('preparing')">Preparing</button>
+            <button class="tab" onclick="switchTab('delivered')">Delivered</button>
+          </div>
+
+          <div id="allOrders" class="tab-content active">
+            <div id="ordersListAll"></div>
+          </div>
+          <div id="pendingOrders" class="tab-content">
+            <div id="ordersListPending"></div>
+          </div>
+          <div id="preparingOrders" class="tab-content">
+            <div id="ordersListPreparing"></div>
+          </div>
+          <div id="deliveredOrders" class="tab-content">
+            <div id="ordersListDelivered"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Check if user is authenticated
+    async function initializeDashboard() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = 'login.html?redirect=dashboard.html';
+        return;
+      }
+
+      try {
+        // Verify token and get user
+        const userResponse = await fetch('/api/auth/verify', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!userResponse.ok) {
+          throw new Error('Invalid token');
+        }
+
+        const userData = await userResponse.json();
+        if (!userData.success) {
+          throw new Error('Authentication failed');
+        }
+
+        // Load user data
+        loadUserProfile(userData.user);
+        loadAddresses(token);
+        loadOrders(token);
+
+        document.getElementById('loadingDiv').style.display = 'none';
+        document.getElementById('dashboardContent').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        localStorage.removeItem('authToken');
+        window.location.href = 'login.html?redirect=dashboard.html';
+      }
+    }
+
+    function loadUserProfile(user) {
+      document.getElementById('profileName').textContent = user.name;
+      document.getElementById('profileEmail').textContent = user.email;
+      document.getElementById('profilePhone').textContent = user.phone || 'Not provided';
+      document.getElementById('emailStatus').textContent = user.emailVerified ? 'Verified ✓' : 'Not Verified';
+    }
+
+    async function loadAddresses(token) {
+      try {
+        const response = await fetch('/api/user/addresses', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        const addressesList = document.getElementById('addressesList');
+
+        if (data.addresses.length === 0) {
+          addressesList.innerHTML = '<p style="color: var(--text-mid); font-size: 13px;">No saved addresses yet</p>';
+        } else {
+          addressesList.innerHTML = data.addresses.map(addr => `
+            <div class="address-item">
+              <div class="address-label">${addr.label}</div>
+              <div class="address-text">
+                ${addr.street}<br>
+                ${addr.city}, ${addr.state} ${addr.pincode}<br>
+                Phone: ${addr.phone}
+                ${addr.isDefault ? '<br><strong>📌 Default Address</strong>' : ''}
+              </div>
+              <div class="address-actions">
+                <button onclick="editAddress('${addr._id}')">Edit</button>
+                <button onclick="deleteAddress('${addr._id}')">Delete</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadOrders(token) {
+      try {
+        const response = await fetch('/api/user/orders', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        const orders = data.orders || [];
+
+        renderOrders(orders, 'all', 'ordersListAll');
+        renderOrders(orders.filter(o => o.status === 'pending'), 'pending', 'ordersListPending');
+        renderOrders(orders.filter(o => o.status === 'preparing'), 'preparing', 'ordersListPreparing');
+        renderOrders(orders.filter(o => o.status === 'delivered'), 'delivered', 'ordersListDelivered');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderOrders(orders, status, elementId) {
+      const element = document.getElementById(elementId);
+
+      if (orders.length === 0) {
+        element.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><p>No ${status === 'all' ? '' : status} orders yet</p></div>`;
+        return;
+      }
+
+      element.innerHTML = orders.map(order => `
+        <div class="order-item">
+          <div class="order-header">
+            <span class="order-id">Order #${order.order_id}</span>
+            <span class="order-status status-${order.status}">${order.status}</span>
+          </div>
+          <div class="order-details">
+            📅 ${new Date(order.created_at).toLocaleDateString('en-IN')}<br>
+            📍 ${order.address}, ${order.city}
+          </div>
+          <div class="order-items">
+            ${order.items.map(item => `${item.emoji} ${item.name} × ${item.qty}`).join(' | ')}
+          </div>
+          <div class="order-total">₹${order.total}</div>
+        </div>
+      `).join('');
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById(tabName === 'all' ? 'allOrders' : (tabName + 'Orders')).classList.add('active');
+    }
+
+    function editAddress(addressId) {
+      window.location.href = `address-form.html?id=${addressId}`;
+    }
+
+    async function deleteAddress(addressId) {
+      if (!confirm('Are you sure you want to delete this address?')) return;
+
+      const token = localStorage.getItem('authToken');
+      try {
+        const response = await fetch(`/api/user/addresses/${addressId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          loadAddresses(token);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to sign out?')) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
+    }
+
+    // Initialize dashboard on load
+    document.addEventListener('DOMContentLoaded', initializeDashboard);
+  </script>
+
+</body>
+
+</html>

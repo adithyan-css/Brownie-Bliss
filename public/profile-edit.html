@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile — Brownie Bliss</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .form-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      min-height: calc(100vh - 72px - 200px);
+    }
+
+    .form-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      border: 1px solid var(--cream-dark);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 8px;
+    }
+
+    .form-subtitle {
+      color: var(--text-mid);
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--brown-dark);
+      text-transform: uppercase;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--radius-md);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--brown-dark);
+    }
+
+    .btn-primary:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--cream);
+      color: var(--brown-dark);
+      border: 1px solid var(--cream-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--text-dark);
+      color: var(--white);
+    }
+
+    .error-message {
+      background: rgba(217, 83, 79, 0.1);
+      border: 1px solid rgba(217, 83, 79, 0.3);
+      color: #8B0000;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .success-message {
+      background: rgba(92, 184, 92, 0.1);
+      border: 1px solid rgba(92, 184, 92, 0.3);
+      color: #5cb85c;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: var(--text-mid);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--cream-dark);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 28px 20px;
+      }
+
+      .form-title {
+        font-size: 20px;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FORM CONTAINER -->
+  <div class="form-container">
+    <div class="form-card">
+      <h1 class="form-title">Edit Profile</h1>
+      <p class="form-subtitle">Update your personal information</p>
+
+      <div id="errorMessage" class="error-message"></div>
+      <div id="successMessage" class="success-message"></div>
+
+      <form id="profileForm" class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address (Cannot be changed)</label>
+          <input type="email" class="form-input" id="email" disabled>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" id="phone" placeholder="+91 9XXXXXXXXX">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">Cancel</button>
+        </div>
+        <div id="loading" class="loading">
+          <span class="spinner"></span>Saving changes...
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const profileForm = document.getElementById('profileForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const loadingDiv = document.getElementById('loading');
+
+    async function loadProfile() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/user/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          nameInput.value = data.user.name;
+          emailInput.value = data.user.email;
+          phoneInput.value = data.user.phone || '';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    profileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+
+      const token = localStorage.getItem('authToken');
+
+      loadingDiv.classList.add('show');
+      profileForm.style.opacity = '0.5';
+      profileForm.style.pointerEvents = 'none';
+
+      try {
+        const response = await fetch('/api/user/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name: nameInput.value,
+            phone: phoneInput.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showSuccess('Profile updated successfully! Redirecting...');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1500);
+        } else {
+          showError(data.message || 'Update failed');
+        }
+      } catch (err) {
+        showError('Network error. Please try again.');
+        console.error(err);
+      } finally {
+        loadingDiv.classList.remove('show');
+        profileForm.style.opacity = '1';
+        profileForm.style.pointerEvents = 'auto';
+      }
+    });
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.classList.add('show');
+    }
+
+    function showSuccess(msg) {
+      successMessage.textContent = msg;
+      successMessage.classList.add('show');
+    }
+
+    // Load profile on page load
+    loadProfile();
+  </script>
+
+</body>
+
+</html>

@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
 require('dotenv').config();
 const serverless = require('serverless-http');
 const adminAuth = require('../middlewares/adminAuth');
@@ -17,6 +18,8 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
 const ADMIN_JWT_EXPIRES_IN = process.env.ADMIN_JWT_EXPIRES_IN || '2h';
+const USER_JWT_SECRET = process.env.USER_JWT_SECRET || 'your-secret-key-change-this';
+const USER_JWT_EXPIRES_IN = process.env.USER_JWT_EXPIRES_IN || '30d';
 
 // Disable buffering so mongoose throws immediately if not connected
 mongoose.set('bufferCommands', false);
@@ -62,6 +65,30 @@ app.use(async (req, res, next) => {
 });
 
 // ─── SCHEMAS ───────────────────────────────────────────────────────────────────
+const addressSchema = new mongoose.Schema({
+  label: { type: String, enum: ['home', 'work', 'other'], default: 'home' },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  pincode: { type: String, required: true },
+  phone: { type: String, required: true },
+  isDefault: { type: Boolean, default: false },
+}, { _id: true });
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true },
+  phone: { type: String, default: '' },
+  addresses: [addressSchema],
+  emailVerified: { type: Boolean, default: false },
+  emailVerificationToken: { type: String, default: null },
+  passwordResetToken: { type: String, default: null },
+  passwordResetExpires: { type: Date, default: null },
+  rememberMe: { type: Boolean, default: false },
+  avatar: { type: String, default: '' },
+}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
+
 const orderItemSchema = new mongoose.Schema({
   id: { type: Number },
   name: { type: String, required: true },
@@ -73,6 +100,7 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
   order_id: { type: String, unique: true, required: true },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   customer_name: { type: String, required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
@@ -106,6 +134,7 @@ const productSchema = new mongoose.Schema({
   img: { type: String }
 });
 
+const User = mongoose.model('User', userSchema);
 const Order = mongoose.model('Order', orderSchema);
 const Otp = mongoose.model('Otp', otpSchema);
 const Product = mongoose.model('Product', productSchema);
@@ -179,7 +208,298 @@ app.post('/api/admin/login', (req, res) => {
   return res.json({ success: true, token, expiresIn: ADMIN_JWT_EXPIRES_IN });
 });
 
+// ─── USER AUTH MIDDLEWARE ──────────────────────────────────────────────────────
+function verifyUserToken(req, res, next) {
+  const token = req.headers.authorization?.replace('Bearer ', '') || req.body?.token;
+  
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, USER_JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ success: false, message: 'Invalid or expired token' });
+  }
+}
+
+// ─── CUSTOMER AUTH ROUTES ──────────────────────────────────────────────────────
+// Sign up
+app.post('/api/auth/signup', async (req, res) => {
+  try {
+    const { name, email, password, confirmPassword, phone } = req.body;
+
+    // Validation
+    if (!name || !email || !password || !confirmPassword) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'Passwords do not match' });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
+    }
+
+    // Check if user exists
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Email already registered' });
+    }
+
+    // Hash password
+    const hashedPassword = await bcryptjs.hash(password, 12);
+
+    // Create user
+    const user = await User.create({
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      phone: phone || '',
+    });
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      USER_JWT_SECRET,
+      { expiresIn: USER_JWT_EXPIRES_IN }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'Signup successful',
+      token,
+      user: { id: user._id, name: user.name, email: user.email, phone: user.phone }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Login
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password, rememberMe } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
+
+    // Update rememberMe flag
+    if (rememberMe) {
+      user.rememberMe = true;
+      await user.save();
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      USER_JWT_SECRET,
+      { expiresIn: rememberMe ? '90d' : USER_JWT_EXPIRES_IN }
+    );
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        emailVerified: user.emailVerified
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Verify token
+app.get('/api/auth/verify', verifyUserToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Logout (client-side, but good to have endpoint)
+app.post('/api/auth/logout', (req, res) => {
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// ─── USER PROFILE & ADDRESS ROUTES ─────────────────────────────────────────────
+// Get user profile
+app.get('/api/user/profile', verifyUserToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Update user profile
+app.put('/api/user/profile', verifyUserToken, async (req, res) => {
+  try {
+    const { name, phone } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.user.userId,
+      { name, phone },
+      { new: true }
+    ).select('-password');
+
+    res.json({ success: true, message: 'Profile updated', user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Add address
+app.post('/api/user/addresses', verifyUserToken, async (req, res) => {
+  try {
+    const { label, street, city, state, pincode, phone, isDefault } = req.body;
+
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // If setting as default, unset other defaults
+    if (isDefault) {
+      user.addresses.forEach(addr => addr.isDefault = false);
+    }
+
+    user.addresses.push({ label, street, city, state, pincode, phone, isDefault });
+    await user.save();
+
+    res.json({ success: true, message: 'Address added', addresses: user.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Get addresses
+app.get('/api/user/addresses', verifyUserToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('addresses');
+    res.json({ success: true, addresses: user.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Update address
+app.put('/api/user/addresses/:id', verifyUserToken, async (req, res) => {
+  try {
+    const { label, street, city, state, pincode, phone, isDefault } = req.body;
+    const user = await User.findById(req.user.userId);
+
+    const addressIndex = user.addresses.findIndex(addr => addr._id.toString() === req.params.id);
+    if (addressIndex === -1) {
+      return res.status(404).json({ success: false, message: 'Address not found' });
+    }
+
+    if (isDefault) {
+      user.addresses.forEach(addr => addr.isDefault = false);
+    }
+
+    user.addresses[addressIndex] = { _id: user.addresses[addressIndex]._id, label, street, city, state, pincode, phone, isDefault };
+    await user.save();
+
+    res.json({ success: true, message: 'Address updated', addresses: user.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Delete address
+app.delete('/api/user/addresses/:id', verifyUserToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    user.addresses = user.addresses.filter(addr => addr._id.toString() !== req.params.id);
+    await user.save();
+
+    res.json({ success: true, message: 'Address deleted', addresses: user.addresses });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// ─── USER ORDER ROUTES ─────────────────────────────────────────────────────────
+// Get user orders
+app.get('/api/user/orders', verifyUserToken, async (req, res) => {
+  try {
+    const orders = await Order.find({ user_id: req.user.userId }).sort({ created_at: -1 });
+    res.json({ success: true, orders });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+// Create order (linked to user if authenticated)
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { customer_name, phone, address, city, pincode, items, total } = req.body;
+    const token = req.headers.authorization?.replace('Bearer ', '');
+
+    if (!customer_name || !phone || !address || !items || !total) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+
+    const order_id = generateOrderId();
+    let userId = null;
+
+    // If authenticated, link order to user
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, USER_JWT_SECRET);
+        userId = decoded.userId;
+      } catch (err) {
+        // Token invalid, proceed without user link
+      }
+    }
+
+    const order = await Order.create({
+      order_id,
+      user_id: userId,
+      customer_name,
+      phone,
+      address,
+      city,
+      pincode,
+      items,
+      total,
+    });
+
+    res.json({ success: true, order_id: order.order_id, message: 'Order placed successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ─── OTP ROUTES ────────────────────────────────────────────────────────────────
+
 // Send OTP  (demo — shows OTP in response; in production wire up MSG91 / Twilio)
 app.post('/api/send-otp', async (req, res) => {
   try {

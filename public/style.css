@@ -133,6 +133,33 @@ nav a:hover {
   align-items: center;
 }
 
+.header-auth-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.header-auth-section .auth-link {
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+  padding: 8px 0;
+}
+
+.header-auth-section .auth-link:hover {
+  color: var(--brown-dark);
+}
+
+.header-auth-section .auth-link[style*="background"] {
+  color: var(--brown-dark) !important;
+}
+
+.header-auth-section .auth-link[style*="background"]:hover {
+  background: var(--cream) !important;
+}
+
 .cart-btn {
   position: relative;
   background: none;
@@ -2275,7 +2302,7 @@ a.logo {
 
 html.dark {
   /* Backgrounds — --cream & --white are used as bg, so override them */
-  --cream:        #1a1008;
+  --cream:        #6e550c;
   --cream-dark:   #221508;
   --white:        #1c1108;
   /* Text */
@@ -2328,6 +2355,10 @@ html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--text-dark)
 /* Nav links */
 html.dark nav a       { color: var(--text-mid); }
 html.dark nav a:hover { color: var(--text-dark); }
+/* Header auth section (Sign in / Sign up) */
+html.dark .header-auth-section .auth-link       { color: #d4a852; }
+html.dark .header-auth-section .auth-link:hover { color: #e8d5a6; }
+
 
 /* Cart button */
 html.dark .cart-btn              { color: var(--text-mid); border-color: #5a3820; }
@@ -2391,4 +2422,4 @@ html.dark .theme-toggle-btn          { border-color: var(--gold); }
 html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 
 
-
+

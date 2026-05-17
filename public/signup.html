@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — Brownie Bliss</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      padding: 20px;
+      margin-top: 72px;
+    }
+
+    .auth-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 420px;
+      width: 100%;
+      padding: 40px;
+      border: 1px solid var(--cream-dark);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
+      color: var(--text-mid);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--brown-dark);
+      text-transform: uppercase;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--radius-md);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-mid);
+      opacity: 0.6;
+    }
+
+    .password-strength {
+      font-size: 11px;
+      margin-top: 4px;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--brown-dark);
+    }
+
+    .strength-bar {
+      height: 4px;
+      background: var(--cream-dark);
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s, background-color 0.3s;
+      background-color: #ccc;
+    }
+
+    .strength-fill.weak {
+      width: 33%;
+      background-color: #d9534f;
+    }
+
+    .strength-fill.medium {
+      width: 66%;
+      background-color: #f0ad4e;
+    }
+
+    .strength-fill.strong {
+      width: 100%;
+      background-color: #5cb85c;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--gold);
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      color: var(--text-mid);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .submit-btn {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border: 2px solid var(--gold);
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-family: 'DM Sans', sans-serif;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+    }
+
+    .submit-btn:hover {
+      background: var(--brown-dark);
+      color: var(--gold);
+      border-color: var(--brown-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(212, 175, 55, 0.4);
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
+    }
+
+    .submit-btn:focus {
+      outline: none;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25), 0 0 0 4px rgba(212, 175, 55, 0.2);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .submit-btn:disabled:hover {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border-color: var(--gold);
+    }
+
+    /* Dark Mode Styles */
+    .dark .submit-btn {
+      background: #d4a852;
+      color: #ffffff;
+      border-color: #d4a852;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .dark .submit-btn:hover {
+      background: #c49840;
+      color: #ffffff;
+      border-color: #c49840;
+      box-shadow: 0 12px 28px rgba(212, 175, 55, 0.6);
+    }
+
+    .dark .submit-btn:active {
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.5);
+    }
+
+    .dark .submit-btn:focus {
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4), 0 0 0 4px rgba(212, 175, 55, 0.3);
+    }
+
+    .dark .submit-btn:disabled {
+      background: #6b5a35;
+      color: #a0a0a0;
+      border-color: #6b5a35;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark .submit-btn:disabled:hover {
+      background: #6b5a35;
+      color: #a0a0a0;
+      border-color: #6b5a35;
+    }
+
+    /* Dark Mode Text Styles */
+    .dark .auth-title {
+      color: #f5f5f5;
+    }
+
+    .dark .auth-subtitle {
+      color: #b0b0b0;
+    }
+
+    .dark .form-label {
+      color: #e8d5a6;
+    }
+
+    .dark .form-input {
+      background: #2a2a2a;
+      color: #f5f5f5;
+      border-color: #3d3d3d;
+    }
+
+    .dark .form-input:focus {
+      background: #333333;
+      border-color: #d4a852;
+    }
+
+    .dark .form-input::placeholder {
+      color: #808080;
+    }
+
+    .dark .password-strength {
+      background: rgba(212, 175, 55, 0.15);
+      color: #e8d5a6;
+    }
+
+    .dark .strength-bar {
+      background: #3d3d3d;
+    }
+
+    .dark .auth-link {
+      color: #b0b0b0;
+    }
+
+    .dark .auth-link a {
+      color: #d4a852;
+    }
+
+    .dark .auth-link a:hover {
+      color: #e8d5a6;
+    }
+
+    .dark .auth-card {
+      background: #1f1f1f;
+      border-color: #3d3d3d;
+    }
+
+    .dark .checkbox-group label {
+      color: #b0b0b0;
+    }
+
+    .dark .error-message {
+      background: rgba(217, 83, 79, 0.2);
+      border-color: rgba(217, 83, 79, 0.5);
+      color: #ff9999;
+    }
+
+    .dark .success-message {
+      background: rgba(92, 184, 92, 0.2);
+      border-color: rgba(92, 184, 92, 0.5);
+      color: #99ff99;
+    }
+
+    .dark .loading {
+      color: #b0b0b0;
+    }
+
+    .auth-divider {
+      text-align: center;
+      margin: 24px 0;
+      color: var(--text-mid);
+      font-size: 13px;
+      position: relative;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 35%;
+      height: 1px;
+      background: var(--cream-dark);
+    }
+
+    .auth-divider::before {
+      left: 0;
+    }
+
+    .auth-divider::after {
+      right: 0;
+    }
+
+    .auth-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .auth-link a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .auth-link a:hover {
+      color: var(--brown-dark);
+    }
+
+    .error-message {
+      background: rgba(217, 83, 79, 0.1);
+      border: 1px solid rgba(217, 83, 79, 0.3);
+      color: #8B0000;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .success-message {
+      background: rgba(92, 184, 92, 0.1);
+      border: 1px solid rgba(92, 184, 92, 0.3);
+      color: #5cb85c;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: var(--text-mid);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--cream-dark);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .auth-card {
+        padding: 28px 20px;
+      }
+
+      .auth-title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- AUTH CONTAINER -->
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join us for faster checkout & order tracking</p>
+      </div>
+
+      <div id="errorMessage" class="error-message"></div>
+      <div id="successMessage" class="success-message"></div>
+
+      <form class="auth-form" id="signupForm">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="name" name="name" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" id="email" name="email" placeholder="john@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number (Optional)</label>
+          <input type="tel" class="form-input" id="phone" name="phone" placeholder="+91 9XXXXXXXXX">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="password" name="password" placeholder="••••••••" required>
+          <div class="password-strength">
+            <span id="strengthText">Weak password</span>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="termsAgree" name="termsAgree" required>
+          <label for="termsAgree">I agree to the Terms & Conditions</label>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Account</button>
+        <div id="loading" class="loading">
+          <span class="spinner"></span>Creating your account...
+        </div>
+      </form>
+
+      <div class="auth-link">
+        Already have an account? <a href="login.html">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const signupForm = document.getElementById('signupForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const loadingDiv = document.getElementById('loading');
+
+    // Password strength indicator
+    passwordInput.addEventListener('input', function() {
+      const password = this.value;
+      const strengthFill = document.getElementById('strengthFill');
+      const strengthText = document.getElementById('strengthText');
+
+      let strength = 'weak';
+      strengthFill.className = 'strength-fill';
+
+      if (password.length >= 8) {
+        strength = 'weak';
+        strengthFill.classList.add('weak');
+        strengthText.textContent = 'Weak password';
+      }
+      if (password.length >= 12 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+        strength = 'medium';
+        strengthFill.className = 'strength-fill medium';
+        strengthText.textContent = 'Medium password';
+      }
+      if (password.length >= 12 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*]/.test(password)) {
+        strength = 'strong';
+        strengthFill.className = 'strength-fill strong';
+        strengthText.textContent = 'Strong password';
+      }
+    });
+
+    // Form submission
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Clear messages
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+
+      // Validation
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        showError('Passwords do not match');
+        return;
+      }
+
+      if (passwordInput.value.length < 8) {
+        showError('Password must be at least 8 characters');
+        return;
+      }
+
+      loadingDiv.classList.add('show');
+      signupForm.style.opacity = '0.5';
+      signupForm.style.pointerEvents = 'none';
+
+      try {
+        const response = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: nameInput.value,
+            email: emailInput.value,
+            phone: phoneInput.value,
+            password: passwordInput.value,
+            confirmPassword: confirmPasswordInput.value,
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Store token
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+
+          showSuccess('Account created successfully! Redirecting...');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1500);
+        } else {
+          showError(data.message || 'Signup failed');
+        }
+      } catch (err) {
+        showError('Network error. Please try again.');
+        console.error(err);
+      } finally {
+        loadingDiv.classList.remove('show');
+        signupForm.style.opacity = '1';
+        signupForm.style.pointerEvents = 'auto';
+      }
+    });
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.classList.add('show');
+    }
+
+    function showSuccess(msg) {
+      successMessage.textContent = msg;
+      successMessage.classList.add('show');
+    }
+  </script>
+
+</body>
+
+</html>

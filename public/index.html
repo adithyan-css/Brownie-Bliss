@@ -45,6 +45,10 @@
           aria-label="Toggle dark mode" title="Toggle dark mode">
           <span id="themeIcon">🌙</span>
         </button>
+        <div id="authSection" class="header-auth-section">
+          <a href="login.html" class="auth-link" style="text-decoration: none; color: var(--text-mid); font-size: 13px; font-weight: 500; transition: color 0.2s;">Sign In</a>
+          <a href="signup.html" class="auth-link" style="text-decoration: none; background: var(--gold); color: var(--brown-dark); padding: 8px 18px; border-radius: var(--radius-md); font-size: 12px; font-weight: 600; transition: all 0.2s;">Sign Up</a>
+        </div>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart
           <span class="cart-count" id="cartBadge">0</span>
@@ -295,7 +299,29 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+  <script src="auth.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Initialize auth UI on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const authSection = document.getElementById('authSection');
+      const user = Auth.getUser();
+
+      if (Auth.isAuthenticated() && user) {
+        // Replace auth section with user profile
+        authSection.innerHTML = `
+          <div class="header-auth-section" style="gap: 12px;">
+            <a href="dashboard.html" style="text-decoration: none; color: var(--text-mid); font-size: 13px; font-weight: 500; transition: color 0.2s; display: flex; align-items: center; gap: 4px;">
+              👤 ${user.name}
+            </a>
+            <button onclick="logoutUser()" style="background: #d9534f; color: white; border: none; padding: 6px 14px; border-radius: var(--radius-md); font-size: 11px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'DM Sans', sans-serif;">
+              Sign Out
+            </button>
+          </div>
+        `;
+      }
+    });
+  </script>
 </body>
 
 </html>
