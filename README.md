@@ -24,7 +24,7 @@ brownie-bliss/
     ├── birthday.html  ← Birthday packages
     ├── contact.html   ← Contact page
     ├── admin.html     ← Admin panel (orders + receipts)
-    ├── cart.js        ← Shared cart + checkout + OTP logic
+    ├── script.js      ← Shared core logic (cart + checkout + OTP + UI)
     └── style.css      ← All styles
 ```
 
@@ -39,9 +39,9 @@ npm install
 ```
 
 ### 2. Configure WhatsApp Number
-Open `public/cart.js` and update line 3:
+Open `public/script.js` and update the `fullPhone` variable inside the `sendWhatsAppFinal` function:
 ```js
-const BUSINESS_WHATSAPP = '919876543210'; // Replace with YOUR WhatsApp number
+const fullPhone = `918072596340`; // Replace with YOUR WhatsApp number
 ```
 Format: country code + number, no + or spaces. E.g., `919876543210`
 

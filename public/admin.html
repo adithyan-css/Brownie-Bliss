@@ -5,18 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel — Brownie Bliss</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="style.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
   <script>
-    if (sessionStorage.getItem('adminLoggedIn') !== 'true' || !sessionStorage.getItem('adminToken')) {
-      window.location.href = 'admin-login.html';
-    }
+    (function () {
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        window.location.replace('admin-login.html');
+        return;
+      }
+      fetch('/api/stats', { headers: { Authorization: 'Bearer ' + token } })
+        .then(function (res) {
+          if (res.status === 401 || res.status === 403) {
+            sessionStorage.removeItem('adminToken');
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.replace('admin-login.html');
+          }
+        })
+        .catch(function () {});
+    })();
+
     function logoutAdmin() {
-      sessionStorage.removeItem('adminLoggedIn');
       sessionStorage.removeItem('adminToken');
-      window.location.href = 'admin-login.html';
+      sessionStorage.removeItem('adminLoggedIn');
+      window.location.replace('admin-login.html');
     }
   </script>
 </head>
@@ -262,18 +277,22 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const API = '/api'; // Using relative path for better compatibility
+    const API = '/api';
     const adminToken = sessionStorage.getItem('adminToken');
     if (!adminToken) {
-      window.location.href = 'admin-login.html';
+      window.location.replace('admin-login.html');
     }
 
-    function authFetch(url, options = {}) {
-      const headers = options.headers ? { ...options.headers } : {};
-      if (!headers.Authorization) {
-        headers.Authorization = `Bearer ${adminToken}`;
+    async function authFetch(url, options = {}) {
+      const headers = { ...(options.headers || {}), Authorization: `Bearer ${adminToken}` };
+      const res = await fetch(url, { ...options, headers });
+      if (res.status === 401 || res.status === 403) {
+        sessionStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminLoggedIn');
+        window.location.replace('admin-login.html');
+        throw new Error('Session expired. Redirecting to login.');
       }
-      return fetch(url, { ...options, headers });
+      return res;
     }
     let allOrders = [];
     let currentFilter = 'all';
@@ -403,23 +422,46 @@
     async function confirmPayment(orderId) {
       if (!confirm(`Confirm payment received for order ${orderId}?`)) return;
 
+      const order = allOrders.find(o => o.order_id === orderId);
+      let email = order?.email || '';
+      if (!email) {
+        const entered = prompt('Customer email for receipt (optional — leave blank to skip email):', '');
+        if (entered === null) return;
+        email = entered.trim();
+      }
+
       try {
         const res = await authFetch(`${API}/orders/${orderId}/confirm-payment`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ notes: 'Payment confirmed via WhatsApp' })
+          body: JSON.stringify({
+            notes: 'Payment confirmed via WhatsApp',
+            ...(email ? { email } : {})
+          })
         });
         const data = await res.json();
         if (data.success) {
-          showToast('✅ Payment confirmed!');
+          const mail = data.receipt_email;
+          if (mail?.sent) {
+            showToast(`✅ Payment confirmed! Receipt emailed to ${mail.to}.`);
+          } else if (mail?.skipped && mail.reason === 'smtp_not_configured') {
+            showToast('✅ Payment confirmed. (SMTP not configured — receipt email not sent.)');
+          } else if (mail?.skipped && (mail.reason === 'no_email' || mail.reason === 'invalid_email')) {
+            showToast('✅ Payment confirmed. (No valid customer email — receipt not sent.)');
+          } else if (mail?.error) {
+            showToast(`✅ Payment confirmed. Receipt email failed: ${mail.error}`);
+          } else {
+            showToast('✅ Payment confirmed!');
+          }
           loadStats();
           loadOrders();
-          // Ask to view receipt
           setTimeout(() => {
-            if (confirm('Payment confirmed! 🎉\nGenerate receipt for customer?')) {
+            if (confirm('Payment confirmed! 🎉\nView printable receipt?')) {
               viewReceipt(orderId);
             }
           }, 500);
+        } else {
+          showToast(data.message || 'Could not confirm payment');
         }
       } catch (e) {
         showToast('Error confirming payment');
@@ -474,6 +516,7 @@
       document.getElementById('detailBody').innerHTML = `
     <div class="info-grid">
       <div class="info-item"><label>Customer Name</label><span>${order.customer_name}</span></div>
+      <div class="info-item"><label>Email</label><span>${order.email || '—'}</span></div>
       <div class="info-item"><label>Phone</label><span>+91 ${order.phone}</span></div>
       <div class="info-item" style="grid-column:span 2"><label>Delivery Address</label><span>${order.address}, ${order.city} - ${order.pincode}</span></div>
       <div class="info-item"><label>Payment</label><span class="status-pill ${order.payment_status === 'paid' ? 'pay-paid' : 'pay-unpaid'}" style="font-size:12px">${order.payment_status === 'paid' ? '✅ Paid' : '⏳ Unpaid'}</span></div>
@@ -565,10 +608,9 @@
       win.document.close();
     }
 
-    //export csv for orders
     async function exportCSV() {
       try {
-        const res = await fetch('/api/orders');
+        const res = await authFetch(`${API}/orders`);
         const data = await res.json();
         if (data.success) {
           // Just extracting the array of data

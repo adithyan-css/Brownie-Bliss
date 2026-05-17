@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Birthday Cakes — Customize Your Celebration</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
@@ -33,6 +34,7 @@
         <a href="index.html">Home</a>
         <a href="products.html">Products</a>
         <a href="birthday.html" class="active">Birthday</a>
+        <a href="favourites.html">Favourites</a>
         <a href="contact.html">Contact</a>
       </div>
       <button class="cart-trigger" onclick="openCart()">
@@ -140,88 +142,28 @@
   </footer>
 
   <!-- SHARED COMPONENTS -->
-  <div class="cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
-  <aside class="cart-sidebar" id="cartSidebar">
-    <div class="cart-head">
-      <h3>Your Cart 🛒</h3>
-      <button onclick="closeCart()" class="close-btn">✕</button>
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
     </div>
-    <div class="cart-body" id="cartBody"></div>
-    <div class="cart-foot" id="cartFoot" style="display:none">
-      <div class="cart-total-row">
-        <span>Total</span>
-        <strong id="cartTotalDisp">₹0</strong>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
       </div>
-      <button class="btn-checkout" onclick="openCheckout()">Proceed to Order →</button>
-    </div>
-  </aside>
-
-  <!-- CHECKOUT MODAL -->
-  <div class="modal-overlay" id="checkoutOverlay">
-    <div class="checkout-modal" id="checkoutModal">
-      <div class="steps-bar">
-        <div class="step active" id="step1ind"><span>1</span>Your Info</div>
-        <div class="step-divider"></div>
-        <div class="step" id="step2ind"><span>2</span>Verify OTP</div>
-        <div class="step-divider"></div>
-        <div class="step" id="step3ind"><span>3</span>Address</div>
-        <div class="step-divider"></div>
-        <div class="step" id="step4ind"><span>4</span>Confirm</div>
-      </div>
-      <button class="modal-close" onclick="closeCheckout()">✕</button>
-      <div class="checkout-step" id="checkStep1">
-        <h2>👋 Let's start with your details</h2>
-        <div class="form-group"><label>Full Name *</label><input type="text" id="custName" placeholder="Your full name"
-            class="form-input"></div>
-        <div class="form-group"><label>WhatsApp Number *</label>
-          <div class="phone-row"><span class="phone-code">+91</span><input type="tel" id="custPhone"
-              placeholder="9876543210" maxlength="10" class="form-input"></div>
-        </div>
-        <button class="btn-primary full-w" onclick="sendOTP()">Send OTP →</button>
-      </div>
-      <div class="checkout-step hidden" id="checkStep2">
-        <div class="otp-icon">📱</div>
-        <h2>Verify Your Number</h2>
-        <p class="step-sub">Enter the 6-digit OTP sent to <strong id="otpPhoneDisp"></strong></p>
-        <div class="otp-inputs">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,0)">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,1)">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,2)">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,3)">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,4)">
-          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,5)">
-        </div>
-        <div class="demo-otp-box" id="demoOtpBox"></div>
-        <button class="btn-primary full-w" onclick="verifyOTP()">Verify OTP →</button>
-      </div>
-      <div class="checkout-step hidden" id="checkStep3">
-        <h2>📍 Delivery Address</h2>
-        <div class="form-group"><label>Street Address *</label><input type="text" id="custAddr"
-            placeholder="House no., Street, Landmark" class="form-input"></div>
-        <div class="form-row">
-          <div class="form-group"><label>City *</label><input type="text" id="custCity" placeholder="City"
-              class="form-input"></div>
-          <div class="form-group"><label>Pincode *</label><input type="text" id="custPin" placeholder="123456"
-              maxlength="6" class="form-input"></div>
-        </div>
-        <button class="btn-primary full-w" onclick="goToConfirm()">Review Order →</button>
-      </div>
-      <div class="checkout-step hidden" id="checkStep4">
-        <h2>✅ Review Your Order</h2>
-        <div class="confirm-card">
-          <div id="confirmCustomer"></div>
-          <div id="confirmItems"></div>
-          <div class="confirm-total"><span>Total Amount</span><strong id="confirmTotal"></strong></div>
-        </div>
-        <button class="btn-whatsapp full-w" onclick="placeOrder()">Place Order & Open WhatsApp</button>
-      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+        Order via WhatsApp
+      </button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
     </div>
   </div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script src="cart.js"></script>
   <script src="script.js"></script>
 </body>
 
