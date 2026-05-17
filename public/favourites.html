@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favourites - Brownie Bliss</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="announcement">DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;|&nbsp; HAPPINESS IN EVERY BITE</div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">Moon</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="favourites-page">
+    <section class="favourites-hero">
+      <div class="products-inner">
+        <span class="section-label">Saved for later</span>
+        <h1 class="section-title">Your <em>Favourites</em></h1>
+        <p class="favourites-intro">Find your saved bakery and dishes here without searching through the menu again.</p>
+      </div>
+    </section>
+
+    <section class="favourites-section">
+      <div class="products-inner">
+        <div id="favouritesEmpty" class="favourites-empty">
+          <span class="cart-empty-icon">&hearts;</span>
+          <h2>No favourites yet</h2>
+          <p>Tap the heart on Brownie Bliss or any dish to save it here.</p>
+          <a href="index.html#products" class="hero-cta">Browse Menu &rarr;</a>
+        </div>
+
+        <div class="favourites-group" id="favouriteBakeriesGroup">
+          <div class="section-header">
+            <span class="section-label">Bakery</span>
+            <h2 class="section-title">Saved <em>Bakeries</em></h2>
+          </div>
+          <div class="favourite-bakeries-grid" id="favouriteBakeriesGrid"></div>
+        </div>
+
+        <div class="favourites-group" id="favouriteDishesGroup">
+          <div class="section-header">
+            <span class="section-label">Dishes</span>
+            <h2 class="section-title">Saved <em>Treats</em></h2>
+          </div>
+          <div class="products-grid" id="favouriteDishesGrid"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats | Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
+            and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html#home">Home</a>
+          <a href="index.html#products">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="index.html#contact">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with love in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart</span>
+      <button class="cart-close" onclick="closeCart()">x</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">Rs. 0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 // ─── CONFIG ────────────────────────────────────────────────────────────────────
 const API_BASE = '/api';
 // Change this to your WhatsApp business number (with country code, no +)
-const BUSINESS_WHATSAPP = '919336506931';
+const BUSINESS_WHATSAPP = '918309760544';
 
 // ─── CART STATE ────────────────────────────────────────────────────────────────
 let cart = [];

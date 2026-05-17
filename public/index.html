@@ -38,9 +38,14 @@
         <a href="about.html">About</a>
         <a href="index.html#products">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
         <a href="contact.html">Contact Us</a>
         <a href="track.html">Track Order</a>
       </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">
+  ☰
+</button>
       <div class="header-actions">
         <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
           aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -53,7 +58,13 @@
       </div>
     </div>
   </header>
-
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="track.html">Track Order</a>
+</div>
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
@@ -70,6 +81,14 @@
         <a href="#products" class="hero-cta" style="text-decoration: none;">
           Explore Our Menu &rarr;
         </a>
+        <button class="hero-favourite-btn"
+          type="button"
+          data-fav-type="bakeries"
+          data-fav-id="brownie-bliss"
+          aria-pressed="false"
+          onclick="toggleBakeryFavourite()">
+          &#9825; Favourite Bakery
+        </button>
       </div>
       <div class="hero-visual">
         <div class="hero-card">
@@ -157,7 +176,11 @@
       <div class="birthday-card"
         style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
         <span class="section-label">Celebrate with Us</span>
-        <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+        <div class="birthday-title-row">
+          <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+          <button id="birthdayFavoriteBtn" class="favorite-btn favorite-btn-inline" type="button"
+            aria-label="Toggle birthday cake favourite" aria-pressed="false" onclick="toggleBirthdayFavourite()">&#9825;</button>
+        </div>
         <p
           style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
           Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
@@ -344,6 +367,7 @@
           <a href="#home">Home</a>
           <a href="#products">Our Products</a>
           <a href="#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
         </div>
