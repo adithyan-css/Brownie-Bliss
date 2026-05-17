@@ -106,6 +106,7 @@ function openCheckout() {
   closeCart();
   checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
   showCheckoutStep(1);
+  if (typeof setupRealTimeValidation === 'function') setupRealTimeValidation();
   document.getElementById('checkoutOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -132,7 +133,7 @@ function showCheckoutStep(n) {
 // ─── OTP ───────────────────────────────────────────────────────────────────────
 async function sendOTP() {
   const name = document.getElementById('custName').value.trim();
-  const phone = document.getElementById('custPhone').value.trim();
+  const phone = document.getElementById('custPhone').value.replace(/\s/g, '');
 
   if (!name) { showToast('Please enter your name'); return; }
   if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
@@ -142,28 +143,10 @@ async function sendOTP() {
   checkoutState.name = name;
   checkoutState.phone = phone;
 
-  const btn = document.querySelector('#checkStep1 button[onclick="sendOTP()"]');
-  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
-
-  try {
-    const res = await fetch(`${API_BASE}/send-otp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    });
-    const data = await res.json();
-
-    if (data.success) {
-      showCheckoutStep(2);
-      showToast('OTP sent! Check your phone.');
-    } else {
-      showToast(data.message || 'Failed to send OTP. Try again.');
-    }
-  } catch (e) {
-    showToast('Server error. Please try again.');
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Send OTP'; }
-  }
+  // Temporary bypass for OTP
+  checkoutState.verified = true;
+  showCheckoutStep(3);
+  setTimeout(() => document.getElementById('custAddr')?.focus(), 100);
 }
 
 //rest original code 
@@ -223,7 +206,7 @@ function goToConfirm() {
   // Populate confirm screen
   document.getElementById('confirmCustomer').innerHTML = `
     <div class="confirm-row"><span>Name</span><strong>${checkoutState.name}</strong></div>
-    <div class="confirm-row"><span>Phone</span><strong>+91 ${checkoutState.phone}</strong></div>
+    <div class="confirm-row"><span>Phone</span><strong>+91 ${checkoutState.phone.substring(0, 5)} ${checkoutState.phone.substring(5, 10)}</strong></div>
     <div class="confirm-row"><span>Address</span><strong>${addr}, ${city} - ${pin}</strong></div>
   `;
 

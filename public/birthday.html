@@ -176,9 +176,10 @@
             class="form-input"></div>
         <div class="form-group"><label>WhatsApp Number *</label>
           <div class="phone-row"><span class="phone-code">+91</span><input type="tel" id="custPhone"
-              placeholder="9876543210" maxlength="10" class="form-input"></div>
+              placeholder="9876543210" maxlength="11" class="form-input"></div>
+          <span id="phoneError" class="input-error"></span>
         </div>
-        <button class="btn-primary full-w" onclick="sendOTP()">Send OTP →</button>
+        <button id="sendOtpBtn" class="btn-primary full-w" onclick="sendOTP()" disabled>Send OTP →</button>
       </div>
       <div class="checkout-step hidden" id="checkStep2">
         <div class="otp-icon">📱</div>
@@ -198,14 +199,20 @@
       <div class="checkout-step hidden" id="checkStep3">
         <h2>📍 Delivery Address</h2>
         <div class="form-group"><label>Street Address *</label><input type="text" id="custAddr"
-            placeholder="House no., Street, Landmark" class="form-input"></div>
+            placeholder="House no., Street, Landmark" class="form-input">
+          <span id="addrError" class="input-error"></span>
+        </div>
         <div class="form-row">
           <div class="form-group"><label>City *</label><input type="text" id="custCity" placeholder="City"
-              class="form-input"></div>
+              class="form-input">
+            <span id="cityError" class="input-error"></span>
+          </div>
           <div class="form-group"><label>Pincode *</label><input type="text" id="custPin" placeholder="123456"
-              maxlength="6" class="form-input"></div>
+              maxlength="6" class="form-input">
+            <span id="pinError" class="input-error"></span>
+          </div>
         </div>
-        <button class="btn-primary full-w" onclick="goToConfirm()">Review Order →</button>
+        <button id="reviewOrderBtn" class="btn-primary full-w" onclick="goToConfirm()" disabled>Review Order →</button>
       </div>
       <div class="checkout-step hidden" id="checkStep4">
         <h2>✅ Review Your Order</h2>

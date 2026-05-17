@@ -9478,6 +9478,21 @@ html.dark .customize-option input[type="checkbox"] {
   accent-color: var(--gold);
 }
 
+/* Checkout Error Messages */
+.input-error {
+  color: #dc3545;
+  font-size: 12px;
+  display: none;
+  margin-top: 5px;
+}
+
+/* Disabled Buttons */
+button:disabled,
+.btn-primary:disabled,
+.hero-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  
 html.dark .topping-price {
   color: var(--gold);
 }

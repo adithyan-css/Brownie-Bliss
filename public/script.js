@@ -301,10 +301,11 @@ function injectCheckoutModal() {
                         <label>Phone Number</label>
                         <div class="phone-input-group">
                             <span class="prefix">+91</span>
-                            <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
+                            <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="11">
                         </div>
+                        <span id="phoneError" class="input-error"></span>
                     </div>
-                    <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="sendOTP()">
+                    <button id="sendOtpBtn" class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="sendOTP()" disabled>
                         Send Verification OTP &rarr;
                     </button>
                 </div>
@@ -333,18 +334,21 @@ function injectCheckoutModal() {
                     <div class="form-group">
                         <label>Street Address</label>
                         <textarea id="custAddr" placeholder="House No, Street, Area..."></textarea>
+                        <span id="addrError" class="input-error"></span>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div class="form-group">
                             <label>City</label>
                             <input type="text" id="custCity" placeholder="City">
+                            <span id="cityError" class="input-error"></span>
                         </div>
                         <div class="form-group">
                             <label>Pincode</label>
                             <input type="text" id="custPin" placeholder="6-digit" maxlength="6">
+                            <span id="pinError" class="input-error"></span>
                         </div>
                     </div>
-                    <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="goToConfirm()">
+                    <button id="reviewOrderBtn" class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="goToConfirm()" disabled>
                         Review Order &rarr;
                     </button>
                 </div>
@@ -373,6 +377,103 @@ function injectCheckoutModal() {
         </div>
     `;
     document.body.appendChild(overlay);
+    setupRealTimeValidation();
+}
+
+function setupRealTimeValidation(){
+    const phoneInput=document.getElementById('custPhone');
+    const nameInput=document.getElementById('custName');
+    const sendOtpBtn=document.getElementById('sendOtpBtn');
+
+    const addrInput=document.getElementById('custAddr');
+    const cityInput=document.getElementById('custCity');
+    const pinInput=document.getElementById('custPin');
+    const reviewBtn=document.getElementById('reviewOrderBtn');
+
+    function validateStep1(){
+        let isValid=true;
+        const name=nameInput.value.trim();
+        if(!name) isValid=false;
+
+        let val=phoneInput.value.replace(/[^\d]/g, '');
+        if(val.length > 5){
+            val=val.substring(0, 5) + ' ' + val.substring(5, 10);
+        }
+        phoneInput.value=val;
+        
+        const errorSpan=document.getElementById('phoneError');
+        if(errorSpan){
+            if(val.replace(/\s/g, '').length > 0 && val.replace(/\s/g, '').length !== 10){
+                errorSpan.textContent='Enter a valid 10-digit phone number';
+                errorSpan.style.display='block';
+                isValid=false;
+            }else{
+                errorSpan.style.display='none';
+                if(val.replace(/\s/g, '').length !== 10) isValid=false;
+            }
+        }else{
+            if(val.replace(/\s/g, '').length !== 10) isValid=false;
+        }
+
+        if(sendOtpBtn){
+            sendOtpBtn.disabled=!isValid;
+        }
+    }
+
+    if(phoneInput) phoneInput.addEventListener('input', validateStep1);
+    if(nameInput) nameInput.addEventListener('input', validateStep1);
+    validateStep1();
+
+    function validateStep3(){
+        let isValid=true;
+        
+        const addr=addrInput.value.trim();
+        const addrError=document.getElementById('addrError');
+        if(!addr){
+            if(addrError){
+                addrError.textContent='Address is required';
+                addrError.style.display='block';
+            }
+            isValid=false;
+        }else{
+            if(addrError) addrError.style.display='none';
+        }
+
+        const city=cityInput.value.trim();
+        const cityError=document.getElementById('cityError');
+        if(!city){
+            if(cityError){
+                cityError.textContent='City is required';
+                cityError.style.display='block';
+            }
+            isValid=false;
+        }else{
+            if(cityError) cityError.style.display='none';
+        }
+
+        const pin=pinInput.value.replace(/[^\d]/g, '');
+        pinInput.value=pin;
+        const pinError=document.getElementById('pinError');
+        if(pin.length > 0 && pin.length !== 6){
+            if(pinError){
+                pinError.textContent='Enter a valid 6-digit pincode';
+                pinError.style.display='block';
+            }
+            isValid=false;
+        }else{
+            if(pinError) pinError.style.display='none';
+            if(pin.length !== 6) isValid=false;
+        }
+
+        if(reviewBtn){
+            reviewBtn.disabled=!isValid;
+        }
+    }
+
+    if(addrInput) addrInput.addEventListener('input', validateStep3);
+    if(cityInput) cityInput.addEventListener('input', validateStep3);
+    if(pinInput) pinInput.addEventListener('input', validateStep3);
+    validateStep3();
 }
 
 function openCheckout() {
@@ -407,7 +508,7 @@ function showCheckoutStep(n) {
 
 async function sendOTP() {
     const name = document.getElementById('custName').value.trim();
-    const phone = document.getElementById('custPhone').value.trim();
+    const phone = document.getElementById('custPhone').value.replace(/\s/g, '');
 
     if (!name) { showToast('Please enter your name'); return; }
     if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
@@ -417,30 +518,10 @@ async function sendOTP() {
     checkoutState.name = name;
     checkoutState.phone = phone;
 
-    // Bypassing OTP
-    const btn = document.querySelector('#checkStep1 .hero-cta');
-if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
-
-try {
-  const res = await fetch(`${API_BASE}/send-otp`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone })
-  });
-  const data = await res.json();
-
-  if (data.success) {
-    document.getElementById('otpPhoneDisp').textContent = '+91 ' + phone;
-    showCheckoutStep(2);
-    showToast('OTP sent! Check your phone.');
-  } else {
-    showToast(data.message || 'Failed to send OTP. Try again.');
-  }
-} catch (e) {
-  showToast('Server error. Please try again.');
-} finally {
-  if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
- }
+    // Temporary bypass for OTP
+    checkoutState.verified = true;
+    showCheckoutStep(3);
+    setTimeout(() => document.getElementById('custAddr')?.focus(), 100);
 }
 
 function otpNext(input, idx) {
@@ -488,7 +569,7 @@ function goToConfirm() {
 
     document.getElementById('confirmCustomer').innerHTML = `
         <div style="font-weight:600; color:var(--brown-dark)">${checkoutState.name}</div>
-        <div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">+91 ${checkoutState.phone}</div>
+        <div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">+91 ${checkoutState.phone.substring(0, 5)} ${checkoutState.phone.substring(5, 10)}</div>
         <div style="font-size:13px; color:var(--text-mid); line-height:1.4">${addr}, ${city} - ${pin}</div>
     `;
 
