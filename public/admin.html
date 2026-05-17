@@ -10,13 +10,27 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
   <script>
-    if (sessionStorage.getItem('adminLoggedIn') !== 'true' || !sessionStorage.getItem('adminToken')) {
-      window.location.href = 'admin-login.html';
-    }
+    (function () {
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        window.location.replace('admin-login.html');
+        return;
+      }
+      fetch('/api/stats', { headers: { Authorization: 'Bearer ' + token } })
+        .then(function (res) {
+          if (res.status === 401 || res.status === 403) {
+            sessionStorage.removeItem('adminToken');
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.replace('admin-login.html');
+          }
+        })
+        .catch(function () {});
+    })();
+
     function logoutAdmin() {
-      sessionStorage.removeItem('adminLoggedIn');
       sessionStorage.removeItem('adminToken');
-      window.location.href = 'admin-login.html';
+      sessionStorage.removeItem('adminLoggedIn');
+      window.location.replace('admin-login.html');
     }
   </script>
 </head>
@@ -262,18 +276,22 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const API = '/api'; // Using relative path for better compatibility
+    const API = '/api';
     const adminToken = sessionStorage.getItem('adminToken');
     if (!adminToken) {
-      window.location.href = 'admin-login.html';
+      window.location.replace('admin-login.html');
     }
 
-    function authFetch(url, options = {}) {
-      const headers = options.headers ? { ...options.headers } : {};
-      if (!headers.Authorization) {
-        headers.Authorization = `Bearer ${adminToken}`;
+    async function authFetch(url, options = {}) {
+      const headers = { ...(options.headers || {}), Authorization: `Bearer ${adminToken}` };
+      const res = await fetch(url, { ...options, headers });
+      if (res.status === 401 || res.status === 403) {
+        sessionStorage.removeItem('adminToken');
+        sessionStorage.removeItem('adminLoggedIn');
+        window.location.replace('admin-login.html');
+        throw new Error('Session expired. Redirecting to login.');
       }
-      return fetch(url, { ...options, headers });
+      return res;
     }
     let allOrders = [];
     let currentFilter = 'all';
@@ -589,10 +607,9 @@
       win.document.close();
     }
 
-    //export csv for orders
     async function exportCSV() {
       try {
-        const res = await fetch('/api/orders');
+        const res = await authFetch(`${API}/orders`);
         const data = await res.json();
         if (data.success) {
           // Just extracting the array of data

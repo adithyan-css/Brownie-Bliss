@@ -64,13 +64,23 @@ function updateCartUI() {
         cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
         if (cartFooter) cartFooter.style.display = 'none';
     } else {
-        cartContainer.innerHTML = cart.map((item, index) => `
+        cartContainer.innerHTML = cart.map((item, index) => {
+            const c = item.customizations;
+            let customBadges = '';
+            if (c) {
+                if (c.dietary) customBadges += `<span class="cart-custom-badge">${c.dietary === 'eggless' ? '🌱 Eggless' : '🥚 Egg'}</span>`;
+                if (c.toppings && c.toppings.length) customBadges += c.toppings.map(t => `<span class="cart-custom-badge">+ ${t.name}</span>`).join('');
+                if (c.message) customBadges += `<span class="cart-custom-badge cart-custom-msg">✉ "${c.message}"</span>`;
+            } else if (item.message) {
+                customBadges = `<span class="cart-custom-badge cart-custom-msg">✉ "${item.message}"</span>`;
+            }
+            return `
             <div class="cart-item">
                 <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
-                    ${item.message ? `<div style="font-size:11px; color:#888; font-style:italic">Msg: "${item.message}"</div>` : ''}
+                    ${customBadges ? `<div class="cart-custom-tags">${customBadges}</div>` : ''}
                     <div class="cart-qty">
                         <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
                         <span class="qty-num">${item.qty}</span>
@@ -79,7 +89,7 @@ function updateCartUI() {
                 </div>
                 <button class="cart-item-remove" onclick="removeFromCart(${index})">✕</button>
             </div>
-        `).join('');
+        `}).join('');
         if (cartFooter) cartFooter.style.display = 'block';
         const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
@@ -91,7 +101,11 @@ function updateCartUI() {
 }
 
 function addToCart(product) {
-    const existing = cart.find(i => i.name === product.name && i.message === product.message);
+    // Generate a unique key from name + customizations to prevent incorrect merging
+    const customKey = product.customizations ? JSON.stringify(product.customizations) : (product.message || '');
+    const existing = cart.find(i => i.name === product.name && (
+        (i.customizations ? JSON.stringify(i.customizations) : (i.message || '')) === customKey
+    ));
     if (existing) {
         existing.qty++;
     } else {
@@ -391,7 +405,8 @@ async function placeOrder() {
             price: Number(i.price),
             qty: Math.max(1, Math.floor(Number(i.qty)) || 1),
             emoji: i.emoji || '🍫',
-            category: i.category || 'general'
+            category: i.category || 'general',
+            customizations: i.customizations || null
         })),
         total: Math.round(lineTotal * 100) / 100
     };
@@ -446,6 +461,20 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
     const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
+function sendWhatsAppFinal(orderId) {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const itemLines = cart.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+        if (i.customizations) {
+            const c = i.customizations;
+            const details = [];
+            if (c.dietary) details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
+            if (c.toppings && c.toppings.length) details.push(c.toppings.map(t => `+${t.name}`).join(', '));
+            if (c.message) details.push(`Msg: "${c.message}"`);
+            if (details.length) line += `\n   _${details.join(' | ')}_`;
+        }
+        return line;
+    }).join('\n');
 
     const message = `🍫 *New Order Received — Brownie Bliss*\n\n` +
         `📋 *Order ID:* ${orderId}\n` +
@@ -481,7 +510,7 @@ function filterProducts(category, btn) {
     const filtered = category === 'all' ? products : products.filter(p => p.category === category);
 
     grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
+        <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}">
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
@@ -492,6 +521,8 @@ function filterProducts(category, btn) {
                 <div class="product-price">₹${p.price}</div>
                 <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
                     Add to Cart
+                <button class="add-to-cart">
+                    Customize & Add
                 </button>
             </div>
         </div>
@@ -520,7 +551,7 @@ function updateBirthdayCake(flavor) {
     }
 
     // Update active flavor button
-    document.querySelectorAll('.flavor-btn').forEach(btn => {
+    document.querySelectorAll('.filter-pill').forEach(btn => {
         btn.classList.remove('active');
 
         if (btn.textContent.trim() === flavor) {
@@ -681,9 +712,47 @@ function renderOrderDetails(order) {
 
     resOrderId.textContent = order.id || order.order_id;
 
-    const status = order.status || 'pending';
-    document.getElementById('resStatus').textContent = status.toUpperCase();
-    document.getElementById('resStatus').className = `status-badge status-${status.toLowerCase()}`;
+    const statusLower = (order.status || 'pending').toLowerCase();
+    
+    // Update top total amount
+    const resTotalTop = document.getElementById('resTotalTop');
+    if (resTotalTop) resTotalTop.textContent = order.total;
+
+    // Timeline Progression Logic
+    const timeline = document.getElementById('trackingTimeline');
+    const cancelledAlert = document.getElementById('cancelledAlert');
+    
+    if (timeline && cancelledAlert) {
+        if (statusLower === 'cancelled') {
+            timeline.style.display = 'none';
+            cancelledAlert.style.display = 'block';
+        } else {
+            timeline.style.display = 'block';
+            cancelledAlert.style.display = 'none';
+            
+            // Reset all steps
+            const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
+            steps.forEach(s => {
+                const el = document.getElementById(`step-${s}`);
+                if (el) el.classList.remove('active', 'completed');
+            });
+            
+            // Determine current step index
+            const currentIndex = steps.indexOf(statusLower) > -1 ? steps.indexOf(statusLower) : 0;
+            
+            // Apply classes
+            steps.forEach((s, i) => {
+                const el = document.getElementById(`step-${s}`);
+                if (!el) return;
+                
+                if (i < currentIndex) {
+                    el.classList.add('completed');
+                } else if (i === currentIndex) {
+                    el.classList.add('active');
+                }
+            });
+        }
+    }
 
     if (order.created_at) {
         document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
@@ -710,4 +779,150 @@ function renderOrderDetails(order) {
     document.getElementById('resTotal').textContent = order.total;
 
     document.getElementById('result').style.display = 'block';
+}
+
+// --- PRODUCT CUSTOMIZATION MODAL ---
+let _customizeProduct = null;
+
+function injectCustomizeModal() {
+    if (document.getElementById('customizeOverlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'customizeOverlay';
+    overlay.className = 'customize-overlay';
+    overlay.onclick = function(e) { if (e.target === overlay) closeCustomizeModal(); };
+    overlay.innerHTML = `
+        <div class="customize-modal">
+            <button class="customize-close" onclick="closeCustomizeModal()">✕</button>
+            <div class="customize-header">
+                <img id="customizeImg" src="" alt="">
+                <div class="customize-header-info">
+                    <div class="customize-product-name" id="customizeName"></div>
+                    <div class="customize-product-cat" id="customizeCat"></div>
+                    <div class="customize-base-price">Base: ₹<span id="customizeBasePrice">0</span></div>
+                </div>
+            </div>
+
+            <div class="customize-body">
+                <!-- Dietary -->
+                <div class="customize-section">
+                    <h4 class="customize-section-title">🥚 Dietary Preference</h4>
+                    <div class="customize-options dietary-options">
+                        <label class="customize-option">
+                            <input type="radio" name="dietary" value="egg" checked>
+                            <span class="customize-option-label">Egg</span>
+                        </label>
+                        <label class="customize-option">
+                            <input type="radio" name="dietary" value="eggless">
+                            <span class="customize-option-label">🌱 Eggless</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Toppings -->
+                <div class="customize-section">
+                    <h4 class="customize-section-title">🍫 Add Toppings</h4>
+                    <div class="customize-options topping-options">
+                        <label class="customize-option topping-check">
+                            <input type="checkbox" name="topping" value="Extra Choco Chips" data-price="50">
+                            <span class="customize-option-label">Extra Choco Chips <span class="topping-price">+₹50</span></span>
+                        </label>
+                        <label class="customize-option topping-check">
+                            <input type="checkbox" name="topping" value="Caramel Drizzle" data-price="30">
+                            <span class="customize-option-label">Caramel Drizzle <span class="topping-price">+₹30</span></span>
+                        </label>
+                        <label class="customize-option topping-check">
+                            <input type="checkbox" name="topping" value="Walnuts" data-price="40">
+                            <span class="customize-option-label">Walnuts <span class="topping-price">+₹40</span></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Personalization -->
+                <div class="customize-section">
+                    <h4 class="customize-section-title">✉️ Custom Message</h4>
+                    <textarea id="customizeMessage" class="customize-message" placeholder="e.g. Happy Birthday Adithi!" maxlength="100" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="customize-footer">
+                <div class="customize-total">
+                    <span>Total Price</span>
+                    <strong id="customizeTotalPrice">₹0</strong>
+                </div>
+                <button class="customize-confirm-btn" onclick="confirmCustomization()">
+                    Confirm & Add to Cart →
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Attach live price listeners
+    overlay.querySelectorAll('input[name="topping"]').forEach(cb => {
+        cb.addEventListener('change', updateCustomizePrice);
+    });
+}
+
+function openCustomizeModal(product) {
+    injectCustomizeModal();
+    _customizeProduct = product;
+
+    document.getElementById('customizeImg').src = product.img;
+    document.getElementById('customizeName').textContent = product.name;
+    document.getElementById('customizeCat').textContent = product.category;
+    document.getElementById('customizeBasePrice').textContent = product.price;
+
+    // Reset selections
+    document.querySelector('input[name="dietary"][value="egg"]').checked = true;
+    document.querySelectorAll('input[name="topping"]').forEach(cb => cb.checked = false);
+    document.getElementById('customizeMessage').value = '';
+
+    updateCustomizePrice();
+    document.getElementById('customizeOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCustomizeModal() {
+    const overlay = document.getElementById('customizeOverlay');
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    _customizeProduct = null;
+}
+
+function updateCustomizePrice() {
+    if (!_customizeProduct) return;
+    let total = _customizeProduct.price;
+    document.querySelectorAll('input[name="topping"]:checked').forEach(cb => {
+        total += parseInt(cb.dataset.price) || 0;
+    });
+    document.getElementById('customizeTotalPrice').textContent = `₹${total}`;
+}
+
+function confirmCustomization() {
+    if (!_customizeProduct) return;
+
+    const dietary = document.querySelector('input[name="dietary"]:checked')?.value || 'egg';
+    const toppings = [];
+    document.querySelectorAll('input[name="topping"]:checked').forEach(cb => {
+        toppings.push({ name: cb.value, price: parseInt(cb.dataset.price) || 0 });
+    });
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
+
+    addToCart(cartItem);
+    closeCustomizeModal();
+    openCart();
 }
