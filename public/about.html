@@ -1,539 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Brownie Bliss</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --cream: #FAF6F0;
-      --warm-white: #FFFDF9;
-      --brown-dark: #2C1A0E;
-      --brown-mid: #5C3317;
-      --brown-light: #A0622A;
-      --gold: #C8923A;
-      --gold-light: #E8B96A;
-      --blush: #F5E6D3;
-      --text-body: #4A3728;
-      --text-muted: #8B6E5A;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--text-body);
-      overflow-x: hidden;
-    }
-
-    /* ── NAV ── */
-    nav {
-      background: var(--brown-dark);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 68px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold-light); text-decoration: none; line-height: 1.1; }
-    .nav-logo span { display: block; font-size: 9px; font-weight: 300; letter-spacing: 0.22em; color: var(--gold); font-family: 'DM Sans', sans-serif; text-transform: uppercase; margin-top: 2px; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 14px; font-weight: 400; letter-spacing: 0.02em; transition: color 0.2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold-light); }
-    .nav-cart { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 8px 20px; border-radius: 99px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
-    .nav-cart:hover { background: var(--gold); border-color: var(--gold); }
-
-    /* ── TICKER ── */
-    .ticker {
-      background: var(--gold);
-      color: var(--brown-dark);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 7px 0;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .ticker-inner { display: inline-block; animation: ticker 28s linear infinite; }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 72vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-left {
-      background: var(--brown-dark);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 64px;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-left::after {
-      content: '';
-      position: absolute;
-      right: -60px;
-      top: 0;
-      bottom: 0;
-      width: 120px;
-      background: var(--brown-dark);
-      clip-path: polygon(0 0, 40% 0, 100% 100%, 0 100%);
-      z-index: 2;
-    }
-    .hero-eyebrow {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.2s;
-    }
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(36px, 4.5vw, 56px);
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.15;
-      margin-bottom: 24px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.4s;
-    }
-    .hero-title em { color: var(--gold-light); font-style: italic; }
-    .hero-body {
-      font-size: 15px;
-      font-weight: 300;
-      line-height: 1.85;
-      color: rgba(255,255,255,0.72);
-      max-width: 400px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.6s;
-    }
-    .hero-right {
-      position: relative;
-      background: var(--blush);
-      overflow: hidden;
-    }
-    .hero-right img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: sepia(15%) saturate(110%);
-      opacity: 0;
-      animation: fadeIn 1s ease forwards 0.8s;
-    }
-    .hero-right-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(44,26,14,0.35) 0%, transparent 60%);
-    }
-    .hero-badge {
-      position: absolute;
-      bottom: 40px;
-      left: -20px;
-      background: var(--gold);
-      color: var(--brown-dark);
-      padding: 16px 28px 16px 40px;
-      font-family: 'Playfair Display', serif;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 0 99px 99px 0;
-      box-shadow: 4px 4px 20px rgba(0,0,0,0.2);
-      z-index: 3;
-      opacity: 0;
-      animation: fadeIn 0.7s ease forwards 1.2s;
-    }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* ── STATS ── */
-    .stats {
-      background: var(--warm-white);
-      border-top: 1px solid rgba(0,0,0,0.06);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .stat-item {
-      padding: 48px 32px;
-      text-align: center;
-      border-right: 1px solid rgba(0,0,0,0.06);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-item::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--gold);
-      transform: scaleX(0);
-      transition: transform 0.4s ease;
-      transform-origin: left;
-    }
-    .stat-item:hover::before { transform: scaleX(1); }
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 44px;
-      font-weight: 700;
-      color: var(--brown-dark);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .stat-number span { color: var(--gold); }
-    .stat-label {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* ── STORY SECTION ── */
-    .story {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      max-width: 1200px;
-      margin: 100px auto;
-      padding: 0 48px;
-      align-items: center;
-      gap: 80px;
-    }
-    .story-img-wrap {
-      position: relative;
-    }
-    .story-img-wrap img {
-      width: 100%;
-      aspect-ratio: 4/5;
-      object-fit: cover;
-      border-radius: 4px 80px 4px 80px;
-      filter: sepia(10%) saturate(105%);
-    }
-    .story-img-accent {
-      position: absolute;
-      bottom: -24px;
-      right: -24px;
-      width: 48%;
-      aspect-ratio: 1;
-      border: 3px solid var(--gold);
-      border-radius: 4px 60px 4px 60px;
-      z-index: -1;
-    }
-    .story-quote {
-      position: absolute;
-      top: -20px;
-      left: -20px;
-      background: var(--gold);
-      color: var(--brown-dark);
-      font-family: 'Playfair Display', serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      padding: 12px 20px;
-      border-radius: 99px;
-      white-space: nowrap;
-    }
-    .story-text {}
-    .section-eyebrow {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3vw, 40px);
-      font-weight: 700;
-      color: var(--brown-dark);
-      line-height: 1.2;
-      margin-bottom: 24px;
-    }
-    .section-title em { font-style: italic; color: var(--brown-light); }
-    .story-para {
-      font-size: 15px;
-      font-weight: 300;
-      line-height: 1.9;
-      color: var(--text-body);
-      margin-bottom: 16px;
-    }
-    .story-para:last-child { margin-bottom: 0; }
-
-    /* ── VALUES ── */
-    .values {
-      background: var(--brown-dark);
-      padding: 100px 48px;
-      text-align: center;
-    }
-    .values .section-eyebrow { color: var(--gold); }
-    .values .section-title { color: #fff; margin-bottom: 60px; }
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .value-card {
-      background: rgba(255,255,255,0.04);
-      padding: 48px 36px;
-      text-align: left;
-      position: relative;
-      transition: background 0.3s;
-      cursor: default;
-    }
-    .value-card:hover { background: rgba(200,146,58,0.12); }
-    .value-icon {
-      font-size: 36px;
-      margin-bottom: 20px;
-      display: block;
-    }
-    .value-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-    .value-desc {
-      font-size: 14px;
-      font-weight: 300;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.6);
-    }
-    .value-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 40px; height: 2px;
-      background: var(--gold);
-      transition: width 0.4s ease;
-    }
-    .value-card:hover::after { width: 100%; }
-
-    /* ── QUOTE BANNER ── */
-    .quote-banner {
-      background: var(--blush);
-      padding: 80px 48px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .quote-banner::before {
-      content: '"';
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Playfair Display', serif;
-      font-size: 240px;
-      color: var(--gold);
-      opacity: 0.08;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(22px, 3vw, 36px);
-      font-style: italic;
-      font-weight: 400;
-      color: var(--brown-dark);
-      max-width: 700px;
-      margin: 0 auto 20px;
-      line-height: 1.5;
-      position: relative;
-      z-index: 1;
-    }
-    .quote-attr {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    /* ── FOUNDER ── */
-    .founder {
-      max-width: 900px;
-      margin: 100px auto;
-      padding: 0 48px;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .founder-img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid var(--gold);
-      filter: sepia(15%) saturate(110%);
-      flex-shrink: 0;
-    }
-    .founder-img-placeholder {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: var(--blush);
-      border: 4px solid var(--gold);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-    }
-    .founder-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--brown-dark);
-      margin-bottom: 4px;
-    }
-    .founder-role {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
-    .founder-bio {
-      font-size: 15px;
-      font-weight: 300;
-      line-height: 1.85;
-      color: var(--text-body);
-    }
-
-    /* ── CTA ── */
-    .cta {
-      background: var(--gold);
-      padding: 80px 48px;
-      text-align: center;
-    }
-    .cta-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 700;
-      color: var(--brown-dark);
-      margin-bottom: 16px;
-    }
-    .cta-sub {
-      font-size: 15px;
-      font-weight: 300;
-      color: rgba(44,26,14,0.7);
-      margin-bottom: 36px;
-    }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-dark {
-      background: var(--brown-dark);
-      color: #fff;
-      padding: 14px 36px;
-      border-radius: 99px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      transition: all 0.25s;
-      display: inline-block;
-    }
-    .btn-dark:hover { background: var(--brown-mid); transform: translateY(-2px); }
-    .btn-outline {
-      background: transparent;
-      color: var(--brown-dark);
-      padding: 14px 36px;
-      border-radius: 99px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      border: 2px solid var(--brown-dark);
-      transition: all 0.25s;
-      display: inline-block;
-    }
-    .btn-outline:hover { background: var(--brown-dark); color: #fff; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--brown-dark);
-      color: rgba(255,255,255,0.6);
-      padding: 60px 48px 40px;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 48px;
-    }
-    .footer-brand {}
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold-light); font-weight: 700; margin-bottom: 12px; }
-    .footer-tagline { font-size: 13px; font-weight: 300; line-height: 1.7; max-width: 260px; }
-    .footer-col-title { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--gold-light); }
-    .footer-bottom {
-      background: var(--brown-dark);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      text-align: center;
-      padding: 20px 48px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
-    }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 60px 32px; }
-      .hero-left::after { display: none; }
-      .hero-right { height: 300px; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .stat-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.06); }
-      .story { grid-template-columns: 1fr; padding: 0 24px; margin: 60px auto; gap: 40px; }
-      .story-img-wrap { max-width: 400px; }
-      .values { padding: 60px 24px; }
-      .values-grid { grid-template-columns: 1fr; gap: 2px; }
-      .founder { grid-template-columns: 1fr; padding: 0 24px; margin: 60px auto; text-align: center; justify-items: center; }
-      footer { grid-template-columns: 1fr; padding: 40px 24px 24px; gap: 32px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
+  </script>
 </head>
 <body>
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES
+  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
+</div>
 
-  <!-- Ticker -->
-  <div class="ticker">
-    <span class="ticker-inner">
-      ✦ Delicious Homemade Brownies, Cakes &amp; Cookies &nbsp;&nbsp;·&nbsp;&nbsp; Happiness in Every Bite &nbsp;&nbsp;·&nbsp;&nbsp; Freshly Baked Daily in Krishnagiri &nbsp;&nbsp;·&nbsp;&nbsp; Order via WhatsApp &nbsp;&nbsp;·&nbsp;&nbsp; Delicious Homemade Brownies, Cakes &amp; Cookies &nbsp;&nbsp;·&nbsp;&nbsp; Happiness in Every Bite &nbsp;&nbsp;·&nbsp;&nbsp; Freshly Baked Daily in Krishnagiri &nbsp;&nbsp;·&nbsp;&nbsp; Order via WhatsApp &nbsp;&nbsp;·&nbsp;&nbsp;
-    </span>
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <a href="index.html" class="logo">
+      <span class="logo-name">Brownie Bliss</span>
+      <span class="logo-sub">Homemade Treats</span>
+    </a>
+
+    <nav>
+      <a href="index.html#home">Home</a>
+      <a href="about.html">About</a>
+      <a href="index.html#products">Products</a>
+      <a href="index.html#birthday">Birthday Cakes</a>
+      <a href="contact.html">Contact</a>
+      <a href="track.html">Track Order</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Cart
+        <span class="cart-count" id="cartBadge">0</span>
+      </button>
+    </div>
+
   </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="favourites.html">Favourites</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="track.html">Track Order</a>
+</div>
+<!-- ABOUT SECTION -->
+ <link rel="stylesheet" href="style.css">
+<section class="about-section">
+
+  <div class="about-bg-pattern"></div>
+
+  <div class="about-inner">
 
   <!-- Nav -->
   <nav>
@@ -648,61 +172,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-brand">
-      <div class="footer-logo">Brownie Bliss</div>
-      <p class="footer-tagline">Every brownie, cake, and cookie is handcrafted in small batches using homemade recipes, premium ingredients, and lots of love.</p>
-    </div>
-    <div>
-      <p class="footer-col-title">Navigate</p>
-      <ul class="footer-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#products">Our Products</a></li>
-        <li><a href="index.html#birthday">Birthday Cakes</a></li>
-        <li><a href="track.html">Track Order</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer-col-title">Get in Touch</p>
-      <ul class="footer-links">
-        <li><a href="tel:08072596340">+91 8072596340</a></li>
-        <li><a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a></li>
-        <li><a href="https://instagram.com/brownie_bliss_" target="_blank">@brownie_bliss_</a></li>
-      </ul>
-    </div>
-  </footer>
-  <div class="footer-bottom">© 2026 Brownie Bliss. All Rights Reserved. Made with ❤️ in Krishnagiri</div>
-
-  <script>
-    // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
-
-    // Count up animation
-    function animateCount(el) {
-      const target = +el.dataset.target;
-      let current = 0;
-      const step = target / 60;
-      const timer = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = Math.round(current);
-        if (current >= target) clearInterval(timer);
-      }, 16);
-    }
-    const countObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          animateCount(e.target);
-          countObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.count').forEach(c => countObs.observe(c));
-  </script>
+</footer>
+  <script src="script.js"></script>
 </body>
 </html>

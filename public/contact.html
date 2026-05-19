@@ -21,6 +21,7 @@
   <!-- HEADER -->
   <header>
     <div class="header-inner">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
       <a href="index.html" class="logo">
         <span class="logo-name">Brownie Bliss</span>
         <span class="logo-sub">Homemade Treats</span>
@@ -33,14 +34,7 @@
         <a href="index.html#contact">Contact</a>
         <a href="track.html">Track Order</a>
       </nav>
-<nav>
-  <a href="index.html#home">Home</a>
-  <a href="about.html">About</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="contact.html">Contact</a>
-  <a href="track.html">Track Order</a>
-</nav>
+
       <div class="header-actions">
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart
@@ -49,7 +43,14 @@
       </div>
     </div>
   </header>
-
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="favourites.html">Favourites</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="track.html">Track Order</a>
+</div>
   <!-- CONTACT SECTION
   <section style="padding: 100px 30px; background: var(--white); min-height: 70vh;">
     <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
