@@ -963,6 +963,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+    const cakeMsgInput = document.getElementById('cakeMessage');
+if (cakeMsgInput) {
+  cakeMsgInput.addEventListener('input', function() {
+    document.getElementById('charCount').textContent = 
+      this.value.length + '/40 characters';
+  });
+}
+
 // --- TRACK ORDER LOGIC ---
 async function trackOrder(id) {
     const orderIdInput = document.getElementById('orderIdInput');
