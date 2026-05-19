@@ -1,6 +1,35 @@
 html {
   scroll-behavior: smooth;
 }
+/* =========================
+   THEME VARIABLES
+========================= */
+
+:root {
+
+  --bg-color: #fffdf9;
+  --text-color: #2b1b12;
+
+  --card-bg: #ffffff;
+  --section-bg: #f7ede1;
+
+  --navbar-bg: #ffffff;
+  --footer-bg: #1b0703;
+
+}
+
+.dark {
+
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+
+  --card-bg: #1e1e1e;
+  --section-bg: #181818;
+
+  --navbar-bg: #1a1a1a;
+  --footer-bg: #000000;
+
+}
 
 :root {
   --color-primary: #4A2C0A;
@@ -35,6 +64,12 @@ body {
   color: var(--text-dark);
   font-family: 'DM Sans', sans-serif;
   overflow-x: hidden;
+   background: var(--bg-color);
+  color: var(--text-color);
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 /* ANNOUNCEMENT BAR */
@@ -4054,7 +4089,7 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 }
 /* =========================
    ABOUT PAGE
-
+===========================*/
 .about-section {
   position: relative;
   overflow: hidden;
@@ -4118,23 +4153,19 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 
 .about-cards {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+  margin-top: 50px;
 }
 
 .magic-card {
-  background: rgba(255,255,255,0.8);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(212,175,55,0.15);
   padding: 34px;
   border-radius: 18px;
   box-shadow: var(--shadow-sm);
   transition: all 0.35s ease;
-  background:
-  linear-gradient(
-    to bottom right,
-    rgba(255,255,255,0.95),
-    rgba(255,248,240,0.85)
-  );
 }
 
 .magic-card:hover {
@@ -4160,7 +4191,7 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
   color: var(--text-mid);
   line-height: 1.8;
   font-size: 15px;
-}*/
+}
 
 
 /* QUOTE STRIP */
@@ -4208,12 +4239,6 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
   margin: 0 16px;
 }
 
-.about-section {
-  background:
-    linear-gradient(to bottom,
-      #fff9f2,
-      #f7ede1);
-}
 
 /* RESPONSIVE */
 
@@ -9593,4 +9618,5 @@ html.dark .topping-price {
 .birthday-slider {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
 }
