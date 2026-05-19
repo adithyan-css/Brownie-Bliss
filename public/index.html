@@ -60,6 +60,24 @@
       </div>
     </div>
   </header>
+  <!-- Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+  
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="close-cart" onclick="closeCart()">✖</button>
+  </div>
+
+  <div id="cartItems" class="cart-items">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <div class="cart-footer">
+    <p>Total: ₹<span id="cartTotal">0</span></p>
+    <button class="checkout-btn">Checkout</button>
+  </div>
+
+</div>
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html#home">Home</a>
   <a href="index.html#products">Products</a>
@@ -730,8 +748,50 @@
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
+  
+  <script>
+function openCart() {
+  document.getElementById("cartSidebar").classList.add("active");
+}
+
+function closeCart() {
+  document.getElementById("cartSidebar").classList.remove("active");
+}
+</script>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <script>
+  // Mobile Menu Toggle
+  function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+
+    if (menu.style.display === "flex") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "flex";
+      menu.style.flexDirection = "column";
+    }
+  }
+
+  // Theme Toggle
+  function toggleTheme() {
+    document.body.classList.toggle("dark-mode");
+
+    const icon = document.getElementById("themeIcon");
+
+    if (document.body.classList.contains("dark-mode")) {
+      icon.textContent = "☀️";
+    } else {
+      icon.textContent = "🌙";
+    }
+  }
+
+  // Cart Open Function
+  function openCart() {
+    alert("Cart opened!");
+  }
+  
+</script>
 </body>
 
 </html>
