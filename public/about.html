@@ -27,7 +27,7 @@
 
     <nav>
       <a href="index.html#home">Home</a>
-      <a href="about.html">About</a>
+      <a href="about.html">Abput</a>
       <a href="index.html#products">Products</a>
       <a href="index.html#birthday">Birthday Cakes</a>
       <a href="contact.html">Contact</a>
@@ -64,11 +64,15 @@
     <a href="index.html" class="nav-logo">Brownie Bliss <span>Homemade Treats</span></a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="about.html" class="active">about</a></li>
       <li><a href="index.html#products">Products</a></li>
       <li><a href="index.html#birthday">Birthday Cakes</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="track.html">Track Order</a></li>
+      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
     </ul>
     <button class="nav-cart">🛒 Cart 0</button>
   </nav>
@@ -173,6 +177,7 @@
   </div>
 
 </footer>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
 </body>
 </html>

@@ -9594,3 +9594,168 @@ html.dark .topping-price {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+}
+#scrollTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #6b3e26;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    display: none;
+    z-index: 9999;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+#scrollTopBtn:hover {
+    background-color: #8b5a3c;
+    transform: scale(1.1);
+}
+/* Cart Sidebar */
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 350px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-sidebar.active {
+  right: 0;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.cart-footer {
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: brown;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+/* =========================
+   THEME VARIABLES
+========================= */
+
+:root {
+  --bg: #ffffff;
+  --text: #111111;   /* black text in light mode */
+  --card: #f6f6f6;
+  --border: #ddd;
+  --primary: #6b3e26;
+}
+
+/* DARK MODE VARIABLES */
+body.dark-mode {
+  --bg: #0f0f0f;
+  --text: #ffffff;   /* white text in dark mode */
+  --card: #1e1e1e;
+  --border: #333;
+  --primary: #d2a679;
+}
+
+/* =========================
+   APPLY TO WHOLE PAGE
+========================= */
+
+html, body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* =========================
+   FIX TEXT SWITCHING (IMPORTANT)
+========================= */
+
+body,
+body * {
+  color: var(--text);
+}
+
+/* Override ONLY buttons so they stay readable */
+button {
+  background: var(--primary);
+  color: #fff !important;
+}
+
+/* Links */
+a {
+  color: var(--text);
+}
+
+/* =========================
+   CONTAINERS
+========================= */
+
+header,
+section,
+div,
+nav,
+footer,
+main {
+  background-color: var(--bg);
+}
+
+/* Cards / boxes */
+.card,
+.product-card,
+.box,
+.container,
+.cart-sidebar,
+.mobile-menu {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
