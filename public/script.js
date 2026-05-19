@@ -19,7 +19,6 @@ function toggleTheme() {
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
@@ -133,20 +132,6 @@ async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.products)) {
-            buildCatalogFromList(data.products);
-        } else {
-            buildCatalogFromList(null);
-        }
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        buildCatalogFromList(null);
-    }
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
         if (data.success && Array.isArray(data.products) && data.products.length) {
             products = data.products.filter(p => p.type === 'standard').map(p => ({
                 id: p.id_ref,
@@ -158,6 +143,7 @@ async function loadProducts() {
             }));
 
             const bd = data.products.filter(p => p.type === 'birthday');
+            bdayCakes = {}; // Reset
             bd.forEach(p => {
                 bdayCakes[p.id_ref] = {
                     price: p.price,
@@ -600,11 +586,9 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+
+    const itemLines = lines.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
@@ -612,6 +596,8 @@ function sendWhatsAppFinal(orderId) {
             if (c.toppings && c.toppings.length) details.push(c.toppings.map(t => `+${t.name}`).join(', '));
             if (c.message) details.push(`Msg: "${c.message}"`);
             if (details.length) line += `\n   _${details.join(' | ')}_`;
+        } else if (i.message) {
+            line += `\n   _Msg: "${i.message}"_`;
         }
         return line;
     }).join('\n');
@@ -710,7 +696,7 @@ function updateBirthdayCake(flavor) {
     }
 
     // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
+    document.querySelectorAll('button[onclick^="updateBirthdayCake"]').forEach(btn => {
         if (btn.textContent.trim() === flavor) {
             btn.classList.add('active');
         } else {
@@ -729,12 +715,12 @@ function setCakeWeight(weight) {
     );
 
     weightButtons.forEach(btn => {
-        btn.classList.remove('active');
+        if (btn.textContent.trim().startsWith(weight)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
     });
-
-    if (event && event.target) {
-        event.target.classList.add('active');
-    }
 
     calculateBdayPrice();
 }
