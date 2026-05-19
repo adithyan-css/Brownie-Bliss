@@ -680,6 +680,34 @@ nav a:hover {
   padding: 18px 18px 20px;
 }
 
+/* Veg / Non-Veg Indicator */
+
+.food-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
+  width: fit-content;
+}
+
+.food-indicator.veg {
+  background: #e6f7ea;
+  color: #1b5e20;
+  border: 1px solid #66bb6a;
+}
+
+.food-indicator.non-veg {
+  background: #fdeaea;
+  color: #b71c1c;
+  border: 1px solid #ef5350;
+}
+
 .product-category {
   font-size: 10px;
   letter-spacing: 2px;

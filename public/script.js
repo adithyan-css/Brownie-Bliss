@@ -19,19 +19,109 @@ function toggleTheme() {
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-buildCatalogFromList(null);
+//buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
-    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
-    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
-    { id: 4, name: "Overload Brownie", category: "brownies", price: 120, emoji: "", img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
-    { id: 5, name: "Walnut Fudge", category: "brownies", price: 95, emoji: "", img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181" },
-    { id: 6, name: "Classic Choco", category: "brownies", price: 80, emoji: "", img: "https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg" },
-    { id: 7, name: "Chocolate Mousse", category: "desserts", price: 150, emoji: "", img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" },
-    { id: 8, name: "Tiramisu Jar", category: "desserts", price: 180, emoji: "", img: "https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg" },
-    { id: 9, name: "Choco Chip Cookies", category: "cookies", price: 250, emoji: "", img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg" },
-    { id: 10, name: "Almond Biscotti", category: "cookies", price: 300, emoji: "", img: "https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg" }
+    {
+        id: 1,
+        name: "Velvet Dream Cake",
+        category: "cakes",
+        foodType: "veg",
+        price: 850,
+        emoji: "",
+        img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+    },
+
+    {
+        id: 2,
+        name: "Dutch Truffle Delight",
+        category: "cakes",
+        foodType: "veg",
+        price: 950,
+        emoji: "",
+        img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180"
+    },
+
+    {
+        id: 3,
+        name: "Pineapple Fresh Cream",
+        category: "cakes",
+        foodType: "veg",
+        price: 675,
+        emoji: "",
+        img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785"
+    },
+
+    {
+        id: 4,
+        name: "Overload Brownie",
+        category: "brownies",
+        foodType: "veg",
+        price: 120,
+        emoji: "",
+        img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+    },
+
+    {
+        id: 5,
+        name: "Walnut Fudge",
+        category: "brownies",
+        foodType: "veg",
+        price: 95,
+        emoji: "",
+        img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181"
+    },
+
+    {
+        id: 6,
+        name: "Classic Choco",
+        category: "brownies",
+        foodType: "veg",
+        price: 80,
+        emoji: "",
+        img: "https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg"
+    },
+
+    {
+        id: 7,
+        name: "Chocolate Mousse",
+        category: "desserts",
+        foodType: "veg",
+        price: 150,
+        emoji: "",
+        img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
+    },
+
+    {
+        id: 8,
+        name: "Tiramisu Jar",
+        category: "desserts",
+        foodType: "veg",
+        price: 180,
+        emoji: "",
+        img: "https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg"
+    },
+
+    {
+        id: 9,
+        name: "Choco Chip Cookies",
+        category: "cookies",
+        foodType: "veg",
+        price: 250,
+        emoji: "",
+        img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
+    },
+
+    {
+        id: 10,
+        name: "Almond Biscotti",
+        category: "cookies",
+        foodType: "veg",
+        price: 300,
+        emoji: "",
+        img: "https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg"
+    }
 ];
+
 const DEFAULT_BDAY_CAKES = {
     "Red Velvet": { price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     "Dutch Truffle": { price: 950, emoji: "", img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" },
@@ -133,32 +223,28 @@ async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.products)) {
-            buildCatalogFromList(data.products);
-        } else {
-            buildCatalogFromList(null);
-        }
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        buildCatalogFromList(null);
-    }
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
+
         if (data.success && Array.isArray(data.products) && data.products.length) {
-            products = data.products.filter(p => p.type === 'standard').map(p => ({
-                id: p.id_ref,
-                name: p.name,
-                category: p.category,
-                price: p.price,
-                emoji: p.emoji,
-                img: p.img,
-                description: p.description || ''
-            }));
+
+            // Standard Products
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    foodType: p.foodType || 'veg',
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || ''
+                }));
+
+            // Birthday Cakes
+            bdayCakes = {};
 
             const bd = data.products.filter(p => p.type === 'birthday');
+
             bd.forEach(p => {
                 bdayCakes[p.id_ref] = {
                     price: p.price,
@@ -167,19 +253,22 @@ async function loadProducts() {
                 };
             });
 
-            // Re-render UI now that data is loaded
-            if (document.getElementById('productsGrid')) {
-                filterProducts('all');
-            }
-            if (document.getElementById('cakePrice')) {
-                calculateBdayPrice();
-            }
         } else {
             useFallbackProducts();
         }
+
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
+    }
+
+    // Re-render UI
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
     }
 }
 
@@ -596,28 +685,46 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
+    // --- WHATSAPP FINAL ---
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
-    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
+
+    const lines = Array.isArray(itemsSnap) && itemsSnap.length
+        ? itemsSnap
+        : cart;
+
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+
+    const itemLines = lines.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
+
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
-            if (c.dietary) details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
-            if (c.toppings && c.toppings.length) details.push(c.toppings.map(t => `+${t.name}`).join(', '));
-            if (c.message) details.push(`Msg: "${c.message}"`);
-            if (details.length) line += `\n   _${details.join(' | ')}_`;
+
+            if (c.dietary) {
+                details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
+            }
+
+            if (c.toppings && c.toppings.length) {
+                details.push(c.toppings.map(t => `+${t.name}`).join(', '));
+            }
+
+            if (c.message) {
+                details.push(`Msg: "${c.message}"`);
+            }
+
+            if (details.length) {
+                line += `\n   _${details.join(' | ')}_`;
+            }
         }
+
         return line;
     }).join('\n');
 
-    const message = `🍫 *New Order Received — Brownie Bliss*\n\n` +
+    const message =
+        `🍫 *New Order Received — Brownie Bliss*\n\n` +
         `📋 *Order ID:* ${orderId}\n` +
         `👤 *Customer:* ${checkoutState.name}\n` +
         `📱 *Phone:* +91 ${checkoutState.phone}\n` +
@@ -627,7 +734,9 @@ function sendWhatsAppFinal(orderId) {
         `_Your order has been recorded. Please share the payment receipt for confirmation!_ ✨`;
 
     const encodedMsg = encodeURIComponent(message);
+
     const fullPhone = `918072596340`;
+
     const waUrl = `https://wa.me/${fullPhone}?text=${encodedMsg}`;
 
     window.open(waUrl, '_blank');
@@ -667,15 +776,26 @@ function filterProducts(category, btn) {
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
             </div>
             <div class="product-info">
+                <div class="food-indicator ${p.foodType === 'veg' ? 'veg' : 'non-veg'}">
+                ${p.foodType === 'veg' ? '🟢 Veg' : '🔴 Non-Veg'}
+                </div>
+
                 <div class="product-category">${p.category}</div>
+
                 <div class="product-name">${p.name}</div>
+
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+
                 <div class="product-price">₹${p.price}</div>
+
                 <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
                     Add to Cart
+                </button>
+
                 <button class="add-to-cart">
                     Customize & Add
                 </button>
+
             </div>
         </div>
     `).join('');
