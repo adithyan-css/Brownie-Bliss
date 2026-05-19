@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Brownie Bliss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="login.css">
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('bb_user')) window.location.replace('index.html');
+      } catch (_) {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE BG -->
+  <div class="login-page">
+
+    <!-- Background image layer -->
+    <div class="login-bg"></div>
+    <div class="login-bg-overlay"></div>
+
+    <!-- Floating emoji decorations -->
+    <div class="floats">
+      <span class="fi fi-1">🍫</span>
+      <span class="fi fi-2">🎂</span>
+      <span class="fi fi-3">🍪</span>
+      <span class="fi fi-4">🧁</span>
+      <span class="fi fi-5">🍮</span>
+      <span class="fi fi-6">🍫</span>
+      <span class="fi fi-7">🎂</span>
+      <span class="fi fi-8">🍪</span>
+      <span class="fi fi-9">🧁</span>
+      <span class="fi fi-10">🍮</span>
+    </div>
+
+    <!-- LOGIN CARD -->
+    <div class="login-center">
+      <div class="login-card">
+
+        <div class="card-head">
+          <div class="card-icon">🍫</div>
+          <h2>Welcome Back</h2>
+          <p>Login to track orders &amp; checkout faster</p>
+        </div>
+
+        <div class="card-body">
+
+          <div class="err-box" id="errorMsg"></div>
+
+          <!-- STEP 1 -->
+          <div class="step" id="step1">
+            <span class="slabel">Step 1 of 2</span>
+            <h3>Your Details</h3>
+            <p class="ssub">Enter your name and phone to get an OTP.</p>
+
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" id="loginName" placeholder="e.g. Adithi">
+            </div>
+
+            <div class="field">
+              <label>WhatsApp Number</label>
+              <div class="phone-wrap">
+                <span class="pcode">+91</span>
+                <input type="tel" id="loginPhone" placeholder="10-digit number" maxlength="10">
+              </div>
+            </div>
+
+            <button class="gbtn" id="sendOtpBtn" onclick="loginSendOTP()">Send OTP &rarr;</button>
+            <a href="index.html" class="back-link">&larr; Back to Shop</a>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="step hidden" id="step2">
+            <span class="slabel">Step 2 of 2</span>
+            <h3>Verify OTP</h3>
+            <p class="ssub">6-digit code sent to <strong id="otpPhone"></strong></p>
+
+            <div class="otp-wrap">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,0)">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,1)">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,2)">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,3)">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,4)">
+              <input type="text" class="ob" maxlength="1" oninput="on(this,5)">
+            </div>
+
+            <button class="gbtn" id="verifyBtn" onclick="loginVerify()">Verify &amp; Login &rarr;</button>
+            <button class="tlink" onclick="goBack()">Change phone number</button>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="step hidden" id="step3">
+            <div class="sview">
+              <span>🎉</span>
+              <h3>You're logged in!</h3>
+              <p>Welcome, <strong id="sname"></strong>! Redirecting...</p>
+              <button class="gbtn" onclick="window.location.href='index.html'">Go to Shop &rarr;</button>
+            </div>
+          </div>
+
+          <p class="card-note" id="cnote">New here? Just enter your details — we'll set up your account automatically.</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+  <script>
+    const API_BASE = '/api';
+    let _p = '', _n = '';
+
+    function showErr(m) { const e = document.getElementById('errorMsg'); e.textContent = m; e.style.display = 'block'; }
+    function hideErr() { document.getElementById('errorMsg').style.display = 'none'; }
+    function goBack() {
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step1').classList.remove('hidden');
+      document.getElementById('cnote').style.display = 'block';
+      hideErr();
+    }
+
+    async function loginSendOTP() {
+      hideErr();
+      const name = document.getElementById('loginName').value.trim();
+      const phone = document.getElementById('loginPhone').value.trim();
+      if (!name) { showErr('Please enter your name.'); return; }
+      if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) { showErr('Enter a valid 10-digit number.'); return; }
+      _n = name; _p = phone;
+      const btn = document.getElementById('sendOtpBtn');
+      btn.disabled = true; btn.textContent = 'Sending...';
+      try {
+        const res = await fetch(`${API_BASE}/send-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('otpPhone').textContent = '+91 ' + phone;
+          document.getElementById('step1').classList.add('hidden');
+          document.getElementById('step2').classList.remove('hidden');
+          document.getElementById('cnote').style.display = 'none';
+          document.querySelectorAll('.ob')[0]?.focus();
+        } else { showErr(data.message || 'Failed to send OTP.'); }
+      } catch (e) { showErr('Server error. Try again.'); }
+      finally { btn.disabled = false; btn.textContent = 'Send OTP →'; }
+    }
+
+    function on(input, idx) {
+      input.value = input.value.replace(/\D/, '');
+      if (input.value && idx < 5) document.querySelectorAll('.ob')[idx + 1]?.focus();
+      if ([...document.querySelectorAll('.ob')].every(b => b.value.length === 1)) setTimeout(loginVerify, 200);
+    }
+
+    async function loginVerify() {
+      hideErr();
+      const otp = [...document.querySelectorAll('.ob')].map(b => b.value).join('');
+      if (otp.length !== 6) { showErr('Enter all 6 digits.'); return; }
+      const btn = document.getElementById('verifyBtn');
+      btn.disabled = true; btn.textContent = 'Verifying...';
+      try {
+        const res = await fetch(`${API_BASE}/verify-otp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: _p, otp }) });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('bb_user', JSON.stringify({ name: _n, phone: _p }));
+          document.getElementById('step2').classList.add('hidden');
+          document.getElementById('step3').classList.remove('hidden');
+          document.getElementById('sname').textContent = _n;
+          setTimeout(() => { const r = new URLSearchParams(window.location.search).get('redirect'); window.location.href = r || 'index.html'; }, 2000);
+        } else {
+          showErr(data.message || 'Invalid OTP.');
+          document.querySelectorAll('.ob').forEach(b => { b.value = ''; b.classList.add('shake'); });
+          setTimeout(() => document.querySelectorAll('.ob').forEach(b => b.classList.remove('shake')), 500);
+          document.querySelectorAll('.ob')[0]?.focus();
+        }
+      } catch (e) { showErr('Server error. Try again.'); }
+      finally { btn.disabled = false; btn.textContent = 'Verify & Login →'; }
+    }
+  </script>
+</body>
+</html>

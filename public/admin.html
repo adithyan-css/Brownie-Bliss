@@ -275,16 +275,20 @@
     }
 
     async function authFetch(url, options = {}) {
-      const headers = options.headers ? { ...options.headers } : {};
+      const headers = { ...(options.headers || {}) };
+
       if (!headers.Authorization) {
         headers.Authorization = `Bearer ${adminToken}`;
       }
+
       const res = await fetch(url, { ...options, headers });
-      if (res.status === 401) {
+
+      if (res.status === 401 || res.status === 403) {
         clearAdminSession();
-        window.location.href = 'admin-login.html';
-        throw new Error('Admin session expired');
+        window.location.replace('admin-login.html');
+        throw new Error('Session expired. Redirecting to login.');
       }
+
       return res;
     }
     let allOrders = [];
@@ -602,7 +606,7 @@
     //export csv for orders
     async function exportCSV() {
       try {
-        const res = await authFetch('/api/orders');
+        const res = await authFetch(`${API}/orders`);
         const data = await res.json();
         if (data.success) {
           // Just extracting the array of data
