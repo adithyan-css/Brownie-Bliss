@@ -522,6 +522,30 @@ nav a:hover {
   border-color: var(--color-primary);
 }
 
+.filter-pill {
+  padding: 10px 22px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--white);
+  color: var(--text-dark);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-pill.active,
+.filter-pill:hover {
+  background: var(--brown-dark);
+  color: var(--cream);
+  border-color: var(--brown-dark);
+  box-shadow: var(--shadow-md);
+}
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
