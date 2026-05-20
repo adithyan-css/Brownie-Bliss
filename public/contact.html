@@ -252,7 +252,7 @@
         We'd love to hear from you.
       </p>
 
-      <form>
+      <form id="contactForm">
 
         <input
           type="text"
@@ -328,7 +328,8 @@
   </div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+  <!--<div class="toast" id="toast"></div>-->
+  <div class="contact-toast" id="toast"></div>
 
   <script src="script.js"></script>
   <script>
@@ -336,6 +337,28 @@
     window.addEventListener('DOMContentLoaded', () => {
       // Basic initializers for the page
     });
+
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // stops page reload
+
+    showToast("Message sent successfully!");
+
+    contactForm.reset();
+  });
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
   </script>
 </body>
 

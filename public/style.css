@@ -4377,6 +4377,28 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
   text-decoration: none;
 }
 
+/* Msg Confirmation*/
+
+.contact-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:rgba(255, 255, 255, 0.7);
+  color: rgba(37, 28, 1, 0.829);
+  padding: 16px 28px;
+  font-size: 60px;
+  border-radius: 15px;
+  font-size: 14px;
+  opacity: 0;
+  z-index: 9999;
+  transition: 0.3s ease;
+}
+
+.contact-toast.show {
+  opacity: 1;
+}
+
 /* HOURS CARD */
 
 .hours-card {
