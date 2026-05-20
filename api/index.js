@@ -13,9 +13,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const MONGO_URI = process.env.MONGO_URI;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
+const ADMIN_USERNAME = (process.env.ADMIN_USERNAME || '').trim();
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || '').trim();
+const ADMIN_JWT_SECRET = (process.env.ADMIN_JWT_SECRET || '').trim();
 const ADMIN_JWT_EXPIRES_IN = process.env.ADMIN_JWT_EXPIRES_IN || '2h';
 const ORDER_STATUSES = [
   'pending',
@@ -106,9 +106,23 @@ const productSchema = new mongoose.Schema({
   img: { type: String },
 });
 
+const reviewSchema = new mongoose.Schema({
+  rating: { type: Number, required: true },
+  name: { type: String, required: true },
+  message: { type: String, required: true },
+}, { timestamps: { createdAt: 'created_at' } });
+
+const complaintSchema = new mongoose.Schema({
+  subject: { type: String, required: true },
+  order_id: { type: String, default: '' },
+  message: { type: String, required: true },
+}, { timestamps: { createdAt: 'created_at' } });
+
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 const Otp = mongoose.models.Otp || mongoose.model('Otp', otpSchema);
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+const Review = mongoose.models.Review || mongoose.model('Review', reviewSchema);
+const Complaint = mongoose.models.Complaint || mongoose.model('Complaint', complaintSchema);
 
 async function seedProducts() {
   const count = await Product.countDocuments();
@@ -453,6 +467,34 @@ app.get('/api/stats', adminAuth, async (req, res) => {
         total_revenue: revenueResult[0]?.total || 0,
       },
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/reviews', async (req, res) => {
+  try {
+    const { rating, name, message } = req.body;
+    if (!rating || !name || !message) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+    const review = await Review.create({ rating, name, message });
+    res.json({ success: true, message: 'Review submitted successfully', review });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.post('/api/complaints', async (req, res) => {
+  try {
+    const { subject, order_id, message } = req.body;
+    if (!subject || !message) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+    const complaint = await Complaint.create({ subject, order_id, message });
+    res.json({ success: true, message: 'Complaint submitted successfully', complaint });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Server error' });

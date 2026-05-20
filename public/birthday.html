@@ -97,10 +97,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill" onclick="setCakeWeight('0.5')">0.5 kg</button>
-                <button class="filter-pill active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('1.5')">1.5 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                <button class="filter-pill" onclick="setCakeWeight('0.5', event)">0.5 kg</button>
+                <button class="filter-pill active" onclick="setCakeWeight('1.0', event)">1.0 kg</button>
+                <button class="filter-pill" onclick="setCakeWeight('1.5', event)">1.5 kg</button>
+                <button class="filter-pill" onclick="setCakeWeight('2.0', event)">2.0 kg</button>
               </div>
             </div>
     
@@ -380,7 +380,7 @@
         <!-- Feedback Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown);">Leave a Review</h3>
-          <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
+          <form onsubmit="submitReview(event)">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 700;">Rating</label>
               <div style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
@@ -404,7 +404,7 @@
         <!-- Complaint Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); border-left: 5px solid var(--brown);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown);">Report an Issue</h3>
-          <form onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
+          <form onsubmit="submitComplaint(event)">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 700;">Subject</label>
               <select required style="width: 100%; padding: 12px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif; background: var(--white);">
