@@ -19,7 +19,7 @@ function toggleTheme() {
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-buildCatalogFromList(null);
+
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
@@ -133,32 +133,25 @@ async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.products)) {
-            buildCatalogFromList(data.products);
-        } else {
-            buildCatalogFromList(null);
-        }
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        buildCatalogFromList(null);
-    }
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
+
         if (data.success && Array.isArray(data.products) && data.products.length) {
-            products = data.products.filter(p => p.type === 'standard').map(p => ({
-                id: p.id_ref,
-                name: p.name,
-                category: p.category,
-                price: p.price,
-                emoji: p.emoji,
-                img: p.img,
-                description: p.description || ''
-            }));
+
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || ''
+                }));
+
+            bdayCakes = {};
 
             const bd = data.products.filter(p => p.type === 'birthday');
+
             bd.forEach(p => {
                 bdayCakes[p.id_ref] = {
                     price: p.price,
@@ -167,19 +160,21 @@ async function loadProducts() {
                 };
             });
 
-            // Re-render UI now that data is loaded
-            if (document.getElementById('productsGrid')) {
-                filterProducts('all');
-            }
-            if (document.getElementById('cakePrice')) {
-                calculateBdayPrice();
-            }
         } else {
             useFallbackProducts();
         }
+
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
+    }
+
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
     }
 }
 
@@ -596,12 +591,7 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
-function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
-    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
-    const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
-        ? orderTotal
-        : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
+
 function sendWhatsAppFinal(orderId) {
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const itemLines = cart.map(i => {
@@ -667,17 +657,28 @@ function filterProducts(category, btn) {
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
             </div>
             <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
-                    Add to Cart
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
-        </div>
+               <div class="product-category">${p.category}</div>
+            <div class="product-name">${p.name}</div>
+            ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+            <div class="product-price">₹${p.price}</div>
+            
+           <div class="product-actions">
+    <button 
+        type="button" 
+        class="add-to-cart" 
+        data-product-id="${String(p.id)}">
+        Add to Cart
+    </button>
+
+    <button 
+        type="button"
+        class="add-to-cart customize-btn"
+        onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+        Customize & Add
+    </button>
+</div>
+</div>
+</div>
     `).join('');
 }
 
