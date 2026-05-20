@@ -189,6 +189,33 @@ nav a:hover {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35) !important;
 }
 
+.header-auth-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.header-auth-section .auth-link {
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+  padding: 8px 0;
+}
+
+.header-auth-section .auth-link:hover {
+  color: var(--brown-dark);
+}
+
+.header-auth-section .auth-link[style*="background"] {
+  color: var(--brown-dark) !important;
+}
+
+.header-auth-section .auth-link[style*="background"]:hover {
+  background: var(--cream) !important;
+}
+
 .cart-btn {
   position: relative;
   background: linear-gradient(135deg, var(--color-primary), var(--brown-mid));
@@ -2634,15 +2661,12 @@ a.logo {
   font-size: 14px;
   font-weight: 500;
 }
-.menu-toggle{
-  display:none;
-  background:none;
-  border:none;
-  font-size:28px;
-  cursor:pointer;
-  color:var(--brown-dark);
-}
 
+/* Admin Panel Additions */
+.panel-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 .mobile-menu{
   display:none;
   flex-direction:column;
@@ -2657,13 +2681,40 @@ a.logo {
   flex-direction: column;
 }
 
-.mobile-menu a{
-  text-decoration:none;
-  color:var(--brown-dark);
-  padding:10px 0;
-  border-bottom:1px solid #eee;
+.btn-export {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  border-radius: 6px !important;
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark {
+  /* Backgrounds — --cream & --white are used as bg, so override them */
+  --cream:        #6e550c;
+  --cream-dark:   #221508;
+  --white:        #1c1108;
+  /* Text */
+  --text-dark:    #f0e4d0;
+  --text-mid:     #c8a882;
+  /* Shadows */
+  --shadow-sm:    0 2px 4px rgba(0,0,0,0.45);
+  --shadow-md:    0 10px 30px rgba(0,0,0,0.55);
+  --shadow-lg:    0 20px 50px rgba(0,0,0,0.65);
+  /* Glass */
+  --glass:        rgba(26,14,5,0.75);
+  --glass-border: rgba(212,175,55,0.2);
+}
+
+/* ── Smooth colour transitions (scoped — avoids breaking hover/transform) ── */
+body, header, .cart-sidebar, .cart-item, .cart-header,
+.product-card, .product-info, .checkout-modal,
+nav a, input, textarea, select {
+  transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease;
 @media (max-width: 900px) {
   nav {
     display: none !important;  /* add !important */
@@ -2679,10 +2730,11 @@ html {
   scroll-behavior: smooth;
 }
 
+
 :root {
-  --brown-dark: #1A0905;
+  --color-primary: #4A2C0A;
   --brown-mid: #3C1E14;
-  --brown-warm: #5C2C1A;
+  --color-accent: #D2691E;
   --brand-red: #8B0000;
   --gold: #D4AF37;
   --gold-light: #F4E4BC;
@@ -2701,125 +2753,77 @@ html {
   --glass-border: rgba(255, 255, 255, 0.2);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Logo */
+html.dark .logo-name { color: var(--text-dark); }
+html.dark .logo-sub  { color: var(--gold); }
 
-body {
-  background: var(--cream);
+/* Headings on light-turned-dark backgrounds */
+html.dark h2.section-title,
+html.dark .section-title { color: var(--text-dark); }
+html.dark .section-title em { color: var(--gold); }
+html.dark .section-label { color: var(--gold); }
+
+/* General headings */
+html.dark h1, html.dark h2, html.dark h3, html.dark h4 { color: var(--text-dark); }
+
+/* Nav links */
+html.dark nav a       { color: var(--text-mid); }
+html.dark nav a:hover { color: var(--text-dark); }
+/* Header auth section (Sign in / Sign up) */
+html.dark .header-auth-section .auth-link       { color: #d4a852; }
+html.dark .header-auth-section .auth-link:hover { color: #e8d5a6; }
+
+
+/* Cart button */
+html.dark .cart-btn              { color: var(--text-mid); border-color: #5a3820; }
+html.dark .cart-btn:hover        { background: var(--gold); color: var(--brown-dark); border-color: var(--gold); }
+
+/* Filter tabs */
+html.dark .filter-tab            { color: var(--text-mid); border-color: #5a3820; }
+html.dark .filter-tab.active,
+html.dark .filter-tab:hover      { background: var(--gold); color: var(--brown-dark); border-color: var(--gold); }
+
+/* Product cards */
+html.dark .product-name          { color: var(--text-dark); }
+html.dark .product-price         { color: var(--gold); }
+html.dark .product-category      { color: var(--gold); }
+
+/* Birthday section inline-styled text (override via element selectors) */
+html.dark .birthday-card         { background: var(--white) !important; }
+html.dark label[style]           { color: var(--gold) !important; }
+
+/* Footer (bg stays dark, text was already okay except logo) */
+html.dark .footer-brand .logo-name   { color: var(--text-dark); }
+html.dark .footer-bottom             { color: rgba(240,228,208,0.4); }
+html.dark .footer-col a              { color: rgba(240,228,208,0.6); }
+html.dark .footer-col a:hover        { color: var(--gold-light); }
+
+/* Cart sidebar */
+html.dark .cart-title            { color: var(--text-dark); }
+html.dark .cart-item-name        { color: var(--text-dark); }
+html.dark .cart-item-price       { color: var(--gold); }
+html.dark .cart-total-label,
+html.dark .cart-total-amt        { color: var(--text-dark); }
+
+/* Inputs / textareas */
+html.dark input, html.dark textarea, html.dark select {
+  background: var(--cream-dark);
   color: var(--text-dark);
-  font-family: 'DM Sans', sans-serif;
-  overflow-x: hidden;
+  border-color: #3a2010;
 }
+html.dark input::placeholder,
+html.dark textarea::placeholder  { color: #8a6848; }
 
-/* ANNOUNCEMENT BAR */
-.announcement {
-  background: var(--brown-dark);
-  color: var(--gold-light);
-  text-align: center;
-  padding: 10px 20px;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 400;
-}
-
-/* HEADER */
-header {
-  background: var(--white);
-  border-bottom: 1px solid var(--cream-dark);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 20px rgba(44, 24, 16, 0.08);
-}
-
-.header-inner {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 30px;
-  display: flex;
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle-btn {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  height: 72px;
-}
-
-.logo {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.logo-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--brown-dark);
-  letter-spacing: 1px;
-}
-
-.logo-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: var(--gold);
-  text-transform: uppercase;
-}
-
-nav {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-}
-
-nav a {
-  text-decoration: none;
-  color: var(--text-mid);
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  font-weight: 500;
-  transition: color 0.2s;
-  position: relative;
-}
-
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transition: transform 0.25s;
-}
-
-nav a:hover::after {
-  transform: scaleX(1);
-}
-
-nav a:hover {
-  color: var(--brown-dark);
-}
-
-.header-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.cart-btn {
-  position: relative;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background: none;
   border: 2px solid var(--brown-dark);
-  color: var(--brown-dark);
-  padding: 9px 22px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 0;
@@ -9648,15 +9652,11 @@ html.dark .text-link {
 html.dark .customize-close {
   color: var(--text-dark);
 }
+.theme-toggle-btn:hover              { background: var(--brown-dark); transform: rotate(22deg) scale(1.08); }
+html.dark .theme-toggle-btn          { border-color: var(--gold); }
+html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 
-html.dark .customize-base-price {
-  color: var(--text-mid);
-}
 
-html.dark .customize-option input[type="radio"],
-html.dark .customize-option input[type="checkbox"] {
-  accent-color: var(--gold);
-}
 
 html.dark .topping-price {
   color: var(--gold);
