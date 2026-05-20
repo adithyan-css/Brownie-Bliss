@@ -174,10 +174,10 @@
       Swipe to see Desserts &nbsp; ⟷
     </div>
 
-    <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+    <div id="birthdaySlider" class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
       
       <!-- SLIDE 1: BIRTHDAY CAKES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+      <div id="bday-slide-0" class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
@@ -276,7 +276,7 @@
       </div>
 
       <!-- SLIDE 2: DESSERTS -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+      <div id="bday-slide-1" class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
@@ -352,7 +352,7 @@
       </div>
 
       <!-- SLIDE 3: BROWNIES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+      <div id="bday-slide-2" class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
@@ -430,7 +430,7 @@
       </div>
 
       <!-- SLIDE 4: COOKIES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+      <div id="bday-slide-3" class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
@@ -496,11 +496,56 @@
 
     <!-- Slider Navigation Dots -->
     <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;"></div>
+      <div id="slider-dot-0" style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;" onclick="goToSlide(0)"></div>
+      <div id="slider-dot-1" style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;" onclick="goToSlide(1)"></div>
+      <div id="slider-dot-2" style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;" onclick="goToSlide(2)"></div>
+      <div id="slider-dot-3" style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;" onclick="goToSlide(3)"></div>
     </div>
+
+    <script>
+      function goToSlide(index) {
+        const slider = document.getElementById('birthdaySlider');
+        const slide = document.getElementById('bday-slide-' + index);
+        if (slider && slide) {
+          slider.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+        }
+        // Update dot styles
+        for (let i = 0; i < 4; i++) {
+          const dot = document.getElementById('slider-dot-' + i);
+          if (dot) {
+            if (i === index) {
+              dot.style.background = 'var(--gold)';
+              dot.style.border = 'none';
+            } else {
+              dot.style.background = 'var(--cream-dark)';
+              dot.style.border = '1px solid var(--gold)';
+            }
+          }
+        }
+      }
+
+      // Sync dots with scroll position
+      (function() {
+        var slider = document.getElementById('birthdaySlider');
+        if (!slider) return;
+        slider.addEventListener('scroll', function() {
+          var slideWidth = slider.offsetWidth;
+          var index = Math.round(slider.scrollLeft / slideWidth);
+          for (var i = 0; i < 4; i++) {
+            var dot = document.getElementById('slider-dot-' + i);
+            if (dot) {
+              if (i === index) {
+                dot.style.background = 'var(--gold)';
+                dot.style.border = 'none';
+              } else {
+                dot.style.background = 'var(--cream-dark)';
+                dot.style.border = '1px solid var(--gold)';
+              }
+            }
+          }
+        });
+      })();
+    </script>
 
   </section>
 
