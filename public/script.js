@@ -640,7 +640,7 @@ function filterProducts(category, btn) {
                     aria-label="Toggle ${p.name} favourite"
                     aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
                     title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
                     ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
                 </button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
@@ -1080,6 +1080,87 @@ let _customizeProduct = null;
 
 function injectCustomizeModal() {
     if (document.getElementById('customizeOverlay')) return;
+
+    // Inject reliable styles directly so CSS file issues don't break the modal
+    if (!document.getElementById('customizeModalStyles')) {
+        const style = document.createElement('style');
+        style.id = 'customizeModalStyles';
+        style.textContent = `
+            #customizeOverlay {
+                position: fixed !important;
+                inset: 0 !important;
+                z-index: 99998 !important;
+                background: rgba(26, 9, 5, 0.6) !important;
+                backdrop-filter: blur(6px) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s;
+            }
+            #customizeOverlay.open {
+                opacity: 1 !important;
+                pointer-events: all !important;
+            }
+            #customizeOverlay .customize-modal {
+                background: #fff !important;
+                border-radius: 16px !important;
+                width: 92% !important;
+                max-width: 500px !important;
+                max-height: 88vh !important;
+                overflow-y: auto !important;
+                box-shadow: 0 25px 80px rgba(0,0,0,0.4) !important;
+                position: relative !important;
+                padding-bottom: 16px !important;
+            }
+            html.dark #customizeOverlay .customize-modal {
+                background: #2a1208 !important;
+                color: #f5e8d0 !important;
+            }
+            #customizeOverlay .customize-header {
+                display: flex !important;
+                gap: 16px !important;
+                align-items: center !important;
+                padding: 20px 20px 0 !important;
+            }
+            #customizeOverlay .customize-header img {
+                width: 90px !important;
+                height: 90px !important;
+                min-width: 90px !important;
+                max-width: 90px !important;
+                object-fit: cover !important;
+                border-radius: 12px !important;
+                flex-shrink: 0 !important;
+            }
+            #customizeOverlay .customize-close {
+                position: absolute !important;
+                top: 12px !important;
+                right: 12px !important;
+                background: rgba(0,0,0,0.08) !important;
+                border: none !important;
+                font-size: 18px !important;
+                cursor: pointer !important;
+                width: 32px !important;
+                height: 32px !important;
+                border-radius: 50% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 2 !important;
+            }
+            #customizeOverlay .customize-body { padding: 16px 20px !important; }
+            #customizeOverlay .customize-section { margin-bottom: 16px !important; }
+            #customizeOverlay .customize-section-title { margin-bottom: 8px !important; font-weight: 600 !important; font-size: 14px !important; }
+            #customizeOverlay .customize-options { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
+            #customizeOverlay .customize-option { display: flex !important; align-items: center !important; gap: 6px !important; cursor: pointer !important; font-size: 14px !important; }
+            #customizeOverlay .customize-message { width: 100% !important; padding: 8px !important; border-radius: 8px !important; border: 1px solid #ccc !important; font-size: 14px !important; resize: vertical !important; box-sizing: border-box !important; }
+            #customizeOverlay .customize-footer { display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 12px 20px 4px !important; border-top: 1px solid #eee !important; }
+            #customizeOverlay .customize-confirm-btn { background: #1a0905 !important; color: #fff !important; border: none !important; padding: 12px 20px !important; border-radius: 8px !important; cursor: pointer !important; font-size: 14px !important; font-weight: 600 !important; }
+            #customizeOverlay .customize-confirm-btn:hover { background: #3C1E14 !important; }
+        `;
+        document.head.appendChild(style);
+    }
 
     const overlay = document.createElement('div');
     overlay.id = 'customizeOverlay';
