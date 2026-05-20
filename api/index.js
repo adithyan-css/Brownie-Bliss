@@ -726,26 +726,23 @@ app.get('/', (req, res) => {
 });
 
 // ─── START ─────────────────────────────────────────────────────────────────────
-if (require.main === module) {
+function startServer(port) {
   if (!MONGO_URI) {
     console.warn('⚠️  MONGO_URI is not set. Orders and products API run in memory/static mode until you restart the server.');
   }
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
-function startServer(port) {
+
   const server = app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`🚀 Server running at http://localhost:${port}`);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE' && !process.env.PORT) {
       const nextPort = Number(port) + 1;
-      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+      console.warn(`⚠️  Port ${port} is already in use. Trying ${nextPort}...`);
       startServer(nextPort);
       return;
     }
-
-    console.error(err);
+    console.error('❌ Server error:', err);
     process.exit(1);
   });
 }
