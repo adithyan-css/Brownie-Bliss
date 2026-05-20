@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signature Cookies — Brownie Bliss</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+  <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="products.html">All Products</a>
+        <a href="cake.html">Cakes</a>
+        <a href="brownie.html">Brownies</a>
+        <a href="dessert.html">Desserts</a>
+        <a href="cookie.html" class="active">Cookies</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">All Products</a>
+    <a href="cake.html">Cakes</a>
+    <a href="brownie.html">Brownies</a>
+    <a href="dessert.html">Desserts</a>
+    <a href="cookie.html" class="active">Cookies</a>
+    <a href="favourites.html">Favourites</a>
+    <a href="track.html">Track Order</a>
+  </div>
+
+  <!-- HEADER -->
+  <section style="padding: 120px 24px 40px; text-align: center; background: var(--cream);">
+    <span class="section-label">Freshly Baked</span>
+    <h1 class="section-title" style="font-size: 42px; margin-top: 10px;">Gourmet <em>Cookies</em></h1>
+    <p style="max-width: 600px; margin: 15px auto; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
+      Golden, crispy on the edges, and chewy in the middle. Our homemade cookies are baked in small batches with premium chocolate and nuts.
+    </p>
+  </section>
+
+  <!-- CUSTOMIZATION CARDS LIST -->
+  <section style="padding: 40px 24px; background: var(--cream); display: flex; flex-direction: column; gap: 80px;">
+
+    <div id="choco-chip-cookies" class="custom-card-container" data-name="Choco Chip Cookies" data-price="250" data-img="assets/choco_chip_cookie.png" data-category="cookies" style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="birthday-visual">
+        <img src="assets/choco_chip_cookie.png" alt="Choco Chip Cookies" style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+      </div>
+      <div class="birthday-card" style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+        <span class="section-label" style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Classic Favorite</span>
+        <h2 class="section-title" style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 34px; color: var(--brown);">Choco Chip Cookies</h2>
+        <p style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8; line-height: 1.6;">
+          Golden, crispy cookies loaded with premium dark chocolate chips and a touch of vanilla.
+        </p>
+
+        <!-- Dietary Preference -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Dietary Preference</label>
+          <div class="dietary-options" style="display: flex; gap: 10px;">
+            <button class="filter-pill active" onclick="selectDietaryOption(this)">Egg</button>
+            <button class="filter-pill" onclick="selectDietaryOption(this)">🌱 Eggless</button>
+          </div>
+        </div>
+
+        <!-- Pack Size option -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Pack Size</label>
+          <div class="size-options" style="display: flex; gap: 15px;">
+            <button class="filter-pill" onclick="selectCustomOption(this, 'choco-chip-cookies', 0.5)">Box of 2</button>
+            <button class="filter-pill active" onclick="selectCustomOption(this, 'choco-chip-cookies', 1.0)">Box of 6</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'choco-chip-cookies', 2.5)">Box of 12</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'choco-chip-cookies', 1.8)">Gift Tin</button>
+          </div>
+        </div>
+
+        <!-- Custom Message / Special Request -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special Instructions</label>
+          <input type="text" class="custom-text-input" placeholder="e.g. Please send freshly baked, add a card" style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Price</span>
+              <span class="price-display" style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 250</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCustomCardToCart('choco-chip-cookies')">Add to Cart 🛒</button>
+            <button class="btn-secondary" style="padding: 14px; font-size: 12px;" onclick="buyCustomCardNow('choco-chip-cookies')">Order Now &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="almond-biscotti" class="custom-card-container" data-name="Almond Biscotti" data-price="300" data-img="assets/almond_biscotti.png" data-category="cookies" style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="birthday-visual">
+        <img src="assets/almond_biscotti.png" alt="Almond Biscotti" style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+      </div>
+      <div class="birthday-card" style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+        <span class="section-label" style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Twice Baked</span>
+        <h2 class="section-title" style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 34px; color: var(--brown);">Almond Biscotti</h2>
+        <p style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8; line-height: 1.6;">
+          Crunchy twice-baked Italian almond cookies, perfect for dipping in coffee or tea.
+        </p>
+
+        <!-- Dietary Preference -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Dietary Preference</label>
+          <div class="dietary-options" style="display: flex; gap: 10px;">
+            <button class="filter-pill active" onclick="selectDietaryOption(this)">Egg</button>
+            <button class="filter-pill" onclick="selectDietaryOption(this)">🌱 Eggless</button>
+          </div>
+        </div>
+
+        <!-- Pack Size option -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Pack Size</label>
+          <div class="size-options" style="display: flex; gap: 15px;">
+            <button class="filter-pill" onclick="selectCustomOption(this, 'almond-biscotti', 0.5)">Box of 2</button>
+            <button class="filter-pill active" onclick="selectCustomOption(this, 'almond-biscotti', 1.0)">Box of 6</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'almond-biscotti', 2.5)">Box of 12</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'almond-biscotti', 1.8)">Gift Tin</button>
+          </div>
+        </div>
+
+        <!-- Custom Message / Special Request -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special Instructions</label>
+          <input type="text" class="custom-text-input" placeholder="e.g. Please send freshly baked, add a card" style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Price</span>
+              <span class="price-display" style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 300</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCustomCardToCart('almond-biscotti')">Add to Cart 🛒</button>
+            <button class="btn-secondary" style="padding: 14px; font-size: 12px;" onclick="buyCustomCardNow('almond-biscotti')">Order Now &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="double-choco-cookies" class="custom-card-container" data-name="Double Choco Cookies" data-price="250" data-img="assets/double_choco_cookie.png" data-category="cookies" style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="birthday-visual">
+        <img src="assets/double_choco_cookie.png" alt="Double Choco Cookies" style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+      </div>
+      <div class="birthday-card" style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+        <span class="section-label" style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Double Chocolate</span>
+        <h2 class="section-title" style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 34px; color: var(--brown);">Double Choco Cookies</h2>
+        <p style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8; line-height: 1.6;">
+          Rich cocoa cookie dough loaded with white and dark chocolate chips for double the chocolate indulgence.
+        </p>
+
+        <!-- Dietary Preference -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Dietary Preference</label>
+          <div class="dietary-options" style="display: flex; gap: 10px;">
+            <button class="filter-pill active" onclick="selectDietaryOption(this)">Egg</button>
+            <button class="filter-pill" onclick="selectDietaryOption(this)">🌱 Eggless</button>
+          </div>
+        </div>
+
+        <!-- Pack Size option -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Pack Size</label>
+          <div class="size-options" style="display: flex; gap: 15px;">
+            <button class="filter-pill" onclick="selectCustomOption(this, 'double-choco-cookies', 0.5)">Box of 2</button>
+            <button class="filter-pill active" onclick="selectCustomOption(this, 'double-choco-cookies', 1.0)">Box of 6</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'double-choco-cookies', 2.5)">Box of 12</button>
+            <button class="filter-pill" onclick="selectCustomOption(this, 'double-choco-cookies', 1.8)">Gift Tin</button>
+          </div>
+        </div>
+
+        <!-- Custom Message / Special Request -->
+        <div style="margin-bottom: 30px;">
+          <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special Instructions</label>
+          <input type="text" class="custom-text-input" placeholder="e.g. Please send freshly baked, add a card" style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
+        </div>
+
+        <!-- Footer Actions -->
+        <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+              <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Price</span>
+              <span class="price-display" style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 250</span>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCustomCardToCart('double-choco-cookies')">Add to Cart 🛒</button>
+            <button class="btn-secondary" style="padding: 14px; font-size: 12px;" onclick="buyCustomCardNow('double-choco-cookies')">Order Now &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: var(--brown); color: var(--cream); padding: 60px 24px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+      <div class="footer-brand">
+        <div class="brand-name" style="color: var(--cream);">Brownie Bliss</div>
+        <div class="brand-tagline">Homemade Treats · Happiness in every bite</div>
+        <p style="font-size: 14px; opacity: 0.6; margin-top: 10px; max-width: 300px;">Hand-crafted with love in Krishnagiri. One unwavering passion for quality.</p>
+      </div>
+      <div class="footer-col">
+        <h4 style="color: var(--gold); margin-bottom: 15px; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;">Get In Touch</h4>
+        <a href="tel:08072596340" style="color: var(--cream); text-decoration: none; display: block; margin-bottom: 8px;">+91 8072596340</a>
+        <a href="mailto:gpriya26185@gmail.com" style="color: var(--cream); text-decoration: none; display: block;">gpriya26185@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SHARED COMPONENTS -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js?v=2"></script>
+</body>
+
+</html>

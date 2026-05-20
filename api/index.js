@@ -28,10 +28,10 @@ app.use(async (req, res, next) => {
   if (!MONGO_URI) return next();
   try {
     await connectDB();
-    next();
   } catch (err) {
-    res.status(503).json({ success: false, message: `Database connection failed: ${err.message}` });
+    console.warn(`⚠️  Failed to connect to MongoDB, running in memory/static mode: ${err.message}`);
   }
+  next();
 });
 
 // ─── API ROUTES ─────────────────────────────────────────────────────────────────
