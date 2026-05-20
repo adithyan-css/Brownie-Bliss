@@ -18,8 +18,7 @@ function toggleTheme() {
 
 // --- PRODUCTS DATA ---
 let products = [];
-let bdayCakes = {};
-buildCatalogFromList(null);
+let bdayCakes = {}; // Will be populated from DEFAULT_BDAY_CAKES after it's defined
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
@@ -40,6 +39,9 @@ const DEFAULT_BDAY_CAKES = {
     "Black Forest": { price: 750, emoji: "", img: "https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg" },
     "Cheesecake": { price: 1200, emoji: "", img: "https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg" }
 };
+// Initialize bdayCakes with defaults immediately so it works before API loads
+bdayCakes = { ...DEFAULT_BDAY_CAKES };
+products = [...DEFAULT_PRODUCTS];
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 const BROWNIE_BLISS_BAKERY = {
     id: 'brownie-bliss',
@@ -133,20 +135,6 @@ async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.products)) {
-            buildCatalogFromList(data.products);
-        } else {
-            buildCatalogFromList(null);
-        }
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        buildCatalogFromList(null);
-    }
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
         if (data.success && Array.isArray(data.products) && data.products.length) {
             products = data.products.filter(p => p.type === 'standard').map(p => ({
                 id: p.id_ref,
@@ -157,7 +145,6 @@ async function loadProducts() {
                 img: p.img,
                 description: p.description || ''
             }));
-
             const bd = data.products.filter(p => p.type === 'birthday');
             bd.forEach(p => {
                 bdayCakes[p.id_ref] = {
@@ -166,20 +153,18 @@ async function loadProducts() {
                     img: p.img
                 };
             });
-
-            // Re-render UI now that data is loaded
-            if (document.getElementById('productsGrid')) {
-                filterProducts('all');
-            }
-            if (document.getElementById('cakePrice')) {
-                calculateBdayPrice();
-            }
         } else {
             useFallbackProducts();
         }
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
+    }
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
     }
 }
 
@@ -596,12 +581,6 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
-function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
-    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
-    const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
-        ? orderTotal
-        : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
 function sendWhatsAppFinal(orderId) {
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const itemLines = cart.map(i => {
@@ -671,10 +650,8 @@ function filterProducts(category, btn) {
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
-                    Add to Cart
-                <button class="add-to-cart">
-                    Customize & Add
+                <button type="button" class="add-to-cart" onclick='event.stopPropagation(); addToCart(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                    Add to Cart 🛒
                 </button>
             </div>
         </div>
@@ -693,10 +670,24 @@ const BIRTHDAY_BASE_PRICES = {
 // bdayCakes object is now populated dynamically via loadProducts()
 
 function updateBirthdayCake(flavor) {
+    // Use fallback data if API hasn't loaded yet or flavor is missing
+    const fallbackCakes = {
+        'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
+        'Dutch Truffle': { img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180', emoji: '🍰' },
+        'Pineapple': { img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg?v=1711124785', emoji: '🍍' },
+        'Chocoholic': { img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267', emoji: '🍫' },
+        'Black Forest': { img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg', emoji: '🌲' },
+        'Cheesecake': { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg', emoji: '🧀' }
+    };
 
     if (!bdayCakes[flavor]) {
-        console.error("Cake flavor not found:", flavor);
-        return;
+        // Populate from fallback so the rest of the function works
+        if (fallbackCakes[flavor]) {
+            bdayCakes[flavor] = fallbackCakes[flavor];
+        } else {
+            console.error("Cake flavor not found:", flavor);
+            return;
+        }
     }
 
     selectedFlavor = flavor;
@@ -704,10 +695,6 @@ function updateBirthdayCake(flavor) {
     // Update image
     const cakeImg = document.getElementById('birthdayCakeImg');
     if (cakeImg && bdayCakes[flavor]) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
-
-    if (cakeImg) {
         cakeImg.src = bdayCakes[flavor].img;
     }
 
@@ -722,7 +709,7 @@ function updateBirthdayCake(flavor) {
 
     calculateBdayPrice();
 }
-function setCakeWeight(weight) {
+function setCakeWeight(weight, el) {
 
     selectedWeight = weight;
 
@@ -734,8 +721,15 @@ function setCakeWeight(weight) {
         btn.classList.remove('active');
     });
 
-    if (event && event.target) {
-        event.target.classList.add('active');
+    // Use passed element reference, or fall back to matching by weight text
+    if (el) {
+        el.classList.add('active');
+    } else {
+        weightButtons.forEach(btn => {
+            if (btn.textContent.trim().startsWith(weight)) {
+                btn.classList.add('active');
+            }
+        });
     }
 
     calculateBdayPrice();
