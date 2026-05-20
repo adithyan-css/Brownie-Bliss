@@ -235,10 +235,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
-                <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-                <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
-                <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('0.5', event)">0.5 kg</button>
+                <button class="filter-tab active" onclick="setCakeWeight('1.0', event)">1.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('1.5', event)">1.5 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('2.0', event)">2.0 kg</button>
               </div>
             </div>
     
@@ -297,12 +297,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Macarons</button>
-                <button class="filter-tab">Tarts</button>
-                <button class="filter-tab">Pastries</button>
-                <button class="filter-tab">Cupcakes</button>
-                <button class="filter-tab">Mousse</button>
-                <button class="filter-tab">Donuts</button>
+                <button class="filter-tab active" onclick="updateDessertState('variety', 'Macarons', this)">Macarons</button>
+                <button class="filter-tab" onclick="updateDessertState('variety', 'Tarts', this)">Tarts</button>
+                <button class="filter-tab" onclick="updateDessertState('variety', 'Pastries', this)">Pastries</button>
+                <button class="filter-tab" onclick="updateDessertState('variety', 'Cupcakes', this)">Cupcakes</button>
+                <button class="filter-tab" onclick="updateDessertState('variety', 'Mousse', this)">Mousse</button>
+                <button class="filter-tab" onclick="updateDessertState('variety', 'Donuts', this)">Donuts</button>
               </div>
             </div>
     
@@ -311,10 +311,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
                 Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Box of 2</button>
-                <button class="filter-tab active">Box of 4</button>
-                <button class="filter-tab">Box of 6</button>
-                <button class="filter-tab">Box of 12</button>
+                <button class="filter-tab" onclick="updateDessertState('boxSize', 'Box of 2', this)">Box of 2</button>
+                <button class="filter-tab active" onclick="updateDessertState('boxSize', 'Box of 4', this)">Box of 4</button>
+                <button class="filter-tab" onclick="updateDessertState('boxSize', 'Box of 6', this)">Box of 6</button>
+                <button class="filter-tab" onclick="updateDessertState('boxSize', 'Box of 12', this)">Box of 12</button>
               </div>
             </div>
     
@@ -322,8 +322,8 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special
                 Request</label>
-              <input type="text" placeholder="e.g. Less sugar, Eggless"
-                style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+              <input type="text" id="dessertRequest" placeholder="e.g. Less sugar, Eggless"
+                style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;" onchange="updateDessertState('request', this.value, null)">
             </div>
     
             <div
@@ -373,12 +373,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Walnut</button>
-                <button class="filter-tab">Overload</button>
-                <button class="filter-tab">Nutella</button>
-                <button class="filter-tab">Red Velvet</button>
-                <button class="filter-tab">Cookie</button>
-                <button class="filter-tab">Assorted</button>
+                <button class="filter-tab active" onclick="updateBrownieState('flavor', 'Walnut', this)">Walnut</button>
+                <button class="filter-tab" onclick="updateBrownieState('flavor', 'Overload', this)">Overload</button>
+                <button class="filter-tab" onclick="updateBrownieState('flavor', 'Nutella', this)">Nutella</button>
+                <button class="filter-tab" onclick="updateBrownieState('flavor', 'Red Velvet', this)">Red Velvet</button>
+                <button class="filter-tab" onclick="updateBrownieState('flavor', 'Cookie', this)">Cookie</button>
+                <button class="filter-tab" onclick="updateBrownieState('flavor', 'Assorted', this)">Assorted</button>
               </div>
             </div>
     
@@ -387,10 +387,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
                 Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Pack of 1</button>
-                <button class="filter-tab active">Pack of 4</button>
-                <button class="filter-tab">Pack of 6</button>
-                <button class="filter-tab">Pack of 12</button>
+                <button class="filter-tab" onclick="updateBrownieState('packSize', 'Pack of 1', this)">Pack of 1</button>
+                <button class="filter-tab active" onclick="updateBrownieState('packSize', 'Pack of 4', this)">Pack of 4</button>
+                <button class="filter-tab" onclick="updateBrownieState('packSize', 'Pack of 6', this)">Pack of 6</button>
+                <button class="filter-tab" onclick="updateBrownieState('packSize', 'Pack of 12', this)">Pack of 12</button>
               </div>
             </div>
     
@@ -399,8 +399,8 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift
                 Wrap</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab active">Standard</button>
-                <button class="filter-tab">Premium Gold</button>
+                <button class="filter-tab active" onclick="updateBrownieState('wrap', 'Standard', this)">Standard</button>
+                <button class="filter-tab" onclick="updateBrownieState('wrap', 'Premium Gold', this)">Premium Gold (+₹50)</button>
               </div>
             </div>
     
@@ -450,12 +450,12 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Choco Chip</button>
-                <button class="filter-tab">Double Choco</button>
-                <button class="filter-tab">Oatmeal Raisin</button>
-                <button class="filter-tab">Almond Biscotti</button>
-                <button class="filter-tab">Red Velvet</button>
-                <button class="filter-tab">Assorted</button>
+                <button class="filter-tab active" onclick="updateCookieState('variety', 'Choco Chip', this)">Choco Chip</button>
+                <button class="filter-tab" onclick="updateCookieState('variety', 'Double Choco', this)">Double Choco</button>
+                <button class="filter-tab" onclick="updateCookieState('variety', 'Oatmeal Raisin', this)">Oatmeal Raisin</button>
+                <button class="filter-tab" onclick="updateCookieState('variety', 'Almond Biscotti', this)">Almond Biscotti</button>
+                <button class="filter-tab" onclick="updateCookieState('variety', 'Red Velvet', this)">Red Velvet</button>
+                <button class="filter-tab" onclick="updateCookieState('variety', 'Assorted', this)">Assorted</button>
               </div>
             </div>
     
@@ -463,10 +463,10 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Box of 2</button>
-                <button class="filter-tab active">Box of 6</button>
-                <button class="filter-tab">Box of 12</button>
-                <button class="filter-tab">Gift Tin</button>
+                <button class="filter-tab" onclick="updateCookieState('packSize', 'Box of 2', this)">Box of 2</button>
+                <button class="filter-tab active" onclick="updateCookieState('packSize', 'Box of 6', this)">Box of 6</button>
+                <button class="filter-tab" onclick="updateCookieState('packSize', 'Box of 12', this)">Box of 12</button>
+                <button class="filter-tab" onclick="updateCookieState('packSize', 'Gift Tin', this)">Gift Tin</button>
               </div>
             </div>
     
@@ -521,7 +521,7 @@
         <!-- Feedback Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a Review</h3>
-          <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
+          <form onsubmit="submitReview(event)">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
               <div style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
@@ -545,7 +545,7 @@
         <!-- Complaint Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an Issue</h3>
-          <form onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
+          <form onsubmit="submitComplaint(event)">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Subject</label>
               <select required style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">

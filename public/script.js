@@ -19,7 +19,6 @@ function toggleTheme() {
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
@@ -133,20 +132,7 @@ async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
-        if (data.success && Array.isArray(data.products)) {
-            buildCatalogFromList(data.products);
-        } else {
-            buildCatalogFromList(null);
-        }
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        buildCatalogFromList(null);
-    }
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
+        
         if (data.success && Array.isArray(data.products) && data.products.length) {
             products = data.products.filter(p => p.type === 'standard').map(p => ({
                 id: p.id_ref,
@@ -166,20 +152,19 @@ async function loadProducts() {
                     img: p.img
                 };
             });
-
-            // Re-render UI now that data is loaded
-            if (document.getElementById('productsGrid')) {
-                filterProducts('all');
-            }
-            if (document.getElementById('cakePrice')) {
-                calculateBdayPrice();
-            }
         } else {
             useFallbackProducts();
         }
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
+    }
+
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
     }
 }
 
@@ -601,11 +586,9 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`).join('\n');
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+    
+    const itemLines = lines.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
@@ -661,7 +644,7 @@ function filterProducts(category, btn) {
                     aria-label="Toggle ${p.name} favourite"
                     aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
                     title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p).replace(/'/g, "&#39;")})'>
                     ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
                 </button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
@@ -673,8 +656,6 @@ function filterProducts(category, btn) {
                 <div class="product-price">₹${p.price}</div>
                 <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
                     Add to Cart
-                <button class="add-to-cart">
-                    Customize & Add
                 </button>
             </div>
         </div>
@@ -707,12 +688,8 @@ function updateBirthdayCake(flavor) {
         cakeImg.src = bdayCakes[flavor].img;
     }
 
-    if (cakeImg) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
-
     // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
+    document.querySelectorAll('.filter-pill, .flavor-btn').forEach(btn => {
         if (btn.textContent.trim() === flavor) {
             btn.classList.add('active');
         } else {
@@ -722,7 +699,7 @@ function updateBirthdayCake(flavor) {
 
     calculateBdayPrice();
 }
-function setCakeWeight(weight) {
+function setCakeWeight(weight, eventObj) {
 
     selectedWeight = weight;
 
@@ -734,8 +711,9 @@ function setCakeWeight(weight) {
         btn.classList.remove('active');
     });
 
-    if (event && event.target) {
-        event.target.classList.add('active');
+    const targetEvent = eventObj || window.event;
+    if (targetEvent && targetEvent.target) {
+        targetEvent.target.classList.add('active');
     }
 
     calculateBdayPrice();
@@ -874,10 +852,37 @@ function renderFavouritesPage() {
     if (dishesGroup) dishesGroup.style.display = favourites.dishes.length ? 'block' : 'none';
 }
 
+// --- CAROUSEL CUSTOMIZATIONS ---
+let selectedDessert = { variety: 'Macarons', boxSize: 'Box of 4', request: '' };
+let selectedBrownie = { flavor: 'Walnut', packSize: 'Pack of 4', wrap: 'Standard' };
+let selectedCookie = { variety: 'Choco Chip', packSize: 'Box of 6' };
+
+function updateDessertState(type, value, btn) {
+    selectedDessert[type] = value;
+    if (btn) {
+        btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+}
+function updateBrownieState(type, value, btn) {
+    selectedBrownie[type] = value;
+    if (btn) {
+        btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+}
+function updateCookieState(type, value, btn) {
+    selectedCookie[type] = value;
+    if (btn) {
+        btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+}
+
 function addDessertToCart() {
     const item = {
-        id: "dessert-macarons",
-        name: "Assorted Macarons (Box of 4)",
+        id: `dessert-${selectedDessert.variety.toLowerCase().replace(/\s+/g, '-')}`,
+        name: `${selectedDessert.variety} (${selectedDessert.boxSize})` + (selectedDessert.request ? ` - ${selectedDessert.request}` : ''),
         price: 350,
         img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427",
         emoji: "🍮",
@@ -889,10 +894,12 @@ function addDessertToCart() {
 }
 
 function addBrownieToCart() {
+    let price = 250;
+    if (selectedBrownie.wrap === 'Premium Gold') price += 50;
     const item = {
-        id: "brownie-overload",
-        name: "Overload Brownie (Pack of 4)",
-        price: 250,
+        id: `brownie-${selectedBrownie.flavor.toLowerCase().replace(/\s+/g, '-')}`,
+        name: `${selectedBrownie.flavor} Brownie (${selectedBrownie.packSize})` + (selectedBrownie.wrap === 'Premium Gold' ? ' - Premium Wrap' : ''),
+        price: price,
         img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338",
         emoji: "🍫",
         category: "brownies",
@@ -904,8 +911,8 @@ function addBrownieToCart() {
 
 function addCookieToCart() {
     const item = {
-        id: "cookie-choco-chip",
-        name: "Choco Chip Cookies (Box of 6)",
+        id: `cookie-${selectedCookie.variety.toLowerCase().replace(/\s+/g, '-')}`,
+        name: `${selectedCookie.variety} Cookies (${selectedCookie.packSize})`,
         price: 250,
         img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg",
         emoji: "🍪",
@@ -923,6 +930,59 @@ function showToast(msg) {
     toast.innerHTML = msg;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
+// --- FEEDBACK & COMPLAINTS ---
+async function submitReview(event) {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.querySelector('input[type="text"]')?.value;
+    const message = form.querySelector('textarea')?.value;
+    // Basic star rating based on UI input if you implement it, for now we will hardcode or guess
+    const rating = 5; 
+
+    try {
+        const res = await fetch(`${API_BASE}/reviews`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rating, name, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showToast('Thank you for your feedback! ⭐');
+            form.reset();
+        } else {
+            showToast(data.message || 'Error submitting review.');
+        }
+    } catch(e) {
+        showToast('Error connecting to server.');
+    }
+}
+
+async function submitComplaint(event) {
+    event.preventDefault();
+    const form = event.target;
+    const subject = form.querySelector('select')?.value;
+    const inputs = form.querySelectorAll('input');
+    const order_id = inputs[0]?.value; 
+    const message = form.querySelector('textarea')?.value;
+
+    try {
+        const res = await fetch(`${API_BASE}/complaints`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ subject, order_id, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showToast('Complaint received. We will look into it. 🛠️');
+            form.reset();
+        } else {
+            showToast(data.message || 'Error submitting complaint.');
+        }
+    } catch(e) {
+        showToast('Error connecting to server.');
+    }
 }
 
 // Initialization
@@ -956,11 +1016,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Track Order auto-fill if on track.html
     const urlParams = new URLSearchParams(window.location.search);
     const idParam = urlParams.get('id');
-    const input = document.getElementById('orderIdInput');
     if (idParam && input) {
         input.value = idParam;
         trackOrder(idParam);
     }
+
+    // Close mobile menu when any link inside it is clicked
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) mobileMenu.classList.remove('show');
+      });
+    });
 });
 
 // --- TRACK ORDER LOGIC ---
@@ -1225,10 +1292,4 @@ function confirmCustomization() {
     addToCart(cartItem);
     closeCustomizeModal();
     openCart();
-    // Close mobile menu when any link inside it is clicked
-document.querySelectorAll('.mobile-menu a').forEach(link => {
-  link.addEventListener('click', () => {
-    document.getElementById('mobileMenu').classList.remove('show');
-  });
-});
 }
