@@ -1,9 +1,7 @@
-script.js
-
 // --- CONFIG ---
 const API_BASE = '/api';
 
-// --- SCROLL TO TOP (NEW FEATURE) ---
+// --- SCROLL TO TOP (KEY SHORTCUT) ---
 document.addEventListener("keydown", (e) => {
     if (e.key.toLowerCase() === "t") {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,11 +23,19 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
+// --- MOBILE MENU ---
+function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
 let selectedFlavor = 'Red Velvet';
 let selectedWeight = '1.0';
+
 const BIRTHDAY_BASE_PRICES = {
     '0.5': 450,
     '1.0': 850,
@@ -37,36 +43,98 @@ const BIRTHDAY_BASE_PRICES = {
     '2.0': 1600
 };
 
-// buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
-    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
+    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" },
+    { id: 4, name: "Overload Brownie", category: "brownies", price: 120, img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
+    { id: 5, name: "Walnut Fudge Brownie", category: "brownies", price: 95, img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181" },
+    { id: 6, name: "Classic Choco Brownie", category: "brownies", price: 80, img: "https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg" },
+    { id: 7, name: "Chocolate Mousse", category: "desserts", price: 150, img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" },
+    { id: 8, name: "Tiramisu Jar", category: "desserts", price: 180, img: "https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg" },
+    { id: 9, name: "Choco Chip Cookies", category: "cookies", price: 250, img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg" },
+    { id: 10, name: "Almond Biscotti", category: "cookies", price: 300, img: "https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg" }
 ];
 
 const DEFAULT_BDAY_CAKES = {
     "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
+    "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" },
+    "Pineapple": { price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
+    "Chocoholic": { price: 900, img: "https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267" },
+    "Black Forest": { price: 750, img: "https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg" },
+    "Cheesecake": { price: 1200, img: "https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg" }
 };
+
+// --- FAVOURITES ---
+const FAVOURITES_KEY = 'brownie_bliss_favourites';
 let favourites = loadFavourites();
-buildCatalogFromList(null);
 
-function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = { ...DEFAULT_BDAY_CAKES };
-
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
+function loadFavourites() {
+    try {
+        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
+    } catch {
+        return { bakeries: [], dishes: [] };
     }
 }
 
-const FAVOURITES_KEY = 'brownie_bliss_favourites';
+function saveFavourites() {
+    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
+}
 
-let favourites = loadFavourites();
+function isFavourite(type, id) {
+    if (!favourites[type]) return false;
+    return favourites[type].some(item => item.id === id || item === id);
+}
 
+function toggleFavourite(type, item) {
+    if (!favourites[type]) favourites[type] = [];
+    const idx = favourites[type].findIndex(f => f.id === item.id);
+    if (idx > -1) {
+        favourites[type].splice(idx, 1);
+    } else {
+        favourites[type].push(item);
+    }
+    saveFavourites();
+    updateFavouritesCount();
+    // Re-render favourites page if on it
+    renderFavouritesPage();
+    // Update any visible favourite buttons
+    const btns = document.querySelectorAll(`[data-fav-type="${type}"][data-fav-id="${item.id}"]`);
+    btns.forEach(btn => {
+        const active = isFavourite(type, item.id);
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.innerHTML = active ? '&hearts;' : '&#9825;';
+    });
+    updateBirthdayFavouriteButton();
+}
+window.toggleFavourite = toggleFavourite;
+
+function updateFavouritesCount() {
+    const total = (favourites.bakeries ? favourites.bakeries.length : 0)
+        + (favourites.dishes ? favourites.dishes.length : 0);
+    document.querySelectorAll('[data-favourites-count]').forEach(el => {
+        el.textContent = total;
+        el.style.display = total > 0 ? '' : 'none';
+    });
+}
+
+function updateFavouriteButtons(type, id) {
+    // No-op placeholder kept for compatibility; individual button states are
+    // set during render via isFavourite()
+}
+window.updateFavouriteButtons = updateFavouriteButtons;
+
+// --- BROWNIE BLISS BAKERY (used for favourite bakery buttons) ---
+const BROWNIE_BLISS_BAKERY = {
+    id: 'brownie-bliss',
+    name: 'Brownie Bliss',
+    category: 'bakery',
+    location: 'Krishnagiri',
+    img: ''
+};
+
+// --- BUILD CATALOG ---
 function buildCatalogFromList(list) {
     if (list && Array.isArray(list) && list.length) {
         products = list.filter(p => p.type === 'standard').map(p => ({
@@ -82,7 +150,7 @@ function buildCatalogFromList(list) {
         bdayCakes = {};
         const bd = list.filter(p => p.type === 'birthday');
         bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
+            bdayCakes[p.id_ref || p.name] = {
                 price: p.price,
                 emoji: p.emoji,
                 img: p.img
@@ -91,6 +159,14 @@ function buildCatalogFromList(list) {
     } else {
         useFallbackProducts();
     }
+
+    if (document.getElementById('productsGrid')) filterProducts('all');
+    if (document.getElementById('cakePrice')) calculateBdayPrice();
+}
+
+function useFallbackProducts() {
+    products = DEFAULT_PRODUCTS.slice();
+    bdayCakes = Object.assign({}, DEFAULT_BDAY_CAKES);
 }
 
 async function loadProducts() {
@@ -98,104 +174,39 @@ async function loadProducts() {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
 
-        if (data.success && Array.isArray(data.products)) {
-            products = data.products.filter(p => p.type === 'standard');
-            bdayCakes = {};
-
-            data.products
-                .filter(p => p.type === 'birthday')
-                .forEach(p => {
-                    bdayCakes[p.name] = {
-                        price: p.price,
-                        img: p.img
-                    };
-                });
-        } else {
-            useFallbackProducts();
-        }
-    } catch (e) {
-        console.error(e);
-        useFallbackProducts();
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
-
-function buildCatalogFromList(list) {
-    if (list && Array.isArray(list) && list.length) {
-        products = list.filter(p => p.type === 'standard').map(p => ({
-
-    if (document.getElementById('productsGrid')) filterProducts('all');
-    if (document.getElementById('cakePrice')) calculateBdayPrice();
-}
-
-function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = DEFAULT_BDAY_CAKES;
-}
-
-// --- FAVOURITES ---
-function loadFavourites() {
-    try {
-        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
-    } catch {
-        return { bakeries: [], dishes: [] };
         if (data.success && Array.isArray(data.products) && data.products.length) {
-        
-          products = data.products.filter(p => p.type === 'standard').map(p => ({
-            id: p.id_ref,
-            name: p.name,
-            category: p.category,
-            price: p.price,
-            emoji: p.emoji,
-            img: p.img,
-            description: p.description || ''
-        }));
-
-        const bd = list.filter(p => p.type === 'birthday');
-        bdayCakes = {};
-        bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
+            products = data.products.filter(p => p.type === 'standard').map(p => ({
+                id: p.id_ref,
+                name: p.name,
+                category: p.category,
                 price: p.price,
                 emoji: p.emoji,
-                img: p.img
-            };
-        });
-    } else {
-            const bd = data.products.filter(p => p.type === 'birthday');
+                img: p.img,
+                description: p.description || ''
+            }));
 
+            bdayCakes = {};
+            const bd = data.products.filter(p => p.type === 'birthday');
             bd.forEach(p => {
-                bdayCakes[p.id_ref] = {
+                bdayCakes[p.id_ref || p.name] = {
                     price: p.price,
                     emoji: p.emoji,
                     img: p.img
                 };
             });
-
         } else {
             useFallbackProducts();
         }
-
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
     }
 
-function saveFavourites() {
-    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
+    // Re-render relevant sections after load
+    if (document.getElementById('productsGrid')) filterProducts('all');
+    if (document.getElementById('cakePrice')) calculateBdayPrice();
 }
 
-// --- CART ---
-    // Render UI
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
 let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
@@ -207,109 +218,223 @@ function saveCart() {
 // --- CART UI ---
 function updateCartUI() {
     const cartContainer = document.getElementById('cartItems');
+    const cartFooter = document.getElementById('cartFooter');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartBadge = document.getElementById('cartBadge');
+
+    // Update cart badge count
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    if (cartBadge) cartBadge.textContent = totalQty;
+
     if (!cartContainer) return;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = "Cart empty 🍫";
-        return;
         cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
-         if (cartFooter) cartFooter.style.display = 'none';
-    } else {
-        cartContainer.innerHTML = cart.map((item, index) => {
-            const c = item.customizations;
-            let customBadges = '';
-            if (c) {
-                if (c.dietary) customBadges += `<span class="cart-custom-badge">${c.dietary === 'eggless' ? '🌱 Eggless' : '🥚 Egg'}</span>`;
-                if (c.toppings && c.toppings.length) customBadges += c.toppings.map(t => `<span class="cart-custom-badge">+ ${t.name}</span>`).join('');
-                if (c.message) customBadges += `<span class="cart-custom-badge cart-custom-msg">✉ "${c.message}"</span>`;
-            } else if (item.message) {
-                customBadges = `<span class="cart-custom-badge cart-custom-msg">✉ "${item.message}"</span>`;
-            }
-            return `
-            <div class="cart-item">
-                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
-                    ${customBadges ? `<div class="cart-custom-tags">${customBadges}</div>` : ''}
-                    <div class="cart-qty">
-                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
-                        <span class="qty-num">${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-                    </div>
-                </div>
-                <button class="cart-item-remove" onclick="removeFromCart(${index})">✕</button>
-            </div>
-        `}).join('');
-        if (cartFooter) cartFooter.style.display = 'block';
-        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+        if (cartFooter) cartFooter.style.display = 'none';
+        return;
     }
 
-    cartContainer.innerHTML = cart.map((item, index) => `
-        <div>
-            ${item.name} x ${item.qty}
-            <button onclick="changeQty(${index},1)">+</button>
-            <button onclick="changeQty(${index},-1)">-</button>
+    cartContainer.innerHTML = cart.map((item, index) => {
+        const c = item.customizations;
+        let customBadges = '';
+        if (c) {
+            if (c.dietary) customBadges += `<span class="cart-custom-badge">${c.dietary === 'eggless' ? '🌱 Eggless' : '🥚 Egg'}</span>`;
+            if (c.toppings && c.toppings.length) customBadges += c.toppings.map(t => `<span class="cart-custom-badge">+ ${t.name}</span>`).join('');
+            if (c.message) customBadges += `<span class="cart-custom-badge cart-custom-msg">✉ "${c.message}"</span>`;
+        } else if (item.message) {
+            customBadges = `<span class="cart-custom-badge cart-custom-msg">✉ "${item.message}"</span>`;
+        }
+        return `
+        <div class="cart-item">
+            <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
+                ${customBadges ? `<div class="cart-custom-tags">${customBadges}</div>` : ''}
+                <div class="cart-qty">
+                    <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                    <span class="qty-num">${item.qty}</span>
+                    <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                </div>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart(${index})">✕</button>
         </div>
-    `).join('');
+        `;
+    }).join('');
+
+    if (cartFooter) cartFooter.style.display = 'block';
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
 }
 
-// FIXED ADD TO CART
+// Alias for compatibility with products.html inline script
+function updateCartBadge() {
+    updateCartUI();
+}
+window.updateCartBadge = updateCartBadge;
+
+// Alias for theme icon update
+function updateThemeIcon() {
+    applyTheme(localStorage.getItem('bb_theme') || 'light');
+}
+window.updateThemeIcon = updateThemeIcon;
+
+// --- ADD TO CART ---
 function addToCart(product) {
-    const existing = cart.find(i => i.name === product.name);
-
-    if (existing) existing.qty++;
-    else cart.push({ ...product, qty: 1 });
-
+    const existing = cart.find(i => i.id === product.id && i.name === product.name);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
     saveCart();
     updateCartUI();
     showToast('Added to cart! 🛒');
 }
+window.addToCart = addToCart;
 
-// FIXED QTY
+// --- CHANGE QTY ---
 function changeQty(index, delta) {
+    if (!cart[index]) return;
     cart[index].qty += delta;
     if (cart[index].qty <= 0) cart.splice(index, 1);
     saveCart();
     updateCartUI();
 }
+window.changeQty = changeQty;
 
-// --- PRODUCT FILTER (FIXED BUTTON BUG) ---
-function filterProducts(category) {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-
-    const filtered = category === 'all'
-        ? products
-        : products.filter(p => p.category === category);
-
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <img src="${p.img}" />
-            <h3>${p.name}</h3>
-            <p>₹${p.price}</p>
-
-            <button onclick='addToCart(${JSON.stringify(p)})'>
-                Add to Cart
-            </button>
+// --- REMOVE FROM CART ---
 function removeFromCart(index) {
     cart.splice(index, 1);
     saveCart();
     updateCartUI();
 }
+window.removeFromCart = removeFromCart;
 
+// --- OPEN / CLOSE CART ---
 function openCart() {
     document.getElementById('cartSidebar')?.classList.add('open');
     document.getElementById('cartOverlay')?.classList.add('open');
 }
+window.openCart = openCart;
 
 function closeCart() {
     document.getElementById('cartSidebar')?.classList.remove('open');
     document.getElementById('cartOverlay')?.classList.remove('open');
 }
+window.closeCart = closeCart;
 
-// --- CHECKOUT FLOW ---
+// --- PRODUCT FILTERING ---
+let selectedPriceFilter = 'all';
+
+function updatePriceFilter() {
+    selectedPriceFilter = document.getElementById('priceFilter')?.value || 'all';
+    const activeTab = document.querySelector('.filter-tab.active');
+    const activeCategory = activeTab ? activeTab.dataset.category || activeTab.textContent.trim().toLowerCase() : 'all';
+    filterProducts(activeCategory);
+}
+window.updatePriceFilter = updatePriceFilter;
+
+function filterProducts(category, btn) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+
+    if (btn) {
+        btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    let filtered = category === 'all'
+        ? products
+        : products.filter(p => p.category === category);
+
+    // Price filter
+    if (selectedPriceFilter === 'under200') {
+        filtered = filtered.filter(p => p.price < 200);
+    } else if (selectedPriceFilter === '200to500') {
+        filtered = filtered.filter(p => p.price >= 200 && p.price <= 500);
+    } else if (selectedPriceFilter === 'above500') {
+        filtered = filtered.filter(p => p.price > 500);
+    }
+
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
+            <div class="product-img-wrap">
+                <img src="${p.img}" alt="${p.name}">
+                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+                    type="button"
+                    data-fav-type="dishes"
+                    data-fav-id="${p.id}"
+                    aria-label="Toggle ${p.name} favourite"
+                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+                </button>
+                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
+            </div>
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <div class="product-name">${p.name}</div>
+                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                <div class="product-price">₹${p.price}</div>
+                <button class="add-to-cart" onclick='event.stopPropagation(); openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                    Customize &amp; Add
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+window.filterProducts = filterProducts;
+
+// --- CUSTOMIZE MODAL ---
+function openCustomizeModal(product) {
+    // If a dedicated customize modal exists, use it; otherwise fall back to addToCart directly
+    const modal = document.getElementById('customizeModal');
+    if (modal) {
+        // Populate modal fields if they exist
+        const nameEl = document.getElementById('modalProductName');
+        const priceEl = document.getElementById('modalProductPrice');
+        const imgEl = document.getElementById('modalProductImg');
+        if (nameEl) nameEl.textContent = product.name;
+        if (priceEl) priceEl.textContent = `₹${product.price}`;
+        if (imgEl) imgEl.src = product.img || '';
+
+        // Store current product for modal submission
+        modal.dataset.product = JSON.stringify(product);
+        modal.classList.add('open');
+    } else {
+        // No modal — add directly to cart
+        addToCart(product);
+    }
+}
+window.openCustomizeModal = openCustomizeModal;
+
+function closeCustomizeModal() {
+    const modal = document.getElementById('customizeModal');
+    if (modal) modal.classList.remove('open');
+}
+window.closeCustomizeModal = closeCustomizeModal;
+
+function confirmCustomize() {
+    const modal = document.getElementById('customizeModal');
+    if (!modal) return;
+    try {
+        const product = JSON.parse(modal.dataset.product || '{}');
+        const dietary = document.querySelector('input[name="dietary"]:checked')?.value || null;
+        const message = document.getElementById('cakeMessageInput')?.value?.trim() || '';
+        const toppingEls = document.querySelectorAll('input[name="topping"]:checked');
+        const toppings = Array.from(toppingEls).map(el => ({ name: el.value }));
+
+        const customizations = { dietary, message, toppings };
+        addToCart({ ...product, customizations });
+        closeCustomizeModal();
+    } catch (e) {
+        console.error('Customize modal error:', e);
+    }
+}
+window.confirmCustomize = confirmCustomize;
+
 // --- CHECKOUT FLOW ---
 function injectCheckoutModal() {
     if (document.getElementById('checkoutOverlay')) return;
@@ -365,7 +490,7 @@ function injectCheckoutModal() {
                     </div>
                     <div id="demoOtpBox" style="display:none; margin-bottom: 20px;"></div>
                     <button class="hero-cta" style="width: 100%;" onclick="verifyOTP()">
-                        Verify & Continue &rarr;
+                        Verify &amp; Continue &rarr;
                     </button>
                     <button class="text-link" onclick="showCheckoutStep(1)">Change Phone Number</button>
                 </div>
@@ -409,7 +534,7 @@ function injectCheckoutModal() {
                         </div>
                     </div>
                     <button class="whatsapp-btn" style="border-radius: 0;" onclick="placeOrder()">
-                        Place Order & Confirm via WhatsApp &rarr;
+                        Place Order &amp; Confirm via WhatsApp &rarr;
                     </button>
                 </div>
             </div>
@@ -429,10 +554,13 @@ function openCheckout() {
     showCheckoutStep(1);
     document.getElementById('checkoutOverlay').classList.add('open');
 }
+window.openCheckout = openCheckout;
 
 function closeCheckout() {
-    document.getElementById('checkoutOverlay').classList.remove('open');
+    const overlay = document.getElementById('checkoutOverlay');
+    if (overlay) overlay.classList.remove('open');
 }
+window.closeCheckout = closeCheckout;
 
 function showCheckoutStep(n) {
     checkoutState.currentStep = n;
@@ -447,6 +575,7 @@ function showCheckoutStep(n) {
         }
     });
 }
+window.showCheckoutStep = showCheckoutStep;
 
 async function sendOTP() {
     const name = document.getElementById('custName').value.trim();
@@ -460,31 +589,31 @@ async function sendOTP() {
     checkoutState.name = name;
     checkoutState.phone = phone;
 
-    // Bypassing OTP
     const btn = document.querySelector('#checkStep1 .hero-cta');
-if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
 
-try {
-  const res = await fetch(`${API_BASE}/send-otp`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone })
-  });
-  const data = await res.json();
+    try {
+        const res = await fetch(`${API_BASE}/send-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone })
+        });
+        const data = await res.json();
 
-  if (data.success) {
-    document.getElementById('otpPhoneDisp').textContent = '+91 ' + phone;
-    showCheckoutStep(2);
-    showToast('OTP sent! Check your phone.');
-  } else {
-    showToast(data.message || 'Failed to send OTP. Try again.');
-  }
-} catch (e) {
-  showToast('Server error. Please try again.');
-} finally {
-  if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
- }
+        if (data.success) {
+            document.getElementById('otpPhoneDisp').textContent = '+91 ' + phone;
+            showCheckoutStep(2);
+            showToast('OTP sent! Check your phone.');
+        } else {
+            showToast(data.message || 'Failed to send OTP. Try again.');
+        }
+    } catch (e) {
+        showToast('Server error. Please try again.');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
+    }
 }
+window.sendOTP = sendOTP;
 
 function otpNext(input, idx) {
     input.value = input.value.replace(/\D/, '');
@@ -492,6 +621,7 @@ function otpNext(input, idx) {
         document.querySelectorAll('.otp-box')[idx + 1]?.focus();
     }
 }
+window.otpNext = otpNext;
 
 async function verifyOTP() {
     const otp = [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
@@ -515,6 +645,7 @@ async function verifyOTP() {
         showToast('Verification failed. Try again.');
     }
 }
+window.verifyOTP = verifyOTP;
 
 function goToConfirm() {
     const addr = document.getElementById('custAddr').value.trim();
@@ -538,23 +669,27 @@ function goToConfirm() {
     document.getElementById('confirmItems').innerHTML = cart.map(i => `
         <div class="confirm-row">
             <span>${i.name} × ${i.qty}</span>
-            <strong style="color:var(--brown-warm)">₹${(i.price * i.qty).toLocaleString()}</strong>
+            <strong style="color:var(--brown-warm)">₹${(i.price * i.qty).toLocaleString('en-IN')}</strong>
         </div>
     `).join('');
 
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    document.getElementById('confirmTotal').textContent = `₹${total.toLocaleString()}`;
+    document.getElementById('confirmTotal').textContent = `₹${total.toLocaleString('en-IN')}`;
     showCheckoutStep(4);
 }
+window.goToConfirm = goToConfirm;
 
 async function placeOrder() {
+    const itemsSnap = cart.slice(); // snapshot before clearing
+    const orderTotal = itemsSnap.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
+
     const orderData = {
         customer_name: checkoutState.name,
         phone: checkoutState.phone,
         address: checkoutState.address,
         city: checkoutState.city,
         pincode: checkoutState.pincode,
-        items: cart.map(i => ({
+        items: itemsSnap.map(i => ({
             id: typeof i.id === 'number' ? i.id : 0,
             name: i.name,
             price: i.price,
@@ -563,7 +698,7 @@ async function placeOrder() {
             category: i.category || 'general',
             customizations: i.customizations || null
         })),
-        total: cart.reduce((s, i) => s + i.price * i.qty, 0)
+        total: orderTotal
     };
 
     try {
@@ -575,7 +710,7 @@ async function placeOrder() {
         const data = await res.json();
         if (data.success) {
             const orderId = data.order_id;
-            sendWhatsAppFinal(orderId);
+            sendWhatsAppFinal(orderId, itemsSnap, orderTotal);
 
             cart = [];
             saveCart();
@@ -589,49 +724,26 @@ async function placeOrder() {
         showToast('Error placing order. Please try again.');
     }
 }
+window.placeOrder = placeOrder;
 
-// --- WHATSAPP FINAL ---
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+// --- WHATSAPP ---
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
-
-    const lines = Array.isArray(itemsSnap) && itemsSnap.length
-        ? itemsSnap
-        : cart;
-
+    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
 
     const itemLines = lines.map(i => {
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
-
-            if (c.dietary) {
-                details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
-            }
-
-            if (c.toppings && c.toppings.length) {
-                details.push(c.toppings.map(t => `+${t.name}`).join(', '));
-            }
-
-            if (c.message) {
-                details.push(`Msg: "${c.message}"`);
-            }
-
-            if (details.length) {
-                line += `\n   _${details.join(' | ')}_`;
-            }
+            if (c.dietary) details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
+            if (c.toppings && c.toppings.length) details.push(c.toppings.map(t => `+${t.name}`).join(', '));
+            if (c.message) details.push(`Msg: "${c.message}"`);
+            if (details.length) line += `\n   _${details.join(' | ')}_`;
         }
-
         return line;
-
     }).join('\n');
 
     const message =
@@ -641,170 +753,224 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         `📱 *Phone:* +91 ${checkoutState.phone}\n` +
         `📍 *Address:* ${checkoutState.address}, ${checkoutState.city} - ${checkoutState.pincode}\n\n` +
         `🛒 *Order Details:*\n${itemLines}\n\n` +
-        `💰 *Total Amount: ₹${total.toLocaleString()}*\n\n` +
+        `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
         `_Your order has been recorded. Please share the payment receipt for confirmation!_ ✨`;
 
     const encodedMsg = encodeURIComponent(message);
-
     const fullPhone = `918072596340`;
-
     const waUrl = `https://wa.me/${fullPhone}?text=${encodedMsg}`;
-
     window.open(waUrl, '_blank');
 }
+window.sendWhatsAppFinal = sendWhatsAppFinal;
+
 // Redirect old button
 function sendToWhatsApp() {
     openCheckout();
 }
+window.sendToWhatsApp = sendToWhatsApp;
 
-let selectedPriceFilter = 'all';
-function updatePriceFilter() {
-    selectedPriceFilter =
-        document.getElementById('priceFilter').value;
-
-    const activeTab =
-        document.querySelector('.filter-tab.active');
-
-    const activeCategory =
-        activeTab
-            ? activeTab.textContent.toLowerCase()
-            : 'all';
-
-    filterProducts(activeCategory);
-}
-// --- PRODUCT FILTERING ---
-function filterProducts(category, btn) {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-
-    if (btn) {
-        btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+// --- NAVIGATE TO CATEGORY (hero cards) ---
+function navigateToCategory(category) {
+    const section = document.getElementById('products');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+            const tabs = document.querySelectorAll('.filter-tabs .filter-tab');
+            tabs.forEach(btn => {
+                if (btn.textContent.trim().toLowerCase() === category) {
+                    filterProducts(category, btn);
+                }
+            });
+        }, 400);
+    } else {
+        window.location.href = 'products.html';
     }
+}
+window.navigateToCategory = navigateToCategory;
 
-    let filtered = category === 'all'
-    ? products
-    : products.filter(p => p.category === category);
+// --- SLIDE SECTION IMAGE MAPS ---
+const DESSERT_IMAGES = {
+    'Macarons': 'https://www.labellemiette.com.au/cdn/shop/files/12pc_Assorted.png?v=1697772671&width=1946',
+    'Tarts': 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600',
+    'Pastries': 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267',
+    'Cupcakes': 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=600',
+    'Mousse': 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    'Donuts': 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600'
+};
 
-// PRICE FILTER
-if (selectedPriceFilter === 'under200') {
-    filtered = filtered.filter(p => p.price < 200);
+const BROWNIE_IMAGES = {
+    'Walnut': 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181',
+    'Overload': 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+    'Nutella': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpfIcMrkHpOA42VUVV2oes2Bz9IDz9SXYmHQ&s',
+    'Red Velvet': 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    'Cookie': 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
+    'Assorted': 'https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg'
+};
+
+const COOKIE_IMAGES = {
+    'Choco Chip': 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
+    'Double Choco': 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600',
+    'Oatmeal Raisin': 'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=600',
+    'Almond Biscotti': 'https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg',
+    'Red Velvet': 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    'Assorted': 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600'
+};
+
+// --- SLIDE IMAGE SWITCHERS ---
+function updateDessertSlide(variety, btnEl) {
+    if (btnEl) {
+        btnEl.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+    const img = document.getElementById('dessertImg');
+    if (img && DESSERT_IMAGES[variety]) img.src = DESSERT_IMAGES[variety];
 }
-else if (selectedPriceFilter === '200to500') {
-    filtered = filtered.filter(
-        p => p.price >= 200 && p.price <= 500
-    );
+window.updateDessertSlide = updateDessertSlide;
+
+function updateBrownieSlide(flavor, btnEl) {
+    if (btnEl) {
+        btnEl.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+    const img = document.getElementById('brownieImg');
+    if (img && BROWNIE_IMAGES[flavor]) img.src = BROWNIE_IMAGES[flavor];
 }
-else if (selectedPriceFilter === 'above500') {
-    filtered = filtered.filter(p => p.price > 500);
+window.updateBrownieSlide = updateBrownieSlide;
+
+function updateCookieSlide(variety, btnEl) {
+    if (btnEl) {
+        btnEl.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+    const img = document.getElementById('cookieImg');
+    if (img && COOKIE_IMAGES[variety]) img.src = COOKIE_IMAGES[variety];
+}
+window.updateCookieSlide = updateCookieSlide;
+
+// --- GENERIC TAB TOGGLE (for box/pack size buttons) ---
+function toggleSlideTab(btnEl) {
+    if (btnEl) {
+        btnEl.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+}
+window.toggleSlideTab = toggleSlideTab;
+
+// --- SLIDE SECTION ADD-TO-CART HELPERS ---
+function getActiveTabText(parentSelector) {
+    const parent = document.querySelector(parentSelector);
+    if (!parent) return '';
+    const active = parent.querySelector('.filter-tab.active');
+    return active ? active.textContent.trim() : '';
 }
 
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
-            <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}">
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
-        </div>
-    `).join('');
+function addDessertToCart() {
+    const variety = getActiveTabText('.bday-slide:nth-child(2) [style*="grid-template-columns"]') || 'Macarons';
+    const boxSize = getActiveTabText('.bday-slide:nth-child(2) [style*="flex"]') || 'Box of 4';
+    addToCart({
+        id: `dessert-${variety}-${boxSize}`,
+        name: `${variety} (${boxSize})`,
+        price: 450,
+        img: DESSERT_IMAGES[variety] || 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+        category: 'desserts',
+        emoji: '🍮'
+    });
+    showToast('Dessert added to cart! 🍮');
+    openCart();
 }
+window.addDessertToCart = addDessertToCart;
+
+function addBrownieToCart() {
+    const flavor = getActiveTabText('.bday-slide:nth-child(3) [style*="grid-template-columns"]') || 'Walnut';
+    const pack = getActiveTabText('.bday-slide:nth-child(3) [style*="flex"]') || 'Pack of 4';
+    addToCart({
+        id: `brownie-${flavor}-${pack}`,
+        name: `${flavor} Brownie (${pack})`,
+        price: 250,
+        img: BROWNIE_IMAGES[flavor] || 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+        category: 'brownies',
+        emoji: '🍫'
+    });
+    showToast('Brownie added to cart! 🍫');
+    openCart();
+}
+window.addBrownieToCart = addBrownieToCart;
+
+function addCookieToCart() {
+    const variety = getActiveTabText('.bday-slide:nth-child(4) [style*="grid-template-columns"]') || 'Choco Chip';
+    const pack = getActiveTabText('.bday-slide:nth-child(4) [style*="flex"]') || 'Box of 6';
+    addToCart({
+        id: `cookie-${variety}-${pack}`,
+        name: `${variety} Cookie (${pack})`,
+        price: 250,
+        img: COOKIE_IMAGES[variety] || 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
+        category: 'cookies',
+        emoji: '🍪'
+    });
+    showToast('Cookie added to cart! 🍪');
+    openCart();
+}
+window.addCookieToCart = addCookieToCart;
+
+function toggleBakeryFavourite() {
+    toggleFavourite('bakeries', BROWNIE_BLISS_BAKERY);
+    const btn = document.querySelector('[data-fav-id="brownie-bliss"]');
+    if (btn) {
+        const active = isFavourite('bakeries', BROWNIE_BLISS_BAKERY.id);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.innerHTML = active ? '&hearts; Favourite Bakery' : '&#9825; Favourite Bakery';
+    }
+}
+window.toggleBakeryFavourite = toggleBakeryFavourite;
 
 // --- BIRTHDAY CAKE BUILDER ---
-// bdayCakes object is now populated dynamically via loadProducts()
-
 function updateBirthdayCake(flavor) {
-
     if (!bdayCakes[flavor]) {
-        console.error("Cake flavor not found:", flavor);
+        console.warn("Cake flavor not found:", flavor);
         return;
     }
 
     selectedFlavor = flavor;
 
-    // Update image
     const cakeImg = document.getElementById('birthdayCakeImg');
     if (cakeImg && bdayCakes[flavor]) {
         cakeImg.src = bdayCakes[flavor].img;
     }
 
-    if (cakeImg) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
-
-    // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
-        if (btn.textContent.trim() === flavor) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+    document.querySelectorAll('.flavor-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim() === flavor);
     });
 
     calculateBdayPrice();
 }
-function setCakeWeight(weight) {
-// --- BIRTHDAY CAKE ---
-let selectedFlavor = "Red Velvet";
-let selectedWeight = "1.0";
+window.updateBirthdayCake = updateBirthdayCake;
 
-const BIRTHDAY_BASE_PRICES = {
-    "0.5": 450,
-    "1.0": 850,
-    "1.5": 1250,
-    "2.0": 1600
-};
-
-function setCakeWeight(weight, event) {
+function setCakeWeight(weight, btnEl) {
     selectedWeight = weight;
-
-    document.querySelectorAll('.weight-btn')
-        .forEach(b => b.classList.remove('active'));
-
-    if (event?.target)
-        event.target.classList.add('active');
-
+    if (btnEl) {
+        btnEl.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
     calculateBdayPrice();
 }
+window.setCakeWeight = setCakeWeight;
 
 function calculateBdayPrice() {
     const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
-
     const priceEl = document.getElementById('cakePrice');
-    if (priceEl) {
-        priceEl.textContent = `₹ ${price}`;
-    }
-
+    if (priceEl) priceEl.textContent = `₹ ${price}`;
     updateBirthdayFavouriteButton();
 }
+window.calculateBdayPrice = calculateBdayPrice;
 
 function getBirthdayFavouriteItem() {
     const cake = bdayCakes[selectedFlavor] || {};
-
     return {
         id: `bday-${selectedFlavor}-${selectedWeight}`,
         name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-        price: BIRTHDAY_BASE_PRICES[selectedWeight],
+        price: BIRTHDAY_BASE_PRICES[selectedWeight] || 850,
         img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
-        emoji: cake.emoji || '',
+        emoji: cake.emoji || '🎂',
         category: 'cakes'
     };
 }
@@ -812,37 +978,24 @@ function getBirthdayFavouriteItem() {
 function updateBirthdayFavouriteButton() {
     const btn = document.getElementById('birthdayFavoriteBtn');
     if (!btn) return;
-
     const item = getBirthdayFavouriteItem();
     const active = isFavourite('dishes', item.id);
-
     btn.dataset.favType = 'dishes';
     btn.dataset.favId = item.id;
     btn.classList.toggle('active', active);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    btn.setAttribute(
-        'title',
-        active ? 'Remove from favourites' : 'Add to favourites'
-    );
-
+    btn.setAttribute('title', active ? 'Remove from favourites' : 'Add to favourites');
     btn.innerHTML = active ? '&hearts;' : '&#9825;';
 }
-// --- FIXED WHATSAPP (ONLY ONE VERSION) ---
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+window.updateBirthdayFavouriteButton = updateBirthdayFavouriteButton;
+
 function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
+window.toggleBirthdayFavourite = toggleBirthdayFavourite;
 
 function addBirthdayToCart() {
-    if (!bdayCakes[selectedFlavor]) return;
-
-    const basePrices = {
-        "0.5": 450,
-        "1.0": 850,
-        "1.5": 1250,
-        "2.0": 1600
-    };
+    if (!bdayCakes[selectedFlavor] && !Object.keys(BIRTHDAY_BASE_PRICES).includes(selectedWeight)) return;
 
     const fallbacks = {
         'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
@@ -853,12 +1006,8 @@ function addBirthdayToCart() {
         'Cheesecake': { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg', emoji: '🧀' }
     };
 
-    const cakeInfo =
-        bdayCakes[selectedFlavor] ||
-        fallbacks[selectedFlavor] ||
-        fallbacks['Red Velvet'];
-
-    const finalPrice = basePrices[selectedWeight] || 850;
+    const cakeInfo = bdayCakes[selectedFlavor] || fallbacks[selectedFlavor] || fallbacks['Red Velvet'];
+    const finalPrice = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
 
     const msgInput = document.getElementById('cakeMessage');
     const message = msgInput ? msgInput.value.trim() : '';
@@ -876,12 +1025,19 @@ function addBirthdayToCart() {
 
     addToCart(item);
     showToast('🎂 Birthday cake added to cart!');
-    openCart();
     if (msgInput) msgInput.value = '';
-
     openCart();
 }
+window.addBirthdayToCart = addBirthdayToCart;
 
+// --- ORDER NOW (direct shortcut) ---
+function orderNow(product) {
+    addToCart(product);
+    openCheckout();
+}
+window.orderNow = orderNow;
+
+// --- FAVOURITES PAGE ---
 function renderFavouritesPage() {
     const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
     const dishesGrid = document.getElementById('favouriteDishesGrid');
@@ -894,11 +1050,11 @@ function renderFavouritesPage() {
     if (bakeryGrid) {
         bakeryGrid.innerHTML = favourites.bakeries.map(bakery => `
             <article class="favourite-bakery-card">
-                <img src="${bakery.img}" alt="${bakery.name}">
+                <img src="${bakery.img || ''}" alt="${bakery.name}">
                 <div class="favourite-bakery-info">
-                    <div class="product-category">${bakery.category}</div>
+                    <div class="product-category">${bakery.category || ''}</div>
                     <h3>${bakery.name}</h3>
-                    <p>${bakery.location}</p>
+                    <p>${bakery.location || ''}</p>
                     <button class="add-to-cart favourite-remove"
                         type="button"
                         onclick='toggleFavourite("bakeries", ${JSON.stringify(bakery)})'>
@@ -907,6 +1063,7 @@ function renderFavouritesPage() {
                 </div>
             </article>
         `).join('');
+        if (bakeryGroup) bakeryGroup.style.display = favourites.bakeries.length ? '' : 'none';
     }
 
     if (dishesGrid) {
@@ -928,58 +1085,42 @@ function renderFavouritesPage() {
                 <div class="product-info">
                     <div class="product-category">${dish.category || 'favourite'}</div>
                     <div class="product-name">${dish.name}</div>
-                    ${dish.price ? `<div class="product-price">Rs. ${dish.price}</div>` : ''}
+                    ${dish.price ? `<div class="product-price">₹${dish.price}</div>` : ''}
                     <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
                         Add to Cart
                     </button>
                 </div>
             </div>
         `).join('');
+        if (dishesGroup) dishesGroup.style.display = favourites.dishes.length ? '' : 'none';
     }
 
-    const items = cart.map(i =>
-        `• ${i.name} × ${i.qty} = ₹${i.price * i.qty}`
-    ).join('\n');
-
-    const msg =
-        `🍫 Order ID: ${orderId}\n\n` +
-        `${items}\n\nTotal: ₹${total}`;
-
-    const url = `https://wa.me/918072596340?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
+    const hasAny = (favourites.bakeries && favourites.bakeries.length) || (favourites.dishes && favourites.dishes.length);
+    if (emptyState) emptyState.style.display = hasAny ? 'none' : '';
 }
+window.renderFavouritesPage = renderFavouritesPage;
 
 // --- TOAST ---
 function showToast(msg) {
     const t = document.getElementById('toast');
     if (!t) return;
-    t.textContent = msg;
+    t.innerHTML = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
 }
+window.showToast = showToast;
 
-// --- INIT ---
-document.addEventListener('DOMContentLoaded', () => {
-    applyTheme(localStorage.getItem('bb_theme') || 'light');
-    updateCartUI();
-    loadProducts(); // Load and then automatically re-render main grid/birthday block
-    updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
-    updateFavouritesCount();
-    renderFavouritesPage();
-
-    // Track Order auto-fill if on track.html
-    const urlParams = new URLSearchParams(window.location.search);
-    const idParam = urlParams.get('id');
-    const input = document.getElementById('orderIdInput');
-    if (idParam && input) {
-        input.value = idParam;
-        trackOrder(idParam);
-    }
-    loadProducts();
-});
-// Show/hide button on scroll
+// --- SCROLL TO TOP BUTTON ---
 window.addEventListener("scroll", function () {
     const btn = document.getElementById("scrollTopBtn");
+    if (!btn) return;
+    btn.style.display = window.scrollY > 300 ? "block" : "none";
+});
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+window.scrollToTop = scrollToTop;
 
 // --- TRACK ORDER LOGIC ---
 async function trackOrder(id) {
@@ -989,19 +1130,14 @@ async function trackOrder(id) {
 
     if (!orderIdInput) return;
 
-    // Reset previous state
     if (trackError) {
         trackError.classList.remove('show');
         trackError.textContent = '';
     }
-
-    if (result) {
-        result.style.display = 'none';
-    }
+    if (result) result.style.display = 'none';
 
     const orderId = id || orderIdInput.value.trim();
 
-    // Empty input validation
     if (!orderId) {
         if (trackError) {
             trackError.textContent = 'Please enter an Order ID';
@@ -1014,50 +1150,44 @@ async function trackOrder(id) {
         const res = await fetch(`${API_BASE}/orders/${orderId}`);
         const data = await res.json();
 
-        // Successful order fetch
         if (data.success || data.order) {
             renderOrderDetails(data.order || data);
-
-            if (result) {
-                result.style.display = 'block';
-            }
-        }
-        // Invalid order
-        else {
+            if (result) result.style.display = 'block';
+        } else {
             if (trackError) {
-                trackError.textContent =
-                    data.error || 'Order not found';
+                trackError.textContent = data.error || 'Order not found';
                 trackError.classList.add('show');
             }
         }
-
     } catch (e) {
         console.error(e);
-
         if (trackError) {
-            trackError.textContent =
-                'Error fetching order. Make sure server is running!';
+            trackError.textContent = 'Error fetching order. Make sure server is running!';
             trackError.classList.add('show');
         }
     }
 }
+window.trackOrder = trackOrder;
 
 function renderOrderDetails(order) {
     const resOrderId = document.getElementById('resOrderId');
-    if (!resOrderId) return; // Not on track page
+    if (!resOrderId) return;
 
     resOrderId.textContent = order.id || order.order_id;
 
     const statusLower = (order.status || 'pending').toLowerCase();
-    
-    // Update top total amount
+
     const resTotalTop = document.getElementById('resTotalTop');
     if (resTotalTop) resTotalTop.textContent = order.total;
 
-    // Timeline Progression Logic
+    const resDate = document.getElementById('resDate');
+    if (resDate && order.created_at) {
+        resDate.textContent = new Date(order.created_at).toLocaleString();
+    }
+
     const timeline = document.getElementById('trackingTimeline');
     const cancelledAlert = document.getElementById('cancelledAlert');
-    
+
     if (timeline && cancelledAlert) {
         if (statusLower === 'cancelled') {
             timeline.style.display = 'none';
@@ -1065,42 +1195,45 @@ function renderOrderDetails(order) {
         } else {
             timeline.style.display = 'block';
             cancelledAlert.style.display = 'none';
-            
-            // Reset all steps
+
             const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
             steps.forEach(s => {
                 const el = document.getElementById(`step-${s}`);
                 if (el) el.classList.remove('active', 'completed');
             });
-            
-            // Determine current step index
+
             const currentIndex = steps.indexOf(statusLower) > -1 ? steps.indexOf(statusLower) : 0;
-            
-            // Apply classes
             steps.forEach((s, i) => {
                 const el = document.getElementById(`step-${s}`);
                 if (!el) return;
-                
-                if (i < currentIndex) {
-                    el.classList.add('completed');
-                } else if (i === currentIndex) {
-                    el.classList.add('active');
-                }
+                if (i < currentIndex) el.classList.add('completed');
+                else if (i === currentIndex) el.classList.add('active');
             });
         }
     }
+}
+window.renderOrderDetails = renderOrderDetails;
 
-    if (order.created_at) {
-        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(localStorage.getItem('bb_theme') || 'light');
+
+    // Initialize cart UI (reads from localStorage)
+    updateCartUI();
+
+    // Load products from API (falls back to defaults automatically)
+    loadProducts();
+
+    // Favourites
+    updateFavouritesCount();
+    renderFavouritesPage();
+
+    // Track Order auto-fill if on track.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    const input = document.getElementById('orderIdInput');
+    if (idParam && input) {
+        input.value = idParam;
+        trackOrder(idParam);
     }
 });
-
-// Scroll to top function
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}

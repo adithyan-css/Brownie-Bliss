@@ -483,20 +483,11 @@ function startServer(port) {
     }
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
 // ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
   startServer(PORT);
 }
 

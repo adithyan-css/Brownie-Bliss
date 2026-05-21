@@ -125,6 +125,10 @@ nav a {
   position: relative;
 }
 
+nav a:visited {
+  color: var(--text-mid);
+}
+
 nav a::after {
   content: '';
   position: absolute;
@@ -2598,27 +2602,54 @@ a.logo {
 .mobile-menu{
   display:none;
   flex-direction:column;
-  background:white;
-  padding:15px;
-  position: sticky; 
-  top: 0;            
-  z-index: 999; 
+  gap: 8px;
+  background: var(--white);
+  padding: 20px 24px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: 0 8px 32px rgba(62, 39, 18, 0.12);
+  border-top: 1px solid var(--cream-dark);
 }
+.mobile-menu.open,
 .mobile-menu.show {
   display: flex !important;
   flex-direction: column;
 }
 
 .mobile-menu a{
-  text-decoration:none;
-  color:var(--brown-dark);
-  padding:10px 0;
-  border-bottom:1px solid #eee;
+  display: block;
+  text-decoration: none;
+  color: var(--brown-dark);
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--cream-dark);
+  background: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu a:hover {
+  background: var(--gold);
+  color: var(--white);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(193, 154, 107, 0.3);
 }
 
 @media (max-width: 900px) {
+  header {
+    position: relative;
+  }
+
   nav {
-    display: none !important;  /* add !important */
+    display: none !important;
   }
 
   .menu-toggle {

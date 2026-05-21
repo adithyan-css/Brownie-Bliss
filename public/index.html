@@ -10,6 +10,150 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* --- REVIEWS CARDS --- */
+    .bb-reviews {
+      padding: 100px 24px;
+      background: var(--cream);
+      text-align: center;
+    }
+    .bb-reviews .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .bb-reviews h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 50px;
+    }
+    .bb-reviews h2 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .review-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 32px 28px 28px;
+      box-shadow: 0 2px 16px rgba(62, 39, 18, 0.07);
+      text-align: left;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border-top: 3px solid transparent;
+    }
+    .review-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(62, 39, 18, 0.13);
+    }
+    .review-card.featured {
+      border-top-color: var(--gold);
+      background: linear-gradient(170deg, var(--white) 80%, rgba(193, 154, 107, 0.06));
+    }
+    .review-card .featured-badge {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      background: rgba(193, 154, 107, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .review-card .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.4;
+      display: block;
+      margin-bottom: -8px;
+    }
+    .review-card .stars {
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .review-card .review-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-mid, #6b5c4f);
+      margin-bottom: 20px;
+    }
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid rgba(193, 154, 107, 0.15);
+      padding-top: 16px;
+    }
+    .reviewer-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--brown-dark, #3e2712));
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .reviewer-name {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--brown-dark, #3e2712);
+      margin: 0;
+    }
+    .reviewer-location {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: var(--text-mid, #6b5c4f);
+      opacity: 0.7;
+      margin: 2px 0 0;
+    }
+    .bb-overall {
+      margin-top: 40px;
+    }
+    .bb-overall .stars-big {
+      font-size: 28px;
+      color: var(--gold);
+      letter-spacing: 4px;
+    }
+    .bb-overall .rating-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-mid, #6b5c4f);
+      margin-top: 8px;
+    }
+    .bb-overall .rating-text strong {
+      color: var(--brown-dark, #3e2712);
+      font-size: 18px;
+    }
+    @media (max-width: 768px) {
+      .reviews-grid { grid-template-columns: 1fr; gap: 16px; }
+      .bb-reviews h2 { font-size: 28px; }
+    }
+  </style>
   <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
   <script>
     (function () {
@@ -93,15 +237,15 @@
         </button>
       </div>
       <div class="hero-visual">
-        <div class="hero-card">
+        <div class="hero-card" onclick="navigateToCategory('cakes')" style="cursor:pointer">
           <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Cake">
           <div class="hero-card-label">🎂 Signature Cakes</div>
         </div>
-        <div class="hero-card">
+        <div class="hero-card" onclick="navigateToCategory('brownies')" style="cursor:pointer">
           <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownies">
           <div class="hero-card-label">🍫 Brownies</div>
         </div>
-        <div class="hero-card">
+        <div class="hero-card" onclick="navigateToCategory('desserts')" style="cursor:pointer">
           <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
           <div class="hero-card-label">🍮 Desserts</div>
         </div>
@@ -235,10 +379,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
-                <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-                <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
-                <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('0.5', this)">0.5 kg</button>
+                <button class="filter-tab active" onclick="setCakeWeight('1.0', this)">1.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('1.5', this)">1.5 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('2.0', this)">2.0 kg</button>
               </div>
             </div>
     
@@ -297,12 +441,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Macarons</button>
-                <button class="filter-tab">Tarts</button>
-                <button class="filter-tab">Pastries</button>
-                <button class="filter-tab">Cupcakes</button>
-                <button class="filter-tab">Mousse</button>
-                <button class="filter-tab">Donuts</button>
+                <button class="filter-tab active" onclick="updateDessertSlide('Macarons', this)">Macarons</button>
+                <button class="filter-tab" onclick="updateDessertSlide('Tarts', this)">Tarts</button>
+                <button class="filter-tab" onclick="updateDessertSlide('Pastries', this)">Pastries</button>
+                <button class="filter-tab" onclick="updateDessertSlide('Cupcakes', this)">Cupcakes</button>
+                <button class="filter-tab" onclick="updateDessertSlide('Mousse', this)">Mousse</button>
+                <button class="filter-tab" onclick="updateDessertSlide('Donuts', this)">Donuts</button>
               </div>
             </div>
     
@@ -311,10 +455,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
                 Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Box of 2</button>
-                <button class="filter-tab active">Box of 4</button>
-                <button class="filter-tab">Box of 6</button>
-                <button class="filter-tab">Box of 12</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Box of 2</button>
+                <button class="filter-tab active" onclick="toggleSlideTab(this)">Box of 4</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Box of 6</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Box of 12</button>
               </div>
             </div>
     
@@ -373,12 +517,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Walnut</button>
-                <button class="filter-tab">Overload</button>
-                <button class="filter-tab">Nutella</button>
-                <button class="filter-tab">Red Velvet</button>
-                <button class="filter-tab">Cookie</button>
-                <button class="filter-tab">Assorted</button>
+                <button class="filter-tab active" onclick="updateBrownieSlide('Walnut', this)">Walnut</button>
+                <button class="filter-tab" onclick="updateBrownieSlide('Overload', this)">Overload</button>
+                <button class="filter-tab" onclick="updateBrownieSlide('Nutella', this)">Nutella</button>
+                <button class="filter-tab" onclick="updateBrownieSlide('Red Velvet', this)">Red Velvet</button>
+                <button class="filter-tab" onclick="updateBrownieSlide('Cookie', this)">Cookie</button>
+                <button class="filter-tab" onclick="updateBrownieSlide('Assorted', this)">Assorted</button>
               </div>
             </div>
     
@@ -387,10 +531,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
                 Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Pack of 1</button>
-                <button class="filter-tab active">Pack of 4</button>
-                <button class="filter-tab">Pack of 6</button>
-                <button class="filter-tab">Pack of 12</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Pack of 1</button>
+                <button class="filter-tab active" onclick="toggleSlideTab(this)">Pack of 4</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Pack of 6</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Pack of 12</button>
               </div>
             </div>
     
@@ -399,8 +543,8 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift
                 Wrap</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab active">Standard</button>
-                <button class="filter-tab">Premium Gold</button>
+                <button class="filter-tab active" onclick="toggleSlideTab(this)">Standard</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Premium Gold</button>
               </div>
             </div>
     
@@ -450,12 +594,12 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-tab active">Choco Chip</button>
-                <button class="filter-tab">Double Choco</button>
-                <button class="filter-tab">Oatmeal Raisin</button>
-                <button class="filter-tab">Almond Biscotti</button>
-                <button class="filter-tab">Red Velvet</button>
-                <button class="filter-tab">Assorted</button>
+                <button class="filter-tab active" onclick="updateCookieSlide('Choco Chip', this)">Choco Chip</button>
+                <button class="filter-tab" onclick="updateCookieSlide('Double Choco', this)">Double Choco</button>
+                <button class="filter-tab" onclick="updateCookieSlide('Oatmeal Raisin', this)">Oatmeal Raisin</button>
+                <button class="filter-tab" onclick="updateCookieSlide('Almond Biscotti', this)">Almond Biscotti</button>
+                <button class="filter-tab" onclick="updateCookieSlide('Red Velvet', this)">Red Velvet</button>
+                <button class="filter-tab" onclick="updateCookieSlide('Assorted', this)">Assorted</button>
               </div>
             </div>
     
@@ -463,10 +607,10 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-tab">Box of 2</button>
-                <button class="filter-tab active">Box of 6</button>
-                <button class="filter-tab">Box of 12</button>
-                <button class="filter-tab">Gift Tin</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Box of 2</button>
+                <button class="filter-tab active" onclick="toggleSlideTab(this)">Box of 6</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Box of 12</button>
+                <button class="filter-tab" onclick="toggleSlideTab(this)">Gift Tin</button>
               </div>
             </div>
     
