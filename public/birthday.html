@@ -10,6 +10,192 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    @media (max-width: 1024px) {
+      .birthday-section .bday-slide > div {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+      }
+      .birthday-visual img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 400px !important;
+        object-fit: contain !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .birthday-section .bday-slide > div {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+      }
+      .birthday-visual img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 350px !important;
+        object-fit: contain !important;
+      }
+      .birthday-card {
+        padding: 30px !important;
+      }
+      .birthday-card .filter-pill {
+        font-size: 11px;
+        padding: 8px 12px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .birthday-section {
+        padding: 60px 0 !important;
+      }
+      .birthday-section .bday-slide > div {
+        grid-template-columns: 1fr !important;
+        gap: 25px !important;
+        padding: 0 20px !important;
+      }
+      .birthday-visual img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 300px !important;
+        object-fit: contain !important;
+      }
+      .birthday-card {
+        padding: 25px !important;
+      }
+      .birthday-card div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .birthday-section {
+        padding: 50px 0 !important;
+      }
+      .birthday-section .bday-slide > div {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        padding: 0 15px !important;
+      }
+      .birthday-visual img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 250px !important;
+        object-fit: contain !important;
+      }
+      .birthday-card {
+        padding: 20px !important;
+      }
+      .birthday-card .filter-pill {
+        font-size: 10px;
+        padding: 6px 10px;
+      }
+      .birthday-card .section-title {
+        font-size: 24px !important;
+      }
+      .birthday-card button {
+        grid-template-columns: 1fr !important;
+      }
+      .birthday-card div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .birthday-card div[style*="display: flex; gap: 15px"] {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+      }
+      .birthday-card div[style*="display: flex; gap: 15px"] button {
+        flex: 1 1 auto !important;
+        min-width: 80px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .birthday-section {
+        padding: 40px 0 !important;
+      }
+      .birthday-section .bday-slide > div {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+        padding: 0 12px !important;
+      }
+      .birthday-visual img {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 200px !important;
+        object-fit: contain !important;
+      }
+      .birthday-card {
+        padding: 15px !important;
+      }
+      .birthday-card .section-label {
+        font-size: 9px !important;
+      }
+      .birthday-card .section-title {
+        font-size: 20px !important;
+      }
+      .birthday-card p {
+        font-size: 14px !important;
+      }
+      .birthday-card .filter-pill {
+        font-size: 9px !important;
+        padding: 5px 8px !important;
+      }
+      .birthday-card div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+      .birthday-card div[style*="display: flex; gap: 15px"] {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+      }
+      .birthday-card div[style*="display: flex; gap: 15px"] button {
+        flex: 1 1 auto !important;
+        min-width: 70px !important;
+        font-size: 9px !important;
+        padding: 8px 10px !important;
+      }
+      .birthday-card input[type="text"] {
+        font-size: 13px !important;
+        padding: 10px !important;
+      }
+      .birthday-card div[style*="display: grid; grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+      .birthday-card div[style*="font-size: 28px"] {
+        font-size: 22px !important;
+      }
+      .birthday-card div[style*="font-size: 12px"] {
+        font-size: 10px !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .birthday-section .bday-slide > div {
+        padding: 0 8px !important;
+      }
+      .birthday-card {
+        padding: 12px !important;
+      }
+      .birthday-card .section-title {
+        font-size: 18px !important;
+      }
+      .birthday-card p {
+        font-size: 12px !important;
+      }
+      .birthday-card .filter-pill {
+        font-size: 8px !important;
+        padding: 4px 6px !important;
+      }
+      .birthday-card input[type="text"] {
+        font-size: 12px !important;
+        padding: 8px !important;
+      }
+      .birthday-card button {
+        padding: 10px !important;
+        font-size: 10px !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
