@@ -10,6 +10,31 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
+  </script>
+  <style>
+    html.dark body,
+    html.dark .contact-page,
+    html.dark .contact-inner,
+    html.dark .contact-left,
+    html.dark .hours-card,
+    html.dark .contact-bg {
+      background-color: #1a0f08 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark header { background: #1a0f08 !important; }
+    html.dark .contact-form-box {
+      background: #2a1a10 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark .contact-info-card {
+      background: #2a1a10 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark .contact-info-card a,
+    html.dark .contact-desc { color: #c9a97a !important; }
+  </style>
 </head>
 
 <body>
@@ -36,6 +61,9 @@
       </nav>
 
       <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart
           <span class="cart-count" id="cartBadge">0</span>
