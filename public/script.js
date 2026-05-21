@@ -670,7 +670,7 @@ else if (selectedPriceFilter === 'above500') {
                     onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
                     ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
                 </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
+               <div class="bestseller-badge">🔥 Today's Bestseller</div>
             </div>
             <div class="product-info">
                 <div class="product-category">${p.category}</div>
