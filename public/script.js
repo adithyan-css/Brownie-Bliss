@@ -98,6 +98,22 @@ async function loadProducts() {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
 
+        if (data.success && Array.isArray(data.products) && data.products.length) {
+
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || ''
+                }));
+
+            bdayCakes = {};
+
         if (data.success && Array.isArray(data.products)) {
             products = data.products.filter(p => p.type === 'standard');
             bdayCakes = {};
@@ -182,6 +198,13 @@ function loadFavourites() {
         useFallbackProducts();
     }
 
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
+    }
 function saveFavourites() {
     localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
 }
@@ -704,15 +727,21 @@ else if (selectedPriceFilter === 'above500') {
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}">
                 <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
+    type="button"
+    data-fav-type="dishes"
+    data-fav-id="${p.id}"
+    aria-label="Toggle ${p.name} favourite"
+    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+    onclick='event.stopPropagation(); toggleFavourite("dishes", {
+        id: "${p.id}",
+        name: "${p.name}",
+        category: "${p.category}",
+        price: ${p.price},
+        img: "${p.img}"
+    })'>
+    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+</button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
             </div>
             <div class="product-info">
@@ -720,6 +749,20 @@ else if (selectedPriceFilter === 'above500') {
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
+                <button 
+    type="button" 
+    class="add-to-cart"
+    data-product-id="${String(p.id)}"
+    onclick="event.stopPropagation()">
+    Add to Cart
+</button>
+
+<button 
+    type="button"
+    class="add-to-cart"
+    onclick="event.stopPropagation(); openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})">
+    Customize & Add
+</button>
                 <button class="add-to-cart">
                     Customize & Add
                 </button>
@@ -1103,4 +1146,59 @@ function scrollToTop() {
         top: 0,
         behavior: "smooth"
     });
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
+
+    addToCart(cartItem);
+    closeCustomizeModal();
+    openCart();
+    // Close mobile menu when any link inside it is clicked
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('show');
+  });
+});
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
