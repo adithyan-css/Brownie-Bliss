@@ -53,9 +53,10 @@ async function connectDB() {
       maxPoolSize: 1,
     });
 
-    isConnected = true;
-    console.log('Connected to MongoDB');
-    await seedProducts();
+    await mongoose.connection.asPromise();
+isConnected = true;
+console.log('Connected to MongoDB');
+await seedProducts();
   } catch (err) {
     isConnected = false;
     console.error('MongoDB connection error:', err.message);
@@ -468,6 +469,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
+
 // ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
@@ -483,18 +485,9 @@ function startServer(port) {
     }
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
-// ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3000;
   startServer(PORT);
