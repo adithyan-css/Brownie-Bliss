@@ -1,170 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Cakes — Customize Your Celebration</title>
+  <title>Birthday Cakes — Brownie Bliss</title>
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .announcement{background:#1A0905;color:#F4E4BC;text-align:center;padding:10px 20px;font-size:12px;letter-spacing:1.5px;font-family:'DM Sans',sans-serif;}
+    .navbar{background:#fff;border-bottom:1px solid #F5E8D0;position:sticky;top:0;z-index:1000;box-shadow:0 2px 20px rgba(44,24,16,.08);}
+    .nav-inner{max-width:1300px;margin:0 auto;padding:0 30px;height:72px;display:flex;align-items:center;justify-content:space-between;}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .brand-icon{font-size:26px;}
+    .brand-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1A0905;}
+    .brand-tagline{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;}
+    .nav-links{display:flex;gap:28px;}
+    .nav-links a{text-decoration:none;color:#4a2f1a;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;transition:color .2s;}
+    .nav-links a:hover,.nav-links a.active{color:#1A0905;}
+    .cart-trigger{background:none;border:2px solid #1A0905;color:#1A0905;padding:8px 18px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+    .cart-trigger:hover{background:#1A0905;color:#fff;}
+    .cart-badge-num{background:#D4AF37;color:#1A0905;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+    /* PAGE */
+    .bday-page{min-height:80vh;background:linear-gradient(135deg,#FFF9F2 0%,#F5E8D0 100%);padding:80px 30px 100px;}
+    .bday-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center;}
+    /* IMAGE */
+    .bday-img-wrap{position:relative;}
+    .bday-img-wrap img{width:100%;height:520px;object-fit:cover;border-radius:20px;box-shadow:0 24px 60px rgba(26,9,5,.20);transition:opacity .3s ease;display:block;}
+    .flavor-badge{position:absolute;bottom:20px;left:20px;background:rgba(26,9,5,.82);color:#F4E4BC;padding:8px 18px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;backdrop-filter:blur(6px);}
+    /* CARD */
+    .bday-card{background:#fff;border-radius:24px;padding:48px 44px;box-shadow:0 8px 40px rgba(26,9,5,.10);border-top:5px solid #D4AF37;}
+    .label-tag{display:block;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:10px;}
+    .bday-card h2{font-family:'Playfair Display',serif;font-size:34px;color:#1A0905;margin-bottom:12px;line-height:1.15;}
+    .bday-card h2 em{font-style:italic;color:#5C2C1A;}
+    .bday-card .desc{font-family:'Cormorant Garamond',serif;font-size:18px;color:#4a2f1a;opacity:.85;line-height:1.65;margin-bottom:28px;}
+    .sec-label{display:block;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:12px;}
+    /* FLAVOR GRID */
+    .flavor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+    .fbtn{padding:11px 8px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .fbtn:hover{border-color:#3C1E14;background:#f5ede0;}
+    .fbtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
+    /* WEIGHT */
+    .weight-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+    .wbtn{padding:9px 18px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;}
+    .wbtn:hover{border-color:#3C1E14;background:#f5ede0;}
+    .wbtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
+    /* EGG */
+    .egg-row{display:flex;gap:12px;margin-bottom:22px;}
+    .ebtn{padding:9px 22px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;}
+    .ebtn:hover{border-color:#3C1E14;background:#f5ede0;}
+    .ebtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
+    /* MESSAGE */
+    .msg-input{width:100%;padding:13px 16px;border:1.5px solid #e0ccb0;border-radius:10px;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:#1A0905;background:#fffaf4;margin-bottom:24px;transition:border-color .2s;box-sizing:border-box;}
+    .msg-input:focus{border-color:#D4AF37;}
+    /* FOOTER ROW */
+    .bday-footer-row{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid #f0e0cc;}
+    .price-label{font-family:'DM Sans',sans-serif;font-size:11px;color:#4a2f1a;opacity:.65;margin-bottom:4px;}
+    .price-val{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1A0905;}
+    .reserve-btn{background:#1A0905;color:#D4AF37;border:none;padding:15px 36px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;}
+    .reserve-btn:hover{background:#3C1E14;transform:translateY(-2px);}
+    /* CART */
+    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .cart-overlay.open{opacity:1;pointer-events:all;}
+    .cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:400px;background:#fff;z-index:2001;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.2);}
+    .cart-sidebar.open{transform:translateX(0);}
+    .cart-header{padding:24px;border-bottom:1px solid #F5E8D0;display:flex;justify-content:space-between;align-items:center;background:#1A0905;color:#FFF9F2;}
+    .cart-title{font-family:'Playfair Display',serif;font-size:20px;}
+    .cart-close{background:none;border:none;color:#FFF9F2;font-size:24px;cursor:pointer;padding:4px;}
+    .cart-items{flex:1;overflow-y:auto;padding:20px 24px;}
+    .cart-footer{padding:20px 24px;border-top:1px solid #F5E8D0;}
+    .cart-total{display:flex;justify-content:space-between;margin-bottom:16px;}
+    .cart-total-label{font-family:'DM Sans',sans-serif;font-size:14px;color:#4a2f1a;}
+    .cart-total-amt{font-family:'Playfair Display',serif;font-size:22px;color:#1A0905;font-weight:700;}
+    .whatsapp-btn{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;}
+    .whatsapp-note{font-size:12px;color:#999;text-align:center;margin-top:8px;}
+    .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A0905;color:#F4E4BC;padding:14px 28px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    /* FOOTER */
+    .page-footer{background:#1A0905;color:#FFF9F2;padding:50px 30px;}
+    .page-footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap;}
+    .page-footer .fn{font-family:'Playfair Display',serif;font-size:22px;color:#FFF9F2;margin-bottom:4px;}
+    .page-footer .ft{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;}
+    .page-footer p{font-size:13px;opacity:.55;margin-top:10px;max-width:280px;line-height:1.6;}
+    .page-footer h4{color:#D4AF37;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-family:'DM Sans',sans-serif;}
+    .page-footer a{color:rgba(255,255,255,.65);text-decoration:none;display:block;margin-bottom:8px;font-size:14px;}
+    .page-footer a:hover{color:#D4AF37;}
+    @media(max-width:960px){.bday-inner{grid-template-columns:1fr;}.bday-img-wrap img{height:340px;}.bday-card{padding:32px 24px;}.bday-page{padding:48px 20px 70px;}}
+  </style>
 </head>
-
 <body>
 
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement"
-    style="background: var(--brown); color: var(--cream); text-align: center; padding: 10px; font-size: 12px; letter-spacing: 1px;">
-    ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+<div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES &amp; COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
 
-  <!-- NAVBAR (Updated to match index.html design) -->
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="index.html" class="brand">
-        <span class="brand-icon">🍫</span>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">🍫</span>
+      <div>
+        <div class="brand-name">Brownie Bliss</div>
+        <div class="brand-tagline">Baked with Love</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="birthday.html" class="active">Birthday</a>
+      <a href="favourites.html">Favourites</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="cart-trigger" id="cartBtn">
+      🛒 Cart &nbsp;<span class="cart-badge-num" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<section class="bday-page">
+  <div class="bday-inner">
+
+    <!-- CAKE IMAGE -->
+    <div class="bday-img-wrap">
+      <img id="cakeImg"
+        src="assets/cakes/redvelvet.png"
+        alt="Red Velvet Birthday Cake">
+      <div class="flavor-badge" id="flavorBadge">Red Velvet</div>
+    </div>
+
+    <!-- CUSTOMISER -->
+    <div class="bday-card">
+      <span class="label-tag">Celebrate with Us</span>
+      <h2>Signature <em>Birthday Cakes</em></h2>
+      <p class="desc">Make your special moments unforgettable. Choose your flavor, weight, and preference — we'll bake it fresh for you.</p>
+
+      <span class="sec-label">Select Flavor</span>
+      <div class="flavor-grid">
+        <button class="fbtn active" data-f="Red Velvet">Red Velvet</button>
+        <button class="fbtn" data-f="Dutch Truffle">Dutch Truffle</button>
+        <button class="fbtn" data-f="Pineapple">Pineapple</button>
+        <button class="fbtn" data-f="Chocoholic">Chocoholic</button>
+        <button class="fbtn" data-f="Black Forest">Black Forest</button>
+        <button class="fbtn" data-f="Cheesecake">Cheesecake</button>
+      </div>
+
+      <span class="sec-label">Weight (kg)</span>
+      <div class="weight-row">
+        <button class="wbtn" data-w="0.5">0.5 kg</button>
+        <button class="wbtn active" data-w="1.0">1.0 kg</button>
+        <button class="wbtn" data-w="1.5">1.5 kg</button>
+        <button class="wbtn" data-w="2.0">2.0 kg</button>
+      </div>
+
+      <span class="sec-label">Egg Preference</span>
+      <div class="egg-row">
+        <button class="ebtn active" data-e="egg">🥚 Egg</button>
+        <button class="ebtn" data-e="eggless">🌱 Eggless</button>
+      </div>
+
+      <span class="sec-label">Message on Cake</span>
+      <input type="text" id="cakeMessage" class="msg-input" placeholder="e.g. Happy Birthday Adithi! 🎂">
+
+      <div class="bday-footer-row">
         <div>
-          <div class="brand-name">Brownie Bliss</div>
-          <div class="brand-tagline">Baked with Love</div>
+          <div class="price-label">Pricing starts from</div>
+          <div class="price-val" id="cakePrice">₹ 850</div>
         </div>
-      </a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="products.html">Products</a>
-        <a href="birthday.html" class="active">Birthday</a>
-        <a href="favourites.html">Favourites</a>
-        <a href="contact.html">Contact</a>
-      </div>
-      <button class="cart-trigger" onclick="openCart()">
-        🛒 <span id="cartBadge">0</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- BIRTHDAY CAKES SECTION -->
-  <section class="birthday-section" id="birthday"
-    style="padding: 100px 30px; background: var(--cream); min-height: 80vh;">
-    <div
-      style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
-      <div class="birthday-visual">
-        <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-          alt="Birthday Cake"
-          style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
-      </div>
-      <div class="birthday-card"
-        style="background: var(--white); padding: 50px; border-radius: 12px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-        <span class="section-label"
-          style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Celebrate
-          with Us</span>
-        <h2 class="section-title"
-          style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 38px; color: var(--brown);">
-          Signature <em>Birthday Cakes</em></h2>
-        <p
-          style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
-          Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
-          size to get
-          started.
-        </p>
-
-        <div style="margin-bottom: 24px;">
-          <label
-            style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-            Flavor</label>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-            <button class="filter-pill active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
-            <button class="filter-pill" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
-            <button class="filter-pill" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
-            <button class="filter-pill" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
-            <button class="filter-pill" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
-            <button class="filter-pill" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 30px;">
-          <label
-            style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
-            (kg)</label>
-          <div style="display: flex; gap: 15px;">
-            <button class="filter-pill" onclick="setCakeWeight('0.5')">0.5 kg</button>
-            <button class="filter-pill active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-            <button class="filter-pill" onclick="setCakeWeight('1.5')">1.5 kg</button>
-            <button class="filter-pill" onclick="setCakeWeight('2.0')">2.0 kg</button>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 30px;">
-          <label
-            style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
-            on Cake</label>
-          <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
-            style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
-        </div>
-
-        <div
-          style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--cream2);">
-          <div>
-            <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Pricing
-              starts
-              from</span>
-            <span id="cakePrice"
-              style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹
-              850</span>
-          </div>
-          <button class="btn-primary" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
-            Reserve Now &rarr;
-          </button>
-        </div>
+        <button class="reserve-btn" id="reserveBtn">Reserve Now →</button>
       </div>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer style="background: var(--brown); color: var(--cream); padding: 60px 24px;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-      <div class="footer-brand">
-        <div class="brand-name" style="color: var(--cream);">Brownie Bliss</div>
-        <div class="brand-tagline">Homemade Treats · Happiness in every bite</div>
-        <p style="font-size: 14px; opacity: 0.6; margin-top: 10px; max-width: 300px;">Hand-crafted with love in
-          Krishnagiri. One unwavering passion for quality.</p>
-      </div>
-      <div class="footer-col">
-        <h4
-          style="color: var(--gold); margin-bottom: 15px; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;">
-          Get In Touch</h4>
-        <a href="tel:08072596340"
-          style="color: var(--cream); text-decoration: none; display: block; margin-bottom: 8px;">+91 8072596340</a>
-        <a href="mailto:gpriya26185@gmail.com"
-          style="color: var(--cream); text-decoration: none; display: block;">gpriya26185@gmail.com</a>
-      </div>
-    </div>
-  </footer>
+  </div>
+</section>
 
-  <!-- SHARED COMPONENTS -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
+<footer class="page-footer">
+  <div class="page-footer-inner">
+    <div>
+      <div class="fn">Brownie Bliss</div>
+      <div class="ft">Homemade Treats · Happiness in every bite</div>
+      <p>Hand-crafted with love in Krishnagiri. One unwavering passion for quality.</p>
     </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none">
-      <div class="cart-total">
-        <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">₹0</span>
-      </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-        Order via WhatsApp
-      </button>
-      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    <div>
+      <h4>Get In Touch</h4>
+      <a href="tel:08072596340">+91 8072596340</a>
+      <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
+</footer>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <span class="cart-title">Your Cart 🛒</span>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">Total Amount</span>
+      <span class="cart-total-amt" id="cartTotal">₹0</span>
+    </div>
+    <button class="whatsapp-btn" id="waBtn">Order via WhatsApp</button>
+    <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<div class="toast" id="toast"></div>
+
+<!-- SELF-CONTAINED SCRIPT — runs independently, no variable clash with script.js -->
+<script>
+(function() {
+  'use strict';
+
+  var CAKES = {
+    'Red Velvet':    { price: 850,  img: 'assets/cakes/redvelvet.png' },
+    'Dutch Truffle': { price: 950,  img: 'assets/cakes/dutchtruffle.png' },
+    'Pineapple':     { price: 675,  img: 'assets/cakes/pineapple.png' },
+    'Chocoholic':    { price: 900,  img: 'assets/cakes/chocolate.png' },
+    'Black Forest':  { price: 750,  img: 'assets/cakes/blackforest.png' },
+    'Cheesecake':    { price: 1200, img: 'assets/cakes/cheesecake.png' }
+  };
+
+  var WEIGHT_MULT = { '0.5': 0.55, '1.0': 1.0, '1.5': 1.50, '2.0': 1.90 };
+
+  var state = { flavor: 'Red Velvet', weight: '1.0', egg: 'egg' };
+
+  function getEl(id) { return document.getElementById(id); }
+
+  function showToastLocal(msg) {
+    var t = getEl('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 2800);
+  }
+
+  function updatePrice() {
+    var base  = CAKES[state.flavor] ? CAKES[state.flavor].price : 850;
+    var mult  = WEIGHT_MULT[state.weight] || 1;
+    var total = Math.round(base * mult);
+    var el = getEl('cakePrice');
+    if (el) el.textContent = '\u20B9 ' + total.toLocaleString('en-IN');
+  }
+
+  function setFlavor(f) {
+    if (!CAKES[f]) return;
+    state.flavor = f;
+
+    var img = getEl('cakeImg');
+    if (img) {
+      img.style.opacity = '0.3';
+      setTimeout(function() {
+        img.src = CAKES[f].img;
+        img.alt = f + ' Birthday Cake';
+        img.style.opacity = '1';
+      }, 200);
+    }
+
+    var badge = getEl('flavorBadge');
+    if (badge) badge.textContent = f;
+
+    document.querySelectorAll('.fbtn').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-f') === f);
+    });
+
+    updatePrice();
+  }
+
+  function setWeight(w) {
+    state.weight = w;
+    document.querySelectorAll('.wbtn').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-w') === w);
+    });
+    updatePrice();
+  }
+
+  function setEgg(e) {
+    state.egg = e;
+    document.querySelectorAll('.ebtn').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-e') === e);
+    });
+  }
+
+  /* CART */
+  var cart = [];
+
+  function openCartPanel() {
+    var overlay = getEl('cartOverlay');
+    var sidebar = getEl('cartSidebar');
+    if (overlay) overlay.classList.add('open');
+    if (sidebar) sidebar.classList.add('open');
+  }
+
+  function closeCartPanel() {
+    var overlay = getEl('cartOverlay');
+    var sidebar = getEl('cartSidebar');
+    if (overlay) overlay.classList.remove('open');
+    if (sidebar) sidebar.classList.remove('open');
+  }
+
+  function renderCart() {
+    var itemsEl  = getEl('cartItems');
+    var footerEl = getEl('cartFooter');
+    var totalEl  = getEl('cartTotal');
+    var badgeEl  = getEl('cartBadge');
+
+    if (!itemsEl) return;
+
+    var total = 0;
+    cart.forEach(function(it) { total += it.price * it.qty; });
+
+    if (badgeEl) badgeEl.textContent = cart.reduce(function(a, it) { return a + it.qty; }, 0);
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '<div style="text-align:center;padding:60px 20px;color:#4a2f1a;font-family:\'Cormorant Garamond\',serif;font-size:18px;opacity:.6;">Your cart is empty 🛒</div>';
+      if (footerEl) footerEl.style.display = 'none';
+      return;
+    }
+
+    itemsEl.innerHTML = cart.map(function(it, i) {
+      return '<div style="display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #f0e0cc;">'
+        + '<img src="' + it.img + '" style="width:60px;height:60px;object-fit:cover;border-radius:8px;" onerror="this.style.display=\'none\'">'
+        + '<div style="flex:1;">'
+        + '<div style="font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:600;color:#1A0905;">' + it.name + '</div>'
+        + (it.message ? '<div style="font-size:12px;color:#888;margin-top:2px;">Message: ' + it.message + '</div>' : '')
+        + '<div style="font-family:\'Playfair Display\',serif;font-size:16px;color:#1A0905;margin-top:4px;">\u20B9' + it.price.toLocaleString('en-IN') + '</div>'
+        + '</div>'
+        + '<button onclick="window._bdayRemove(' + i + ')" style="background:none;border:none;color:#999;font-size:18px;cursor:pointer;padding:4px;">&#x2715;</button>'
+        + '</div>';
+    }).join('');
+
+    if (footerEl) footerEl.style.display = 'block';
+    if (totalEl) totalEl.textContent = '\u20B9' + total.toLocaleString('en-IN');
+  }
+
+  window._bdayRemove = function(i) {
+    cart.splice(i, 1);
+    renderCart();
+  };
+
+  function reserveCake() {
+    var cake  = CAKES[state.flavor];
+    var base  = cake ? cake.price : 850;
+    var price = Math.round(base * (WEIGHT_MULT[state.weight] || 1));
+    var egg   = state.egg === 'eggless' ? '🌱 Eggless' : '🥚 Egg';
+    var msg   = (getEl('cakeMessage') || {}).value || '';
+
+    var item = {
+      id:      'bday-' + state.flavor + '-' + state.weight + '-' + state.egg,
+      name:    state.flavor + ' Cake (' + state.weight + 'kg) — ' + egg,
+      price:   price,
+      img:     cake ? cake.img : '',
+      message: msg,
+      qty:     1
+    };
+
+    /* Try script.js cart first, fall back to local cart */
+    if (typeof addToCart === 'function') {
+      addToCart(item);
+    } else {
+      var existing = cart.findIndex(function(c) { return c.id === item.id; });
+      if (existing >= 0) { cart[existing].qty++; }
+      else { cart.push(item); }
+      renderCart();
+    }
+
+    showToastLocal(state.flavor + ' Cake added to cart! 🎂');
+    var inp = getEl('cakeMessage');
+    if (inp) inp.value = '';
+    openCartPanel();
+  }
+
+  /* INIT */
+  document.addEventListener('DOMContentLoaded', function() {
+    updatePrice();
+
+    document.querySelectorAll('.fbtn').forEach(function(b) {
+      b.addEventListener('click', function() { setFlavor(b.getAttribute('data-f')); });
+    });
+    document.querySelectorAll('.wbtn').forEach(function(b) {
+      b.addEventListener('click', function() { setWeight(b.getAttribute('data-w')); });
+    });
+    document.querySelectorAll('.ebtn').forEach(function(b) {
+      b.addEventListener('click', function() { setEgg(b.getAttribute('data-e')); });
+    });
+
+    var reserveBtn = getEl('reserveBtn');
+    if (reserveBtn) reserveBtn.addEventListener('click', reserveCake);
+
+    var cartBtn = getEl('cartBtn');
+    if (cartBtn) cartBtn.addEventListener('click', function() {
+      if (typeof openCart === 'function') openCart();
+      else openCartPanel();
+    });
+
+    var cartClose = getEl('cartClose');
+    if (cartClose) cartClose.addEventListener('click', closeCartPanel);
+
+    var overlay = getEl('cartOverlay');
+    if (overlay) overlay.addEventListener('click', closeCartPanel);
+
+    var waBtn = getEl('waBtn');
+    if (waBtn) waBtn.addEventListener('click', function() {
+      if (typeof sendToWhatsApp === 'function') sendToWhatsApp();
+    });
+  });
+
+})();
+</script>
+
+<!-- Load script.js AFTER for cart sync — errors here won't break the page -->
+<script src="script.js"></script>
+
 </body>
-
 </html>

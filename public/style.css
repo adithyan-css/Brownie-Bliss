@@ -4247,46 +4247,38 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 .contact-page {
   position: relative;
   overflow: hidden;
-  padding: 120px 30px;
-  background:
-    linear-gradient(
-      135deg,
-      #fffaf4 0%,
-      #f9f1e7 100%
-    );
+  padding: 0;
+  background: linear-gradient(135deg, #fffaf4 0%, #f9f1e7 100%);
 }
 
 .contact-bg {
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
-
-  background-image:
-    radial-gradient(var(--gold) 1px, transparent 1px);
-
-  background-size: 28px 28px;
+  display: none;
 }
 
 .contact-inner {
   position: relative;
   z-index: 2;
-
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
-
+  padding: 70px 40px 90px;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 70px;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.contact-left {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .contact-desc {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.8;
   color: var(--text-mid);
-
-  margin:
-    30px 0 50px;
+  margin: 20px 0 36px;
 }
 
 /* INFO GRID */
@@ -4548,24 +4540,142 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
 
 /* RESPONSIVE */
 
-@media (max-width: 900px) {
-
+@media (max-width: 1024px) {
   .contact-inner {
     grid-template-columns: 1fr;
+    padding: 50px 24px 70px;
+    gap: 40px;
   }
-
   .contact-desc {
-    font-size: 21px;
+    font-size: 20px;
+    margin: 20px 0 36px;
   }
-
   .contact-form-box {
     padding: 36px 28px;
   }
-
   .form-top h3 {
     font-size: 28px;
   }
+  .contact-hero-img {
+    height: 240px;
+  }
 }
+
+@media (max-width: 600px) {
+  .contact-inner {
+    padding: 36px 16px 50px;
+  }
+  .contact-hero-img {
+    height: 200px;
+  }
+  .contact-img-strip img {
+    height: 65px;
+  }
+}
+
+
+/* =========================
+   FILTER PILL (Birthday cake selector buttons)
+   ========================= */
+
+.filter-pill {
+  padding: 10px 16px;
+  border: 1.5px solid var(--brown-mid, #8B6347);
+  background: transparent;
+  color: var(--brown-dark, #3b1a0e);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  background: var(--brown-mid, #8B6347);
+  color: var(--cream, #fdf6ee);
+  border-color: var(--brown-mid, #8B6347);
+}
+
+.filter-pill.active {
+  background: var(--brown-dark, #3b1a0e);
+  color: var(--gold, #d4af37);
+  border-color: var(--brown-dark, #3b1a0e);
+  font-weight: 700;
+}
+
+/* =========================
+   CONTACT PAGE ENHANCEMENTS
+   ========================= */
+
+/* Hero image banner */
+.contact-hero-img {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  overflow: hidden;
+}
+.contact-hero-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  display: block;
+}
+.contact-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(50,20,8,0.40), rgba(50,20,8,0.75));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+.contact-hero-overlay h1 {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  font-size: clamp(24px, 4vw, 50px);
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.contact-hero-overlay h1 em {
+  color: var(--gold);
+  font-style: italic;
+}
+.contact-hero-overlay p {
+  color: rgba(255,255,255,0.82);
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+/* Decorative image strip */
+.contact-img-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 28px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.contact-img-strip img {
+  width: 100%;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.contact-img-strip img:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+
 
 /* =========================
    EXPERIENCE SECTION
@@ -9480,4 +9590,5 @@ html.dark .customize-option input[type="checkbox"] {
 
 html.dark .topping-price {
   color: var(--gold);
+}}
 }

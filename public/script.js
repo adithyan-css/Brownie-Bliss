@@ -176,7 +176,7 @@ async function loadProducts() {
         } else {
             useFallbackProducts();
         }
-    } catch (e) {
+    }catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
     }
@@ -682,6 +682,14 @@ function filterProducts(category, btn) {
 // --- BIRTHDAY CAKE BUILDER ---
 let selectedFlavor = 'Red Velvet';
 let selectedWeight = '1.0';
+let selectedEggPref = 'egg'; // 'egg' or 'eggless'
+
+function setEggPreference(pref) {
+    selectedEggPref = pref;
+    document.querySelectorAll('#eggToggle .weight-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.egg === pref);
+    });
+}
 const BIRTHDAY_BASE_PRICES = {
     '0.5': 450,
     '1.0': 850,
@@ -709,13 +717,9 @@ function updateBirthdayCake(flavor) {
         cakeImg.src = bdayCakes[flavor].img;
     }
 
-    // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
-        if (btn.textContent.trim() === flavor) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+    // Update active flavor button — only target flavor pills
+    document.querySelectorAll('.flavor-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.flavor === flavor);
     });
 
     calculateBdayPrice();
@@ -724,17 +728,9 @@ function setCakeWeight(weight) {
 
     selectedWeight = weight;
 
-    const weightButtons = document.querySelectorAll(
-        'button[onclick^="setCakeWeight"]'
-    );
-
-    weightButtons.forEach(btn => {
-        btn.classList.remove('active');
+    document.querySelectorAll('.weight-pill[data-weight]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.weight === weight);
     });
-
-    if (event && event.target) {
-        event.target.classList.add('active');
-    }
 
     calculateBdayPrice();
 }
@@ -787,9 +783,10 @@ function addBirthdayToCart() {
     const msgInput = document.getElementById('cakeMessage');
     const message = msgInput ? msgInput.value.trim() : '';
 
+    const eggLabel = selectedEggPref === 'eggless' ? '🌱 Eggless' : '🥚 Egg';
     const item = {
-        id: `bday-${selectedFlavor}-${selectedWeight}`,
-        name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+        id: `bday-${selectedFlavor}-${selectedWeight}-${selectedEggPref}`,
+        name: `${selectedFlavor} Cake (${selectedWeight}kg) — ${eggLabel}`,
         price: Math.round(finalPrice),
         img: bdayCakes[selectedFlavor].img,
         emoji: bdayCakes[selectedFlavor].emoji,
@@ -1171,4 +1168,4 @@ function confirmCustomization() {
     addToCart(cartItem);
     closeCustomizeModal();
     openCart();
-}
+}}
