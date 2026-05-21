@@ -80,11 +80,12 @@ header {
 .header-inner {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 68px;
+  gap: 16px;
 }
 
 .logo {
@@ -2586,47 +2587,7 @@ a.logo {
     display: block;
 }
 
-.menu-toggle{
-  display:none;
-  background:none;
-  border:none;
-  font-size:28px;
-  cursor:pointer;
-  color:var(--brown-dark);
-}
 
-.mobile-menu{
-  display:none;
-  flex-direction:column;
-  background:white;
-  padding:15px;
-  position: sticky; 
-  top: 0;            
-  z-index: 999; 
-}
-.mobile-menu.show {
-  display: flex !important;
-  flex-direction: column;
-}
-
-.mobile-menu a{
-  text-decoration:none;
-  color:var(--brown-dark);
-  padding:10px 0;
-  border-bottom:1px solid #eee;
-}
-
-@media (max-width: 900px) {
-  nav {
-    display: none !important;  /* add !important */
-  }
-
-  .menu-toggle {
-    display: block !important;
-    order: -1;
-    margin-right: 15px;
-  }
-}
 html {
   scroll-behavior: smooth;
 }
@@ -9101,14 +9062,14 @@ html.dark .theme-toggle-btn:hover {
   background: var(--gold);
 }
 
-  .bb-reviews {
+.bb-reviews {
     background: #fdf6ee;
     padding: 64px 32px;
     font-family: 'Lato', sans-serif;
     text-align: center;
   }
 
-  .bb-reviews .eyebrow {
+.bb-reviews .eyebrow {
     font-size: 11px;
     letter-spacing: 0.18em;
     color: #b07d3e;
@@ -9116,7 +9077,7 @@ html.dark .theme-toggle-btn:hover {
     margin: 0 0 12px;
   }
 
-  .bb-reviews h2 {
+.bb-reviews h2 {
     font-family: 'Playfair Display', serif;
     font-size: 34px;
     font-weight: 500;
@@ -9125,7 +9086,7 @@ html.dark .theme-toggle-btn:hover {
     line-height: 1.25;
   }
 
-  .bb-reviews h2 em {
+.bb-reviews h2 em {
     color: #b07d3e;
     font-style: italic;
   }
@@ -9968,7 +9929,7 @@ background-position: right 16px center;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
 }
-}
+
 #scrollTopBtn {
     position: fixed;
     bottom: 20px;
@@ -9996,4 +9957,56 @@ background-position: right 16px center;
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
+}
+.mobile-menu{
+  display: none;
+}
+
+.mobile-menu.active{
+  display: block;
+}
+.menu-toggle{
+  display:none;
+  background:none;
+  border:none;
+  font-size:28px;
+  cursor:pointer;
+  color:var(--brown-dark);
+}
+
+.mobile-menu{
+  display:none;
+  flex-direction:column;
+  background:white;
+  padding:15px;
+  position: sticky; 
+  top: 0;            
+  z-index: 999; 
+}
+.mobile-menu.show {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.mobile-menu a{
+  text-decoration:none;
+  color:var(--brown-dark);
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+
+@media (max-width: 900px) {
+
+  /* HIDE ONLY DESKTOP NAV */
+  .header-inner > nav{
+    display: none !important;
+  }
+
+  /* SHOW HAMBURGER */
+  .menu-toggle{
+    display: block !important;
+    order: -1;
+    margin-right: 15px;
+  }
+
 }

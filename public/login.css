@@ -284,9 +284,10 @@
 
 .ob {
   flex: 1;
-  aspect-ratio: 1;
+  width: 100%;
+  height: 52px;
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   border: 1px solid var(--cream-dark);
   border-radius: 4px;
@@ -296,7 +297,6 @@
   background: #fdfaf6;
   transition: border-color 0.2s, background 0.2s;
 }
-
 .ob:focus {
   border-color: var(--gold);
   background: #fff;
