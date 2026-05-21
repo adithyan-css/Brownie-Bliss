@@ -1,3 +1,5 @@
+script.js
+
 // --- CONFIG ---
 const API_BASE = '/api';
 
@@ -26,6 +28,14 @@ window.toggleTheme = toggleTheme;
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
+let selectedFlavor = 'Red Velvet';
+let selectedWeight = '1.0';
+const BIRTHDAY_BASE_PRICES = {
+    '0.5': 450,
+    '1.0': 850,
+    '1.5': 1250,
+    '2.0': 1600
+};
 
 // buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
@@ -38,12 +48,51 @@ const DEFAULT_BDAY_CAKES = {
     "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
 };
+let favourites = loadFavourites();
+buildCatalogFromList(null);
+
+function useFallbackProducts() {
+    products = DEFAULT_PRODUCTS;
+    bdayCakes = { ...DEFAULT_BDAY_CAKES };
+
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
+    }
+}
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
 let favourites = loadFavourites();
 
-// FIXED LOAD PRODUCTS
+function buildCatalogFromList(list) {
+    if (list && Array.isArray(list) && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || ''
+        }));
+
+        bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
+    } else {
+        useFallbackProducts();
+    }
+}
+
 async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
@@ -65,6 +114,16 @@ async function loadProducts() {
 
             bdayCakes = {};
 
+        const bd = list.filter(p => p.type === 'birthday');
+        bdayCakes = {};
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
+    } else {
             const bd = data.products.filter(p => p.type === 'birthday');
 
             bd.forEach(p => {
@@ -105,6 +164,7 @@ async function loadProducts() {
 }
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
 
 function saveCart() {
     localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
@@ -170,6 +230,7 @@ function addToCart(product) {
 
     saveCart();
     updateCartUI();
+    showToast('Added to cart! 🛒');
 }
 
 // FIXED QTY
@@ -215,6 +276,7 @@ function closeCart() {
 }
 
 // --- CHECKOUT FLOW ---
+// --- CHECKOUT FLOW ---
 function injectCheckoutModal() {
     if (document.getElementById('checkoutOverlay')) return;
 
@@ -250,10 +312,6 @@ function injectCheckoutModal() {
                             <span class="prefix">+91</span>
                             <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Email <span style="font-weight:400;color:var(--text-mid);font-size:12px;">(for your receipt)</span></label>
-                        <input type="email" id="custEmail" placeholder="you@example.com" autocomplete="email">
                     </div>
                     <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="sendOTP()">
                         Send Verification OTP &rarr;
@@ -333,7 +391,7 @@ function openCheckout() {
     }
     injectCheckoutModal();
     closeCart();
-    checkoutState = { name: '', phone: '', email: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
+    checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
     showCheckoutStep(1);
     document.getElementById('checkoutOverlay').classList.add('open');
 }
@@ -359,19 +417,14 @@ function showCheckoutStep(n) {
 async function sendOTP() {
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
-    const email = document.getElementById('custEmail')?.value.trim() || '';
 
     if (!name) { showToast('Please enter your name'); return; }
     if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
         showToast('Enter a valid 10-digit phone number'); return;
     }
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showToast('Enter a valid email address'); return;
-    }
 
     checkoutState.name = name;
     checkoutState.phone = phone;
-    checkoutState.email = email;
 
     // Bypassing OTP
     const btn = document.querySelector('#checkStep1 .hero-cta');
@@ -445,7 +498,6 @@ function goToConfirm() {
     document.getElementById('confirmCustomer').innerHTML = `
         <div style="font-weight:600; color:var(--brown-dark)">${checkoutState.name}</div>
         <div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">+91 ${checkoutState.phone}</div>
-        ${checkoutState.email ? `<div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">${checkoutState.email}</div>` : ''}
         <div style="font-size:13px; color:var(--text-mid); line-height:1.4">${addr}, ${city} - ${pin}</div>
     `;
 
@@ -462,32 +514,23 @@ function goToConfirm() {
 }
 
 async function placeOrder() {
-    const lineTotal = cart.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
     const orderData = {
         customer_name: checkoutState.name,
         phone: checkoutState.phone,
-        email: checkoutState.email || undefined,
         address: checkoutState.address,
         city: checkoutState.city,
         pincode: checkoutState.pincode,
         items: cart.map(i => ({
-            id: typeof i.id === 'number' && Number.isFinite(i.id) ? i.id : 0,
+            id: typeof i.id === 'number' ? i.id : 0,
             name: i.name,
-            price: Number(i.price),
-            qty: Math.max(1, Math.floor(Number(i.qty)) || 1),
+            price: i.price,
+            qty: i.qty,
             emoji: i.emoji || '🍫',
             category: i.category || 'general',
             customizations: i.customizations || null
         })),
-        total: Math.round(lineTotal * 100) / 100
+        total: cart.reduce((s, i) => s + i.price * i.qty, 0)
     };
-
-    const waSnapshot = cart.map(i => ({
-        name: i.name,
-        price: Number(i.price),
-        qty: Math.max(1, Math.floor(Number(i.qty)) || 1)
-    }));
-    const waTotal = orderData.total;
 
     try {
         const res = await fetch(`${API_BASE}/orders`, {
@@ -495,20 +538,10 @@ async function placeOrder() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
         });
-
-        let data;
-        const ct = res.headers.get('content-type') || '';
-        if (ct.includes('application/json')) {
-            data = await res.json();
-        } else {
-            const text = await res.text();
-            showToast(text ? text.slice(0, 160) : `Order failed (${res.status})`);
-            return;
-        }
-
+        const data = await res.json();
         if (data.success) {
             const orderId = data.order_id;
-            sendWhatsAppFinal(orderId, waSnapshot, waTotal);
+            sendWhatsAppFinal(orderId);
 
             cart = [];
             saveCart();
@@ -516,16 +549,18 @@ async function placeOrder() {
             closeCheckout();
             showToast(`🎉 Order ${orderId} placed! <a href="track.html?id=${orderId}" class="toast-track-link">Track Order</a>`);
         } else {
-            const errText = (data && (data.message || data.error)) ? String(data.message || data.error) : '';
-            showToast(errText || `Could not save order (HTTP ${res.status}). Try again or check the server.`);
+            showToast('Failed to save order. Please try again.');
         }
     } catch (e) {
-        console.error(e);
         showToast('Error placing order. Please try again.');
     }
 }
 
 // --- WHATSAPP FINAL ---
+function sendWhatsAppFinal(orderId) {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const itemLines = cart.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
 
     const lines = Array.isArray(itemsSnap) && itemsSnap.length
@@ -535,11 +570,11 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-
     const itemLines = lines.map(i => {
-
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
 
+    const itemLines = lines.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
@@ -572,7 +607,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         `📱 *Phone:* +91 ${checkoutState.phone}\n` +
         `📍 *Address:* ${checkoutState.address}, ${checkoutState.city} - ${checkoutState.pincode}\n\n` +
         `🛒 *Order Details:*\n${itemLines}\n\n` +
-        `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
+        `💰 *Total Amount: ₹${total.toLocaleString()}*\n\n` +
         `_Your order has been recorded. Please share the payment receipt for confirmation!_ ✨`;
 
     const encodedMsg = encodeURIComponent(message);
@@ -659,6 +694,40 @@ else if (selectedPriceFilter === 'above500') {
     `).join('');
 }
 
+// --- BIRTHDAY CAKE BUILDER ---
+// bdayCakes object is now populated dynamically via loadProducts()
+
+function updateBirthdayCake(flavor) {
+
+    if (!bdayCakes[flavor]) {
+        console.error("Cake flavor not found:", flavor);
+        return;
+    }
+
+    selectedFlavor = flavor;
+
+    // Update image
+    const cakeImg = document.getElementById('birthdayCakeImg');
+    if (cakeImg && bdayCakes[flavor]) {
+        cakeImg.src = bdayCakes[flavor].img;
+    }
+
+    if (cakeImg) {
+        cakeImg.src = bdayCakes[flavor].img;
+    }
+
+    // Update active flavor button
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+        if (btn.textContent.trim() === flavor) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    calculateBdayPrice();
+}
+function setCakeWeight(weight) {
 // --- BIRTHDAY CAKE ---
 let selectedFlavor = "Red Velvet";
 let selectedWeight = "1.0";
@@ -673,18 +742,57 @@ const BIRTHDAY_BASE_PRICES = {
 function setCakeWeight(weight, event) {
     selectedWeight = weight;
 
-    document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
-    if (event?.target) event.target.classList.add('active');
+    document.querySelectorAll('.weight-btn')
+        .forEach(b => b.classList.remove('active'));
+
+    if (event?.target)
+        event.target.classList.add('active');
 
     calculateBdayPrice();
 }
 
 function calculateBdayPrice() {
     const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
-    const el = document.getElementById('cakePrice');
-    if (el) el.textContent = "₹ " + price;
+
+    const priceEl = document.getElementById('cakePrice');
+    if (priceEl) {
+        priceEl.textContent = `₹ ${price}`;
+    }
+
+    updateBirthdayFavouriteButton();
 }
 
+function getBirthdayFavouriteItem() {
+    const cake = bdayCakes[selectedFlavor] || {};
+
+    return {
+        id: `bday-${selectedFlavor}-${selectedWeight}`,
+        name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+        price: BIRTHDAY_BASE_PRICES[selectedWeight],
+        img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
+        emoji: cake.emoji || '',
+        category: 'cakes'
+    };
+}
+
+function updateBirthdayFavouriteButton() {
+    const btn = document.getElementById('birthdayFavoriteBtn');
+    if (!btn) return;
+
+    const item = getBirthdayFavouriteItem();
+    const active = isFavourite('dishes', item.id);
+
+    btn.dataset.favType = 'dishes';
+    btn.dataset.favId = item.id;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    btn.setAttribute(
+        'title',
+        active ? 'Remove from favourites' : 'Add to favourites'
+    );
+
+    btn.innerHTML = active ? '&hearts;' : '&#9825;';
+}
 // --- FIXED WHATSAPP (ONLY ONE VERSION) ---
 function sendWhatsAppFinal(orderId) {
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -693,7 +801,15 @@ function toggleBirthdayFavourite() {
 }
 
 function addBirthdayToCart() {
-    // Fallback data in case API fails to load
+    if (!bdayCakes[selectedFlavor]) return;
+
+    const basePrices = {
+        "0.5": 450,
+        "1.0": 850,
+        "1.5": 1250,
+        "2.0": 1600
+    };
+
     const fallbacks = {
         'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
         'Dutch Truffle': { img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180', emoji: '🍰' },
@@ -703,25 +819,33 @@ function addBirthdayToCart() {
         'Cheesecake': { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg', emoji: '🧀' }
     };
 
-    const cakeInfo = bdayCakes[selectedFlavor] || fallbacks[selectedFlavor] || fallbacks['Red Velvet'];
-    const finalPrice = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+    const cakeInfo =
+        bdayCakes[selectedFlavor] ||
+        fallbacks[selectedFlavor] ||
+        fallbacks['Red Velvet'];
+
+    const finalPrice = basePrices[selectedWeight] || 850;
+
     const msgInput = document.getElementById('cakeMessage');
     const message = msgInput ? msgInput.value.trim() : '';
 
     const item = {
         id: `bday-${selectedFlavor}-${selectedWeight}`,
         name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-        price: Math.round(finalPrice),
+        price: finalPrice,
         img: cakeInfo.img,
         emoji: cakeInfo.emoji,
         category: 'cakes',
-        message: message,
+        message,
         qty: 1
     };
+
     addToCart(item);
     showToast('🎂 Birthday cake added to cart!');
     openCart();
     if (msgInput) msgInput.value = '';
+
+    openCart();
 }
 
 function renderFavouritesPage() {
@@ -804,14 +928,136 @@ function showToast(msg) {
 document.addEventListener('DOMContentLoaded', () => {
     applyTheme(localStorage.getItem('bb_theme') || 'light');
     updateCartUI();
+    loadProducts(); // Load and then automatically re-render main grid/birthday block
+    updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+    updateFavouritesCount();
+    renderFavouritesPage();
+
+    // Track Order auto-fill if on track.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    const input = document.getElementById('orderIdInput');
+    if (idParam && input) {
+        input.value = idParam;
+        trackOrder(idParam);
+    }
     loadProducts();
 });
 // Show/hide button on scroll
 window.addEventListener("scroll", function () {
     const btn = document.getElementById("scrollTopBtn");
 
-    if (window.scrollY > 300) {
-        btn.style.display = "block";
+// --- TRACK ORDER LOGIC ---
+async function trackOrder(id) {
+    const orderIdInput = document.getElementById('orderIdInput');
+    const trackError = document.getElementById('trackError');
+    const result = document.getElementById('result');
+
+    if (!orderIdInput) return;
+
+    // Reset previous state
+    if (trackError) {
+        trackError.classList.remove('show');
+        trackError.textContent = '';
+    }
+
+    if (result) {
+        result.style.display = 'none';
+    }
+
+    const orderId = id || orderIdInput.value.trim();
+
+    // Empty input validation
+    if (!orderId) {
+        if (trackError) {
+            trackError.textContent = 'Please enter an Order ID';
+            trackError.classList.add('show');
+        }
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/orders/${orderId}`);
+        const data = await res.json();
+
+        // Successful order fetch
+        if (data.success || data.order) {
+            renderOrderDetails(data.order || data);
+
+            if (result) {
+                result.style.display = 'block';
+            }
+        }
+        // Invalid order
+        else {
+            if (trackError) {
+                trackError.textContent =
+                    data.error || 'Order not found';
+                trackError.classList.add('show');
+            }
+        }
+
+    } catch (e) {
+        console.error(e);
+
+        if (trackError) {
+            trackError.textContent =
+                'Error fetching order. Make sure server is running!';
+            trackError.classList.add('show');
+        }
+    }
+}
+
+function renderOrderDetails(order) {
+    const resOrderId = document.getElementById('resOrderId');
+    if (!resOrderId) return; // Not on track page
+
+    resOrderId.textContent = order.id || order.order_id;
+
+    const statusLower = (order.status || 'pending').toLowerCase();
+    
+    // Update top total amount
+    const resTotalTop = document.getElementById('resTotalTop');
+    if (resTotalTop) resTotalTop.textContent = order.total;
+
+    // Timeline Progression Logic
+    const timeline = document.getElementById('trackingTimeline');
+    const cancelledAlert = document.getElementById('cancelledAlert');
+    
+    if (timeline && cancelledAlert) {
+        if (statusLower === 'cancelled') {
+            timeline.style.display = 'none';
+            cancelledAlert.style.display = 'block';
+        } else {
+            timeline.style.display = 'block';
+            cancelledAlert.style.display = 'none';
+            
+            // Reset all steps
+            const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
+            steps.forEach(s => {
+                const el = document.getElementById(`step-${s}`);
+                if (el) el.classList.remove('active', 'completed');
+            });
+            
+            // Determine current step index
+            const currentIndex = steps.indexOf(statusLower) > -1 ? steps.indexOf(statusLower) : 0;
+            
+            // Apply classes
+            steps.forEach((s, i) => {
+                const el = document.getElementById(`step-${s}`);
+                if (!el) return;
+                
+                if (i < currentIndex) {
+                    el.classList.add('completed');
+                } else if (i === currentIndex) {
+                    el.classList.add('active');
+                }
+            });
+        }
+    }
+
+    if (order.created_at) {
+        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
     } else {
         btn.style.display = "none";
     }
