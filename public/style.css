@@ -9997,3 +9997,111 @@ background-position: right 16px center;
     background-color: #8b5a3c;
     transform: scale(1.1);
 }
+
+/* =========================
+   PREMIUM SEARCH BAR
+========================= */
+
+.search-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 28px;
+  margin-bottom: -8px;
+
+  padding: 0 20px;
+
+  position: relative;
+}
+
+#productSearch {
+  width: min(540px, 100%);
+
+  padding: 16px 24px 16px 52px;
+
+  border-radius: 50px;
+
+  border: 1.5px solid rgba(212, 175, 55, 0.35);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,0.95),
+      rgba(255,248,240,0.92)
+    );
+
+  color: #4b2e2a;
+
+  font-size: 16px;
+
+  font-weight: 500;
+
+  outline: none;
+
+  transition: all 0.35s ease;
+
+  box-shadow:
+    0 10px 25px rgba(60, 25, 10, 0.06),
+    0 4px 12px rgba(212, 175, 55, 0.08);
+}
+
+/* Placeholder */
+#productSearch::placeholder {
+  color: #9f8f84;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+/* Focus effect */
+#productSearch:focus {
+  transform: translateY(-2px);
+
+  border-color: #d4af37;
+
+  background: #fff;
+
+  box-shadow:
+    0 14px 34px rgba(212, 175, 55, 0.18),
+    0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* Search Icon */
+.search-container::before {
+  content: "🔎";
+
+  position: absolute;
+
+  left: 50%;
+
+  transform: translateX(-245px);
+
+  top: 16px;
+
+  font-size: 18px;
+
+  opacity: 0.65;
+
+  pointer-events: none;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .search-container {
+    margin-top: 22px;
+    margin-bottom: -5px;
+  }
+
+  #productSearch {
+    width: 100%;
+    padding: 14px 18px 14px 45px;
+    font-size: 15px;
+  }
+
+  .search-container::before {
+    left: 38px;
+    transform: none;
+    top: 14px;
+  }
+}

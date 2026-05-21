@@ -1104,3 +1104,29 @@ function scrollToTop() {
         behavior: "smooth"
     });
 }
+
+/* =========================
+   PRODUCT SEARCH
+========================= */
+
+const searchInput = document.getElementById("productSearch");
+
+if (searchInput) {
+  searchInput.addEventListener("keyup", function () {
+    const searchValue = searchInput.value.toLowerCase();
+
+    const productCards = document.querySelectorAll(
+      ".product-card, .cake-card, .menu-item"
+    );
+
+    productCards.forEach((card) => {
+      const text = card.innerText.toLowerCase();
+
+      if (text.includes(searchValue)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+}
