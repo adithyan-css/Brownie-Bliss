@@ -53,7 +53,8 @@
           aria-label="Toggle dark mode" title="Toggle dark mode">
           <span id="themeIcon">🌙</span>
         </button>
-        <button class="cart-btn" onclick="openCart()">
+        <!-- CHANGED: Cart button now links to cart.html instead of opening sidebar -->
+        <button class="cart-btn" onclick="window.location.href='cart.html'">
           🛒 Cart
           <span class="cart-count" id="cartBadge">0</span>
         </button>
