@@ -5547,18 +5547,18 @@ nav a:hover {
 
 .bestseller-badge {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  background: var(--gold);
-  color: var(--brown-dark);
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  color: white;
   font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 5px 12px;
+  padding: 6px 14px;
   font-weight: 700;
   font-family: 'DM Sans', sans-serif;
   border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 87, 34, 0.35);
   z-index: 10;
 }
 
@@ -9890,7 +9890,7 @@ html.dark .topping-price {
     0 0 0 4px rgba(181, 131, 102, 0.18);
 }
 }
-}
+
 .custom-price-filter {
   appearance: none !important;
   background-color: #fff4ec !important;
@@ -9925,7 +9925,7 @@ background-position: right 16px center;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
 }
-}
+
 #scrollTopBtn {
     position: fixed;
     bottom: 20px;
