@@ -39,12 +39,38 @@ const BIRTHDAY_BASE_PRICES = {
 
 // buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
+    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "assets/dutch_truffle.png" },
+    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
+    { id: 4, name: "Overload Brownie", category: "brownies", price: 120, emoji: "", img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
+    { id: 5, name: "Walnut Fudge", category: "brownies", price: 95, emoji: "", img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181" },
+    { id: 6, name: "Classic Choco", category: "brownies", price: 80, emoji: "", img: "assets/classic_choco.png" },
+    { id: 7, name: "Chocolate Mousse", category: "desserts", price: 150, emoji: "", img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" },
+    { id: 8, name: "Tiramisu Jar", category: "desserts", price: 180, emoji: "", img: "assets/tiramisu.jpg" },
+    { id: 11, name: "Assorted Macarons", category: "desserts", price: 350, emoji: "", img: "assets/assorted_macarons.png" },
+    { id: 9, name: "Choco Chip Cookies", category: "cookies", price: 250, emoji: "", img: "assets/choco_chip_cookie.png" },
+    { id: 10, name: "Almond Biscotti", category: "cookies", price: 300, emoji: "", img: "assets/almond_biscotti.png" },
+    { id: 12, name: "Double Choco Cookies", category: "cookies", price: 250, emoji: "", img: "assets/double_choco_cookie.png" }
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
     { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
 ];
 
 const DEFAULT_BDAY_CAKES = {
+    "Red Velvet": { price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    "Dutch Truffle": { price: 950, emoji: "", img: "assets/dutch_truffle.png" },
+    "Pineapple": { price: 675, emoji: "", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
+    "Chocoholic": { price: 900, emoji: "", img: "https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267" },
+    "Black Forest": { price: 750, emoji: "", img: "https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg" },
+    "Cheesecake": { price: 1200, emoji: "", img: "https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg" }
+};
+const FAVOURITES_KEY = 'brownie_bliss_favourites';
+const BROWNIE_BLISS_BAKERY = {
+    id: 'brownie-bliss',
+    name: 'Brownie Bliss',
+    category: 'Homemade Bakery',
+    location: 'Krishnagiri',
+    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338'
     "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
 };
@@ -93,6 +119,32 @@ function buildCatalogFromList(list) {
     }
 }
 
+function buildCatalogFromList(list) {
+    if (list && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || ''
+        }));
+
+        bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
+    } else {
+        useFallbackProducts();
+    }
+}
+
 async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
@@ -114,6 +166,18 @@ async function loadProducts() {
             useFallbackProducts();
         }
     } catch (e) {
+        console.error('Error loading products from database:', e);
+        buildCatalogFromList(null);
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'all';
+
+    if (document.getElementById('productsGrid')) {
+        filterProducts(category);
+    }
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
         console.error(e);
         useFallbackProducts();
     }
@@ -591,6 +655,8 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
+function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
+    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
 function sendWhatsAppFinal(orderId) {
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const itemLines = cart.map(i => {
@@ -680,6 +746,24 @@ function filterProducts(category, btn) {
     if (btn) {
         btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+
+        // Update URL query parameter category dynamically without reloading
+        if (history.pushState) {
+            const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?category=' + category;
+            window.history.pushState({path:newurl},'',newurl);
+        }
+    } else {
+        // Find corresponding tab and activate it
+        const tabs = document.querySelectorAll('.filter-tabs .filter-tab');
+        tabs.forEach(tab => {
+            const onclickText = tab.getAttribute('onclick') || '';
+            const hrefText = tab.getAttribute('href') || '';
+            if (onclickText.includes(`'${category}'`) || hrefText.includes(`category=${category}`)) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
     }
 
     let filtered = category === 'all'
@@ -720,6 +804,9 @@ else if (selectedPriceFilter === 'above500') {
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
+                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">
+                    Add to Cart
+                </button>
                 <button class="add-to-cart">
                     Customize & Add
                 </button>
@@ -732,7 +819,6 @@ else if (selectedPriceFilter === 'above500') {
 // bdayCakes object is now populated dynamically via loadProducts()
 
 function updateBirthdayCake(flavor) {
-
     if (!bdayCakes[flavor]) {
         console.error("Cake flavor not found:", flavor);
         return;
@@ -746,12 +832,8 @@ function updateBirthdayCake(flavor) {
         cakeImg.src = bdayCakes[flavor].img;
     }
 
-    if (cakeImg) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
-
     // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
+    document.querySelectorAll('.flavor-btn, .filter-tab, .filter-pill').forEach(btn => {
         if (btn.textContent.trim() === flavor) {
             btn.classList.add('active');
         } else {
@@ -761,6 +843,9 @@ function updateBirthdayCake(flavor) {
 
     calculateBdayPrice();
 }
+
+function setCakeWeight(weight) {
+    selectedWeight = weight;
 function setCakeWeight(weight) {
 // --- BIRTHDAY CAKE ---
 let selectedFlavor = "Red Velvet";
@@ -775,6 +860,14 @@ const BIRTHDAY_BASE_PRICES = {
 
 function setCakeWeight(weight, event) {
     selectedWeight = weight;
+
+    weightButtons.forEach(btn => {
+        if (btn.getAttribute('onclick').includes(`'${weight}'`)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 
     document.querySelectorAll('.weight-btn')
         .forEach(b => b.classList.remove('active'));
@@ -846,7 +939,7 @@ function addBirthdayToCart() {
 
     const fallbacks = {
         'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
-        'Dutch Truffle': { img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180', emoji: '🍰' },
+        'Dutch Truffle': { img: 'assets/dutch_truffle.png', emoji: '🍰' },
         'Pineapple': { img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg?v=1711124785', emoji: '🍍' },
         'Chocoholic': { img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267', emoji: '🍫' },
         'Black Forest': { img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg', emoji: '🌲' },
@@ -941,6 +1034,19 @@ function renderFavouritesPage() {
         `• ${i.name} × ${i.qty} = ₹${i.price * i.qty}`
     ).join('\n');
 
+function addDessertToCart() {
+    const item = {
+        id: "dessert-macarons",
+        name: "Assorted Macarons (Box of 4)",
+        price: 350,
+        img: "assets/assorted_macarons.png",
+        emoji: "🍮",
+        category: "desserts",
+        qty: 1
+    };
+    addToCart(item);
+    openCart();
+}
     const msg =
         `🍫 Order ID: ${orderId}\n\n` +
         `${items}\n\nTotal: ₹${total}`;
@@ -974,6 +1080,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (idParam && input) {
         input.value = idParam;
         trackOrder(idParam);
+    }
+
+    // Slider Scroll Listener to Update Navigation Dots
+    const slider = document.querySelector('.birthday-slider');
+    if (slider) {
+        slider.addEventListener('scroll', () => {
+            const slideWidth = slider.clientWidth;
+            if (slideWidth > 0) {
+                const activeIndex = Math.round(slider.scrollLeft / slideWidth);
+                updateDots(activeIndex);
+            }
+        });
     }
     loadProducts();
 });
@@ -1103,4 +1221,147 @@ function scrollToTop() {
         top: 0,
         behavior: "smooth"
     });
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
+
+    addToCart(cartItem);
+    closeCustomizeModal();
+    openCart();
+    // Close mobile menu when any link inside it is clicked
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('show');
+  });
+});
+}
+
+function scrollToSlide(index) {
+    const slider = document.querySelector('.birthday-slider');
+    if (!slider) return;
+    const slideWidth = slider.clientWidth;
+    slider.scrollTo({
+        left: slideWidth * index,
+        behavior: 'smooth'
+    });
+    updateDots(index);
+}
+
+function updateDots(activeIndex) {
+    const dots = document.querySelectorAll('.slider-dots .slider-dot');
+    dots.forEach((dot, idx) => {
+        if (idx === activeIndex) {
+            dot.style.background = 'var(--gold)';
+        } else {
+            dot.style.background = 'var(--cream-dark)';
+            dot.style.border = '1px solid var(--gold)';
+        }
+    });
+}
+
+// ── CUSTOM PRODUCT PAGE HELPERS ──
+function selectCustomOption(btn, productId, multiplier) {
+    const card = document.getElementById(productId);
+    if (!card) return;
+    
+    // Remove active class from sibling buttons
+    const siblingContainer = btn.parentElement;
+    siblingContainer.querySelectorAll('.filter-tab, .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Update price display
+    const basePrice = parseInt(card.dataset.price);
+    const priceDisplay = card.querySelector('.price-display');
+    if (priceDisplay) {
+        let finalPrice = basePrice;
+        if (card.dataset.category === 'cakes') {
+            finalPrice = Math.round(basePrice * multiplier);
+        } else {
+            finalPrice = Math.round(basePrice * multiplier);
+        }
+        priceDisplay.textContent = `₹ ${finalPrice}`;
+    }
+}
+
+function selectDietaryOption(btn) {
+    const siblingContainer = btn.parentElement;
+    siblingContainer.querySelectorAll('.dietary-btn, .filter-tab, .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function addCustomCardToCart(productId) {
+    const card = document.getElementById(productId);
+    if (!card) return;
+    
+    const name = card.dataset.name;
+    const basePrice = parseInt(card.dataset.price);
+    const img = card.dataset.img;
+    const category = card.dataset.category;
+    
+    // Dietary
+    const dietaryEl = card.querySelector('.dietary-options .active');
+    const dietary = dietaryEl ? dietaryEl.textContent.trim() : 'Egg';
+    
+    // Option (Weight or Pack Size)
+    const optionEl = card.querySelector('.size-options .active');
+    const optionVal = optionEl ? optionEl.textContent.trim() : '1.0';
+    
+    // Extra text/message/wrap
+    const messageEl = card.querySelector('.custom-text-input');
+    const message = messageEl ? messageEl.value.trim() : '';
+    
+    // Price calculation
+    let finalPrice = basePrice;
+    if (category === 'cakes') {
+        const weight = parseFloat(optionVal) || 1.0;
+        finalPrice = Math.round(basePrice * weight);
+    } else {
+        // Pack multipliers: Pack of 1/Single: 0.3, Box of 2: 0.5, Box/Pack of 4: 1.0, Pack of 6: 1.4, Pack of 12: 2.5, Gift Tin: 1.8
+        if (optionVal.includes('12')) {
+            finalPrice = Math.round(basePrice * 2.5);
+        } else if (optionVal.includes('6')) {
+            finalPrice = Math.round(basePrice * 1.4);
+        } else if (optionVal.includes('2')) {
+            finalPrice = Math.round(basePrice * 0.5);
+        } else if (optionVal.includes('1') || optionVal.toLowerCase().includes('single')) {
+            finalPrice = Math.round(basePrice * 0.3);
+        } else if (optionVal.toLowerCase().includes('tin')) {
+            finalPrice = Math.round(basePrice * 1.8);
+        }
+    }
+    
+    const item = {
+        id: `custom-${category}-${productId}`,
+        name: `${name} (${optionVal})`,
+        price: finalPrice,
+        img: img,
+        emoji: category === 'cakes' ? '🎂' : category === 'brownies' ? '🍫' : category === 'desserts' ? '🍮' : '🍪',
+        category: category,
+        qty: 1,
+        customizations: {
+            dietary,
+            option: optionVal,
+            message
+        }
+    };
+    
+    addToCart(item);
+    openCart();
+}
+
+function buyCustomCardNow(productId) {
+    addCustomCardToCart(productId);
+    openCheckout();
+}
 }

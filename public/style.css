@@ -8903,8 +8903,6 @@ a.logo {
   font-size: 13px !important;
   border-radius: 6px !important;
   background: var(--gold) !important;
-
- .some-class {
   color: var(--brown-dark) !important;
 }
 
@@ -9993,6 +9991,131 @@ background-position: right 16px center;
     transition: all 0.3s ease;
 }
 
+/* --- Premium Filter Pill & Custom Text Input Styles --- */
+.filter-pill,
+.filter-tab {
+  padding: 10px 22px;
+  border: 1px solid #1a0f08;
+  background: var(--white);
+  color: #1a0f08;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  border-radius: 0 !important; /* Sharp corners like the 2nd image */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  outline: none;
+}
+
+.filter-pill:hover,
+.filter-tab:hover {
+  background: rgba(26, 15, 8, 0.05);
+}
+
+.filter-pill.active,
+.filter-tab.active {
+  background: #1a0f08 !important;
+  color: var(--white) !important;
+  border-color: #1a0f08 !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(26, 15, 8, 0.15);
+}
+
+.custom-text-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 0; /* Sharp corners */
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-dark);
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+.custom-text-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+/* Premium Button Styles for Custom Cards */
+.btn-primary,
+.btn-secondary {
+  background: #1a0f08 !important;
+  color: var(--white) !important;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 0 !important; /* Sharp corners like the 2nd image */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  outline: none;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  background: #000000 !important;
+  color: var(--white) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark Mode styles */
+html.dark .filter-pill,
+html.dark .filter-tab {
+  background: #2a180e;
+  border-color: #4a2f1a;
+  color: var(--cream-dark);
+}
+
+html.dark .filter-pill:hover,
+html.dark .filter-tab:hover {
+  border-color: var(--gold);
+  color: var(--white);
+}
+
+html.dark .filter-pill.active,
+html.dark .filter-tab.active {
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+html.dark .custom-text-input {
+  background: #2a180e;
+  border-color: #4a2f1a;
+  color: var(--white);
+}
+
+html.dark .custom-text-input:focus {
+  border-color: var(--gold);
+}
+
+html.dark .btn-primary,
+html.dark .btn-secondary {
+  background: var(--white) !important;
+  color: #1a0f08 !important;
+  border-radius: 0 !important;
+}
+
+html.dark .btn-primary:hover,
+html.dark .btn-secondary:hover {
+  background: var(--cream-dark) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+}
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
