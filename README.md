@@ -7,7 +7,7 @@
 ## What's Included
 - **Frontend**: Homepage, Products, Birthday, Contact pages
 - **Checkout Flow**: Name → Phone → OTP Verification → Address → WhatsApp order
-- **Backend**: Node.js + Express + SQLite (no external DB needed)
+- **Backend**: Node.js + Express + MongoDB / Mongoose
 - **Admin Panel**: View all orders, confirm payments, generate receipts
 
 ---
@@ -15,17 +15,17 @@
 ## 📁 Project Structure
 ```
 brownie-bliss/
-├── server.js          ← Backend (Express + SQLite)
+├── api/index.js       ← Backend entry point (Express + MongoDB)
 ├── package.json
-├── brownie_bliss.db   ← Created automatically on first run
-└── public/
-    ├── index.html     ← Homepage
-    ├── products.html  ← All products
-    ├── birthday.html  ← Birthday packages
-    ├── contact.html   ← Contact page
-    ├── admin.html     ← Admin panel (orders + receipts)
-    ├── script.js      ← Shared core logic (cart + checkout + OTP + UI)
-    └── style.css      ← All styles
+├── public/
+│   ├── index.html     ← Homepage
+│   ├── products.html  ← All products
+│   ├── birthday.html  ← Birthday packages
+│   ├── contact.html   ← Contact page
+│   ├── admin.html     ← Admin panel (orders + receipts)
+│   ├── script.js      ← Shared cart + checkout + OTP logic
+│   └── style.css      ← All styles
+└── .env               ← Local environment variables (not committed)
 ```
 
 ---
@@ -43,23 +43,20 @@ Open `public/script.js` and update the `fullPhone` variable inside the `sendWhat
 ```js
 const fullPhone = `918072596340`; // Replace with YOUR WhatsApp number
 ```
-Format: country code + number, no + or spaces. E.g., `919876543210`
+Format: country code + number, no plus sign or spaces. E.g., `919876543210`
 
-### 3. Start the Server
-```bash
-### Environment variables
-
-Create a `.env` file in the project root to configure admin credentials, JWT signing, and the database connection. Make sure there are no spaces around `=` and do not wrap values in quotes.
+### 3. Configure Environment Variables
+Create a `.env` file in the project root to configure admin credentials, JWT signing, and the database connection.
 
 Required keys:
-- `ADMIN_USERNAME` — admin username used to log in to the admin panel
+- `ADMIN_USERNAME` — admin username for the admin panel
 - `ADMIN_PASSWORD` — admin password
-- `ADMIN_JWT_SECRET` — long random secret used to sign JWTs (required)
-- `MONGO_URI` — MongoDB connection string (required)
+- `ADMIN_JWT_SECRET` — long random secret used to sign JWTs
+- `MONGO_URI` — MongoDB connection string
 
 Optional keys:
 - `ADMIN_JWT_EXPIRES_IN` — JWT expiry (e.g. `2h`, defaults to `2h`)
-- `FAST2SMS_API_KEY` — optional SMS provider API key used for OTP sending
+- `FAST2SMS_API_KEY` — optional SMS provider API key for OTP delivery
 
 Example `.env`:
 ```
@@ -67,12 +64,14 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD=changeme
 ADMIN_JWT_SECRET=replace_with_long_random_secret
 ADMIN_JWT_EXPIRES_IN=2h
-MONGO_URI=your_mongodb_uri_here
+MONGO_URI=mongodb://127.0.0.1:27017/brownie_bliss
 FAST2SMS_API_KEY=your_fast2sms_api_key_here
 ```
 
 After editing `.env`, restart the server so the new values are picked up.
 
+### 4. Start the Server
+```bash
 npm start
 ```
 or for auto-reload during development:
@@ -80,7 +79,7 @@ or for auto-reload during development:
 npm run dev
 ```
 
-### 4. Open in Browser
+### 5. Open in Browser
 - **Shop**: http://localhost:3000
 - **Admin Panel**: http://localhost:3000/admin.html
 
@@ -117,7 +116,7 @@ To integrate real SMS OTP, use one of:
 - **Twilio**: https://twilio.com
 - **Fast2SMS**: https://fast2sms.com (cheapest for India)
 
-Replace the `sendOTP` endpoint in `server.js`:
+Replace the `sendOTP` logic in `api/index.js`:
 ```js
 // After generating OTP, add SMS sending:
 const msg91 = require('msg91');
