@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Brownie Bliss | About</title>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +33,7 @@
 
     <nav>
       <a href="index.html#home">Home</a>
-      <a href="about.html">About</a>
+      <a href="about.html">Abput</a>
       <a href="index.html#products">Products</a>
       <a href="index.html#birthday">Birthday Cakes</a>
       <a href="contact.html">Contact</a>
@@ -35,6 +41,10 @@
     </nav>
 
     <div class="header-actions">
+      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+        aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span id="themeIcon">🌙</span>
+      </button>
       <button class="cart-btn" onclick="openCart()">
         🛒 Cart
         <span class="cart-count" id="cartBadge">0</span>
@@ -55,16 +65,1182 @@
  <link rel="stylesheet" href="style.css">
 <section class="about-section">
 
-  <div class="about-bg-pattern"></div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <div class="about-inner">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --dark:#2d120d;
+      --brown:#4a1f14;
+      --brown2:#5b2417;
+      --gold:#d4a537;
+      --cream:#f5ede3;
+      --light:#fffaf4;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:var(--light);
+      overflow-x:hidden;
+      color:#2d120d;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity:0.04;
+      pointer-events:none;
+      z-index:9999;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    header{
+      position:fixed;
+      width:100%;
+      top:0;
+      z-index:1000;
+
+      backdrop-filter:blur(18px);
+
+      background:
+      rgba(255,250,244,0.92);
+
+      border-bottom:
+      1px solid rgba(0,0,0,0.05);
+    }
+
+    .navbar{
+      max-width:1450px;
+      margin:auto;
+
+      padding:10px 60px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      text-decoration:none;
+    }
+
+    .logo h1{
+      font-size:34px;
+      color:var(--dark);
+      font-family:'Cormorant Garamond',serif;
+      line-height:1;
+    }
+
+    .logo span{
+      color:var(--gold);
+      font-size:9px;
+      letter-spacing:5px;
+    }
+
+    nav{
+      display:flex;
+      gap:38px;
+    }
+
+    nav a{
+      text-decoration:none;
+      color:var(--dark);
+      font-size:14px;
+      font-weight:500;
+      letter-spacing:1px;
+      position:relative;
+      transition:0.4s ease;
+    }
+
+    nav a::after{
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:-8px;
+      width:0%;
+      height:2px;
+      background:var(--gold);
+      transition:0.4s ease;
+    }
+
+    nav a:hover{
+      color:var(--gold);
+    }
+
+    nav a:hover::after{
+      width:100%;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero{
+
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+
+      padding:170px 8% 120px;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.88),
+      rgba(45,18,13,0.92)
+      ),
+
+      url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      width:100%;
+
+      display:grid;
+
+      grid-template-columns:1.1fr 1fr;
+
+      gap:90px;
+
+      align-items:center;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-tag{
+
+      display:inline-block;
+
+      border:
+      1px solid rgba(212,165,55,0.5);
+
+      color:var(--gold);
+
+      padding:14px 22px;
+
+      letter-spacing:4px;
+
+      font-size:11px;
+
+      margin-bottom:35px;
+    }
+
+    .hero-title{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:70px;
+
+      line-height:1.05;
+      
+       max-width:600px;
+
+      color:var(--cream);
+
+      margin-bottom:35px;
+    }
+
+    .hero-title span{
+      color:var(--gold);
+      font-style:italic;
+    }
+
+    .hero-subtitle{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      max-width:650px;
+
+      margin-bottom:45px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:20px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+
+      text-decoration:none;
+
+      display:inline-flex;
+
+      align-items:center;
+
+      justify-content:center;
+    }
+
+    .primary-btn{
+
+      padding:20px 42px;
+
+      background:var(--gold);
+
+      color:#2d120d;
+
+      border:none;
+
+      font-weight:600;
+
+      letter-spacing:2px;
+
+      transition:0.4s ease;
+    }
+
+    .primary-btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 35px rgba(212,165,55,0.3);
+    }
+
+    .secondary-btn{
+
+      padding:20px 42px;
+
+      background:transparent;
+
+      border:
+      1px solid rgba(212,165,55,0.4);
+
+      color:var(--cream);
+
+      transition:0.4s ease;
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.08);
+    }
+
+    /* HERO IMAGES */
+
+    .hero-images{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .large-card{
+      grid-column:span 2;
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.35);
+
+      transition:0.6s ease;
+    }
+
+    .large-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .large-card img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+    }
+
+    .card-label{
+      padding:20px;
+
+      background:
+      linear-gradient(
+      90deg,
+      rgba(74,31,20,0.95),
+      rgba(91,36,23,0.85)
+      );
+
+      color:var(--cream);
+
+      font-weight:600;
+    }
+
+    .small-card{
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.25);
+
+      transition:0.6s ease;
+    }
+
+    .small-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .small-card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    /* =========================
+       PREMIUM FEATURES
+    ========================= */
+
+    .premium-features{
+
+      padding:110px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #fff7f0 0%,
+      #f8ede2 100%
+      );
+
+      position:relative;
+
+      overflow:hidden;
+    }
+
+    .premium-features::before{
+
+      content:'';
+
+      position:absolute;
+
+      width:700px;
+      height:700px;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.08),
+      transparent 70%
+      );
+
+      top:-300px;
+      right:-250px;
+    }
+
+    .premium-features-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(4,1fr);
+
+      gap:35px;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .premium-feature-card{
+
+      background:white;
+
+      border-radius:30px;
+
+      padding:45px 35px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:
+      transform 0.6s ease,
+      box-shadow 0.6s ease;
+
+      border:
+      1px solid rgba(212,165,55,0.08);
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.06);
+    }
+
+    .premium-feature-card:hover{
+
+      transform:
+      translateY(-15px);
+
+      box-shadow:
+      0 35px 70px rgba(0,0,0,0.12);
+    }
+
+    .feature-glow{
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.14),
+      transparent 70%
+      );
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .premium-icon{
+
+      width:75px;
+      height:75px;
+
+      border-radius:22px;
+
+      background:
+      linear-gradient(
+      135deg,
+      #d4a537,
+      #f1c96b
+      );
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:32px;
+
+      margin-bottom:28px;
+
+      box-shadow:
+      0 15px 30px rgba(212,165,55,0.25);
+    }
+
+    .premium-feature-card h3{
+
+      font-size:30px;
+
+      color:#2d120d;
+
+      margin-bottom:18px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .premium-feature-card p{
+
+      color:#6e4c42;
+
+      line-height:2;
+
+      font-size:15px;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story{
+
+      padding:160px 8%;
+
+      background:var(--light);
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:90px;
+    }
+
+    .section-title span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:12px;
+    }
+
+    .section-title h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:82px;
+
+      margin-top:20px;
+
+      color:var(--dark);
+    }
+
+    .section-title h2 em{
+      color:var(--brown2);
+      font-style:italic;
+    }
+
+    .story-grid{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(3,1fr);
+
+      gap:35px;
+    }
+
+    .story-card{
+
+      background:white;
+
+      border-radius:28px;
+
+      padding:55px 45px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.6s ease;
+
+      box-shadow:
+      0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    .story-card::before{
+      content:'';
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      rgba(212,165,55,0.08);
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .story-card:hover{
+      transform:translateY(-14px);
+
+      box-shadow:
+      0 30px 60px rgba(0,0,0,0.12);
+    }
+
+    .story-number{
+
+      font-size:60px;
+
+      color:rgba(212,165,55,0.25);
+
+      font-family:'Cormorant Garamond',serif;
+
+      margin-bottom:25px;
+    }
+
+    .story-card h3{
+
+      font-size:40px;
+
+      color:var(--dark);
+
+      margin-bottom:22px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .story-card p{
+
+      color:#6d4b42;
+
+      line-height:2;
+
+      font-size:16px;
+    }
+
+    /* =========================
+       EXPERIENCE
+    ========================= */
+
+    .experience{
+
+      padding:170px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #4a1f14,
+      #2d120d
+      );
+    }
+
+    .experience-box{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:1fr 1fr;
+
+      border-radius:35px;
+
+      overflow:hidden;
+
+      background:
+      rgba(255,255,255,0.04);
+
+      backdrop-filter:blur(14px);
+
+      box-shadow:
+      0 25px 60px rgba(0,0,0,0.3);
+    }
+
+    .experience-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .experience-content{
+
+      padding:90px 70px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .experience-content h3{
+
+      font-size:72px;
+
+      color:var(--cream);
+
+      line-height:1.1;
+
+      margin-bottom:30px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .experience-content p{
+
+      color:#f2dfcf;
+
+      line-height:2;
+
+      font-size:17px;
+
+      margin-bottom:40px;
+    }
+
+    /* =========================
+       LUXURY BANNER
+    ========================= */
+
+    .luxury-banner{
+
+      position:relative;
+
+      height:85vh;
+
+      background:
+      url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+    }
+
+    .luxury-overlay{
+
+      position:absolute;
+      inset:0;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.72),
+      rgba(45,18,13,0.72)
+      );
+
+      backdrop-filter:blur(2px);
+    }
+
+    .luxury-content{
+
+      position:relative;
+      z-index:2;
+
+      text-align:center;
+
+      max-width:1000px;
+
+      padding:0 20px;
+    }
+
+    .luxury-content span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:13px;
+
+      text-transform:uppercase;
+    }
+
+    .luxury-content h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:90px;
+
+      color:white;
+
+      line-height:1.1;
+
+      margin:30px 0;
+    }
+
+    .luxury-content p{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      margin-bottom:45px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer{
+
+      background:#2d120d;
+
+      padding:120px 8% 50px;
+    }
+
+    .footer-grid{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:2fr 1fr 1fr;
+
+      gap:100px;
+    }
+
+    .footer-brand h2{
+
+      color:white;
+
+      font-size:58px;
+
+      margin-bottom:24px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .footer-brand p{
+
+      color:#f2dfcf;
+
+      line-height:2.1;
+
+      font-size:17px;
+
+      max-width:500px;
+    }
+
+    .footer-links h4{
+
+      color:var(--gold);
+
+      margin-bottom:30px;
+
+      letter-spacing:4px;
+
+      font-size:13px;
+    }
+
+    .footer-links a{
+
+      display:block;
+
+      text-decoration:none;
+
+      color:#f7ead8;
+
+      margin-bottom:20px;
+
+      font-size:16px;
+
+      transition:0.4s ease;
+    }
+
+    .footer-links a:hover{
+      color:var(--gold);
+      transform:translateX(8px);
+    }
+
+    .footer-bottom{
+
+      border-top:
+      1px solid rgba(255,255,255,0.08);
+
+      margin-top:80px;
+
+      padding-top:35px;
+
+      text-align:center;
+
+      color:#d5c2af;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1200px){
+
+      .hero-title{
+        font-size:74px;
+      }
+
+      .story-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .experience-box{
+        grid-template-columns:1fr;
+      }
+
+      .luxury-content h2{
+        font-size:58px;
+      }
+
+    }
+
+    @media(max-width:1100px){
+
+      .premium-features-wrapper{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:900px){
+
+      nav{
+        display:none;
+      }
+
+      .hero-wrapper,
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .story-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-images{
+        margin-top:40px;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .premium-features-wrapper{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .navbar{
+        padding:20px;
+      }
+
+      .hero,
+      .story,
+      .experience,
+      .luxury-banner,
+      footer{
+        padding-left:20px;
+        padding-right:20px;
+      }
+
+      .hero-title,
+      .section-title h2,
+      .experience-content h3,
+      .luxury-content h2{
+        font-size:48px;
+      }
+
+      .hero-subtitle,
+      .luxury-content p{
+        font-size:17px;
+      }
+
+      .hero-buttons{
+        flex-direction:column;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <header>
+
+    <div class="navbar">
+
+      <a href="index.html" class="logo">
+        <h1>Brownie Bliss</h1>
+        <span>HOMEMADE TREATS</span>
+      </a>
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="birthday.html">Birthday Cakes</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="contact.html">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-wrapper">
+
+      <div>
+
+        <div class="hero-tag">
+          HOMEMADE TREATS • HAPPINESS IN EVERY BITE
+        </div>
+
+        <h1 class="hero-title">
+          Freshly Baked
+          <span>Delights</span>
+          Delivered to You
+        </h1>
+
+        <p class="hero-subtitle">
+          Authentic recipes, traditional methods,
+          the finest ingredients — baked with love
+          and served with care, every single day.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="products.html" class="primary-btn">
+            EXPLORE OUR MENU →
+          </a>
+
+          <a href="favourites.html" class="secondary-btn">
+            ♡ FAVOURITE BAKERY
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-images">
+
+        <div class="large-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
+            alt="Cake"
+          >
+
+          <div class="card-label">
+            🍰 Signature Cakes
+          </div>
+
+        </div>
+
+        <div class="small-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop"
+            alt="Brownies"
+          >
+
+          <div class="card-label">
+            🍫 Brownies
+          </div>
+
+        </div>
+
+        <div class="small-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1200&auto=format&fit=crop"
+            alt="Desserts"
+          >
+
+          <div class="card-label">
+            ☕ Desserts
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PREMIUM FEATURES -->
+
+  <section class="premium-features">
+
+    <div class="premium-features-wrapper">
+
+      <div class="premium-feature-card">
+
+        <div class="feature-glow"></div>
+
+        <div class="premium-icon">
+          📖
+        </div>
+
+        <h3>Authentic Recipes</h3>
+
+        <p>
+          Traditional handcrafted baking methods
+          passed with love and care.
+        </p>
+
+      </div>
+
+      <div class="premium-feature-card">
+
+        <div class="feature-glow"></div>
+
+        <div class="premium-icon">
+          💗
+        </div>
+
+        <h3>Baked With Love</h3>
+
+        <p>
+          Every brownie and cake is made
+          fresh daily with passion.
+        </p>
+
+      </div>
+
+      <div class="premium-feature-card">
+
+        <div class="feature-glow"></div>
+
+        <div class="premium-icon">
+          ✨
+        </div>
+
+        <h3>Premium Quality</h3>
+
+        <p>
+          Finest ingredients carefully selected
+          for rich luxurious flavours.
+        </p>
+
+      </div>
+
+      <div class="premium-feature-card">
+
+        <div class="feature-glow"></div>
+
+        <div class="premium-icon">
+          🍫
+        </div>
+
+        <h3>Luxury Desserts</h3>
+
+        <p>
+          Elegant presentation with unforgettable
+          chocolate experiences.
+        </p>
+
+      </div>
 
   <!-- Nav -->
   <nav>
     <a href="index.html" class="nav-logo">Brownie Bliss <span>Homemade Treats</span></a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="about.html" class="active">about</a></li>
       <li><a href="index.html#products">Products</a></li>
       <li><a href="index.html#birthday">Birthday Cakes</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -86,6 +1262,105 @@
       <div class="hero-badge">Made with ❤️ in Krishnagiri</div>
     </div>
   </section>
+
+  </section>
+
+  <!-- STORY -->
+
+  <section class="story">
+
+    <div class="section-title">
+
+      <span>HAND-PICKED FOR YOU</span>
+
+      <h2>
+        Our
+        <em>Full Range</em>
+      </h2>
+
+    </div>
+
+    <div class="story-grid">
+
+      <div class="story-card">
+
+        <div class="story-number">01</div>
+
+        <h3>Premium Ingredients</h3>
+
+        <p>
+          Every dessert is made with carefully selected
+          ingredients to create rich flavour,
+          silky textures, and unforgettable sweetness.
+        </p>
+
+      </div>
+
+      <div class="story-card">
+
+        <div class="story-number">02</div>
+
+        <h3>Handcrafted Daily</h3>
+
+        <p>
+          Our cakes and brownies are baked fresh daily
+          in small batches for authentic luxury
+          and homemade warmth.
+        </p>
+
+      </div>
+
+      <div class="story-card">
+
+        <div class="story-number">03</div>
+
+        <h3>Elegant Presentation</h3>
+
+        <p>
+          From luxury celebration cakes
+          to handcrafted brownies,
+          every dessert is designed beautifully.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- EXPERIENCE -->
+
+  <section class="experience">
+
+    <div class="experience-box">
+
+      <div class="experience-image">
+
+        <img
+          src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png"
+          alt="Dessert"
+        >
+
+      </div>
+
+      <div class="experience-content">
+
+        <h3>
+          Crafted For Sweet
+          Luxury Moments
+        </h3>
+
+        <p>
+          Brownie Bliss combines rich flavours,
+          elegant presentation,
+          and authentic homemade warmth
+          to create desserts that feel memorable,
+          indulgent, and premium.
+        </p>
+
+        <a href="products.html" class="primary-btn">
+          DISCOVER MORE →
+        </a>
 
   <!-- Stats -->
   <div class="stats">
@@ -146,6 +1421,84 @@
     </div>
   </section>
 
+  </section>
+
+  <!-- LUXURY BANNER -->
+
+  <section class="luxury-banner">
+
+    <div class="luxury-overlay"></div>
+
+    <div class="luxury-content">
+
+      <span>Brownie Bliss Experience</span>
+
+      <h2>
+        Crafted With Warmth,
+        Elegance & Chocolate Dreams
+      </h2>
+
+      <p>
+        Every brownie, pastry and cake is handcrafted
+        to create moments worth remembering.
+      </p>
+
+      <a href="products.html" class="primary-btn">
+        Explore Desserts →
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+
+        <h2>Brownie Bliss</h2>
+
+        <p>
+          A luxury dessert boutique creating handcrafted cakes,
+          premium brownies, and unforgettable chocolate experiences.
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>EXPLORE</h4>
+
+        <a href="about.html">About Us</a>
+        <a href="products.html">Desserts</a>
+        <a href="birthday.html">Custom Cakes</a>
+        <a href="contact.html">Contact</a>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>CONTACT</h4>
+
+        <a href="#">+91 9876543210</a>
+        <a href="#">orders@browniebliss.com</a>
+        <a href="#">Chennai, India</a>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Brownie Bliss • Happiness In Every Bite
+    </div>
+
+  </footer>
+
+</body>
+
   <!-- Quote -->
   <div class="quote-banner reveal">
     <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
@@ -173,6 +1526,7 @@
   </div>
 
 </footer>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
 </body>
 </html>
