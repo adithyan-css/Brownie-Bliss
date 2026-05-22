@@ -6,6 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const twilio = require('twilio');
+require('dotenv').config();
 const serverless = require('serverless-http');
 const adminAuth = require('../middlewares/adminAuth');
 
@@ -26,6 +28,12 @@ const ORDER_STATUSES = [
   'cancelled',
 ];
 
+const twilioClient = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
+// Disable buffering so mongoose throws immediately if not connected
 mongoose.set('bufferCommands', false);
 
 app.set('trust proxy', 1);
@@ -423,12 +431,40 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
       { status },
       { new: true }
     );
+<<<<<<< Updated upstream
 
     if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
     res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Server error' });
+=======
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+    // Send WhatsApp notification
+    try {
+      await twilioClient.messages.create({
+        from: process.env.TWILIO_WHATSAPP_FROM,
+        to: `whatsapp:${order.phone}`,
+        body: `Hello ${order.customer_name}, your Brownie Bliss order (${order.order_id}) status has been updated to "${order.status}".`
+      });
+
+      console.log(`WhatsApp notification sent to ${order.phone}`);
+    } catch (twilioError) {
+      console.error('Twilio WhatsApp Error:', twilioError.message);
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+>>>>>>> Stashed changes
   }
 });
 
