@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Brownie Bliss</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
+  <style>
+    .policy-container {
+      max-width: 800px;
+      margin: 120px auto 80px;
+      padding: 0 24px;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      color: var(--text-mid);
+    }
+    .policy-container h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--brown-dark);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .policy-container h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--brown-dark);
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+    .policy-container p {
+      margin-bottom: 16px;
+    }
+    .policy-container ul {
+      margin-bottom: 16px;
+      padding-left: 20px;
+    }
+    .policy-container li {
+      margin-bottom: 8px;
+    }
+    .dark .policy-container {
+      color: #d5c2af;
+    }
+    .dark .policy-container h1, 
+    .dark .policy-container h2 {
+      color: var(--white);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="policy-container">
+    <h1>Privacy Policy</h1>
+    
+    <p>Last updated: May 22, 2026</p>
+
+    <p>At Brownie Bliss, we value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>When you place an order or contact us, we may collect the following information:</p>
+    <ul>
+      <li>Name and contact details (email address, phone number)</li>
+      <li>Delivery address</li>
+      <li>Order details and preferences</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <p>We use the collected information for the following purposes:</p>
+    <ul>
+      <li>To process and deliver your orders.</li>
+      <li>To communicate with you regarding your order status.</li>
+      <li>To improve our products and services based on your feedback.</li>
+      <li>To send occasional promotional offers (only if you opt-in).</li>
+    </ul>
+
+    <h2>3. Data Security</h2>
+    <p>We implement appropriate security measures to protect your personal information from unauthorized access, alteration, or disclosure. Your payment information is processed through secure gateways and is not stored on our servers.</p>
+
+    <h2>4. Third-Party Services</h2>
+    <p>We do not sell or trade your personal information to third parties. We may share information with trusted service providers who assist us in operating our website and delivering orders, provided they agree to keep this information confidential.</p>
+
+    <h2>5. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+    <p>Email: gpriya26185@gmail.com<br>
+    Phone: +91 8072596340</p>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="refund-policy.html">Refund Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SHARED COMPONENTS -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  <script src="script.js"></script>
+</body>
+
+</html>
