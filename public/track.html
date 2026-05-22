@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order - Brownie Bliss</title>
+
     <link rel="icon" type="image/png" href="assets/favicon.png">
+
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
-    <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <script>
         (function () {
             try {
@@ -19,6 +25,25 @@
             } catch (_) { }
         })();
     </script>
+
+    <style>
+        #map {
+            width: 100%;
+            height: 350px;
+            border-radius: 18px;
+            margin-top: 20px;
+            overflow: hidden;
+            border: 2px solid #d6b38a;
+        }
+
+        .location-text {
+            margin-top: 12px;
+            font-size: 15px;
+            color: #6b4f3b;
+            text-align: center;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body class="track-page-body">
@@ -27,41 +52,50 @@
     <header>
         <div class="header-inner">
             <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
             <a href="index.html" class="logo">
                 <span class="logo-name">Brownie Bliss</span>
                 <span class="logo-sub">Homemade Treats</span>
             </a>
+
             <nav>
                 <a href="index.html#home">Home</a>
                 <a href="index.html#products">Products</a>
                 <a href="index.html#birthday">Birthday Cakes</a>
-                <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+                <a href="favourites.html">Favourites</a>
                 <a href="index.html#contact">Contact</a>
                 <a href="track.html">Track Order</a>
             </nav>
+
             <div class="header-actions">
                 <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
                     aria-label="Toggle dark mode" title="Toggle dark mode">
                     <span id="themeIcon">🌙</span>
                 </button>
+
                 <button class="cart-btn" onclick="openCart()">
                     🛒 Cart <span class="cart-count" id="cartBadge">0</span>
                 </button>
             </div>
         </div>
     </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+    </div>
+
     <div class="track-content-wrapper">
         <div class="track-container">
+
             <h2>Track Your Order</h2>
-            <p class="track-subtitle">Enter your Order ID below to check the current status.</p>
+            <p class="track-subtitle">
+                Enter your Order ID below to check the current status.
+            </p>
 
             <div class="track-input-group">
                 <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
@@ -70,7 +104,8 @@
 
             <div id="trackError" class="track-error"></div>
 
-            <div id="result">
+            <div id="result" style="display:none;">
+
                 <h3>Order <span id="resOrderId"></span></h3>
 
                 <div class="order-meta">
@@ -78,13 +113,16 @@
                         <span class="meta-label">Date Placed</span>
                         <div id="resDate" class="meta-value"></div>
                     </div>
+
                     <div>
                         <span class="meta-label">Total Amount</span>
                         <div class="meta-value">₹<span id="resTotalTop"></span></div>
                     </div>
                 </div>
 
+                <!-- TRACKING TIMELINE -->
                 <div class="tracking-timeline" id="trackingTimeline">
+
                     <div class="timeline-step" id="step-pending">
                         <div class="step-icon">⏳</div>
                         <div class="step-content">
@@ -92,6 +130,7 @@
                             <div class="step-desc">We have received your order</div>
                         </div>
                     </div>
+
                     <div class="timeline-step" id="step-confirmed">
                         <div class="step-icon">✅</div>
                         <div class="step-content">
@@ -99,6 +138,7 @@
                             <div class="step-desc">Your order has been confirmed</div>
                         </div>
                     </div>
+
                     <div class="timeline-step" id="step-preparing">
                         <div class="step-icon">🧑‍🍳</div>
                         <div class="step-content">
@@ -106,6 +146,7 @@
                             <div class="step-desc">We are baking your treats</div>
                         </div>
                     </div>
+
                     <div class="timeline-step" id="step-delivered">
                         <div class="step-icon">🚚</div>
                         <div class="step-content">
@@ -114,14 +155,25 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- CANCEL ALERT -->
                 <div id="cancelledAlert" class="cancelled-alert" style="display: none;">
                     ❌ This order has been cancelled. Please contact support.
                 </div>
 
-                <h4>Items</h4>
+                <!-- MAP SECTION -->
+                <h4 style="margin-top:30px;">Live Order Location</h4>
+
+                <div id="map"></div>
+
+                <p id="locationText" class="location-text"></p>
+
+                <!-- ITEMS -->
+                <h4 style="margin-top:30px;">Items</h4>
+
                 <table class="receipt-table">
                     <tbody id="resItems"></tbody>
+
                     <tfoot>
                         <tr class="result-total">
                             <td>Total</td>
@@ -136,15 +188,24 @@
     <!-- FOOTER -->
     <footer id="contact">
         <div class="footer-inner">
+
             <div class="footer-top">
+
                 <div class="footer-brand">
                     <div class="logo">
                         <span class="logo-name">Brownie Bliss</span>
-                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+                        <span class="logo-sub">
+                            Homemade Treats · Happiness in every bite
+                        </span>
                     </div>
-                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-                        and cookies in Krishnagiri.</p>
+
+                    <p>
+                        Hand-crafted with love by A.R. Shanmugapriya.
+                        Bringing you the finest homemade brownies,
+                        cakes, and cookies in Krishnagiri.
+                    </p>
                 </div>
+
                 <div class="footer-col">
                     <h4>Navigate</h4>
                     <a href="index.html#home">Home</a>
@@ -154,13 +215,17 @@
                     <a href="track.html">Track Order</a>
                     <a href="index.html#contact">Contact Us</a>
                 </div>
+
                 <div class="footer-col">
                     <h4>Get In Touch</h4>
                     <a href="tel:08072596340">+91 8072596340</a>
                     <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-                    <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
+                    <a href="https://instagram.com/brownie_bliss_" target="_blank">
+                        Instagram: @brownie_bliss_
+                    </a>
                 </div>
             </div>
+
             <div class="footer-bottom">
                 <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
                 <span>Made with ❤️ in Krishnagiri</span>
@@ -168,30 +233,199 @@
         </div>
     </footer>
 
+
     <!-- SHARED COMPONENTS -->
     <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
     <div class="cart-sidebar" id="cartSidebar">
+
         <div class="cart-header">
             <span class="cart-title">Your Cart 🛒</span>
             <button class="cart-close" onclick="closeCart()">✕</button>
         </div>
+
         <div class="cart-items" id="cartItems"></div>
+
         <div class="cart-footer" id="cartFooter" style="display:none">
             <div class="cart-total">
                 <span class="cart-total-label">Total Amount</span>
                 <span class="cart-total-amt" id="cartTotal">₹0</span>
             </div>
+
             <button class="whatsapp-btn" onclick="sendToWhatsApp()">
                 Order via WhatsApp
             </button>
-            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+
+            <p class="whatsapp-note">
+                You'll be redirected to WhatsApp to confirm your order
+            </p>
         </div>
     </div>
 
     <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <script src="script.js"></script>
-</body>
 
+    <!-- LEAFLET MAP JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- YOUR EXISTING SCRIPT -->
+    <script src="script.js"></script>
+
+
+    <!-- TRACK ORDER SCRIPT -->
+    <script>
+
+        // SAMPLE ORDER DATABASE
+        const orders = {
+
+            "ORD-1234": {
+                date: "22 May 2026",
+                total: 799,
+                status: "preparing",
+                items: [
+                    { name: "Chocolate Brownie Box", qty: 1, price: 499 },
+                    { name: "Choco Lava Cake", qty: 2, price: 150 }
+                ],
+                location: {
+                    lat: 12.5186,
+                    lng: 78.2137,
+                    place: "Krishnagiri, Tamil Nadu"
+                }
+            },
+
+            "ORD-5678": {
+                date: "21 May 2026",
+                total: 1299,
+                status: "delivered",
+                items: [
+                    { name: "Birthday Cake", qty: 1, price: 999 },
+                    { name: "Cookies", qty: 2, price: 150 }
+                ],
+                location: {
+                    lat: 12.9716,
+                    lng: 77.5946,
+                    place: "Bangalore"
+                }
+            }
+        };
+
+
+        function trackOrder() {
+
+            const orderId = document
+                .getElementById('orderIdInput')
+                .value
+                .trim()
+                .toUpperCase();
+
+            const result = document.getElementById('result');
+            const error = document.getElementById('trackError');
+
+            error.innerHTML = "";
+
+            if (!orders[orderId]) {
+                result.style.display = 'none';
+                error.innerHTML = '❌ Order not found. Please check your Order ID.';
+                return;
+            }
+
+            const order = orders[orderId];
+
+            // SHOW RESULT
+            result.style.display = 'block';
+
+            // FILL ORDER DATA
+            document.getElementById('resOrderId').innerText = orderId;
+            document.getElementById('resDate').innerText = order.date;
+            document.getElementById('resTotal').innerText = order.total;
+            document.getElementById('resTotalTop').innerText = order.total;
+
+            // ITEMS
+            const itemsContainer = document.getElementById('resItems');
+            itemsContainer.innerHTML = "";
+
+            order.items.forEach(item => {
+                itemsContainer.innerHTML += `
+                    <tr>
+                        <td>${item.name} × ${item.qty}</td>
+                        <td class="text-right">₹${item.price}</td>
+                    </tr>
+                `;
+            });
+
+            // RESET STEPS
+            const steps = [
+                'step-pending',
+                'step-confirmed',
+                'step-preparing',
+                'step-delivered'
+            ];
+
+            steps.forEach(step => {
+                document.getElementById(step).classList.remove('active');
+            });
+
+            // ACTIVATE STEPS
+            if (order.status === 'pending') {
+                document.getElementById('step-pending').classList.add('active');
+            }
+
+            if (order.status === 'confirmed') {
+                document.getElementById('step-pending').classList.add('active');
+                document.getElementById('step-confirmed').classList.add('active');
+            }
+
+            if (order.status === 'preparing') {
+                document.getElementById('step-pending').classList.add('active');
+                document.getElementById('step-confirmed').classList.add('active');
+                document.getElementById('step-preparing').classList.add('active');
+            }
+
+            if (order.status === 'delivered') {
+                document.getElementById('step-pending').classList.add('active');
+                document.getElementById('step-confirmed').classList.add('active');
+                document.getElementById('step-preparing').classList.add('active');
+                document.getElementById('step-delivered').classList.add('active');
+            }
+
+            // LOCATION TEXT
+            document.getElementById('locationText').innerText =
+                '📍 Current Location: ' + order.location.place;
+
+
+            // REMOVE OLD MAP
+            if (window.currentMap) {
+                window.currentMap.remove();
+            }
+
+
+            // CREATE NEW MAP
+            window.currentMap = L.map('map').setView(
+                [order.location.lat, order.location.lng],
+                13
+            );
+
+
+            // ADD MAP TILES
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(window.currentMap);
+
+
+            // ADD MARKER
+            L.marker([
+                order.location.lat,
+                order.location.lng
+            ])
+                .addTo(window.currentMap)
+                .bindPopup('🚚 Your order is here!')
+                .openPopup();
+        }
+
+    </script>
+
+</body>
 </html>
+
+
