@@ -108,7 +108,6 @@ async function createOrder(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid email address' });
     }
 
-    // ── PRICE VERIFICATION ──────────────────────────────────────────────────────
     const verifiedItems = [];
     let serverTotal = 0;
 
@@ -136,7 +135,6 @@ async function createOrder(req, res) {
       });
     }
 
-    // ── TOTAL CROSS-CHECK ───────────────────────────────────────────────────────
     const computedTotal = verifiedItems.reduce((s, i) => s + i.price * i.qty, 0);
     const clientTotal = Number(total);
     const finalTotal = Number.isFinite(clientTotal) && Math.abs(clientTotal - computedTotal) <= 2
@@ -277,11 +275,7 @@ async function confirmPayment(req, res) {
       }
 
       const receipt_email = await sendOrderReceiptEmail(order);
-      return res.json({
-        success: true,
-        message: 'Payment confirmed',
-        receipt_email,
-      });
+      return res.json({ success: true, message: 'Payment confirmed', receipt_email });
     }
 
     const existing = await Order.findOne({ order_id: req.params.orderId });
@@ -309,12 +303,7 @@ async function confirmPayment(req, res) {
     ).lean();
 
     const receipt_email = await sendOrderReceiptEmail(order);
-
-    res.json({
-      success: true,
-      message: 'Payment confirmed',
-      receipt_email,
-    });
+    res.json({ success: true, message: 'Payment confirmed', receipt_email });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: err.message || 'Server error' });
@@ -356,12 +345,7 @@ async function getStats(req, res) {
         .reduce((s, o) => s + (Number(o.total) || 0), 0);
       return res.json({
         success: true,
-        stats: {
-          total_orders,
-          pending_orders,
-          paid_orders,
-          total_revenue,
-        },
+        stats: { total_orders, pending_orders, paid_orders, total_revenue },
       });
     }
 

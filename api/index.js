@@ -6,6 +6,8 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const twilio = require('twilio');
+require('dotenv').config();
 const serverless = require('serverless-http');
 const adminAuth = require('../middlewares/adminAuth');
 
@@ -26,6 +28,12 @@ const ORDER_STATUSES = [
   'cancelled',
 ];
 
+const twilioClient = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
+// Disable buffering so mongoose throws immediately if not connected
 mongoose.set('bufferCommands', false);
 
 app.set('trust proxy', 1);
@@ -415,7 +423,10 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
     const { status } = req.body;
 
     if (!ORDER_STATUSES.includes(status)) {
-      return res.status(400).json({ success: false, message: 'Invalid order status' });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid order status'
+      });
     }
 
     const order = await Order.findOneAndUpdate(
@@ -424,11 +435,34 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
       { new: true }
     );
 
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+
+    // Send WhatsApp notification
+    try {
+      await twilioClient.messages.create({
+        from: process.env.TWILIO_WHATSAPP_FROM,
+        to: `whatsapp:${order.phone}`,
+        body: `Hello ${order.customer_name}, your Brownie Bliss order (${order.order_id}) status has been updated to "${order.status}".`
+      });
+
+      console.log(`WhatsApp notification sent to ${order.phone}`);
+    } catch (twilioError) {
+      console.error('Twilio WhatsApp Error:', twilioError.message);
+    }
+
     res.json({ success: true });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
   }
 });
 
@@ -481,22 +515,14 @@ function startServer(port) {
       startServer(nextPort);
       return;
     }
+
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
 // ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
   startServer(PORT);
 }
 
