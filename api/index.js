@@ -423,7 +423,10 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
     const { status } = req.body;
 
     if (!ORDER_STATUSES.includes(status)) {
-      return res.status(400).json({ success: false, message: 'Invalid order status' });
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid order status'
+      });
     }
 
     const order = await Order.findOneAndUpdate(
@@ -431,20 +434,14 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
       { status },
       { new: true }
     );
-<<<<<<< Updated upstream
 
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
-    res.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Server error' });
-=======
     if (!order) {
       return res.status(404).json({
         success: false,
         message: 'Order not found'
       });
     }
+
     // Send WhatsApp notification
     try {
       await twilioClient.messages.create({
@@ -457,14 +454,15 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
     } catch (twilioError) {
       console.error('Twilio WhatsApp Error:', twilioError.message);
     }
+
     res.json({ success: true });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({
       success: false,
       message: 'Server error'
     });
->>>>>>> Stashed changes
   }
 });
 
@@ -517,22 +515,14 @@ function startServer(port) {
       startServer(nextPort);
       return;
     }
+
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
 // ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
   startServer(PORT);
 }
 
