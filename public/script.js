@@ -84,51 +84,13 @@ function loadFavourites() {
         return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
     } catch {
         return { bakeries: [], dishes: [] };
-        if (data.success && Array.isArray(data.products) && data.products.length) {
-        
-          products = data.products.filter(p => p.type === 'standard').map(p => ({
-            id: p.id_ref,
-            name: p.name,
-            category: p.category,
-            price: p.price,
-            emoji: p.emoji,
-            img: p.img,
-            description: p.description || ''
-        }));
-
-            const bd = data.products.filter(p => p.type === 'birthday');
-
-            bd.forEach(p => {
-                bdayCakes[p.id_ref] = {
-                    price: p.price,
-                    emoji: p.emoji,
-                    img: p.img
-                };
-            });
-
-        } else {
-            useFallbackProducts();
-        }
-
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        useFallbackProducts();
     }
+}
 
 function saveFavourites() {
     localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
 }
 
-// --- CART ---
-    // Render UI
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
 
@@ -206,24 +168,7 @@ function changeQty(index, delta) {
     updateCartUI();
 }
 
-// --- PRODUCT FILTER (FIXED BUTTON BUG) ---
-function filterProducts(category) {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
 
-    const filtered = category === 'all'
-        ? products
-        : products.filter(p => p.category === category);
-
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <img src="${p.img}" />
-            <h3>${p.name}</h3>
-            <p>₹${p.price}</p>
-
-            <button onclick='addToCart(${JSON.stringify(p)})'>
-                Add to Cart
-            </button>
 function removeFromCart(index) {
     cart.splice(index, 1);
     saveCart();
@@ -711,9 +656,7 @@ function calculateBdayPrice() {
     if (el) el.textContent = "₹ " + price;
 }
 
-// --- FIXED WHATSAPP (ONLY ONE VERSION) ---
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
 function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
@@ -850,3 +793,14 @@ function scrollToTop() {
         behavior: "smooth"
     });
 }
+// --- MOBILE MENU TOGGLE ---
+function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.querySelector('.menu-toggle');
+    if (menu) {
+        menu.classList.toggle('show');
+        const isExpanded = menu.classList.contains('show');
+        if (btn) btn.setAttribute('aria-expanded', isExpanded);
+    }
+}
+window.toggleMenu = toggleMenu;
