@@ -17,7 +17,7 @@ function toggleTheme() {
 }
 
 // --- PRODUCTS DATA ---
-let products = [];
+let products = {};
 let bdayCakes = {};
 buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
