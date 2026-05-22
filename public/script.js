@@ -133,6 +133,66 @@ function saveFavourites() {
     localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
 }
 
+function isFavourite(type, id) {
+    if (!favourites[type]) return false;
+    return favourites[type].some(item => item.id === id);
+}
+
+function toggleFavourite(type, item) {
+    if (!favourites[type]) favourites[type] = [];
+    const index = favourites[type].findIndex(i => i.id === item.id);
+    if (index > -1) {
+        favourites[type].splice(index, 1);
+        showToast('Removed from favourites! 💔');
+    } else {
+        favourites[type].push(item);
+        showToast('Added to favourites! ❤️');
+    }
+    saveFavourites();
+    updateFavouriteButtons();
+    updateFavouritesCount();
+    
+    if (typeof renderFavouritesPage === 'function') {
+        renderFavouritesPage();
+    }
+}
+
+function updateFavouriteButtons() {
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        const type = btn.getAttribute('data-fav-type');
+        let id = btn.getAttribute('data-fav-id');
+        if (id && !isNaN(id)) id = Number(id);
+        
+        if (type && id !== null && id !== undefined) {
+            const isFav = isFavourite(type, id);
+            if (isFav) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+                btn.title = 'Remove from favourites';
+                btn.innerHTML = '&hearts;';
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+                btn.title = 'Add to favourites';
+                btn.innerHTML = '&#9825;';
+            }
+        }
+    });
+}
+
+function updateFavouritesCount() {
+    const countEl = document.getElementById('favouritesCount');
+    if (countEl) {
+        const total = (favourites.bakeries?.length || 0) + (favourites.dishes?.length || 0);
+        countEl.textContent = total;
+        if (total > 0) {
+            countEl.style.display = 'flex';
+        } else {
+            countEl.style.display = 'none';
+        }
+    }
+}
+
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
 let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
@@ -709,6 +769,27 @@ function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
 
+function updateBirthdayFavouriteButton() {
+    const item = getBirthdayFavouriteItem();
+    if (!item) return;
+    
+    const btn = document.getElementById('bdayFavouriteBtn');
+    if (!btn) return;
+    
+    const isFav = isFavourite('dishes', item.id);
+    if (isFav) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.title = 'Remove from favourites';
+        btn.innerHTML = '&hearts;';
+    } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+        btn.title = 'Add to favourites';
+        btn.innerHTML = '&#9825;';
+    }
+}
+
 function addBirthdayToCart() {
     if (!bdayCakes[selectedFlavor]) return;
 
@@ -838,7 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(localStorage.getItem('bb_theme') || 'light');
     updateCartUI();
     loadProducts(); // Load and then automatically re-render main grid/birthday block
-    updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+    updateFavouriteButtons();
     updateFavouritesCount();
     renderFavouritesPage();
 

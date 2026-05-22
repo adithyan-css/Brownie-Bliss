@@ -538,7 +538,6 @@ html.dark .theme-toggle-btn:hover {
   border-radius: var(--radius-xs);
   font-size: 1.25rem;
   color: var(--brown-900);
-  order: -1;
   width: 40px;
   height: 40px;
   align-items: center;
@@ -569,7 +568,7 @@ html.dark .menu-toggle:hover {
   background: var(--color-card);
   padding: 0 var(--space-4) var(--space-4);
   position: sticky;
-  top: 0;
+  top: var(--header-height);
   z-index: 99;
   border-block-end: 2px solid var(--color-gold);
   box-shadow: 0 8px 20px rgba(26 9 5 / .08);
@@ -589,7 +588,7 @@ html.dark .menu-toggle:hover {
 }
 
 .mobile-menu.show {
-  display: flex;
+  display: flex !important;
 }
 
 .mobile-menu a {
@@ -5021,7 +5020,12 @@ button:focus-visible {
   }
 
   .filter-tabs {
-    gap: var(--space-1);
+    gap: var(--space-2);
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: var(--space-2);
   }
 
   .filter-tab {
