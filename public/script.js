@@ -1,5 +1,3 @@
-script.js
-
 // --- CONFIG ---
 const API_BASE = '/api';
 
@@ -48,9 +46,6 @@ const DEFAULT_BDAY_CAKES = {
     "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
 };
-let favourites = loadFavourites();
-buildCatalogFromList(null);
-
 function useFallbackProducts() {
     products = DEFAULT_PRODUCTS;
     bdayCakes = { ...DEFAULT_BDAY_CAKES };
@@ -117,22 +112,12 @@ async function loadProducts() {
         console.error(e);
         useFallbackProducts();
     }
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
     if (document.getElementById('cakePrice')) {
         calculateBdayPrice();
     }
-}
-
-function buildCatalogFromList(list) {
-    if (list && Array.isArray(list) && list.length) {
-        products = list.filter(p => p.type === 'standard').map(p => ({
-
-    if (document.getElementById('productsGrid')) filterProducts('all');
-    if (document.getElementById('cakePrice')) calculateBdayPrice();
-}
-
-function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = DEFAULT_BDAY_CAKES;
 }
 
 // --- FAVOURITES ---
@@ -527,21 +512,8 @@ async function placeOrder() {
 
 // --- WHATSAPP FINAL ---
 function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
-function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
-
-    const lines = Array.isArray(itemsSnap) && itemsSnap.length
-        ? itemsSnap
-        : cart;
-
-    const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
-        ? orderTotal
-        : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
-
+    const lines = cart;
+    const total = lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
     const itemLines = lines.map(i => {
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
@@ -696,18 +668,6 @@ function updateBirthdayCake(flavor) {
 
     calculateBdayPrice();
 }
-function setCakeWeight(weight) {
-// --- BIRTHDAY CAKE ---
-let selectedFlavor = "Red Velvet";
-let selectedWeight = "1.0";
-
-const BIRTHDAY_BASE_PRICES = {
-    "0.5": 450,
-    "1.0": 850,
-    "1.5": 1250,
-    "2.0": 1600
-};
-
 function setCakeWeight(weight, event) {
     selectedWeight = weight;
 
@@ -892,10 +852,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     loadProducts();
 });
-// Show/hide button on scroll
-window.addEventListener("scroll", function () {
-    const btn = document.getElementById("scrollTopBtn");
-
 // --- TRACK ORDER LOGIC ---
 async function trackOrder(id) {
     const orderIdInput = document.getElementById('orderIdInput');
@@ -1007,8 +963,18 @@ function renderOrderDetails(order) {
 
     if (order.created_at) {
         document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
+    }
+}
+
+// Show/hide button on scroll
+window.addEventListener("scroll", function () {
+    const btn = document.getElementById("scrollTopBtn");
+    if (btn) {
+        if (window.scrollY > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
     }
 });
 

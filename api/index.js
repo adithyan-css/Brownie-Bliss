@@ -493,6 +493,9 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
+  }
+  )
+}
 
 // ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
