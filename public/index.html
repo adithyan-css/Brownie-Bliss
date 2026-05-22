@@ -655,6 +655,119 @@
   </div>
 </section>
 
+
+<!-- FAQ SECTION -->
+  <section class="bb-faq" id="faq">
+    <div class="faq-container">
+      <div style="text-align: center;">
+        <span class="faq-eyebrow">Have Questions?</span>
+        <h2>Frequently Asked <em>Questions</em></h2>
+      </div>
+
+      <!-- FAQ Item 1 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Are your baked goods eggless?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes! We offer a wide variety of eggless brownies, cakes, and cookies. You can choose your preference while customizing your order on the product cards or during checkout.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 2 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>How long in advance should I order custom birthday cakes?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Since all our signature treats are freshly baked with home-style love, we highly recommend placing custom birthday cake orders at least 24 to 48 hours in advance.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 3 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Do you offer delivery across Krishnagiri?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely! We deliver fresh happiness right to your doorstep across Krishnagiri. Delivery times and charges may vary slightly depending on your exact location.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 4 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What is the shelf life of your brownies?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Our fudgy brownies stay perfectly fresh for up to 4–5 days at room temperature when kept in an airtight container, or up to 2 weeks when refrigerated. (Pro-tip: Microwave for 10 seconds before eating!)</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+      <button class="faq-question">
+        <span>Do you offer same day delivery?</span>
+        <span class="faq-icon">+</span>
+      </button>
+
+      <div class="faq-answer">
+        Yes, we provide same day delivery for selected cakes ordered before 4 PM.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span>Can I customize cakes?</span>
+        <span class="faq-icon">+</span>
+      </button>
+
+      <div class="faq-answer">
+        Absolutely. You can customize flavours, toppings, messages, and sizes.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        <span>Do you provide eggless options?</span>
+        <span class="faq-icon">+</span>
+      </button>
+
+      <div class="faq-answer">
+        Yes, we have a variety of delicious eggless cakes available.
+      </div>
+    </div>
+  </section>
+
+  <!-- JS SCRIPT REGISTRATION -->
+  <script>
+    function initFAQ() {
+        const items = document.querySelectorAll(".faq-item");
+        items.forEach((item) => {
+            const question = item.querySelector(".faq-question");
+            if (!question) return;
+            
+            question.addEventListener("click", () => {
+                // Optional: Closes other open tabs when a new one is clicked (Accordion effect)
+                items.forEach(otherItem => {
+                    if (otherItem !== item) otherItem.classList.remove("active");
+                });
+                item.classList.toggle("active");
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initFAQ();
+    });
+  </script>
+
+
+
+
   <!-- FOOTER -->
   <footer id="contact">
     <div class="footer-inner">
