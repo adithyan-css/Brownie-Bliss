@@ -463,42 +463,34 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
-});
+// ─── SERVER INITIALIZATION CORE ────────────────────────────────────────────────
+const serverless = require('serverless-http');
 
-// ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
-function startServer(port) {
-  const server = app.listen(port, () => {
-    console.log(`🚀 Server running at http://localhost:${port}`);
+function startServer(portToTry) {
+  const server = app.listen(portToTry, () => {
+    console.log(`🚀 Server running smoothly on port ${portToTry}`);
+    if (!process.env.MONGODB_URI) {
+      console.warn('⚠️ Warning: MONGODB_URI is missing from environment variables.');
+    }
   });
 
   server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE' && !process.env.PORT) {
-      const nextPort = Number(port) + 1;
-      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
-      startServer(nextPort);
-      return;
+    if (err.code === 'EADDRINUSE') {
+      console.log(`📡 Port ${portToTry} is busy, shifting up to ${portToTry + 1}...`);
+      startServer(portToTry + 1);
+    } else {
+      console.error('❌ Server encountered a fatal error:', err);
     }
-    console.error('❌ Server startup error:', err);
-    process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
-// ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  startServer(PORT);
+// ─── EXECUTION ENVIRONMENT TRIGGER ─────────────────────────────────────────────
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production' && require.main === module) {
+  startServer(Number(PORT));
 }
 
+// ─── PRODUCTION EXPORTS ────────────────────────────────────────────────────────
 module.exports = app;
 module.exports.handler = serverless(app);
