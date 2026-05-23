@@ -1,3 +1,5 @@
+style.css
+
 html {
   scroll-behavior: smooth;
 }
@@ -64,6 +66,22 @@ body.dark-theme {
 body, header, .product-card, .cart-sidebar, .phone-modal, input, textarea {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
+}
+
+html.dark {
+  --cream: #121212;
+  --cream-dark: #1e1e1e;
+  --white: #1a1a1a;
+
+  --text-dark: #f5f5f5;
+  --text-mid: #d1d1d1;
+
+  --brown-dark: #f5e6ca;
+  --brown-mid: #d6b98c;
+  --brown-warm: #e0b97f;
+
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
 }
 
 * {

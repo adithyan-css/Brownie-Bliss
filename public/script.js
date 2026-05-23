@@ -1,6 +1,13 @@
 // --- CONFIG ---
 const API_BASE = '/api';
 
+// --- SCROLL TO TOP (NEW FEATURE) ---
+document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "t") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+});
+
 // --- THEME ---
 function applyTheme(theme) {
     // FIX: Toggles 'dark-theme' on document.body to match the CSS variables structure perfectly
@@ -20,22 +27,16 @@ function toggleTheme() {
     localStorage.setItem('bb_theme', next);
     applyTheme(next);
 }
+window.toggleTheme = toggleTheme;
 
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
 
 const DEFAULT_PRODUCTS = [
-    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "", img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
-    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
-    { id: 4, name: "Overload Brownie", category: "brownies", price: 120, emoji: "", img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
-    { id: 5, name: "Walnut Fudge", category: "brownies", price: 95, emoji: "", img: "https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181" },
-    { id: 6, name: "Classic Choco", category: "brownies", price: 80, emoji: "", img: "https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg" },
-    { id: 7, name: "Chocolate Mousse", category: "desserts", price: 150, emoji: "", img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" },
-    { id: 8, name: "Tiramisu Jar", category: "desserts", price: 180, emoji: "", img: "https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg" },
-    { id: 9, name: "Choco Chip Cookies", category: "cookies", price: 250, emoji: "", img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg" },
-    { id: 10, name: "Almond Biscotti", category: "cookies", price: 300, emoji: "", img: "https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg" }
+    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
+    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
 ];
 
 const DEFAULT_BDAY_CAKES = {
@@ -147,27 +148,32 @@ function updateFavouritesCount() {
     });
 }
 
-function toggleFavourite(type, item) {
-    const list = getFavouriteList(type);
-    const id = String(item.id);
-    const existingIndex = list.findIndex(fav => String(fav.id) === id);
+let favourites = loadFavourites();
 
-    if (existingIndex >= 0) {
-        list.splice(existingIndex, 1);
-        showToast('Removed from favourites');
+function buildCatalogFromList(list) {
+    if (list && Array.isArray(list) && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || ''
+        }));
+
+        bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
     } else {
-        list.push({ ...item, id });
-        showToast('Saved to favourites');
+        useFallbackProducts();
     }
-
-    saveFavourites();
-    updateFavouriteButtons(type, id);
-    updateFavouritesCount();
-    renderFavouritesPage();
-}
-
-function toggleBakeryFavourite() {
-    toggleFavourite('bakeries', BROWNIE_BLISS_BAKERY);
 }
 
 // --- LOAD PRODUCTS ---
@@ -179,7 +185,7 @@ async function loadProducts() {
         if (data.success && Array.isArray(data.products) && data.products.length) {
             buildCatalogFromList(data.products);
         } else {
-            buildCatalogFromList(null);
+            useFallbackProducts();
         }
     } catch (e) {
         console.error('Error loading products from database:', e);
@@ -191,11 +197,24 @@ async function loadProducts() {
         updateBirthdayCake(selectedFlavor);
         calculateBdayPrice();
     }
+
+function saveFavourites() {
+    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
 }
 
+// --- CART ---
+    // Render UI
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
+    }
+}
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
-let checkoutState = { name: '', phone: '', email: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
+let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
 
 function saveCart() {
     localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
@@ -212,8 +231,10 @@ function updateCartUI() {
     if (!cartContainer) return;
 
     if (cart.length === 0) {
+        cartContainer.innerHTML = "Cart empty 🍫";
+        return;
         cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
-        if (cartFooter) cartFooter.style.display = 'none';
+         if (cartFooter) cartFooter.style.display = 'none';
     } else {
         cartContainer.innerHTML = cart.map((item, index) => {
             const c = item.customizations;
@@ -247,11 +268,16 @@ function updateCartUI() {
         if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
     }
 
-    const count = cart.reduce((sum, item) => sum + item.qty, 0);
-    if (cartCount) cartCount.textContent = count;
-    if (cartBadge) cartBadge.textContent = count;
+    cartContainer.innerHTML = cart.map((item, index) => `
+        <div>
+            ${item.name} x ${item.qty}
+            <button onclick="changeQty(${index},1)">+</button>
+            <button onclick="changeQty(${index},-1)">-</button>
+        </div>
+    `).join('');
 }
 
+// FIXED ADD TO CART
 function addToCart(product) {
     const customKey = product.customizations ? JSON.stringify(product.customizations) : (product.message || '');
     const existing = cart.find(i => i.name === product.name && (
@@ -262,12 +288,17 @@ function addToCart(product) {
     } else {
         cart.push({ ...product, qty: 1 });
     }
+    const existing = cart.find(i => i.name === product.name);
+
+    if (existing) existing.qty++;
+    else cart.push({ ...product, qty: 1 });
+
     saveCart();
     updateCartUI();
     showToast('Added to cart! 🛒');
-    openCart();
 }
 
+// FIXED QTY
 function changeQty(index, delta) {
     cart[index].qty += delta;
     if (cart[index].qty <= 0) cart.splice(index, 1);
@@ -275,6 +306,24 @@ function changeQty(index, delta) {
     updateCartUI();
 }
 
+// --- PRODUCT FILTER (FIXED BUTTON BUG) ---
+function filterProducts(category) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+
+    const filtered = category === 'all'
+        ? products
+        : products.filter(p => p.category === category);
+
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+            <img src="${p.img}" />
+            <h3>${p.name}</h3>
+            <p>₹${p.price}</p>
+
+            <button onclick='addToCart(${JSON.stringify(p)})'>
+                Add to Cart
+            </button>
 function removeFromCart(index) {
     cart.splice(index, 1);
     saveCart();
@@ -312,6 +361,7 @@ function showToast(msg) {
 }
 
 // --- CHECKOUT FLOW ---
+// --- CHECKOUT FLOW ---
 function injectCheckoutModal() {
     if (document.getElementById('checkoutOverlay')) return;
 
@@ -346,10 +396,6 @@ function injectCheckoutModal() {
                             <span class="prefix">+91</span>
                             <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Email <span style="font-weight:400;color:var(--text-mid);font-size:12px;">(for your receipt)</span></label>
-                        <input type="email" id="custEmail" placeholder="you@example.com" autocomplete="email">
                     </div>
                     <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="sendOTP()">
                         Send Verification OTP &rarr;
@@ -423,7 +469,7 @@ function openCheckout() {
     if (cart.length === 0) { showToast('Your cart is empty! 🍫'); return; }
     injectCheckoutModal();
     closeCart();
-    checkoutState = { name: '', phone: '', email: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
+    checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
     showCheckoutStep(1);
     document.getElementById('checkoutOverlay').classList.add('open');
 }
@@ -449,15 +495,16 @@ function showCheckoutStep(n) {
 async function sendOTP() {
     const name  = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
-    const email = document.getElementById('custEmail')?.value.trim() || '';
 
     if (!name) { showToast('Please enter your name'); return; }
     if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) { showToast('Enter a valid 10-digit phone number'); return; }
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Enter a valid email address'); return; }
+    if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
+        showToast('Enter a valid 10-digit phone number'); return;
+    }
 
     checkoutState.name  = name;
     checkoutState.phone = phone;
-    checkoutState.email = email;
 
     const btn = document.querySelector('#checkStep1 .hero-cta');
     if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
@@ -543,6 +590,22 @@ function goToConfirm() {
             </div>
         `).join('');
     }
+    checkoutState.address = addr;
+    checkoutState.city = city;
+    checkoutState.pincode = pin;
+
+    document.getElementById('confirmCustomer').innerHTML = `
+        <div style="font-weight:600; color:var(--brown-dark)">${checkoutState.name}</div>
+        <div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">+91 ${checkoutState.phone}</div>
+        <div style="font-size:13px; color:var(--text-mid); line-height:1.4">${addr}, ${city} - ${pin}</div>
+    `;
+
+    document.getElementById('confirmItems').innerHTML = cart.map(i => `
+        <div class="confirm-row">
+            <span>${i.name} × ${i.qty}</span>
+            <strong style="color:var(--brown-warm)">₹${(i.price * i.qty).toLocaleString()}</strong>
+        </div>
+    `).join('');
 
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const confirmTotalEl = document.getElementById('confirmTotal');
@@ -551,7 +614,6 @@ function goToConfirm() {
 }
 
 async function placeOrder() {
-    const lineTotal = cart.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
     const orderData = {
         customer_name: checkoutState.name,
         phone:         checkoutState.phone,
@@ -566,9 +628,20 @@ async function placeOrder() {
             qty:            Math.max(1, Math.floor(Number(i.qty)) || 1),
             emoji:          i.emoji || '🍫',
             category:       i.category || 'general',
+        phone: checkoutState.phone,
+        address: checkoutState.address,
+        city: checkoutState.city,
+        pincode: checkoutState.pincode,
+        items: cart.map(i => ({
+            id: typeof i.id === 'number' ? i.id : 0,
+            name: i.name,
+            price: i.price,
+            qty: i.qty,
+            emoji: i.emoji || '🍫',
+            category: i.category || 'general',
             customizations: i.customizations || null
         })),
-        total: Math.round(lineTotal * 100) / 100
+        total: cart.reduce((s, i) => s + i.price * i.qty, 0)
     };
 
     const waSnapshot = cart.map(i => ({
@@ -584,31 +657,21 @@ async function placeOrder() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
         });
-
-        let data;
-        const ct = res.headers.get('content-type') || '';
-        if (ct.includes('application/json')) {
-            data = await res.json();
-        } else {
-            const text = await res.text();
-            showToast(text ? text.slice(0, 160) : `Order failed (${res.status})`);
-            return;
-        }
-
+        const data = await res.json();
         if (data.success) {
             const orderId = data.order_id;
             sendWhatsAppFinal(orderId, waSnapshot, waTotal);
+            sendWhatsAppFinal(orderId);
+
             cart = [];
             saveCart();
             updateCartUI();
             closeCheckout();
             showToast(`🎉 Order ${orderId} placed! <a href="track.html?id=${orderId}" class="toast-track-link">Track Order</a>`);
         } else {
-            const errText = (data && (data.message || data.error)) ? String(data.message || data.error) : '';
-            showToast(errText || `Could not save order (HTTP ${res.status}). Try again or check the server.`);
+            showToast('Failed to save order. Please try again.');
         }
     } catch (e) {
-        console.error(e);
         showToast('Error placing order. Please try again.');
     }
 }
@@ -619,18 +682,47 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     const total  = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
+function sendWhatsAppFinal(orderId) {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const itemLines = cart.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
+
+    const lines = Array.isArray(itemsSnap) && itemsSnap.length
+        ? itemsSnap
+        : cart;
+
+    const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
+        ? orderTotal
+        : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
+    const itemLines = lines.map(i => {
+        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
 
     const itemLines = lines.map(i => {
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
-            if (c.dietary) details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
-            if (c.toppings && c.toppings.length) details.push(c.toppings.map(t => `+${t.name}`).join(', '));
-            if (c.message) details.push(`Msg: "${c.message}"`);
-            if (details.length) line += `\n   _${details.join(' | ')}_`;
+
+            if (c.dietary) {
+                details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
+            }
+
+            if (c.toppings && c.toppings.length) {
+                details.push(c.toppings.map(t => `+${t.name}`).join(', '));
+            }
+
+            if (c.message) {
+                details.push(`Msg: "${c.message}"`);
+            }
+
+            if (details.length) {
+                line += `\n   _${details.join(' | ')}_`;
+            }
         }
+
         return line;
+
     }).join('\n');
 
     const message =
@@ -640,7 +732,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         `📱 *Phone:* +91 ${checkoutState.phone}\n` +
         `📍 *Address:* ${checkoutState.address}, ${checkoutState.city} - ${checkoutState.pincode}\n\n` +
         `🛒 *Order Details:*\n${itemLines}\n\n` +
-        `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
+        `💰 *Total Amount: ₹${total.toLocaleString()}*\n\n` +
         `_Your order has been recorded. Please share the payment receipt for confirmation!_ ✨`;
 
     const encodedMsg = encodeURIComponent(message);
@@ -654,8 +746,33 @@ function openCustomizeModal(p) {
     if (typeof addToCart === 'function') {
         addToCart(p);
     }
+
+    const fullPhone = `918072596340`;
+
+    const waUrl = `https://wa.me/${fullPhone}?text=${encodedMsg}`;
+
+    window.open(waUrl, '_blank');
+}
+// Redirect old button
+function sendToWhatsApp() {
+    openCheckout();
 }
 
+let selectedPriceFilter = 'all';
+function updatePriceFilter() {
+    selectedPriceFilter =
+        document.getElementById('priceFilter').value;
+
+    const activeTab =
+        document.querySelector('.filter-tab.active');
+
+    const activeCategory =
+        activeTab
+            ? activeTab.textContent.toLowerCase()
+            : 'all';
+
+    filterProducts(activeCategory);
+}
 // --- PRODUCT FILTERING ---
 function filterProducts(category, btn) {
     const grid = document.getElementById('productsGrid');
@@ -666,7 +783,22 @@ function filterProducts(category, btn) {
         btn.classList.add('active');
     }
 
-    const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+    let filtered = category === 'all'
+    ? products
+    : products.filter(p => p.category === category);
+
+// PRICE FILTER
+if (selectedPriceFilter === 'under200') {
+    filtered = filtered.filter(p => p.price < 200);
+}
+else if (selectedPriceFilter === '200to500') {
+    filtered = filtered.filter(
+        p => p.price >= 200 && p.price <= 500
+    );
+}
+else if (selectedPriceFilter === 'above500') {
+    filtered = filtered.filter(p => p.price > 500);
+}
 
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
@@ -690,6 +822,7 @@ function filterProducts(category, btn) {
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
                 <button type="button" class="add-to-cart" data-product-id="${String(p.id)}" onclick="event.stopPropagation()">
+                <button class="add-to-cart">
                     Customize & Add
                 </button>
             </div>
@@ -707,6 +840,7 @@ const BIRTHDAY_BASE_PRICES = {
     '1.5': 1250,
     '2.0': 1600
 };
+// bdayCakes object is now populated dynamically via loadProducts()
 
 function updateBirthdayCake(flavor) {
     if (!bdayCakes[flavor]) {
@@ -737,6 +871,26 @@ function setCakeWeight(weight, event) {
     });
 
     if (event && event.target) event.target.classList.add('active');
+function setCakeWeight(weight) {
+// --- BIRTHDAY CAKE ---
+let selectedFlavor = "Red Velvet";
+let selectedWeight = "1.0";
+
+const BIRTHDAY_BASE_PRICES = {
+    "0.5": 450,
+    "1.0": 850,
+    "1.5": 1250,
+    "2.0": 1600
+};
+
+function setCakeWeight(weight, event) {
+    selectedWeight = weight;
+
+    document.querySelectorAll('.weight-btn')
+        .forEach(b => b.classList.remove('active'));
+
+    if (event?.target)
+        event.target.classList.add('active');
 
     calculateBdayPrice();
 }
@@ -745,6 +899,13 @@ function calculateBdayPrice() {
     const finalPrice = BIRTHDAY_BASE_PRICES[selectedWeight];
     const priceEl = document.getElementById('cakePrice');
     if (priceEl) priceEl.textContent = `₹ ${finalPrice}`;
+    const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+
+    const priceEl = document.getElementById('cakePrice');
+    if (priceEl) {
+        priceEl.textContent = `₹ ${price}`;
+    }
+
     updateBirthdayFavouriteButton();
 }
 
@@ -765,20 +926,36 @@ function updateBirthdayFavouriteButton() {
     if (!btn) return;
     const item   = getBirthdayFavouriteItem();
     const active = isFavourite('dishes', item.id);
+
     btn.dataset.favType = 'dishes';
     btn.dataset.favId   = item.id;
     btn.classList.toggle('active', active);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    btn.setAttribute('title', active ? 'Remove from favourites' : 'Add to favourites');
+    btn.setAttribute(
+        'title',
+        active ? 'Remove from favourites' : 'Add to favourites'
+    );
+
     btn.innerHTML = active ? '&hearts;' : '&#9825;';
 }
-
+// --- FIXED WHATSAPP (ONLY ONE VERSION) ---
+function sendWhatsAppFinal(orderId) {
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
 
 // FIX: Re-constructed structural safety for the sliced block
 function addBirthdayToCart() {
+    if (!bdayCakes[selectedFlavor]) return;
+
+    const basePrices = {
+        "0.5": 450,
+        "1.0": 850,
+        "1.5": 1250,
+        "2.0": 1600
+    };
+
     const fallbacks = {
         'Red Velvet':   { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
         'Dutch Truffle':{ img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180' },
@@ -823,3 +1000,254 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
     loadProducts();
 });
+    const cakeInfo =
+        bdayCakes[selectedFlavor] ||
+        fallbacks[selectedFlavor] ||
+        fallbacks['Red Velvet'];
+
+    const finalPrice = basePrices[selectedWeight] || 850;
+
+    const msgInput = document.getElementById('cakeMessage');
+    const message = msgInput ? msgInput.value.trim() : '';
+
+    const item = {
+        id: `bday-${selectedFlavor}-${selectedWeight}`,
+        name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+        price: finalPrice,
+        img: cakeInfo.img,
+        emoji: cakeInfo.emoji,
+        category: 'cakes',
+        message,
+        qty: 1
+    };
+
+    addToCart(item);
+    showToast('🎂 Birthday cake added to cart!');
+    openCart();
+    if (msgInput) msgInput.value = '';
+
+    openCart();
+}
+
+function renderFavouritesPage() {
+    const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
+    const dishesGrid = document.getElementById('favouriteDishesGrid');
+    const emptyState = document.getElementById('favouritesEmpty');
+    const bakeryGroup = document.getElementById('favouriteBakeriesGroup');
+    const dishesGroup = document.getElementById('favouriteDishesGroup');
+
+    if (!bakeryGrid && !dishesGrid) return;
+
+    if (bakeryGrid) {
+        bakeryGrid.innerHTML = favourites.bakeries.map(bakery => `
+            <article class="favourite-bakery-card">
+                <img src="${bakery.img}" alt="${bakery.name}">
+                <div class="favourite-bakery-info">
+                    <div class="product-category">${bakery.category}</div>
+                    <h3>${bakery.name}</h3>
+                    <p>${bakery.location}</p>
+                    <button class="add-to-cart favourite-remove"
+                        type="button"
+                        onclick='toggleFavourite("bakeries", ${JSON.stringify(bakery)})'>
+                        Remove Favourite
+                    </button>
+                </div>
+            </article>
+        `).join('');
+    }
+
+    if (dishesGrid) {
+        dishesGrid.innerHTML = favourites.dishes.map(dish => `
+            <div class="product-card">
+                <div class="product-img-wrap">
+                    <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+                    <button class="favorite-btn active"
+                        type="button"
+                        data-fav-type="dishes"
+                        data-fav-id="${dish.id}"
+                        aria-label="Remove ${dish.name} from favourites"
+                        aria-pressed="true"
+                        title="Remove from favourites"
+                        onclick='toggleFavourite("dishes", ${JSON.stringify(dish)})'>
+                        &hearts;
+                    </button>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">${dish.category || 'favourite'}</div>
+                    <div class="product-name">${dish.name}</div>
+                    ${dish.price ? `<div class="product-price">Rs. ${dish.price}</div>` : ''}
+                    <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    const items = cart.map(i =>
+        `• ${i.name} × ${i.qty} = ₹${i.price * i.qty}`
+    ).join('\n');
+
+    const msg =
+        `🍫 Order ID: ${orderId}\n\n` +
+        `${items}\n\nTotal: ₹${total}`;
+
+    const url = `https://wa.me/918072596340?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
+}
+
+// --- TOAST ---
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(localStorage.getItem('bb_theme') || 'light');
+    updateCartUI();
+    loadProducts(); // Load and then automatically re-render main grid/birthday block
+    updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+    updateFavouritesCount();
+    renderFavouritesPage();
+
+    // Track Order auto-fill if on track.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    const input = document.getElementById('orderIdInput');
+    if (idParam && input) {
+        input.value = idParam;
+        trackOrder(idParam);
+    }
+    loadProducts();
+});
+// Show/hide button on scroll
+window.addEventListener("scroll", function () {
+    const btn = document.getElementById("scrollTopBtn");
+
+// --- TRACK ORDER LOGIC ---
+async function trackOrder(id) {
+    const orderIdInput = document.getElementById('orderIdInput');
+    const trackError = document.getElementById('trackError');
+    const result = document.getElementById('result');
+
+    if (!orderIdInput) return;
+
+    // Reset previous state
+    if (trackError) {
+        trackError.classList.remove('show');
+        trackError.textContent = '';
+    }
+
+    if (result) {
+        result.style.display = 'none';
+    }
+
+    const orderId = id || orderIdInput.value.trim();
+
+    // Empty input validation
+    if (!orderId) {
+        if (trackError) {
+            trackError.textContent = 'Please enter an Order ID';
+            trackError.classList.add('show');
+        }
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/orders/${orderId}`);
+        const data = await res.json();
+
+        // Successful order fetch
+        if (data.success || data.order) {
+            renderOrderDetails(data.order || data);
+
+            if (result) {
+                result.style.display = 'block';
+            }
+        }
+        // Invalid order
+        else {
+            if (trackError) {
+                trackError.textContent =
+                    data.error || 'Order not found';
+                trackError.classList.add('show');
+            }
+        }
+
+    } catch (e) {
+        console.error(e);
+
+        if (trackError) {
+            trackError.textContent =
+                'Error fetching order. Make sure server is running!';
+            trackError.classList.add('show');
+        }
+    }
+}
+
+function renderOrderDetails(order) {
+    const resOrderId = document.getElementById('resOrderId');
+    if (!resOrderId) return; // Not on track page
+
+    resOrderId.textContent = order.id || order.order_id;
+
+    const statusLower = (order.status || 'pending').toLowerCase();
+    
+    // Update top total amount
+    const resTotalTop = document.getElementById('resTotalTop');
+    if (resTotalTop) resTotalTop.textContent = order.total;
+
+    // Timeline Progression Logic
+    const timeline = document.getElementById('trackingTimeline');
+    const cancelledAlert = document.getElementById('cancelledAlert');
+    
+    if (timeline && cancelledAlert) {
+        if (statusLower === 'cancelled') {
+            timeline.style.display = 'none';
+            cancelledAlert.style.display = 'block';
+        } else {
+            timeline.style.display = 'block';
+            cancelledAlert.style.display = 'none';
+            
+            // Reset all steps
+            const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
+            steps.forEach(s => {
+                const el = document.getElementById(`step-${s}`);
+                if (el) el.classList.remove('active', 'completed');
+            });
+            
+            // Determine current step index
+            const currentIndex = steps.indexOf(statusLower) > -1 ? steps.indexOf(statusLower) : 0;
+            
+            // Apply classes
+            steps.forEach((s, i) => {
+                const el = document.getElementById(`step-${s}`);
+                if (!el) return;
+                
+                if (i < currentIndex) {
+                    el.classList.add('completed');
+                } else if (i === currentIndex) {
+                    el.classList.add('active');
+                }
+            });
+        }
+    }
+
+    if (order.created_at) {
+        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
+    } else {
+        btn.style.display = "none";
+    }
+});
+
+// Scroll to top function
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
