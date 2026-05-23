@@ -68,6 +68,8 @@ async function resolveItemPrice(item) {
     return { resolvedPrice, product };
   }
 
+  
+
   const numericId = Number(item.id);
   if (!item.id || isNaN(numericId)) {
     throw new Error(`Missing or invalid product ID for item: "${item.name}"`);

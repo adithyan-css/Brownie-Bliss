@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order - Brownie Bliss</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
     <script>
         (function () {
             try {
@@ -23,25 +20,25 @@
 
 <body class="track-page-body">
 
-    <!-- HEADER -->
-    <header>
+    <header class="main-header">
         <div class="header-inner">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Navigation">☰</button>
             <a href="index.html" class="logo">
                 <span class="logo-name">Brownie Bliss</span>
                 <span class="logo-sub">Homemade Treats</span>
             </a>
-            <nav>
+            
+            <nav class="desktop-nav">
                 <a href="index.html#home">Home</a>
                 <a href="index.html#products">Products</a>
                 <a href="index.html#birthday">Birthday Cakes</a>
                 <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
                 <a href="index.html#contact">Contact</a>
-                <a href="track.html">Track Order</a>
+                <a href="track.html" class="active">Track Order</a>
             </nav>
+            
             <div class="header-actions">
-                <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-                    aria-label="Toggle dark mode" title="Toggle dark mode">
+                <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
                     <span id="themeIcon">🌙</span>
                 </button>
                 <button class="cart-btn" onclick="openCart()">
@@ -50,64 +47,66 @@
             </div>
         </div>
     </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
-    <div class="track-content-wrapper">
+
+    <div class="mobile-menu" id="mobileMenu" style="display: none;">
+        <a href="index.html#home" onclick="toggleMenu()">Home</a>
+        <a href="index.html#products" onclick="toggleMenu()">Products</a>
+        <a href="index.html#birthday" onclick="toggleMenu()">Birthday Cakes</a>
+        <a href="favourites.html" onclick="toggleMenu()">Favourites</a>
+        <a href="index.html#contact" onclick="toggleMenu()">Contact</a>
+        <a href="track.html" onclick="toggleMenu()">Track Order</a>
+    </div>
+
+    <main class="track-content-wrapper">
         <div class="track-container">
             <h2>Track Your Order</h2>
             <p class="track-subtitle">Enter your Order ID below to check the current status.</p>
 
             <div class="track-input-group">
-                <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
-                <button onclick="trackOrder()">Track Order</button>
+                <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" aria-label="Order ID" />
+                <button class="primary-btn" onclick="trackOrder()">Track Order</button>
             </div>
 
             <div id="trackError" class="track-error"></div>
 
-            <div id="result">
+            <div id="result" class="track-result-card" style="display: none;">
                 <h3>Order <span id="resOrderId"></span></h3>
 
                 <div class="order-meta">
-                    <div>
+                    <div class="meta-box">
                         <span class="meta-label">Date Placed</span>
-                        <div id="resDate" class="meta-value"></div>
+                        <div id="resDate" class="meta-value">--/--/----</div>
                     </div>
-                    <div>
+                    <div class="meta-box">
                         <span class="meta-label">Total Amount</span>
-                        <div class="meta-value">₹<span id="resTotalTop"></span></div>
+                        <div class="meta-value">₹<span id="resTotalTop">0</span></div>
                     </div>
                 </div>
 
                 <div class="tracking-timeline" id="trackingTimeline">
                     <div class="timeline-step" id="step-pending">
-                        <div class="step-icon">⏳</div>
+                        <div class="step-icon-wrapper">⏳</div>
                         <div class="step-content">
                             <div class="step-title">Order Placed</div>
                             <div class="step-desc">We have received your order</div>
                         </div>
                     </div>
                     <div class="timeline-step" id="step-confirmed">
-                        <div class="step-icon">✅</div>
+                        <div class="step-icon-wrapper">✅</div>
                         <div class="step-content">
                             <div class="step-title">Confirmed</div>
                             <div class="step-desc">Your order has been confirmed</div>
                         </div>
                     </div>
                     <div class="timeline-step" id="step-preparing">
-                        <div class="step-icon">🧑‍🍳</div>
+                        <div class="step-icon-wrapper">🧑‍🍳</div>
                         <div class="step-content">
                             <div class="step-title">Preparing</div>
                             <div class="step-desc">We are baking your treats</div>
                         </div>
                     </div>
                     <div class="timeline-step" id="step-delivered">
-                        <div class="step-icon">🚚</div>
+                        <div class="step-icon-wrapper">🚚</div>
                         <div class="step-content">
                             <div class="step-title">Delivered</div>
                             <div class="step-desc">Enjoy your Brownie Bliss!</div>
@@ -121,19 +120,19 @@
 
                 <h4>Items</h4>
                 <table class="receipt-table">
-                    <tbody id="resItems"></tbody>
+                    <tbody id="resItems">
+                        </tbody>
                     <tfoot>
                         <tr class="result-total">
-                            <td>Total</td>
-                            <td class="text-right">₹<span id="resTotal"></span></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong>₹<span id="resTotal">0</span></strong></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- FOOTER -->
     <footer id="contact">
         <div class="footer-inner">
             <div class="footer-top">
@@ -142,8 +141,7 @@
                         <span class="logo-name">Brownie Bliss</span>
                         <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
                     </div>
-                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-                        and cookies in Krishnagiri.</p>
+                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Navigate</h4>
@@ -158,7 +156,7 @@
                     <h4>Get In Touch</h4>
                     <a href="tel:08072596340">+91 8072596340</a>
                     <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-                    <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
+                    <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener">Instagram: @brownie_bliss_</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -168,14 +166,14 @@
         </div>
     </footer>
 
-    <!-- SHARED COMPONENTS -->
     <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <span class="cart-title">Your Cart 🛒</span>
             <button class="cart-close" onclick="closeCart()">✕</button>
         </div>
-        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-items" id="cartItems">
+            </div>
         <div class="cart-footer" id="cartFooter" style="display:none">
             <div class="cart-total">
                 <span class="cart-total-label">Total Amount</span>
@@ -188,7 +186,6 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
     <script src="script.js"></script>
