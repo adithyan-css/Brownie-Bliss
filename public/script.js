@@ -700,7 +700,7 @@ else if (selectedPriceFilter === 'above500') {
 }
 
     grid.innerHTML = filtered.map(p => `
-        <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
+        <div class="product-card" onclick='trackViewedProduct(${JSON.stringify(p).replace(/'/g, "&#39;")}); openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}">
                 <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
@@ -976,6 +976,15 @@ document.addEventListener('DOMContentLoaded', () => {
         trackOrder(idParam);
     }
     loadProducts();
+        renderRecommendations();
+
+    const wishlistCount =
+        document.getElementById("wishlistCount");
+
+    if (wishlistCount) {
+        wishlistCount.textContent =
+            `${favourites.dishes.length} Desserts`;
+    }
 });
 // Show/hide button on scroll
 window.addEventListener("scroll", function () {
@@ -1103,4 +1112,74 @@ function scrollToTop() {
         top: 0,
         behavior: "smooth"
     });
+}
+// ===============================
+// PERSONALIZED RECOMMENDATION SYSTEM
+// ===============================
+
+const RECENTLY_VIEWED_KEY = "bb_recently_viewed";
+
+// SAVE VIEWED PRODUCT
+function trackViewedProduct(product) {
+
+    let viewed =
+        JSON.parse(
+            localStorage.getItem(RECENTLY_VIEWED_KEY)
+        ) || [];
+
+    // remove duplicate
+    viewed = viewed.filter(p => p.id !== product.id);
+
+    // add latest at beginning
+    viewed.unshift(product);
+
+    // keep only latest 6
+    viewed = viewed.slice(0, 6);
+
+    localStorage.setItem(
+        RECENTLY_VIEWED_KEY,
+        JSON.stringify(viewed)
+    );
+
+    renderRecommendations();
+}
+
+// LOAD RECENT PRODUCTS
+function getRecentlyViewedProducts() {
+
+    return JSON.parse(
+        localStorage.getItem(RECENTLY_VIEWED_KEY)
+    ) || [];
+
+    // RENDER RECOMMENDATIONS
+function renderRecommendations() {
+
+    const recommendationSection =
+        document.querySelector(".recommendation-grid");
+
+    if (!recommendationSection) return;
+
+    const viewed = getRecentlyViewedProducts();
+
+    // fallback products
+    const recommended =
+        viewed.length
+            ? viewed
+            : products.slice(0, 3);
+
+    recommendationSection.innerHTML =
+        recommended.map(item => `
+            <div class="recommendation-card">
+                <img src="${item.img}" alt="${item.name}">
+               <div class="recommendation-top">
+                    <span class="trend-badge">🔥 Trending</span>
+                    </div>
+
+                    <h3>${item.name}</h3>
+                <p>
+                    Premium handcrafted dessert specially
+                    recommended based on your taste preferences.
+                </p>
+            </div>
+        `).join('');
 }
