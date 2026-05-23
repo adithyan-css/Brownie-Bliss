@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Form - Brownie Bliss</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
+  <style>
+    .order-page {
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    .order-hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--color-primary);
+      padding: 74px 30px 82px;
+      color: var(--cream);
+    }
+
+    .order-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 18% 30%, rgba(212, 175, 55, 0.18), transparent 46%),
+        radial-gradient(ellipse at 88% 16%, rgba(210, 105, 30, 0.22), transparent 40%),
+        linear-gradient(135deg, #2C1810 0%, #3d1f10 52%, #1a0c06 100%);
+    }
+
+    .order-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+      background-size: 20px 20px;
+    }
+
+    .order-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .order-hero .section-label {
+      color: var(--gold);
+    }
+
+    .order-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.12;
+      margin: 10px 0 18px;
+      color: var(--cream);
+    }
+
+    .order-hero h1 em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .order-hero p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: rgba(253, 246, 237, 0.76);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      line-height: 1.7;
+    }
+
+    .order-section {
+      padding: 72px 30px 92px;
+      background: var(--cream);
+    }
+
+    .order-shell {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 34px;
+      align-items: stretch;
+    }
+
+    .order-note,
+    .order-card {
+      background: var(--white);
+      border-radius: 4px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(92, 44, 26, 0.08);
+    }
+
+    .order-note {
+      padding: 36px;
+      border-top: 5px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .order-note h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--color-primary);
+      font-size: 32px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .order-note p {
+      color: var(--text-mid);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .order-mini-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .order-mini-item {
+      padding: 14px 0;
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .order-mini-item strong {
+      display: block;
+      color: var(--color-primary);
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .order-mini-item span {
+      color: var(--text-mid);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .order-summary-box {
+      padding-top: 22px;
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .order-summary-box h3 {
+      margin: 0 0 14px;
+      color: var(--color-primary);
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+    }
+
+    .order-summary-empty {
+      color: var(--text-mid);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .order-summary-items {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .order-summary-item {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--cream-dark);
+    }
+
+    .order-summary-item-name,
+    .order-summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .order-summary-item-name strong,
+    .order-summary-row strong {
+      color: var(--color-primary);
+    }
+
+    .order-summary-meta {
+      color: var(--text-mid);
+      font-size: 13px;
+    }
+
+    .order-summary-totals {
+      display: grid;
+      gap: 9px;
+      font-size: 14px;
+    }
+
+    .order-summary-total {
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 2px solid var(--color-primary);
+      font-size: 16px;
+    }
+
+    .order-card {
+      padding: 38px;
+      border-top: 5px solid var(--color-primary);
+    }
+
+    .order-form {
+      display: grid;
+      gap: 20px;
+    }
+
+    .order-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .order-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .order-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .order-field label,
+    .payment-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .order-field input,
+    .order-field textarea {
+      width: 100%;
+      border: 1px solid var(--cream-dark);
+      background: var(--cream);
+      color: var(--text-dark);
+      padding: 14px 15px;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .order-field textarea {
+      min-height: 98px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .order-field input:focus,
+    .order-field textarea:focus {
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.14);
+    }
+
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .payment-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .payment-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .payment-choice {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px 12px;
+      border: 1px solid var(--cream-dark);
+      background: var(--cream);
+      color: var(--text-mid);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.22s ease;
+    }
+
+    .payment-option:hover .payment-choice,
+    .payment-option input:checked + .payment-choice {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--color-primary);
+      box-shadow: inset 0 0 0 1px var(--gold);
+    }
+
+    .upi-payment-box {
+      display: none;
+      margin-top: 14px;
+      padding: 18px;
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+    }
+
+    .upi-payment-box.show {
+      display: block;
+    }
+
+    .upi-payment-box label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .upi-payment-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .upi-payment-row input {
+      width: 100%;
+      border: 1px solid var(--cream-dark);
+      background: var(--white);
+      color: var(--text-dark);
+      padding: 13px 14px;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+
+    .upi-pay-button {
+      border: none;
+      background: var(--color-primary);
+      color: var(--cream);
+      min-height: 46px;
+      padding: 0 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .upi-app-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .upi-app-buttons .upi-pay-button:nth-child(2) {
+      background: #1a73e8;
+    }
+
+    .upi-app-buttons .upi-pay-button:nth-child(3) {
+      background: #5f259f;
+    }
+
+    .upi-payment-help {
+      margin-top: 10px;
+      color: var(--text-mid);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding-top: 8px;
+    }
+
+    .order-submit {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .order-reset {
+      padding: 14px 26px;
+      border: 1px solid var(--color-primary);
+      background: transparent;
+      color: var(--color-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.22s ease;
+    }
+
+    .order-reset:hover {
+      background: var(--color-primary);
+      color: var(--cream);
+    }
+
+    .order-confirmation-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background:
+        linear-gradient(135deg, rgba(44, 24, 16, 0.92), rgba(82, 43, 23, 0.9)),
+        var(--color-primary);
+    }
+
+    .order-confirmation-screen.show {
+      display: grid;
+    }
+
+    .order-confirmation-card {
+      width: min(440px, 100%);
+      padding: 42px 30px;
+      text-align: center;
+      background: var(--white);
+      border-top: 6px solid var(--gold);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .order-confirmation-tick {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: #198754;
+      position: relative;
+      box-shadow: 0 16px 34px rgba(25, 135, 84, 0.28);
+    }
+
+    .order-confirmation-tick::after {
+      content: "";
+      position: absolute;
+      left: 30px;
+      top: 22px;
+      width: 26px;
+      height: 46px;
+      border: solid #fff;
+      border-width: 0 8px 8px 0;
+      transform: rotate(45deg);
+    }
+
+    .order-confirmation-card h2 {
+      margin: 0 0 12px;
+      font-family: 'Playfair Display', serif;
+      color: var(--color-primary);
+      font-size: 34px;
+      line-height: 1.2;
+    }
+
+    .order-confirmation-card p {
+      margin: 0;
+      color: var(--text-mid);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .order-confirmation-id {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 10px 16px;
+      background: var(--cream);
+      color: var(--color-primary);
+      border: 1px solid var(--cream-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .order-confirmation-card strong {
+      color: var(--color-primary);
+    }
+
+    html.dark .order-confirmation-card {
+      background: var(--cream);
+    }
+
+    html.dark .order-note,
+    html.dark .order-card {
+      border-color: #3a2010;
+    }
+
+    html.dark .order-note h2,
+    html.dark .order-mini-item strong,
+    html.dark .order-summary-box h3,
+    html.dark .order-summary-item-name strong,
+    html.dark .order-summary-row strong {
+      color: var(--text-dark);
+    }
+
+    html.dark .payment-choice {
+      background: var(--cream-dark);
+      border-color: #3a2010;
+      color: var(--text-mid);
+    }
+
+    html.dark .upi-payment-box,
+    html.dark .upi-payment-row input {
+      border-color: #3a2010;
+    }
+
+    html.dark .payment-option input:checked + .payment-choice,
+    html.dark .payment-option:hover .payment-choice {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    @media (max-width: 880px) {
+      .order-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .order-hero {
+        padding: 56px 20px 64px;
+      }
+
+      .order-section {
+        padding: 46px 18px 70px;
+      }
+
+      .order-card,
+      .order-note {
+        padding: 26px 20px;
+      }
+
+      .order-grid,
+      .payment-options {
+        grid-template-columns: 1fr;
+      }
+
+      .upi-payment-row,
+      .upi-app-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .order-actions {
+        flex-direction: column;
+      }
+
+      .order-submit,
+      .order-reset {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="order-page">
+  <div class="announcement">DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp; | &nbsp; HAPPINESS IN EVERY BITE</div>
+
+  <header>
+    <div class="header-inner">
+      <button class="menu-toggle" onclick="toggleMenu()">Menu</button>
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">Moon</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="favourites.html">Favourites</a>
+    <a href="contact.html">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
+
+  <main>
+    <section class="order-hero">
+      <div class="order-hero-inner">
+        <span class="section-label">Freshly baked for you</span>
+        <h1>Complete Your <em>Order Details</em></h1>
+        <p>Share your delivery and payment preference so we can prepare your treats with care.</p>
+      </div>
+    </section>
+
+    <section class="order-section">
+      <div class="order-shell">
+        <aside class="order-note">
+          <div>
+            <span class="section-label">Brownie Bliss</span>
+            <h2>Homemade treats, delivered with care.</h2>
+            <p>Fill in the details below. We will use them to confirm your order and delivery information.</p>
+          </div>
+          <div class="order-summary-box">
+            <h3>Order Summary</h3>
+            <div id="orderSummaryContent">
+              <p class="order-summary-empty">No order items found yet.</p>
+            </div>
+          </div>
+        </aside>
+
+        <section class="order-card">
+          <form class="order-form" onsubmit="submitOrderForm(event)">
+            <div class="order-grid">
+              <div class="order-field full">
+                <label for="customerName">Name</label>
+                <input id="customerName" name="name" type="text" placeholder="Your full name" required>
+              </div>
+
+              <div class="order-field full">
+                <label for="customerAddress">Address</label>
+                <textarea id="customerAddress" name="address" placeholder="House number, street, landmark" required></textarea>
+              </div>
+
+              <div class="order-field">
+                <label for="customerCity">City</label>
+                <input id="customerCity" name="city" type="text" placeholder="City" required>
+              </div>
+
+              <div class="order-field">
+                <label for="customerState">State</label>
+                <input id="customerState" name="state" type="text" placeholder="State" required>
+              </div>
+
+              <div class="order-field full">
+                <label for="customerPhone">Phone Number</label>
+                <input id="customerPhone" name="phone" type="tel" placeholder="10-digit phone number" pattern="[0-9]{10}" maxlength="10" required>
+              </div>
+
+              <div class="order-field full">
+                <span class="payment-label">Payment Option</span>
+                <div class="payment-options">
+                  <label class="payment-option">
+                    <input type="radio" name="payment" value="Cash on Delivery" required>
+                    <span class="payment-choice">Cash on Delivery</span>
+                  </label>
+                  <label class="payment-option">
+                    <input type="radio" name="payment" value="UPI">
+                    <span class="payment-choice">UPI</span>
+                  </label>
+                </div>
+                <div class="upi-payment-box" id="upiPaymentBox">
+                  <label for="upiId">Receiver UPI ID</label>
+                  <div class="upi-payment-row">
+                    <input id="upiId" name="upiId" type="text" placeholder="browniebliss@upi" autocomplete="off">
+                    <div class="upi-app-buttons">
+                      <button class="upi-pay-button" type="button" onclick="payWithUpi('generic')">Any UPI App</button>
+                      <button class="upi-pay-button" type="button" onclick="payWithUpi('gpay')">GPay</button>
+                      <button class="upi-pay-button" type="button" onclick="payWithUpi('phonepe')">PhonePe</button>
+                    </div>
+                  </div>
+                  <p class="upi-payment-help">Use this on a mobile phone with a UPI app installed. Desktop browsers usually cannot open UPI apps.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-actions">
+              <button class="hero-cta order-submit" type="submit">Submit Details</button>
+              <button class="order-reset" type="reset">Clear</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats | Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
+            and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html#home">Home</a>
+          <a href="products.html">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with love in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart</span>
+      <button class="cart-close" onclick="closeCart()">x</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">Rs. 0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="order-confirmation-screen" id="orderConfirmationScreen" role="status" aria-live="polite" aria-hidden="true">
+    <div class="order-confirmation-card">
+      <div class="order-confirmation-tick" aria-hidden="true"></div>
+      <h2>Order Confirmed</h2>
+      <p>Your details have been submitted successfully.</p>
+      <div class="order-confirmation-id">Order ID: <span id="confirmedOrderId"></span></div>
+    </div>
+  </div>
+  <button id="scrollTopBtn" onclick="scrollToTop()">Up</button>
+  <script src="script.js"></script>
+  <script>
+    let orderRedirectTimer;
+    let upiPaymentStarted = false;
+    let pendingOrderId = '';
+
+    function generateOrderId() {
+      const now = new Date();
+      const datePart = now.getFullYear().toString().slice(-2) +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0');
+      const randomPart = Math.floor(1000 + Math.random() * 9000);
+      return 'BB-' + datePart + '-' + randomPart;
+    }
+
+    function showOrderConfirmation() {
+      const confirmationScreen = document.getElementById('orderConfirmationScreen');
+      const confirmedOrderId = document.getElementById('confirmedOrderId');
+      const orderId = pendingOrderId || generateOrderId();
+
+      if (confirmedOrderId) {
+        confirmedOrderId.textContent = orderId;
+      }
+
+      if (confirmationScreen) {
+        confirmationScreen.classList.add('show');
+        confirmationScreen.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      window.clearTimeout(orderRedirectTimer);
+      orderRedirectTimer = window.setTimeout(function () {
+        window.location.href = 'index.html';
+      }, 2000);
+
+      document.querySelector('.order-form')?.reset();
+      updatePaymentUi();
+      pendingOrderId = '';
+      localStorage.removeItem('brownie_bliss_direct_order');
+    }
+
+    function updatePaymentUi() {
+      const selectedPayment = document.querySelector('input[name="payment"]:checked')?.value;
+      const upiPaymentBox = document.getElementById('upiPaymentBox');
+      const upiInput = document.getElementById('upiId');
+
+      if (upiPaymentBox) {
+        upiPaymentBox.classList.toggle('show', selectedPayment === 'UPI');
+      }
+
+      if (upiInput) {
+        upiInput.required = selectedPayment === 'UPI';
+      }
+    }
+
+    function buildUpiUrl(upiId, orderId) {
+      const params = new URLSearchParams({
+        pa: upiId,
+        pn: 'Brownie Bliss',
+        tn: 'Brownie Bliss Order ' + orderId,
+        cu: 'INR'
+      }).toString();
+
+      return 'upi://pay?' + params;
+    }
+
+    function buildAndroidIntent(upiUrl, packageName) {
+      return upiUrl.replace('upi://', 'intent://') + '#Intent;scheme=upi;package=' + packageName + ';end';
+    }
+
+    function payWithUpi(app) {
+      const form = document.querySelector('.order-form');
+      const upiInput = document.getElementById('upiId');
+      const upiId = upiInput ? upiInput.value.trim() : '';
+
+      if (form && !form.reportValidity()) return;
+
+      if (!/^[\w.-]+@[\w.-]+$/.test(upiId)) {
+        if (typeof showToast === 'function') {
+          showToast('Please enter a valid UPI ID.');
+        } else {
+          alert('Please enter a valid UPI ID.');
+        }
+        upiInput?.focus();
+        return;
+      }
+
+      upiPaymentStarted = true;
+      pendingOrderId = generateOrderId();
+      const upiUrl = buildUpiUrl(upiId, pendingOrderId);
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      let paymentUrl = upiUrl;
+
+      if (isAndroid && app === 'gpay') {
+        paymentUrl = buildAndroidIntent(upiUrl, 'com.google.android.apps.nbu.paisa.user');
+      } else if (isAndroid && app === 'phonepe') {
+        paymentUrl = buildAndroidIntent(upiUrl, 'com.phonepe.app');
+      }
+
+      if (!isMobile) {
+        upiPaymentStarted = false;
+        pendingOrderId = '';
+        if (typeof showToast === 'function') {
+          showToast('Please open this page on your phone to pay with UPI.');
+        } else {
+          alert('Please open this page on your phone to pay with UPI.');
+        }
+        return;
+      }
+
+      window.location.href = paymentUrl;
+    }
+
+    document.querySelectorAll('input[name="payment"]').forEach(function (input) {
+      input.addEventListener('change', updatePaymentUi);
+    });
+
+    window.addEventListener('focus', function () {
+      if (upiPaymentStarted) {
+        upiPaymentStarted = false;
+        showOrderConfirmation();
+      }
+    });
+
+    function getOrderItemWeight(item) {
+      if (item.weight) return item.weight + ' kg';
+      if (item.customizations && item.customizations.weight) return item.customizations.weight + ' kg';
+
+      const match = String(item.name || '').match(/\(([^)]*kg)\)/i);
+      return match ? match[1] : '-';
+    }
+
+    function renderOrderSummary() {
+      const summary = document.getElementById('orderSummaryContent');
+      if (!summary) return;
+
+      let savedCart = [];
+      try {
+        const directOrder = JSON.parse(localStorage.getItem('brownie_bliss_direct_order') || '[]');
+        savedCart = Array.isArray(directOrder) && directOrder.length
+          ? directOrder
+          : JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+      } catch (_) {
+        savedCart = [];
+      }
+
+      if (!Array.isArray(savedCart) || savedCart.length === 0) {
+        summary.innerHTML = '<p class="order-summary-empty">No order items found yet.</p>';
+        return;
+      }
+
+      const subtotal = savedCart.reduce(function (sum, item) {
+        return sum + (Number(item.price) || 0) * (Number(item.qty) || 1);
+      }, 0);
+      const gst = Math.round(subtotal * 0.05);
+      const total = subtotal + gst;
+
+      const itemsHtml = savedCart.map(function (item) {
+        const qty = Number(item.qty) || 1;
+        const price = (Number(item.price) || 0) * qty;
+        return `
+          <div class="order-summary-item">
+            <div class="order-summary-item-name">
+              <strong>${item.name || 'Selected item'}</strong>
+              <span>Rs. ${price.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="order-summary-meta">Qty: ${qty} | Weight: ${getOrderItemWeight(item)}</div>
+          </div>
+        `;
+      }).join('');
+
+      summary.innerHTML = `
+        <div class="order-summary-items">${itemsHtml}</div>
+        <div class="order-summary-totals">
+          <div class="order-summary-row"><span>Subtotal</span><strong>Rs. ${subtotal.toLocaleString('en-IN')}</strong></div>
+          <div class="order-summary-row"><span>GST 5%</span><strong>Rs. ${gst.toLocaleString('en-IN')}</strong></div>
+          <div class="order-summary-row order-summary-total"><span>Total</span><strong>Rs. ${total.toLocaleString('en-IN')}</strong></div>
+        </div>
+      `;
+    }
+
+    function submitOrderForm(event) {
+      event.preventDefault();
+      const selectedPayment = document.querySelector('input[name="payment"]:checked')?.value;
+
+      if (selectedPayment === 'UPI') {
+        payWithUpi();
+        return;
+      }
+
+      showOrderConfirmation();
+    }
+
+    renderOrderSummary();
+  </script>
+</body>
+
+</html>
