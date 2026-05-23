@@ -504,6 +504,286 @@
 
   </section>
 
+   <!-- CUSTOMIZE CAKE & BROWNIE SECTION START -->
+<section class="customize-section">
+
+    <div class="customize-container">
+
+        <div class="customize-text">
+            <p class="customize-tag">
+                🎂 Customize Your Sweet Treat
+            </p>
+
+            <h2>
+                Build Your Own Cake & Brownie
+            </h2>
+
+            <p>
+                Choose flavors, toppings, cream, size, message, and make your dessert truly special.
+            </p>
+
+            <button class="customize-btn" onclick="openCustomizer()">
+              Start Customizing
+            </button>
+        </div>
+
+        <div class="customize-options">
+
+            <div class="option-card">
+                <h3>🍫 Brownies</h3>
+                <p>Chocolate, Nuts, Choco Chips, Caramel & more.</p>
+            </div>
+
+            <div class="option-card">
+                <h3>🎂 Cakes</h3>
+                <p>Customize flavor, layers, toppings, and message.</p>
+            </div>
+
+            <div class="option-card">
+                <h3>✨ Toppings</h3>
+                <p>Sprinkles, fruits, gems, candles, and premium add-ons.</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- CUSTOMIZER MODAL -->
+
+<div id="customizerModal" class="customizer-modal">
+
+  <div class="customizer-box">
+
+    <span class="close-btn" onclick="closeCustomizer()">✖</span>
+
+    <h2>Customize Your Dessert</h2>
+
+    <!-- SELECT ITEM -->
+    <div class="form-group">
+
+      <label>Select Item</label>
+
+      <select id="dessertType">
+        <option value="Cake">Cake 🎂 (+₹250)</option>
+        <option value="Brownie">Brownie 🍫 (+₹150)</option>
+      </select>
+
+    </div>
+
+    <!-- FLAVOR -->
+    <div class="form-group">
+
+      <label>Flavor</label>
+
+      <select id="flavor">
+
+        <option>Chocolate</option>
+        <option>Red Velvet</option>
+        <option>Vanilla</option>
+        <option>Butterscotch</option>
+        <option>Strawberry</option>
+        <option>Black Forest</option>
+
+      </select>
+
+    </div>
+
+    <!-- SIZE -->
+    <div class="form-group">
+
+      <label>Size</label>
+
+      <select id="size">
+
+        <option value="Small">Small (+₹0)</option>
+        <option value="Medium">Medium (+₹100)</option>
+        <option value="Large">Large (+₹200)</option>
+        <option value="Party Size">Party Size (+₹500)</option>
+
+      </select>
+
+    </div>
+
+    <!-- TOPPINGS -->
+    <div class="form-group">
+
+      <label>Toppings</label>
+
+      <div class="checkbox-group">
+
+        <label>
+          <input type="checkbox" value="Sprinkles" data-price="50">
+          Sprinkles ✨ (+₹50)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Choco Chips" data-price="80">
+          Choco Chips 🍫 (+₹80)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Nuts" data-price="80">
+          Nuts 🥜 (+₹80)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Fruits" data-price="90">
+          Fruits 🍓 (+₹90)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Caramel" data-price="50">
+          Caramel 🍯 (+₹50)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Oreo Crumbs" data-price="90">
+          Oreo Crumbs 🍪 (+₹90)
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- EXTRAS -->
+    <div class="form-group">
+
+      <label>Extras</label>
+
+      <div class="checkbox-group extras-group">
+
+        <label>
+          <input type="checkbox" value="Gift Wrapping" data-price="100">
+          Gift Wrapping 🎁 (+₹80)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Candles" data-price="50">
+          Candles 🕯️ (+₹50)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Chocolate Box" data-price="200">
+          Chocolate Box 🍫 (+₹200)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Greeting Card" data-price="80">
+          Greeting Card 💌 (+₹80)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Photo Print" data-price="150">
+          Custom Photo Print 🖼️ (+₹200)
+        </label>
+
+        <label>
+          <input type="checkbox" value="Premium Packaging" data-price="250">
+          Premium Packaging ✨ (+₹200)
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- DELIVERY DISTANCE -->
+    <div class="form-group">
+
+      <label>Delivery Distance</label>
+
+      <select id="deliveryDistance">
+        <option value="0">Within 3 KM (Free Delivery)</option>
+        <option value="100">Above 3 KM (+₹100 Delivery)</option>
+      </select>
+
+    </div>
+
+    <!-- ADDRESS -->
+
+<div class="form-group">
+
+  <label>Delivery Address</label>
+
+  <textarea
+    id="address"
+    placeholder="Enter your full delivery address..."
+  ></textarea>
+
+</div>
+
+    <!-- OCCASION -->
+    <div class="form-group">
+
+      <label>Occasion</label>
+
+      <select id="occasion">
+
+        <option>Birthday 🎂</option>
+        <option>Anniversary 💖</option>
+        <option>Celebration 🎉</option>
+        <option>Graduation 🎓</option>
+        <option>Festival 🪔</option>
+        <option>Surprise Party 🎁</option>
+
+      </select>
+
+    </div>
+
+    <!-- CUSTOM MESSAGE -->
+    <div class="form-group">
+
+      <label>Custom Message</label>
+
+      <textarea
+        id="message"
+        placeholder="Write your sweet message here..."
+      ></textarea>
+
+    </div>
+
+    <!-- LIVE TOTAL -->
+
+<div class="form-group total-price-box">
+
+  <h3>
+    Total Price: ₹<span id="totalPrice">500</span>
+  </h3>
+
+</div>
+
+    <!-- BUTTON -->
+    <button
+      class="submit-customization"
+      onclick="submitCustomization()"
+    >
+      Add To Cart
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ORDER SUCCESS POPUP -->
+
+<div id="successPopup" class="success-popup">
+
+    <div class="success-box">
+
+        <h2>🎉 Order Added Successfully!</h2>
+
+        <div id="orderSummary"></div>
+
+        <button onclick="closeSuccessPopup()">
+            Continue Shopping
+        </button>
+
+    </div>
+
+</div>
+
+<!-- CUSTOMIZE CAKE & BROWNIE SECTION END -->
+
   <!-- FEEDBACK & COMPLAINTS SECTION -->
   <section id="feedback" style="padding: 100px 24px; background: var(--cream);">
     <div style="max-width: 1200px; margin: 0 auto;">
@@ -720,6 +1000,7 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <script src="customize.js"></script>
 </body>
 
 </html>

@@ -9997,3 +9997,893 @@ background-position: right 16px center;
     background-color: #8b5a3c;
     transform: scale(1.1);
 }
+
+/* Your feature styles */
+/* CUSTOMIZE SECTION */
+
+.customize-section {
+    padding: 80px 10%;
+    background: #fff7f3;
+}
+
+.customize-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.customize-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.customize-tag {
+    color: #ff4d6d;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.customize-text h2 {
+    font-size: 42px;
+    color: #2d1b1b;
+    margin-bottom: 20px;
+}
+
+.customize-text p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.customize-btn {
+    padding: 14px 30px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.customize-btn:hover {
+    background: #e63956;
+    transform: translateY(-3px);
+}
+
+.customize-options {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.option-card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+}
+
+.option-card h3 {
+    margin-bottom: 12px;
+    color: #2d1b1b;
+}
+
+.option-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* ===== CUSTOMIZER MODAL ===== */
+
+.customizer-modal{
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.65);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+
+    padding: 20px;
+}
+
+
+/* ===== MODAL BOX ===== */
+
+.customizer-box{
+
+    width: 100%;
+    max-width: 620px;
+
+    background: #fff;
+
+    border-radius: 30px;
+
+    padding: 28px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    position: relative;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+
+/* ===== TITLE ===== */
+
+.customizer-box h2{
+
+    font-size: 28px;
+
+    margin-bottom: 25px;
+
+    color: #2b1616;
+
+    line-height: 1.2;
+}
+
+
+/* ===== CLOSE BUTTON ===== */
+
+.close-btn{
+
+    position: absolute;
+
+    top: 25px;
+    right: 30px;
+
+    font-size: 34px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.close-btn:hover{
+    transform: scale(1.1);
+}
+
+
+/* ===== FORM GROUP ===== */
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+.form-group label{
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #d6a321;
+
+    text-transform: uppercase;
+}
+
+
+/* ===== INPUTS ===== */
+
+.form-group select,
+.form-group textarea{
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    border: 1px solid #ddd;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color: #ff758f;
+
+    box-shadow: 0 0 10px rgba(255,117,143,0.2);
+}
+
+
+/* ===== TEXTAREA ===== */
+
+.form-group textarea{
+
+    resize: none;
+
+    min-height: 90px;
+}
+
+
+/* ===== CHECKBOX GRID ===== */
+
+.checkbox-group{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+/* ===== CHECKBOX CARD ===== */
+
+.checkbox-group label{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #fff7f8;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    border: 1px solid #ffd6de;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    color: #333;
+
+    text-transform: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+.checkbox-group label:hover{
+
+    transform: translateY(-2px);
+
+    background: #fff0f3;
+}
+
+
+/* ===== CHECKBOX ===== */
+
+.checkbox-group input{
+
+    width: 18px;
+    height: 18px;
+
+    accent-color: #ff4d6d;
+}
+
+
+/* ===== BUTTON ===== */
+
+.submit-customization{
+
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #ff4d6d,
+        #ff758f
+    );
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    margin-top: 10px;
+}
+
+.submit-customization:hover{
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(255,77,109,0.3);
+}
+
+.close-btn{
+
+    font-size: 28px;
+
+    top: 18px;
+    right: 22px;
+}
+
+/* ===== SUCCESS POPUP ===== */
+
+.success-popup{
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10000;
+}
+
+
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 90%;
+    max-width: 500px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 28px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.success-box h2{
+
+    font-size: 34px;
+
+    color: #2b1616;
+
+    margin-bottom: 20px;
+}
+
+
+/* ===== ORDER SUMMARY ===== */
+
+#orderSummary{
+
+    text-align: left;
+
+    margin-top: 20px;
+
+    background: #fff7f8;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    line-height: 1.8;
+
+    color: #444;
+}
+
+
+/* ===== SUCCESS BUTTON ===== */
+
+.success-box button{
+
+    margin-top: 25px;
+
+    padding: 14px 30px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #ff4d6d;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.success-box button:hover{
+
+    background: #ff335c;
+
+    transform: translateY(-2px);
+}
+
+/* ===== SUCCESS POPUP ===== */
+
+.success-popup{
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    backdrop-filter: blur(5px);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 20000;
+
+    padding: 20px;
+}
+
+
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 95%;
+    max-width: 760px;
+
+    background: #fff;
+
+    border-radius: 28px;
+
+    padding: 34px;
+
+    position: relative;
+
+    animation: popup 0.3s ease;
+
+    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+
+    overflow: hidden;
+}
+
+
+/* ===== POPUP ANIMATION ===== */
+
+@keyframes popup{
+
+    from{
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ===== TITLE ===== */
+
+.success-box h2{
+
+    text-align: center;
+
+    font-size: 38px;
+
+    color: #2b1616;
+
+    margin-bottom: 28px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+}
+
+
+/* ===== SUMMARY CARD ===== */
+
+#orderSummary{
+
+    background: #fff7f8;
+
+    border-radius: 24px;
+
+    padding: 28px 34px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px 30px;
+
+    align-items: start;
+
+    margin-bottom: 26px;
+}
+
+
+/* ===== SUMMARY TEXT ===== */
+
+#orderSummary p{
+
+    margin: 0;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+
+    color: #444;
+}
+
+
+/* ===== LABEL ===== */
+
+#orderSummary strong{
+
+    color: #2b1616;
+
+    font-weight: 700;
+}
+
+
+/* ===== FULL WIDTH ITEMS ===== */
+
+.full-width{
+
+    grid-column: 1 / -1;
+}
+
+
+/* ===== DIVIDER ===== */
+
+#orderSummary hr{
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    border: none;
+
+    border-top: 1px dashed #ffb6c1;
+
+    margin: 4px 0;
+}
+
+
+/* ===== TOTAL PRICE ===== */
+
+#orderSummary h3{
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    font-size: 42px;
+
+    color: #ff3366;
+
+    margin-top: 8px;
+
+    font-weight: 800;
+}
+
+
+/* ===== BUTTON ===== */
+
+.success-box button{
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 18px;
+
+    padding: 16px;
+
+    background: linear-gradient(
+        135deg,
+        #ff4d6d,
+        #ff758f
+    );
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+/* ===== BUTTON HOVER ===== */
+
+.success-box button:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 12px 25px rgba(255,77,109,0.25);
+}
+
+
+/* ===== MOBILE ===== */
+
+@media(max-width: 768px){
+
+    .success-box{
+
+        padding: 24px;
+    }
+
+    .success-box h2{
+
+        font-size: 28px;
+    }
+
+    #orderSummary{
+
+        grid-template-columns: 1fr;
+
+        padding: 22px;
+    }
+
+    #orderSummary h3{
+
+        font-size: 32px;
+    }
+
+    #orderSummary p{
+
+        font-size: 15px;
+    }
+}
+
+/* ___________________________  */
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 92%;
+    max-width: 540px;
+
+    padding: 20px 22px;
+
+    border-radius: 22px;
+}
+
+
+/* ===== TITLE ===== */
+
+.success-box h2{
+
+    font-size: 20px;
+
+    margin-bottom: 16px;
+}
+
+
+/* ===== SUMMARY CARD ===== */
+
+#orderSummary{
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    gap: 10px 18px;
+}
+
+
+/* ===== SUMMARY TEXT ===== */
+
+#orderSummary p{
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* ===== LABEL ===== */
+
+#orderSummary strong{
+
+    font-size: 13px;
+}
+
+
+/* ===== TOTAL ===== */
+
+#orderSummary h3{
+
+    font-size: 22px;
+
+    margin-top: 4px;
+}
+
+
+/* ===== BUTTON ===== */
+
+.success-box button{
+
+    padding: 11px;
+
+    font-size: 14px;
+
+    border-radius: 12px;
+}
+
+/* ===== MODAL BOX ===== */
+
+.customizer-box{
+
+    width: 92%;
+    max-width: 620px;
+
+    padding: 22px 24px;
+
+    border-radius: 24px;
+}
+
+
+/* ===== TITLE ===== */
+
+.customizer-box h2{
+
+    font-size: 22px;
+
+    margin-bottom: 18px;
+}
+
+
+/* ===== CLOSE BUTTON ===== */
+
+.close-btn{
+
+    font-size: 22px;
+
+    top: 16px;
+    right: 20px;
+}
+
+
+/* ===== FORM GROUP ===== */
+
+.form-group{
+
+    margin-bottom: 14px;
+}
+
+
+/* ===== LABELS ===== */
+
+.form-group label{
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* ===== INPUTS ===== */
+
+.form-group select,
+.form-group textarea{
+
+    padding: 10px 12px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+}
+
+
+/* ===== TEXTAREA ===== */
+
+.form-group textarea{
+
+    min-height: 60px;
+}
+
+
+/* ===== CHECKBOX GRID ===== */
+
+.checkbox-group{
+
+    gap: 8px;
+}
+
+
+/* ===== CHECKBOX CARD ===== */
+
+.checkbox-group label{
+
+    padding: 8px 10px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+
+    min-height: 46px;
+
+    gap: 8px;
+}
+
+
+/* ===== CHECKBOX ===== */
+
+.checkbox-group input{
+
+    width: 15px;
+    height: 15px;
+}
+
+
+/* ===== TOTAL PRICE ===== */
+
+.total-price-box{
+
+    padding: 12px;
+
+    border-radius: 14px;
+}
+
+.total-price-box h3{
+
+    font-size: 20px;
+}
+
+
+/* ===== BUTTON ===== */
+
+.submit-customization{
+
+    padding: 12px;
+
+    font-size: 15px;
+
+    border-radius: 14px;
+}
+
+
+/* ===== SCROLLBAR ===== */
+
+.customizer-box::-webkit-scrollbar{
+
+    width: 5px;
+}
+
+.customizer-box::-webkit-scrollbar-thumb{
+
+    background: #ffb3c1;
+
+    border-radius: 20px;
+}
