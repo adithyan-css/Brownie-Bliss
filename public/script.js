@@ -1,5 +1,3 @@
-script.js
-
 // --- CONFIG ---
 const API_BASE = '/api';
 
@@ -12,13 +10,19 @@ document.addEventListener("keydown", (e) => {
 
 // --- THEME ---
 function applyTheme(theme) {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    // FIX: Toggles 'dark-theme' on document.body to match the CSS variables structure perfectly
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('dark-theme', isDark);
+    
+    // Fallback alignment for elements looking for light-theme parameters
+    document.documentElement.classList.toggle('dark', isDark); 
+    
     const icon = document.getElementById('themeIcon');
-    if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if (icon) icon.textContent = isDark ? '☀️' : '🌙';
 }
 
 function toggleTheme() {
-    const isDark = document.documentElement.classList.contains('dark');
+    const isDark = document.body.classList.contains('dark-theme');
     const next = isDark ? 'light' : 'dark';
     localStorage.setItem('bb_theme', next);
     applyTheme(next);
@@ -28,16 +32,7 @@ window.toggleTheme = toggleTheme;
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-let selectedFlavor = 'Red Velvet';
-let selectedWeight = '1.0';
-const BIRTHDAY_BASE_PRICES = {
-    '0.5': 450,
-    '1.0': 850,
-    '1.5': 1250,
-    '2.0': 1600
-};
 
-// buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
@@ -45,31 +40,36 @@ const DEFAULT_PRODUCTS = [
 ];
 
 const DEFAULT_BDAY_CAKES = {
-    "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
+    "Red Velvet":   { price: 850,  emoji: "", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    "Dutch Truffle":{ price: 950,  emoji: "", img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" },
+    "Pineapple":    { price: 675,  emoji: "", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
+    "Chocoholic":   { price: 900,  emoji: "", img: "https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267" },
+    "Black Forest": { price: 750,  emoji: "", img: "https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg" },
+    "Cheesecake":   { price: 1200, emoji: "", img: "https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg" }
 };
-let favourites = loadFavourites();
-buildCatalogFromList(null);
-
-function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = { ...DEFAULT_BDAY_CAKES };
-
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
+const BROWNIE_BLISS_BAKERY = {
+    id: 'brownie-bliss',
+    name: 'Brownie Bliss',
+    category: 'Homemade Bakery',
+    location: 'Krishnagiri',
+    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338'
+};
 
 let favourites = loadFavourites();
 
-function buildCatalogFromList(list) {
-    if (list && Array.isArray(list) && list.length) {
-        products = list.filter(p => p.type === 'standard').map(p => ({
+// --- BUILD CATALOG ---
+function buildCatalogFromList(apiProducts) {
+    if (!apiProducts || !Array.isArray(apiProducts) || apiProducts.length === 0) {
+        products = [...DEFAULT_PRODUCTS];
+        bdayCakes = { ...DEFAULT_BDAY_CAKES };
+        return;
+    }
+
+    products = apiProducts
+        .filter(p => p.type === 'standard')
+        .map(p => ({
             id: p.id_ref,
             name: p.name,
             category: p.category,
@@ -79,71 +79,80 @@ function buildCatalogFromList(list) {
             description: p.description || ''
         }));
 
-        bdayCakes = {};
-        const bd = list.filter(p => p.type === 'birthday');
-        bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
-                price: p.price,
-                emoji: p.emoji,
-                img: p.img
-            };
+    bdayCakes = {};
+    apiProducts
+        .filter(p => p.type === 'birthday')
+        .forEach(p => {
+            bdayCakes[p.id_ref] = { price: p.price, emoji: p.emoji, img: p.img };
         });
-    } else {
-        useFallbackProducts();
+
+    if (Object.keys(bdayCakes).length === 0) {
+        bdayCakes = { ...DEFAULT_BDAY_CAKES };
     }
-}
-
-async function loadProducts() {
-    try {
-        const res = await fetch(`${API_BASE}/products`);
-        const data = await res.json();
-
-        if (data.success && Array.isArray(data.products)) {
-            products = data.products.filter(p => p.type === 'standard');
-            bdayCakes = {};
-
-            data.products
-                .filter(p => p.type === 'birthday')
-                .forEach(p => {
-                    bdayCakes[p.name] = {
-                        price: p.price,
-                        img: p.img
-                    };
-                });
-        } else {
-            useFallbackProducts();
-        }
-    } catch (e) {
-        console.error(e);
-        useFallbackProducts();
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
-
-function buildCatalogFromList(list) {
-    if (list && Array.isArray(list) && list.length) {
-        products = list.filter(p => p.type === 'standard').map(p => ({
-
-    if (document.getElementById('productsGrid')) filterProducts('all');
-    if (document.getElementById('cakePrice')) calculateBdayPrice();
 }
 
 function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = DEFAULT_BDAY_CAKES;
+    products = [...DEFAULT_PRODUCTS];
+    bdayCakes = { ...DEFAULT_BDAY_CAKES };
+    if (document.getElementById('productsGrid')) filterProducts('all');
+    if (document.getElementById('cakePrice')) calculateBdayPrice();
 }
 
 // --- FAVOURITES ---
 function loadFavourites() {
     try {
-        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
-    } catch {
+        const saved = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || '{}');
+        return {
+            bakeries: Array.isArray(saved.bakeries) ? saved.bakeries : [],
+            dishes:   Array.isArray(saved.dishes)   ? saved.dishes   : []
+        };
+    } catch (e) {
         return { bakeries: [], dishes: [] };
-        if (data.success && Array.isArray(data.products) && data.products.length) {
-        
-          products = data.products.filter(p => p.type === 'standard').map(p => ({
+    }
+}
+
+function saveFavourites() {
+    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
+}
+
+function getFavouriteList(type) {
+    return type === 'bakeries' ? favourites.bakeries : favourites.dishes;
+}
+
+// Dummy container to bypass missing favorite page rendering references
+function renderFavouritesPage() {
+    if (typeof updateFavouritesCount === 'function') updateFavouritesCount();
+}
+
+function isFavourite(type, id) {
+    return getFavouriteList(type).some(item => String(item.id) === String(id));
+}
+
+function updateFavouriteButtons(type, id) {
+    const active = isFavourite(type, id);
+    document.querySelectorAll(`[data-fav-type="${type}"][data-fav-id="${id}"]`).forEach(btn => {
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        btn.setAttribute('title', active ? 'Remove from favourites' : 'Add to favourites');
+        btn.innerHTML = btn.classList.contains('hero-favourite-btn')
+            ? `${active ? '&hearts;' : '&#9825;'} ${active ? 'Favourite Saved' : 'Favourite Bakery'}`
+            : (active ? '&hearts;' : '&#9825;');
+    });
+}
+
+function updateFavouritesCount() {
+    const count = favourites.bakeries.length + favourites.dishes.length;
+    document.querySelectorAll('[data-favourites-count]').forEach(el => {
+        el.textContent = count;
+        el.style.display = count ? 'inline-flex' : 'none';
+    });
+}
+
+let favourites = loadFavourites();
+
+function buildCatalogFromList(list) {
+    if (list && Array.isArray(list) && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
             id: p.id_ref,
             name: p.name,
             category: p.category,
@@ -153,8 +162,8 @@ function loadFavourites() {
             description: p.description || ''
         }));
 
-        const bd = list.filter(p => p.type === 'birthday');
         bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
         bd.forEach(p => {
             bdayCakes[p.id_ref] = {
                 price: p.price,
@@ -163,23 +172,30 @@ function loadFavourites() {
             };
         });
     } else {
-            const bd = data.products.filter(p => p.type === 'birthday');
+        useFallbackProducts();
+    }
+}
 
-            bd.forEach(p => {
-                bdayCakes[p.id_ref] = {
-                    price: p.price,
-                    emoji: p.emoji,
-                    img: p.img
-                };
-            });
+// --- LOAD PRODUCTS ---
+async function loadProducts() {
+    try {
+        const res = await fetch(`${API_BASE}/products`);
+        const data = await res.json();
 
+        if (data.success && Array.isArray(data.products) && data.products.length) {
+            buildCatalogFromList(data.products);
         } else {
             useFallbackProducts();
         }
-
     } catch (e) {
         console.error('Error loading products from database:', e);
-        useFallbackProducts();
+        buildCatalogFromList(null);
+    }
+
+    if (document.getElementById('productsGrid')) filterProducts('all');
+    if (document.getElementById('cakePrice')) {
+        updateBirthdayCake(selectedFlavor);
+        calculateBdayPrice();
     }
 
 function saveFavourites() {
@@ -207,6 +223,11 @@ function saveCart() {
 // --- CART UI ---
 function updateCartUI() {
     const cartContainer = document.getElementById('cartItems');
+    const cartFooter    = document.getElementById('cartFooter');
+    const cartTotal     = document.getElementById('cartTotal');
+    const cartCount     = document.getElementById('cartCount');
+    const cartBadge     = document.getElementById('cartBadge');
+
     if (!cartContainer) return;
 
     if (cart.length === 0) {
@@ -239,8 +260,9 @@ function updateCartUI() {
                     </div>
                 </div>
                 <button class="cart-item-remove" onclick="removeFromCart(${index})">✕</button>
-            </div>
-        `}).join('');
+            </div>`;
+        }).join('');
+
         if (cartFooter) cartFooter.style.display = 'block';
         const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
@@ -257,6 +279,15 @@ function updateCartUI() {
 
 // FIXED ADD TO CART
 function addToCart(product) {
+    const customKey = product.customizations ? JSON.stringify(product.customizations) : (product.message || '');
+    const existing = cart.find(i => i.name === product.name && (
+        (i.customizations ? JSON.stringify(i.customizations) : (i.message || '')) === customKey
+    ));
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
     const existing = cart.find(i => i.name === product.name);
 
     if (existing) existing.qty++;
@@ -309,6 +340,26 @@ function closeCart() {
     document.getElementById('cartOverlay')?.classList.remove('open');
 }
 
+// --- GLOBAL NOTIFICATION SYSTEM ---
+function showToast(msg) {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast-alert';
+    toast.innerHTML = msg;
+    container.appendChild(toast);
+    setTimeout(() => { toast.classList.add('show'); }, 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => { toast.remove(); }, 300);
+    }, 3500);
+}
+
 // --- CHECKOUT FLOW ---
 // --- CHECKOUT FLOW ---
 function injectCheckoutModal() {
@@ -332,7 +383,6 @@ function injectCheckoutModal() {
                 <button class="checkout-close" onclick="closeCheckout()">✕</button>
             </div>
             <div class="checkout-body">
-                <!-- STEP 1: CONTACT -->
                 <div id="checkStep1">
                     <h3 class="checkout-title">Contact Information</h3>
                     <p class="checkout-subtitle">We'll use this to coordinate your delivery.</p>
@@ -351,7 +401,6 @@ function injectCheckoutModal() {
                         Send Verification OTP &rarr;
                     </button>
                 </div>
-                <!-- STEP 2: OTP -->
                 <div id="checkStep2" class="hidden">
                     <h3 class="checkout-title">Confirm Number</h3>
                     <p class="checkout-subtitle">Enter the 6-digit code sent to <strong id="otpPhoneDisp"></strong></p>
@@ -369,7 +418,6 @@ function injectCheckoutModal() {
                     </button>
                     <button class="text-link" onclick="showCheckoutStep(1)">Change Phone Number</button>
                 </div>
-                <!-- STEP 3: ADDRESS -->
                 <div id="checkStep3" class="hidden">
                     <h3 class="checkout-title">Delivery Details</h3>
                     <p class="checkout-subtitle">Where should we bring your treats?</p>
@@ -391,7 +439,6 @@ function injectCheckoutModal() {
                         Review Order &rarr;
                     </button>
                 </div>
-                <!-- STEP 4: CONFIRM -->
                 <div id="checkStep4" class="hidden">
                     <h3 class="checkout-title">Final Review</h3>
                     <div class="confirm-summary">
@@ -419,10 +466,7 @@ function injectCheckoutModal() {
 }
 
 function openCheckout() {
-    if (cart.length === 0) {
-        showToast('Your cart is empty! 🍫');
-        return;
-    }
+    if (cart.length === 0) { showToast('Your cart is empty! 🍫'); return; }
     injectCheckoutModal();
     closeCart();
     checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
@@ -438,7 +482,7 @@ function showCheckoutStep(n) {
     checkoutState.currentStep = n;
     [1, 2, 3, 4].forEach(i => {
         const step = document.getElementById(`checkStep${i}`);
-        const ind = document.getElementById(`step${i}ind`);
+        const ind  = document.getElementById(`step${i}ind`);
         if (step) step.classList.toggle('hidden', i !== n);
         if (ind) {
             ind.classList.remove('active', 'done');
@@ -449,48 +493,46 @@ function showCheckoutStep(n) {
 }
 
 async function sendOTP() {
-    const name = document.getElementById('custName').value.trim();
+    const name  = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
 
     if (!name) { showToast('Please enter your name'); return; }
+    if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) { showToast('Enter a valid 10-digit phone number'); return; }
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Enter a valid email address'); return; }
     if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
         showToast('Enter a valid 10-digit phone number'); return;
     }
 
-    checkoutState.name = name;
+    checkoutState.name  = name;
     checkoutState.phone = phone;
 
-    // Bypassing OTP
     const btn = document.querySelector('#checkStep1 .hero-cta');
-if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
 
-try {
-  const res = await fetch(`${API_BASE}/send-otp`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone })
-  });
-  const data = await res.json();
-
-  if (data.success) {
-    document.getElementById('otpPhoneDisp').textContent = '+91 ' + phone;
-    showCheckoutStep(2);
-    showToast('OTP sent! Check your phone.');
-  } else {
-    showToast(data.message || 'Failed to send OTP. Try again.');
-  }
-} catch (e) {
-  showToast('Server error. Please try again.');
-} finally {
-  if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
- }
+    try {
+        const res  = await fetch(`${API_BASE}/send-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone })
+        });
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('otpPhoneDisp').textContent = '+91 ' + phone;
+            showCheckoutStep(2);
+            showToast('OTP sent! Check your phone.');
+        } else {
+            showToast(data.message || 'Failed to send OTP. Try again.');
+        }
+    } catch (e) {
+        showToast('Server error. Please try again.');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
+    }
 }
 
 function otpNext(input, idx) {
     input.value = input.value.replace(/\D/, '');
-    if (input.value && idx < 5) {
-        document.querySelectorAll('.otp-box')[idx + 1]?.focus();
-    }
+    if (input.value && idx < 5) document.querySelectorAll('.otp-box')[idx + 1]?.focus();
 }
 
 async function verifyOTP() {
@@ -498,7 +540,7 @@ async function verifyOTP() {
     if (otp.length !== 6) { showToast('Enter all 6 digits'); return; }
 
     try {
-        const res = await fetch(`${API_BASE}/verify-otp`, {
+        const res  = await fetch(`${API_BASE}/verify-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phone: checkoutState.phone, otp })
@@ -519,12 +561,35 @@ async function verifyOTP() {
 function goToConfirm() {
     const addr = document.getElementById('custAddr').value.trim();
     const city = document.getElementById('custCity').value.trim();
-    const pin = document.getElementById('custPin').value.trim();
+    const pin  = document.getElementById('custPin').value.trim();
 
     if (!addr) { showToast('Enter your street address'); return; }
     if (!city) { showToast('Enter your city'); return; }
     if (!pin || pin.length !== 6) { showToast('Enter valid 6-digit pincode'); return; }
 
+    checkoutState.address  = addr;
+    checkoutState.city     = city;
+    checkoutState.pincode  = pin;
+
+    const confirmCustEl = document.getElementById('confirmCustomer');
+    if (confirmCustEl) {
+        confirmCustEl.innerHTML = `
+            <div style="font-weight:600; color:var(--brown-dark)">${checkoutState.name}</div>
+            <div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">+91 ${checkoutState.phone}</div>
+            ${checkoutState.email ? `<div style="font-size:13px; color:var(--text-mid); margin-bottom:4px">${checkoutState.email}</div>` : ''}
+            <div style="font-size:13px; color:var(--text-mid); line-height:1.4">${addr}, ${city} - ${pin}</div>
+        `;
+    }
+
+    const confirmItemsEl = document.getElementById('confirmItems');
+    if (confirmItemsEl) {
+        confirmItemsEl.innerHTML = cart.map(i => `
+            <div class="confirm-row">
+                <span>${i.name} × ${i.qty}</span>
+                <strong style="color:var(--brown-warm)">₹${(i.price * i.qty).toLocaleString()}</strong>
+            </div>
+        `).join('');
+    }
     checkoutState.address = addr;
     checkoutState.city = city;
     checkoutState.pincode = pin;
@@ -543,13 +608,26 @@ function goToConfirm() {
     `).join('');
 
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    document.getElementById('confirmTotal').textContent = `₹${total.toLocaleString()}`;
+    const confirmTotalEl = document.getElementById('confirmTotal');
+    if (confirmTotalEl) confirmTotalEl.textContent = `₹${total.toLocaleString()}`;
     showCheckoutStep(4);
 }
 
 async function placeOrder() {
     const orderData = {
         customer_name: checkoutState.name,
+        phone:         checkoutState.phone,
+        email:         checkoutState.email || undefined,
+        address:       checkoutState.address,
+        city:          checkoutState.city,
+        pincode:       checkoutState.pincode,
+        items: cart.map(i => ({
+            id:             typeof i.id === 'number' && Number.isFinite(i.id) ? i.id : 0,
+            name:           i.name,
+            price:          Number(i.price),
+            qty:            Math.max(1, Math.floor(Number(i.qty)) || 1),
+            emoji:          i.emoji || '🍫',
+            category:       i.category || 'general',
         phone: checkoutState.phone,
         address: checkoutState.address,
         city: checkoutState.city,
@@ -566,6 +644,13 @@ async function placeOrder() {
         total: cart.reduce((s, i) => s + i.price * i.qty, 0)
     };
 
+    const waSnapshot = cart.map(i => ({
+        name:  i.name,
+        price: Number(i.price),
+        qty:   Math.max(1, Math.floor(Number(i.qty)) || 1)
+    }));
+    const waTotal = orderData.total;
+
     try {
         const res = await fetch(`${API_BASE}/orders`, {
             method: 'POST',
@@ -575,6 +660,7 @@ async function placeOrder() {
         const data = await res.json();
         if (data.success) {
             const orderId = data.order_id;
+            sendWhatsAppFinal(orderId, waSnapshot, waTotal);
             sendWhatsAppFinal(orderId);
 
             cart = [];
@@ -591,6 +677,11 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
+function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
+    const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
+    const total  = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
+        ? orderTotal
+        : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
 function sendWhatsAppFinal(orderId) {
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const itemLines = cart.map(i => {
@@ -645,6 +736,16 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         `_Your order has been recorded. Please share the payment receipt for confirmation!_ ✨`;
 
     const encodedMsg = encodeURIComponent(message);
+    window.open(`https://wa.me/918072596340?text=${encodedMsg}`, '_blank');
+}
+
+function sendToWhatsApp() { openCheckout(); }
+
+// Dummy function placeholder to prevent modal runtime dependency errors 
+function openCustomizeModal(p) {
+    if (typeof addToCart === 'function') {
+        addToCart(p);
+    }
 
     const fullPhone = `918072596340`;
 
@@ -710,7 +811,7 @@ else if (selectedPriceFilter === 'above500') {
                     aria-label="Toggle ${p.name} favourite"
                     aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
                     title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p).replace(/'/g, "&#39;")})'>
                     ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
                 </button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
@@ -720,6 +821,7 @@ else if (selectedPriceFilter === 'above500') {
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
+                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}" onclick="event.stopPropagation()">
                 <button class="add-to-cart">
                     Customize & Add
                 </button>
@@ -729,38 +831,46 @@ else if (selectedPriceFilter === 'above500') {
 }
 
 // --- BIRTHDAY CAKE BUILDER ---
+let selectedFlavor = 'Red Velvet';
+let selectedWeight = '1.0';
+
+const BIRTHDAY_BASE_PRICES = {
+    '0.5': 450,
+    '1.0': 850,
+    '1.5': 1250,
+    '2.0': 1600
+};
 // bdayCakes object is now populated dynamically via loadProducts()
 
 function updateBirthdayCake(flavor) {
-
     if (!bdayCakes[flavor]) {
-        console.error("Cake flavor not found:", flavor);
-        return;
+        if (!DEFAULT_BDAY_CAKES[flavor]) {
+            console.error("Cake flavor not found:", flavor);
+            return;
+        }
+        bdayCakes[flavor] = { ...DEFAULT_BDAY_CAKES[flavor] };
     }
 
     selectedFlavor = flavor;
 
-    // Update image
-    const cakeImg = document.getElementById('birthdayCakeImg');
-    if (cakeImg && bdayCakes[flavor]) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
+    const imgEl = document.getElementById('birthdayCakeImg');
+    if (imgEl) imgEl.src = bdayCakes[flavor].img;
 
-    if (cakeImg) {
-        cakeImg.src = bdayCakes[flavor].img;
-    }
-
-    // Update active flavor button
-    document.querySelectorAll('.filter-pill').forEach(btn => {
-        if (btn.textContent.trim() === flavor) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+    document.querySelectorAll('.flavor-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.flavor === flavor);
     });
 
     calculateBdayPrice();
 }
+
+function setCakeWeight(weight, event) {
+    selectedWeight = weight;
+
+    document.querySelectorAll('button[onclick^="setCakeWeight"]').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    if (event && event.target) event.target.classList.add('active');
 function setCakeWeight(weight) {
 // --- BIRTHDAY CAKE ---
 let selectedFlavor = "Red Velvet";
@@ -786,6 +896,9 @@ function setCakeWeight(weight, event) {
 }
 
 function calculateBdayPrice() {
+    const finalPrice = BIRTHDAY_BASE_PRICES[selectedWeight];
+    const priceEl = document.getElementById('cakePrice');
+    if (priceEl) priceEl.textContent = `₹ ${finalPrice}`;
     const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
 
     const priceEl = document.getElementById('cakePrice');
@@ -797,14 +910,13 @@ function calculateBdayPrice() {
 }
 
 function getBirthdayFavouriteItem() {
-    const cake = bdayCakes[selectedFlavor] || {};
-
+    const cake = bdayCakes[selectedFlavor] || DEFAULT_BDAY_CAKES[selectedFlavor] || {};
     return {
-        id: `bday-${selectedFlavor}-${selectedWeight}`,
-        name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-        price: BIRTHDAY_BASE_PRICES[selectedWeight],
-        img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
-        emoji: cake.emoji || '',
+        id:       `bday-${selectedFlavor}-${selectedWeight}`,
+        name:     `${selectedFlavor} Cake (${selectedWeight}kg)`,
+        price:    BIRTHDAY_BASE_PRICES[selectedWeight],
+        img:      cake.img || document.getElementById('birthdayCakeImg')?.src || '',
+        emoji:    cake.emoji || '',
         category: 'cakes'
     };
 }
@@ -812,12 +924,11 @@ function getBirthdayFavouriteItem() {
 function updateBirthdayFavouriteButton() {
     const btn = document.getElementById('birthdayFavoriteBtn');
     if (!btn) return;
-
-    const item = getBirthdayFavouriteItem();
+    const item   = getBirthdayFavouriteItem();
     const active = isFavourite('dishes', item.id);
 
     btn.dataset.favType = 'dishes';
-    btn.dataset.favId = item.id;
+    btn.dataset.favId   = item.id;
     btn.classList.toggle('active', active);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     btn.setAttribute(
@@ -834,6 +945,7 @@ function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
 
+// FIX: Re-constructed structural safety for the sliced block
 function addBirthdayToCart() {
     if (!bdayCakes[selectedFlavor]) return;
 
@@ -845,14 +957,49 @@ function addBirthdayToCart() {
     };
 
     const fallbacks = {
-        'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
-        'Dutch Truffle': { img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180', emoji: '🍰' },
-        'Pineapple': { img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg?v=1711124785', emoji: '🍍' },
-        'Chocoholic': { img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267', emoji: '🍫' },
-        'Black Forest': { img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg', emoji: '🌲' },
-        'Cheesecake': { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg', emoji: '🧀' }
+        'Red Velvet':   { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
+        'Dutch Truffle':{ img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180' },
+        'Pineapple':    { img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
+        'Chocoholic':   { img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267' },
+        'Black Forest': { img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg' },
+        'Cheesecake':   { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg' }
     };
 
+    const targetCake = bdayCakes[selectedFlavor] || fallbacks[selectedFlavor] || { img: '' };
+    const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+    
+    const cakeMessageInput = document.getElementById('cakeMessage');
+    const cakeMessage = cakeMessageInput ? cakeMessageInput.value.trim() : '';
+
+    const customizedCakeItem = {
+        id: `bday-${selectedFlavor.toLowerCase().replace(/\s+/g, '-')}-${selectedWeight}`,
+        name: `${selectedFlavor} Birthday Cake (${selectedWeight}kg)`,
+        category: 'cakes',
+        price: price,
+        img: targetCake.img,
+        emoji: '🎂',
+        message: cakeMessage,
+        customizations: {
+            dietary: 'standard',
+            message: cakeMessage,
+            toppings: []
+        }
+    };
+
+    addToCart(customizedCakeItem);
+    if (cakeMessageInput) cakeMessageInput.value = ''; 
+}
+
+// --- INITIALIZATION ARRANGEMENTS ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Read user theme configuration profile from storage
+    const storedTheme = localStorage.getItem('bb_theme') || 'light';
+    applyTheme(storedTheme);
+
+    // Load initial cart and products catalog data assets
+    updateCartUI();
+    loadProducts();
+});
     const cakeInfo =
         bdayCakes[selectedFlavor] ||
         fallbacks[selectedFlavor] ||
