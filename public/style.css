@@ -9997,3 +9997,11 @@ background-position: right 16px center;
     background-color: #8b5a3c;
     transform: scale(1.1);
 }
+
+.flavor-btn.active,
+.weight-btn.active {
+  background: #5c2c06 !important;
+  color: white !important;
+  border: 2px solid #5c2c06 !important;
+  transition: 0.3s ease;
+}
