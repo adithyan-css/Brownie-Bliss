@@ -21,27 +21,7 @@
 
   <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
 
-  <header>
-    <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-name">Brownie Bliss</span>
-        <span class="logo-sub">Homemade Treats</span>
-      </a>
-      <nav>
-        <a href="index.html#home">Home</a>
-        <a href="about.html">About</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#birthday">Birthday Cakes</a>
-        <a href="contact.html">Contact Us</a>
-        <a href="track.html">Track Order</a>
-      </nav>
-      <div class="header-actions">
-        <button class="cart-btn" onclick="openCart()">
-          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
-        </button>
-      </div>
-    </div>
-  </header>
+  <div id="header-placeholder"></div>
 
   <!-- PAGE BG -->
   <div class="login-page">
@@ -137,13 +117,7 @@
     </div>
   </div>
 
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-bottom">
-        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
-      </div>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
   <div class="cart-sidebar" id="cartSidebar">
@@ -230,5 +204,6 @@
       finally { btn.disabled = false; btn.textContent = 'Verify & Login →'; }
     }
   </script>
+  <script src="components.js"></script>
 </body>
 </html>

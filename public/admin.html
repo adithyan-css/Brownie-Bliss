@@ -597,7 +597,8 @@
         @media print{.no-print,.print-action{display:none!important}body{padding:0}.receipt-container{box-shadow:none!important}}
       </style>
     </head>
-    <body>${content}<br><button class="print-action" onclick="window.print()">🖨️ Print Receipt</button></body>
+    <body>${content}<br><button class="print-action" onclick="window.print()">🖨️ Print Receipt</button>  <script src="components.js"></script>
+</body>
     </html>
   `);
       win.document.close();
