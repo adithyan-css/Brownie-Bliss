@@ -93,44 +93,49 @@ async function loadProducts() {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
 
-        if (data.success && Array.isArray(data.products)) {
-            products = data.products.filter(p => p.type === 'standard');
+        if (data.success && Array.isArray(data.products) && data.products.length) {
+
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || ''
+                }));
+
             bdayCakes = {};
 
-            data.products
-                .filter(p => p.type === 'birthday')
-                .forEach(p => {
-                    bdayCakes[p.name] = {
-                        price: p.price,
-                        img: p.img
-                    };
-                });
+            const bd = data.products.filter(p => p.type === 'birthday');
+
+            bd.forEach(p => {
+                bdayCakes[p.id_ref] = {
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img
+                };
+            });
+
         } else {
             useFallbackProducts();
         }
+
     } catch (e) {
-        console.error(e);
+        console.error('Error loading products from database:', e);
         useFallbackProducts();
     }
+}
+
     if (document.getElementById('productsGrid')) {
         filterProducts('all');
     }
+
     if (document.getElementById('cakePrice')) {
         calculateBdayPrice();
     }
-}
-
-// --- FAVOURITES ---
-function loadFavourites() {
-    try {
-        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
-    } catch {
-        return { bakeries: [], dishes: [] };
-    }
-}
-
-function saveFavourites() {
-    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
 }
 
 function isFavourite(type, id) {
@@ -207,10 +212,22 @@ function updateCartUI() {
     if (!cartContainer) return;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = "Cart empty 🍫";
-        return;
-        cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
-         if (cartFooter) cartFooter.style.display = 'none';
+        cartContainer.innerHTML = `
+  <div class="cart-empty-state">
+    <div class="empty-cart-icon">🍫</div>
+
+    <h2>Your cart is empty</h2>
+
+    <p>
+      Looks like you haven't added any brownies yet.
+    </p>
+
+    <a href="products.html" class="shop-now-btn">
+      Shop Now
+    </a>
+  </div>
+`;
+        if (cartFooter) cartFooter.style.display = 'none';
     } else {
         cartContainer.innerHTML = cart.map((item, index) => {
             const c = item.customizations;
