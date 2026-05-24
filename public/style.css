@@ -9759,3 +9759,40 @@ select {
   color: var(--text);
   border: 1px solid var(--border);
 }
+/* Search Bar */
+.search-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 20px;
+
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 40px;
+
+  outline: none;
+
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+
+  background: #fff;
+  color: #333;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.search-bar input:focus {
+  border-color: #8b5e3c;
+  box-shadow: 0 10px 30px rgba(139, 94, 60, 0.15);
+}
+
+.search-bar input::placeholder {
+  color: #999;
+}

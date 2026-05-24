@@ -65,7 +65,15 @@
         <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
         <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
       </div>
-
+      <!-- Search Bar -->
+<div class="search-bar">
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search cakes, brownies, cookies..."
+    onkeyup="searchProducts()"
+  >
+</div>
       <div class="products-grid" id="productsGrid"></div>
     </div>
   </section>
