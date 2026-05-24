@@ -307,3 +307,12 @@
   .card-head h2 { font-size: 24px; }
   .ob { font-size: 18px; }
 }
+
+@media (max-width: 400px) {
+  .login-page { padding: 20px 10px; }
+  .card-head { padding: 20px 16px 16px; }
+  .card-body { padding: 16px 16px 20px; }
+  .card-head h2 { font-size: 20px; }
+  .ob { font-size: 16px; height: 40px; }
+  .otp-wrap { gap: 4px; }
+}

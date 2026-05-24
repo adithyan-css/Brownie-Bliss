@@ -5468,6 +5468,7 @@ html.dark .feedback-card-title {
   outline: none !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
   background-image: url("data:image/svg+xml;utf8,<svg fill='%235c372c' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+}
 
 @media (max-width: 992px) {
   .feedback-grid {
@@ -5505,5 +5506,93 @@ html.dark .feedback-card-title {
 @media (max-width: 768px) {
   .featured-img {
     aspect-ratio: 1 / 1;
+  }
+}
+
+/* =====================================================================
+   ULTRA SMALL DEVICES (e.g. iPhone 4/SE - max-width: 400px)
+   ===================================================================== */
+@media (max-width: 400px) {
+  :root {
+    --header-height: 60px;
+    --text-hero: clamp(1.75rem, 6vw, 2rem);
+    --text-3xl: 1.5rem;
+    --text-2xl: 1.25rem;
+    --space-8: 1rem;
+    --space-10: 1.5rem;
+    --space-16: 2.5rem;
+    --space-20: 3rem;
+  }
+
+  .header-inner, .hero-content, .values-inner, .products-inner, .feedback-section {
+    padding-inline: var(--space-3) !important;
+  }
+
+  .logo-name {
+    font-size: 1.15rem;
+  }
+
+  .logo-sub {
+    display: none;
+  }
+
+  .header-inner {
+    gap: var(--space-2);
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .theme-toggle-btn, .menu-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .cart-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.75rem;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.75rem;
+  }
+
+  .filter-options-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cart-item img {
+    margin-bottom: var(--space-3);
+  }
+
+  .cart-qty {
+    justify-content: center;
+    margin-top: var(--space-2);
+  }
+
+  .feedback-card {
+    padding: var(--space-4);
+  }
+  
+  .custom-price-filter {
+    min-width: 100%;
+    font-size: 13px !important;
+  }
+
+  .action-buttons-grid {
+    grid-template-columns: 1fr;
   }
 }

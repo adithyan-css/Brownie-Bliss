@@ -118,6 +118,13 @@ async function loadProducts() {
                     img: p.img
                 };
             });
+            if (document.getElementById('productsGrid')) {
+                filterProducts('all');
+            }
+
+            if (document.getElementById('cakePrice')) {
+                calculateBdayPrice();
+            }
 
         } else {
             useFallbackProducts();
@@ -126,15 +133,6 @@ async function loadProducts() {
     } catch (e) {
         console.error('Error loading products from database:', e);
         useFallbackProducts();
-    }
-}
-
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
     }
 }
 
