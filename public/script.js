@@ -98,71 +98,22 @@ async function loadProducts() {
         const res = await fetch(`${API_BASE}/products`);
         const data = await res.json();
 
-        if (data.success && Array.isArray(data.products)) {
-            products = data.products.filter(p => p.type === 'standard');
+        if (data.success && Array.isArray(data.products) && data.products.length) {
+
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || ''
+                }));
+
             bdayCakes = {};
 
-            data.products
-                .filter(p => p.type === 'birthday')
-                .forEach(p => {
-                    bdayCakes[p.name] = {
-                        price: p.price,
-                        img: p.img
-                    };
-                });
-        } else {
-            useFallbackProducts();
-        }
-    } catch (e) {
-        console.error(e);
-        useFallbackProducts();
-    }
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
-
-function buildCatalogFromList(list) {
-    if (list && Array.isArray(list) && list.length) {
-        products = list.filter(p => p.type === 'standard').map(p => ({
-
-    if (document.getElementById('productsGrid')) filterProducts('all');
-    if (document.getElementById('cakePrice')) calculateBdayPrice();
-}
-
-function useFallbackProducts() {
-    products = DEFAULT_PRODUCTS;
-    bdayCakes = DEFAULT_BDAY_CAKES;
-}
-
-// --- FAVOURITES ---
-function loadFavourites() {
-    try {
-        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
-    } catch {
-        return { bakeries: [], dishes: [] };
-        if (data.success && Array.isArray(data.products) && data.products.length) {
-        
-          products = data.products.filter(p => p.type === 'standard').map(p => ({
-            id: p.id_ref,
-            name: p.name,
-            category: p.category,
-            price: p.price,
-            emoji: p.emoji,
-            img: p.img,
-            description: p.description || ''
-        }));
-
-        const bd = list.filter(p => p.type === 'birthday');
-        bdayCakes = {};
-        bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
-                price: p.price,
-                emoji: p.emoji,
-                img: p.img
-            };
-        });
-    } else {
             const bd = data.products.filter(p => p.type === 'birthday');
 
             bd.forEach(p => {
@@ -182,8 +133,13 @@ function loadFavourites() {
         useFallbackProducts();
     }
 
-function saveFavourites() {
-    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
+    if (document.getElementById('productsGrid')) {
+        filterProducts('all');
+    }
+
+    if (document.getElementById('cakePrice')) {
+        calculateBdayPrice();
+    }
 }
 
 // --- CART ---
@@ -210,10 +166,22 @@ function updateCartUI() {
     if (!cartContainer) return;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = "Cart empty 🍫";
-        return;
-        cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
-         if (cartFooter) cartFooter.style.display = 'none';
+        cartContainer.innerHTML = `
+  <div class="cart-empty-state">
+    <div class="empty-cart-icon">🍫</div>
+
+    <h2>Your cart is empty</h2>
+
+    <p>
+      Looks like you haven't added any brownies yet.
+    </p>
+
+    <a href="products.html" class="shop-now-btn">
+      Shop Now
+    </a>
+  </div>
+`;
+        if (cartFooter) cartFooter.style.display = 'none';
     } else {
         cartContainer.innerHTML = cart.map((item, index) => {
             const c = item.customizations;
@@ -1103,4 +1071,29 @@ function scrollToTop() {
         top: 0,
         behavior: "smooth"
     });
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
+
+    addToCart(cartItem);
+    closeCustomizeModal();
+    openCart();
+    // Close mobile menu when any link inside it is clicked
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('show');
+  });
+});
+}
 }

@@ -10614,7 +10614,7 @@ html.dark .topping-price {
     0 0 0 4px rgba(181, 131, 102, 0.18);
 }
 }
-}
+
 .custom-price-filter {
   appearance: none !important;
   background-color: #fff4ec !important;
@@ -10648,30 +10648,6 @@ background-position: right 16px center;
   font-size: 20px !important;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
-}
-}
-#scrollTopBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-
-    width: 45px;
-    height: 45px;
-
-    border: none;
-    border-radius: 50%;
-
-    background-color: #6b3e26;
-    color: white;
-
-    font-size: 20px;
-    cursor: pointer;
-
-    display: none;
-    z-index: 9999;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
 }
 
 #scrollTopBtn:hover {
