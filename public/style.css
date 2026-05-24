@@ -1,3 +1,5 @@
+style.css
+
 html {
   scroll-behavior: smooth;
 }
@@ -2561,20 +2563,29 @@ a.logo {
   margin-left: 10px;
 }
 
-/* Track Error Message */
 .track-error {
-  display: none;
-  background: #fdeaea;
-  color: #d32f2f;
-  padding: 15px;
-  border-radius: var(--radius-sm);
-  border: 1px solid #ffcdd2;
-  margin-top: -15px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+    display: none;
+
+    min-height: 50px;
+    padding: 15px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+
+    border: 1px solid #f1cdd2;
+    border-radius: var(--radius-sm);
+
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #8b2d2d;
+    background: #fff7f7;
 }
+
+.track-error.show {
+    display: block;
+}
+
 .menu-toggle{
   display:none;
   background:none;
@@ -9801,6 +9812,38 @@ html.dark .topping-price {
   margin: 40px 0 55px;
 }
 
+/* ── FIX 5: Checkout & Cart Responsive Audit (OTP sizes & Keyboard scroll behavior) ── */
+@media (max-width: 480px) {
+  .checkout-overlay {
+    align-items: flex-start !important; /* Prevent off-screen vertical centering when keyboard is open */
+    overflow-y: auto !important;
+    padding: 20px 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .checkout-modal {
+    margin: 20px auto !important; /* Centered with vertical safety spacing */
+    width: 100% !important;
+    max-width: 355px !important; /* Ensures it perfectly fits 375px screens with margin */
+  }
+  .checkout-body {
+    padding: 24px 16px !important; /* Gives more content room on small mobile widths */
+  }
+  .otp-container {
+    justify-content: center !important;
+    gap: 8px !important; /* Tightens gaps to fit exactly six 44px boxes */
+  }
+  .otp-box {
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    font-size: 20px !important; /* Adjusted slightly to look proportional inside 44px */
+  }
+}
+
+.birthday-slider::-webkit-scrollbar {
+  display: none;
 .price-filter {
   display: flex;
   align-items: center;
@@ -9890,7 +9933,7 @@ html.dark .topping-price {
     0 0 0 4px rgba(181, 131, 102, 0.18);
 }
 }
-}
+
 .custom-price-filter {
   appearance: none !important;
   background-color: #fff4ec !important;
@@ -9925,32 +9968,4 @@ background-position: right 16px center;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
 }
-}
-#scrollTopBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
 
-    width: 45px;
-    height: 45px;
-
-    border: none;
-    border-radius: 50%;
-
-    background-color: #6b3e26;
-    color: white;
-
-    font-size: 20px;
-    cursor: pointer;
-
-    display: none;
-    z-index: 9999;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-}
-
-#scrollTopBtn:hover {
-    background-color: #8b5a3c;
-    transform: scale(1.1);
-}

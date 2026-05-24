@@ -468,6 +468,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
+// ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
+function startServer(port) {
+  const server = app.listen(port, () => {
+    console.log(`🚀 Server running at http://localhost:${port}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE' && !process.env.PORT) {
+      const nextPort = Number(port) + 1;
+      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+      startServer(nextPort);
+      return;
+    }
+    console.error('❌ Server startup error:', err);
+    process.exit(1);
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, (err) => {
     if (err) {
@@ -477,6 +492,12 @@ if (process.env.NODE_ENV !== 'production') {
 
     console.log(`Server listening on http://localhost:${PORT}`);
   });
+}
+
+// ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  startServer(PORT);
 }
 
 module.exports = app;
