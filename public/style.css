@@ -22,6 +22,9 @@ html {
   --radius-sm: 4px;
   --radius-md: 12px;
   --radius-lg: 20px;
+  --shadow: 0 10px 30px rgba(26, 9, 5, 0.08);
+  --brown-dark: #2C1810;
+  --brown-warm: #e0b97f;
   --glass: rgba(255, 255, 255, 0.15);
   --glass-border: rgba(255, 255, 255, 0.2);
 }
@@ -387,10 +390,18 @@ nav a:hover {
 }
 
 .section-label {
-  font-family: 'DM Sans', sans-serif;
+  /* font-family: 'DM Sans', sans-serif;
   font-size: 10px;
   letter-spacing: 4px;
   color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block; */
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #B8860B;
   text-transform: uppercase;
   margin-bottom: 12px;
   display: block;
