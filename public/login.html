@@ -23,6 +23,7 @@
 
   <header>
     <div class="header-inner">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
       <a href="index.html" class="logo">
         <span class="logo-name">Brownie Bliss</span>
         <span class="logo-sub">Homemade Treats</span>
@@ -30,18 +31,32 @@
       <nav>
         <a href="index.html#home">Home</a>
         <a href="about.html">About</a>
-        <a href="index.html#products">Products</a>
+        <a href="products.html">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
         <a href="contact.html">Contact Us</a>
         <a href="track.html">Track Order</a>
       </nav>
       <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="cart-btn" onclick="openCart()">
           🛒 Cart <span class="cart-count" id="cartBadge">0</span>
         </button>
       </div>
     </div>
   </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="about.html">About</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="favourites.html">Favourites</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="track.html">Track Order</a>
+  </div>
 
   <!-- PAGE BG -->
   <div class="login-page">

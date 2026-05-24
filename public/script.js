@@ -25,6 +25,15 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
+// --- MOBILE MENU TOGGLE ---
+function toggleMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        mobileMenu.classList.toggle('show');
+    }
+}
+window.toggleMenu = toggleMenu;
+
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};

@@ -4108,7 +4108,7 @@ html.dark .theme-toggle-btn:hover {
   .testimonial-card p { font-size: 16px; }
 }
 /* =========================
-   ABOUT PAGE
+   ABOUT PAGE */
 
 .about-section {
   position: relative;
@@ -4215,7 +4215,7 @@ html.dark .theme-toggle-btn:hover {
   color: var(--text-mid);
   line-height: 1.8;
   font-size: 15px;
-}*/
+}
 
 
 /* QUOTE STRIP */
