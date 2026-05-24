@@ -1104,3 +1104,42 @@ function scrollToTop() {
         behavior: "smooth"
     });
 }
+
+
+const toggleBtn = document.getElementById("themeToggle");
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-mode");
+  toggleBtn.innerHTML = "☀️";
+}
+
+// Toggle theme
+toggleBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+    toggleBtn.innerHTML = "☀️";
+  } else {
+    localStorage.setItem("theme", "light");
+    toggleBtn.innerHTML = "🌙";
+  }
+});
+
+// Search Products
+function searchProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+
+  const products = document.querySelectorAll(".product-card");
+
+  products.forEach((product) => {
+    const title = product.querySelector("h3").innerText.toLowerCase();
+
+    if (title.includes(input)) {
+      product.style.display = "block";
+    } else {
+      product.style.display = "none";
+    }
+  });
+}

@@ -160,6 +160,23 @@
     <a href="track.html">Track Order</a>
   </div>
 
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+        <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
+        <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
+        <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
+        <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
+      </div>
+      <!-- Search Bar -->
+<div class="search-bar">
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search cakes, brownies, cookies..."
+    onkeyup="searchProducts()"
+  >
+</div>
+      <div class="products-grid" id="productsGrid"></div>
   <div class="page-header">
     <h1>Our <em>Full Range</em></h1>
     <p>Hand-crafted with love & the finest ingredients — every bite tells a story.</p>
