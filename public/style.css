@@ -9997,3 +9997,51 @@ background-position: right 16px center;
     background-color: #8b5a3c;
     transform: scale(1.1);
 }
+/* MODERN PRODUCTS TOOLBAR */
+
+.products-toolbar {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 320px;
+  padding: 18px 22px;
+  border: 2px solid #d8b08c;
+  border-radius: 14px;
+  font-size: 16px;
+  background: white;
+  outline: none;
+  transition: 0.3s;
+}
+
+.search-bar:focus {
+  border-color: #b97a45;
+  box-shadow: 0 0 0 4px rgba(185, 122, 69, 0.15);
+}
+
+.toolbar-select {
+  padding: 18px 22px;
+  border: 2px solid #d8b08c;
+  border-radius: 14px;
+  background: white;
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 180px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toolbar-select:hover {
+  border-color: #b97a45;
+}
+
+.dark .search-bar,
+.dark .toolbar-select {
+  background: #1f1f1f;
+  color: white;
+}
