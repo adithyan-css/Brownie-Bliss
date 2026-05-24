@@ -9968,7 +9968,7 @@ background-position: right 16px center;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
 }
-}
+
 #scrollTopBtn {
     position: fixed;
     bottom: 20px;
@@ -9996,4 +9996,25 @@ background-position: right 16px center;
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
+}
+
+#backToTopBtn {
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  z-index: 99999 !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: #7b3f00 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+  display: none;
+}
+#backToTopBtn:hover {
+  background: #5a2d00 !important;
+  transform: translateY(-3px);
 }
