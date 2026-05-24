@@ -48,7 +48,7 @@ const DEFAULT_BDAY_CAKES = {
     "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
 };
-let favourites = loadFavourites();
+let favourites = loadFavourites(); // BUGFIX: Duplicate declaration of favourites removed from lower down to prevent fatal syntax error.
 buildCatalogFromList(null);
 
 function useFallbackProducts() {
@@ -65,7 +65,6 @@ function useFallbackProducts() {
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
-let favourites = loadFavourites();
 
 function buildCatalogFromList(list) {
     if (list && Array.isArray(list) && list.length) {
@@ -142,16 +141,7 @@ async function loadProducts() {
     }
 }
 
-// --- CART ---
-    // Render UI
-    if (document.getElementById('productsGrid')) {
-        filterProducts('all');
-    }
-
-    if (document.getElementById('cakePrice')) {
-        calculateBdayPrice();
-    }
-}
+// BUGFIX: Removed orphaned duplicate render UI / pricing check blocks here that caused uncaught syntax errors.
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
 let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
@@ -243,24 +233,7 @@ function changeQty(index, delta) {
     updateCartUI();
 }
 
-// --- PRODUCT FILTER (FIXED BUTTON BUG) ---
-function filterProducts(category) {
-    const grid = document.getElementById('productsGrid');
-    if (!grid) return;
-
-    const filtered = category === 'all'
-        ? products
-        : products.filter(p => p.category === category);
-
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <img src="${p.img}" />
-            <h3>${p.name}</h3>
-            <p>₹${p.price}</p>
-
-            <button onclick='addToCart(${JSON.stringify(p)})'>
-                Add to Cart
-            </button>
+// BUGFIX: Removed incomplete/broken duplicate 'filterProducts' definition that was syntactically cut off here.
 function removeFromCart(index) {
     cart.splice(index, 1);
     saveCart();
@@ -559,10 +532,7 @@ async function placeOrder() {
 }
 
 // --- WHATSAPP FINAL ---
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const itemLines = cart.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(i.price * i.qty).toLocaleString()}`;
+// BUGFIX: Restructured sendWhatsAppFinal to be a single clean definition and removed fragmented duplicates.
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
 
     const lines = Array.isArray(itemsSnap) && itemsSnap.length
@@ -572,9 +542,6 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     const total = typeof orderTotal === 'number' && Number.isFinite(orderTotal)
         ? orderTotal
         : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
-    const itemLines = lines.map(i => {
-        let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
-
     const itemLines = lines.map(i => {
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
         if (i.customizations) {
@@ -729,26 +696,19 @@ function updateBirthdayCake(flavor) {
 
     calculateBdayPrice();
 }
-function setCakeWeight(weight) {
-// --- BIRTHDAY CAKE ---
-let selectedFlavor = "Red Velvet";
-let selectedWeight = "1.0";
-
-const BIRTHDAY_BASE_PRICES = {
-    "0.5": 450,
-    "1.0": 850,
-    "1.5": 1250,
-    "2.0": 1600
-};
-
+// BUGFIX: Corrected setCakeWeight to be a single global function.
+// Removed outer setCakeWeight wrapper, local shadows of selectedWeight, and base price duplicates to fix sizing/scoping bugs.
 function setCakeWeight(weight, event) {
     selectedWeight = weight;
 
-    document.querySelectorAll('.weight-btn')
-        .forEach(b => b.classList.remove('active'));
-
-    if (event?.target)
-        event.target.classList.add('active');
+    // Toggle active state among weight button siblings
+    const clickedButton = event?.target;
+    if (clickedButton && clickedButton.parentElement) {
+        clickedButton.parentElement.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        clickedButton.classList.add('active');
+    }
 
     calculateBdayPrice();
 }
@@ -793,11 +753,9 @@ function updateBirthdayFavouriteButton() {
         active ? 'Remove from favourites' : 'Add to favourites'
     );
 
-    btn.innerHTML = active ? '&hearts;' : '&#9825;';
-}
-// --- FIXED WHATSAPP (ONLY ONE VERSION) ---
-function sendWhatsAppFinal(orderId) {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+} // BUGFIX: Restored missing closing curly brace for updateBirthdayFavouriteButton
+
+// BUGFIX: Removed redundant duplicate sendWhatsAppFinal block that was nested here.
 function toggleBirthdayFavourite() {
     toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
@@ -946,8 +904,17 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
 });
 // Show/hide button on scroll
+// BUGFIX: Completed scroll event listener logic which was previously cut off mid-declaration.
 window.addEventListener("scroll", function () {
     const btn = document.getElementById("scrollTopBtn");
+    if (btn) {
+        if (window.scrollY > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    }
+});
 
 // --- TRACK ORDER LOGIC ---
 async function trackOrder(id) {
@@ -1060,17 +1027,19 @@ function renderOrderDetails(order) {
 
     if (order.created_at) {
         document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
     }
-});
+} // BUGFIX: Properly closed renderOrderDetails, removing misplaced scroll-listener leftover lines.
 
 // Scroll to top function
+// BUGFIX: Separated scrollToTop, addCustomizedToCart, and mobile-menu listener from their previously scrambled layout.
 function scrollToTop() {
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
+}
+
+function addCustomizedToCart() {
     const message = document.getElementById('customizeMessage').value.trim();
 
     const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
@@ -1089,11 +1058,11 @@ function scrollToTop() {
     addToCart(cartItem);
     closeCustomizeModal();
     openCart();
-    // Close mobile menu when any link inside it is clicked
+}
+
+// Close mobile menu when any link inside it is clicked
 document.querySelectorAll('.mobile-menu a').forEach(link => {
   link.addEventListener('click', () => {
     document.getElementById('mobileMenu').classList.remove('show');
   });
 });
-}
-}
