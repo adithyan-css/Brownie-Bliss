@@ -8903,7 +8903,7 @@ a.logo {
   font-size: 13px !important;
   border-radius: 6px !important;
   background: var(--gold) !important;
-
+}
  .some-class {
   color: var(--brown-dark) !important;
 }
@@ -9969,3 +9969,85 @@ background-position: right 16px center;
   color: #5c372c !important;
 }
 
+/* =========================================
+   BACK TO TOP BUTTON
+   ========================================= */
+
+.scroll-top-btn {
+  /* Fixed position — always bottom-right corner */
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+
+  /* Size & shape */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+
+  /* Colors — warm luxury to match Brownie Bliss */
+  background: var(--brown-dark, #3b1f0e);
+  color: var(--gold, #c9a84c);
+
+  /* Typography */
+  font-size: 20px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  line-height: 1;
+
+  /* Cursor & interaction */
+  cursor: pointer;
+
+  /* Default state: hidden and shifted down */
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;           /* not clickable when invisible */
+
+  /* Smooth fade + slide transition */
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  /* Subtle shadow for depth */
+  box-shadow: 0 4px 16px rgba(59, 31, 14, 0.25);
+}
+
+/* Visible state (JS adds this class) */
+.scroll-top-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Hover effect */
+.scroll-top-btn:hover {
+  background: var(--gold, #c9a84c);
+  color: var(--brown-dark, #3b1f0e);
+  box-shadow: 0 6px 24px rgba(201, 168, 76, 0.4);
+  transform: translateY(-3px);    /* subtle lift */
+}
+
+/* Focus ring for keyboard accessibility */
+.scroll-top-btn:focus-visible {
+  outline: 2px solid var(--gold, #c9a84c);
+  outline-offset: 4px;
+}
+
+/* Active / pressed state */
+.scroll-top-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* ── Mobile: slightly smaller and closer to edge ── */
+@media (max-width: 600px) {
+  .scroll-top-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 17px;
+    bottom: 20px;
+    right: 16px;
+  }
+}
