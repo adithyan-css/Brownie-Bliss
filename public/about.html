@@ -24,73 +24,74 @@
       --cream: #f5ede3;
       --light: #fffaf4;
     }
-    /* Dark Mode Theme Classes */
+
     /* =========================
-   DARK MODE REFRESH
-   ========================= */
-
-/* =========================
-       DARK MODE REFRESH (UPDATED)
+       DARK MODE REFRESH
        ========================= */
+    .dark body {
+      background: #1a1a1a !important; 
+      color: #ffffff !important;      
+    }
 
-.dark body {
-  background: #1a1a1a !important; 
-  color: #ffffff !important;      
-}
+    .dark .hero, 
+    .dark .premium-features, 
+    .dark .story, 
+    .dark .experience,
+    .dark .stats,
+    .dark .values {
+      background: #23120f !important; 
+    }
 
-.dark .hero, 
-.dark .premium-features, 
-.dark .story, 
-.dark .experience {
-  background: #23120f !important; 
-}
+    /* FORCE ALL TEXT LEAF NODES TO LIGHT COLORS */
+    .dark p, 
+    .dark .hero-subtitle, 
+    .dark .premium-feature-card p, 
+    .dark .story-card p, 
+    .dark .experience-content p,
+    .dark .footer-brand p,
+    .dark .hero-body,
+    .dark .story-para,
+    .dark .value-desc {
+      color: #f3e4d2 !important; 
+    }
 
-/* FORCE ALL TEXT LEAF NODES TO LIGHT COLORS */
-.dark p, 
-.dark .hero-subtitle, 
-.dark .premium-feature-card p, 
-.dark .story-card p, 
-.dark .experience-content p,
-.dark .footer-brand p {
-  color: #f3e4d2 !important; 
-}
+    .dark header {
+      background: #222222 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
 
-.dark header {
-  background: #222222 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+    .dark nav a, 
+    .dark .navbar nav a {
+      color: #ffffff !important;
+    }
 
-.dark nav a, 
-.dark .navbar nav a {
-  color: #ffffff !important;
-}
+    /* CARDS BACKGROUND UPGRADE */
+    .dark .story-card,
+    .dark .premium-feature-card,
+    .dark .small-card,
+    .dark .large-card,
+    .dark .value-card,
+    .dark .stat-item {
+      background: #2b1a17 !important; 
+      color: #ffffff !important;
+    }
 
-/* CARDS BACKGROUND UPGRADE */
-.dark .story-card,
-.dark .premium-feature-card,
-.dark .small-card,
-.dark .large-card,
-.dark .value-card {
-  background: #2b1a17 !important; 
-  color: #ffffff !important;
-}
+    /* HEADINGS & SIGNATURE CAKE LABELS COLOR RESET */
+    .dark .section-title h2,
+    .dark .story-card h3,
+    .dark .premium-feature-card h3,
+    .dark .hero-title,
+    .dark .experience-content h3,
+    .dark .value-title,
+    .dark .card-label {
+      color: #ffffff !important;
+    }
 
-/* HEADINGS & SIGNATURE CAKE LABELS COLOR RESET */
-.dark .section-title h2,
-.dark .story-card h3,
-.dark .premium-feature-card h3,
-.dark .hero-title,
-.dark .experience-content h3,
-.dark .value-title,
-.dark .card-label {
-  color: #ffffff !important; /* This forces the cake labels to turn white */
-}
-
-/* Fix for secondary button border/text visibility */
-.dark .secondary-btn {
-  border-color: var(--gold) !important;
-  color: var(--gold) !important;
-}
+    /* Fix for secondary button border/text visibility */
+    .dark .secondary-btn {
+      border-color: var(--gold) !important;
+      color: var(--gold) !important;
+    }
 
     html {
       scroll-behavior: smooth;
@@ -192,7 +193,7 @@
       border: none;
       padding: 8px 16px;
       font-weight: 600;
-      color: #ffffff !important;;
+      color: #ffffff !important;
       cursor: pointer;
       border-radius: 4px;
     }
@@ -508,7 +509,7 @@
       max-width: 1450px;
       margin: auto;
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 100px;
     }
     .footer-brand h2 {
@@ -546,15 +547,48 @@
       color: #d5c2af;
     }
 
+    /* Additional Main Branch Styling Elements Placed Safely Here */
+    .hero-eyebrow, .section-eyebrow {
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      padding: 60px 8%;
+      background: var(--cream);
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 48px;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--dark);
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--brown);
+      margin-top: 5px;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 40px 0;
+    }
+
     /* Responsive Queries */
     @media(max-width: 1200px){
       .hero-title { font-size: 54px; }
       .story-grid { grid-template-columns: repeat(2, 1fr); }
       .experience-box { grid-template-columns: 1fr; }
     }
-    @media(max-width: 900px){
+    @media(max-width: 900px) {
       .navbar nav { display: none; }
-      .hero-wrapper, .footer-grid { grid-template-columns: 1fr; }
+      .hero-wrapper, .footer-grid, .values-grid, .stats { grid-template-columns: 1fr; flex-direction: column; gap: 40px; }
     }
   </style>
 
@@ -657,6 +691,20 @@
     </div>
   </section>
 
+  <section class="hero" style="min-height: auto; padding: 100px 8%;">
+    <div class="hero-wrapper">
+      <div>
+        <p class="hero-eyebrow">Our Story</p>
+        <h2 class="hero-title" style="color: inherit;">More Than Desserts —<br><em>Moments Made Sweet</em></h2>
+        <p class="hero-subtitle" style="color:#9b7064">Brownie Bliss began with a simple dream — to bring the warmth of homemade baking into every celebration, every gathering, and every little sweet craving.</p>
+      </div>
+      <div class="hero-images" style="display: block; position: relative;">
+        <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownie Bliss treats" style="width:100%; border-radius:24px; object-fit:cover;" />
+        <div class="hero-badge" style="position: absolute; bottom: 20px; right: 20px; background: var(--gold); padding: 10px 20px; color: white; font-weight: 600; border-radius: 30px; font-size: 12px;">Made with ❤️ in Krishnagiri</div>
+      </div>
+    </div>
+  </section>
+
   <section class="story">
     <div class="section-title">
       <span>HAND-PICKED FOR YOU</span>
@@ -693,6 +741,63 @@
       </div>
     </div>
   </section>
+      
+  <div class="stats">
+    <div class="stat-item reveal">
+      <div class="stat-number"><span class="count" data-target="100">100</span><span>%</span></div>
+      <div class="stat-label">Homemade Recipes</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-number" style="font-size:40px">Fresh</div>
+      <div class="stat-label">Baked Every Day</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.2s">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Sweet Memories</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.3s">
+      <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+      <div class="stat-label">Always Fresh, Never Factory</div>
+    </div>
+  </div>
+
+  <section class="story">
+    <div style="max-width: 1450px; margin: auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="story-img-wrap reveal" style="position: relative;">
+        <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" style="width: 100%; border-radius: 28px;" />
+        <div class="story-quote" style="position: absolute; bottom: 20px; left: 20px; background: rgba(45,18,13,0.85); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 14px;">✦ Passion in Every Bite</div>
+      </div>
+      <div class="story-text reveal" style="transition-delay:0.15s">
+        <p class="section-eyebrow">How it all began</p>
+        <h2 class="section-title" style="text-align: left; margin-bottom: 30px;">Every Dessert Has a <em>Story to Tell</em></h2>
+        <p class="story-para" style="line-height: 2; margin-bottom: 20px; font-size: 16px;">What started as passion-filled baking sessions in a home kitchen slowly turned into something much more meaningful — handcrafted brownies, rich cakes, delicate pastries and comforting desserts made not in factories, but with genuine love and care.</p>
+        <p class="story-para" style="line-height: 2; margin-bottom: 20px; font-size: 16px;">Every recipe carries a homemade touch. Every brownie is baked in small batches. Every cake is thoughtfully crafted to make someone's day special.</p>
+        <p class="story-para" style="line-height: 2; font-size: 16px;">At Brownie Bliss, we believe desserts are not just food — they are emotions, memories and happiness shared with people you love.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="values" style="padding: 100px 8%;">
+    <p class="section-eyebrow reveal" style="text-align: center;">What we stand for</p>
+    <h2 class="section-title reveal" style="text-align: center; margin-bottom: 50px;">Baked into <em style="color:var(--gold)">Everything We Do</em></h2>
+    <div class="values-grid">
+      <div class="premium-feature-card reveal">
+        <span class="premium-icon">🍫</span>
+        <h3 class="value-title" style="font-family: 'Cormorant Garamond', serif; font-size: 28px; margin: 15px 0;">Handcrafted Daily</h3>
+        <p class="value-desc">Freshly baked in small batches to ensure warmth, softness and authentic homemade flavour — every single day.</p>
+      </div>
+      <div class="premium-feature-card reveal" style="transition-delay:0.1s">
+        <span class="premium-icon">✨</span>
+        <h3 class="value-title" style="font-family: 'Cormorant Garamond', serif; font-size: 28px; margin: 15px 0;">Premium Ingredients</h3>
+        <p class="value-desc">Only carefully selected ingredients go into our desserts, because quality creates unforgettable taste and real smiles.</p>
+      </div>
+      <div class="premium-feature-card reveal" style="transition-delay:0.2s">
+        <span class="premium-icon">❤️</span>
+        <h3 class="value-title" style="font-family: 'Cormorant Garamond', serif; font-size: 28px; margin: 15px 0;">Baked with Love</h3>
+        <p class="value-desc">Every dessert is thoughtfully prepared with passion, creativity and attention to detail — from batter to box.</p>
+      </div>
+    </div>
+  </section>
 
   <section class="luxury-banner">
     <div class="luxury-overlay"></div>
@@ -716,6 +821,12 @@
         <a href="products.html">Desserts</a>
         <a href="birthday.html">Custom Cakes</a>
         <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>INFORMATION</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
       </div>
       <div class="footer-links">
         <h4>CONTACT</h4>
@@ -745,7 +856,6 @@
         localStorage.setItem("bb_theme", theme);
       }
 
-      // Check storage state cleanly
       const savedTheme = localStorage.getItem("bb_theme") || "light";
       applyTheme(savedTheme);
 
