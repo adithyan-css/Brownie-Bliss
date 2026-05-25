@@ -477,28 +477,25 @@ function startServer(port) {
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE' && !process.env.PORT) {
       const nextPort = Number(port) + 1;
-      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+
+      console.warn(
+        `Port ${port} is already in use. Trying ${nextPort}...`
+      );
+
       startServer(nextPort);
       return;
     }
+
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
 // ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
   startServer(PORT);
 }
 
+// ─── EXPORTS ───────────────────────────────────────────────────────────────────
 module.exports = app;
 module.exports.handler = serverless(app);
