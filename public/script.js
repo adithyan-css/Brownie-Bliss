@@ -285,7 +285,7 @@ function injectCheckoutModal() {
     const overlay = document.createElement('div');
     overlay.id = 'checkoutOverlay';
     overlay.className = 'checkout-overlay';
-    overlay.innerHTML = `
+    overlay.innerHTML = 
         <div class="checkout-modal">
             <div class="checkout-head">
                 <div class="checkout-steps">

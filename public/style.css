@@ -9924,19 +9924,19 @@ html.dark .topping-price {
 
 .custom-price-filter {
   appearance: none !important;
-  background-color: #fff4ec !important;
-  border: 2px solid #c89b7b !important;
-  border-radius: 30px !important;
-  padding: 12px 50px 12px 20px !important;
+  background-color: #fff4ec;
+  border: 2px solid #c89b7b ;
+  border-radius: 30px ;
+  padding: 12px 50px 12px 20px ;
   min-width: 220px;
   text-align: left;
-  color: #5c372c !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
+  color: #5c372c ;
+  font-size: 15px ;
+  font-weight: 600;
   font-family: 'DM Sans', sans-serif !important;
-  cursor: pointer !important;
-  outline: none !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  cursor: pointer ;
+  outline: none ;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) ;
   background-image: url("data:image/svg+xml;utf8,<svg fill='%235c372c' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
 
 background-repeat: no-repeat;
