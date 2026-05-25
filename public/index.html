@@ -10,6 +10,7 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
   <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
   <script>
     (function () {
@@ -67,91 +68,146 @@
   <a href="index.html#contact">Contact</a>
   <a href="track.html">Track Order</a>
 </div>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-pattern"></div>
-    <div class="hero-content">
-      <div class="hero-text">
-        <span class="hero-badge">Homemade Treats · Happiness in every bite</span>
-        <h1 class="hero-title">
-          Freshly Baked <em>Delights</em><br>Delivered to You
-        </h1>
-        <p class="hero-desc">Authentic recipes, traditional methods, the finest ingredients — baked with love
-          and served
-          with care, every single day.</p>
-        <a href="#products" class="hero-cta" style="text-decoration: none;">
-          Explore Our Menu &rarr;
-        </a>
-        <button class="hero-favourite-btn"
-          type="button"
-          data-fav-type="bakeries"
-          data-fav-id="brownie-bliss"
-          aria-pressed="false"
-          onclick="toggleBakeryFavourite()">
-          &#9825; Favourite Bakery
-        </button>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-card">
-          <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Cake">
-          <div class="hero-card-label">🎂 Signature Cakes</div>
-        </div>
-        <div class="hero-card">
-          <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownies">
-          <div class="hero-card-label">🍫 Brownies</div>
-        </div>
-        <div class="hero-card">
-          <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
-          <div class="hero-card-label">🍮 Desserts</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
 
-  <!-- VALUES STRIP -->
-  <div class="values-strip" id="about">
-    <div class="values-inner">
-      <div class="value-item">
-        <span class="value-icon">📖</span>
-        <div class="value-text">
-          <strong>Authentic Recipes</strong>
-          <span>Traditional home-style methods</span>
-        </div>
-      </div>
-      <div class="value-item">
-        <span class="value-icon">❤️</span>
-        <div class="value-text">
-          <strong>Baked with Love</strong>
-          <span>Every product crafted with passion</span>
-        </div>
-      </div>
-      <div class="value-item">
-        <span class="value-icon">✅</span>
-        <div class="value-text">
-          <strong>Committed to Quality</strong>
-          <span>Premium ingredients, always</span>
-        </div>
-      </div>
-      <div class="value-item">
-        <span class="value-icon">💛</span>
-        <div class="value-text">
-          <strong>Honestly Priced</strong>
-          <span>Best products at fair prices</span>
-        </div>
-      </div>
+  <div class="hero-content">
+
+    <div class="hero-text" data-aos="fade-right">
+
+      <span class="hero-badge">
+        Homemade Treats · Happiness in every bite
+      </span>
+
+      <h1 class="hero-title">
+        Freshly Baked <em>Delights</em><br>
+        Delivered to You
+      </h1>
+
+      <p class="hero-desc">
+        Authentic recipes, traditional methods, the finest ingredients —
+        baked with love and served with care, every single day.
+      </p>
+
+      <a href="#products" class="hero-cta" style="text-decoration: none;">
+        Explore Our Menu &rarr;
+      </a>
+
+      <button
+        class="hero-favourite-btn"
+        type="button"
+        data-fav-type="bakeries"
+        data-fav-id="brownie-bliss"
+        aria-pressed="false"
+        onclick="toggleBakeryFavourite()">
+
+        &#9825; Favourite Bakery
+
+      </button>
+
     </div>
+
+    <div class="hero-visual" data-aos="fade-left">
+
+      <div class="hero-card">
+
+        <img
+          src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+          alt="Red Velvet Cake">
+
+        <div class="hero-card-label">
+          🎂 Signature Cakes
+        </div>
+
+      </div>
+
+      <div class="hero-card">
+
+        <img
+          src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+          alt="Brownies">
+
+        <div class="hero-card-label">
+          🍫 Brownies
+        </div>
+
+      </div>
+
+      <div class="hero-card">
+
+        <img
+          src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
+          alt="Desserts">
+
+        <div class="hero-card-label">
+          🍮 Desserts
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+</section>
+  <!-- VALUES STRIP -->
+<div class="values-strip" id="about">
 
+  <div class="values-inner" data-aos="fade-up">
 
+    <div class="value-item">
+      <span class="value-icon">📖</span>
 
+      <div class="value-text">
+        <strong>Authentic Recipes</strong>
+        <span>Traditional home-style methods</span>
+      </div>
+    </div>
+
+    <div class="value-item">
+      <span class="value-icon">❤️</span>
+
+      <div class="value-text">
+        <strong>Baked with Love</strong>
+        <span>Every product crafted with passion</span>
+      </div>
+    </div>
+
+    <div class="value-item">
+      <span class="value-icon">✅</span>
+
+      <div class="value-text">
+        <strong>Committed to Quality</strong>
+        <span>Premium ingredients, always</span>
+      </div>
+    </div>
+
+    <div class="value-item">
+      <span class="value-icon">💛</span>
+
+      <div class="value-text">
+        <strong>Honestly Priced</strong>
+        <span>Best products at fair prices</span>
+      </div>
+    </div>
+
+  </div>
+</div>
   <!-- PRODUCTS SECTION -->
   <section class="products-section" id="products" style="padding: 100px 30px; background: var(--cream);">
     <div class="products-inner">
-      <div class="section-header">
-        <span class="section-label">Hand-picked for you</span>
-        <h2 class="section-title">Our <em>Full Range</em></h2>
-      </div>
+      <div class="section-header" data-aos="fade-up">
+
+  <span class="section-label">
+    Hand-picked for you
+  </span>
+
+  <h2 class="section-title">
+    Our <em>Full Range</em>
+  </h2>
+
+</div>
 
       <div class="filter-tabs" style="margin-bottom: 60px;">
         <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
@@ -166,7 +222,7 @@
   </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" id="birthday"
+  <section class="birthday-section" data-aos="fade-up"></section>
     style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
     
     <!-- Slider Hint -->
@@ -542,6 +598,19 @@
           </form>
         </div>
 
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+          <div>
+            <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+              starts
+              from</span>
+            <span id="cakePrice"
+              style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+              850</span>
+          </div>
+          <button class="hero-cta" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
+            Add to Cart
+          </button>
         <!-- Complaint Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an Issue</h3>
@@ -574,64 +643,90 @@
     </div>
   </section>
 
+<section class="bb-reviews">
+  <p class="eyebrow">Loved by our customers</p>
+  <h2>Sweet Words from <em>Happy Customers</em></h2>
 
-<section id="feedback" style="padding: 100px 24px; background: var(--cream);">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      
-      <div style="text-align: center; margin-bottom: 50px;">
-        <span class="section-label" style="letter-spacing: 3px;">Our Customers</span>
-        <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); font-weight: 400; margin-top: 5px;">Reviews & <em>Feedback</em></h2>
-        <p style="max-width: 600px; margin: 15px auto 0; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 19px; opacity: 0.85;">
-          We love hearing from you! Your feedback inspires us to bake better every day.
-        </p>
+  <div class="reviews-grid">
+
+    <div class="review-card featured">
+      <span class="featured-badge">Top review</span>
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        The brownies were unbelievably rich and fresh.
+        You can genuinely feel the homemade touch in every bite.
+        This isn't just food — it's comfort wrapped in chocolate.
+      </p>
+
+      <div class="reviewer">
+        <div class="reviewer-avatar">KS</div>
+        <div>
+          <p class="reviewer-name">Keerthana S.</p>
+          <p class="reviewer-location">Krishnagiri</p>
+        </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px;">
-        
-        <div class="feedback-premium-card">
-          <span class="premium-quote">“</span>
-          <div class="premium-stars">★★★★★</div>
-          <p class="premium-text">The cakes are absolutely delicious and always fresh! Our go-to bakery for every celebration.</p>
-          <div class="premium-user">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120" alt="Priya S." class="premium-avatar">
-            <div>
-              <h4 class="premium-name">Priya S.</h4>
-              <p class="premium-status">Happy Customer</p>
-            </div>
-          </div>
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        Ordered a birthday cake and everyone loved it.
+        Beautiful presentation and amazing taste!
+      </p>
+
+      <div class="reviewer">
+        <div class="reviewer-avatar">RM</div>
+        <div>
+          <p class="reviewer-name">Rahul M.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
 
-        <div class="feedback-premium-card">
-          <span class="premium-quote">“</span>
-          <div class="premium-stars">★★★★★</div>
-          <p class="premium-text">Amazing taste, beautiful packaging, and such warm service. Highly recommend their pastries!</p>
-          <div class="premium-user">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120" alt="Rahul M." class="premium-avatar">
-            <div>
-              <h4 class="premium-name">Rahul M.</h4>
-              <p class="premium-status">Happy Customer</p>
-            </div>
-          </div>
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        One of the best homemade dessert brands here.
+        Fresh, soft, and perfectly balanced sweetness.
+      </p>
+
+      <div class="reviewer">
+        <div class="reviewer-avatar">DR</div>
+        <div>
+          <p class="reviewer-name">Divya R.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
 
-        <div class="feedback-premium-card">
-          <span class="premium-quote">“</span>
-          <div class="premium-stars">★★★★★</div>
-          <p class="premium-text">Every bite feels like happiness. You can truly taste the love and quality in their baked goodies.</p>
-          <div class="premium-user">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=120" alt="Ananya T." class="premium-avatar">
-            <div>
-              <h4 class="premium-name">Ananya T.</h4>
-              <p class="premium-status">Happy Customer</p>
-            </div>
-          </div>
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        The cookies tasted just like homemade treats from childhood.
+        Soft, fresh and absolutely comforting.
+      </p>
+
+      <div class="reviewer">
+        <div class="reviewer-avatar">AK</div>
+        <div>
+          <p class="reviewer-name">Ananya K.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
 
       </div>
 
-      <div class="feedback-action-container">
-        <div class="heart-icon-wrap">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        Brownie Bliss never disappoints.
+        Every dessert feels thoughtfully crafted and beautifully packed.
+      </p>
+
+      <div class="reviewer">
+        <div class="reviewer-avatar">SP</div>
+        <div>
+          <p class="reviewer-name">Sriram P.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
         <h3 style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">Share Your Experience</h3>
         <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love to hear your thoughts and suggestions.</p>
@@ -643,9 +738,16 @@
           </button>
         </form>
       </div>
-
     </div>
-  </section>
+
+  </div>
+</section>
+
+  <div class="bb-overall">
+    <span class="stars-big">★★★★★</span>
+    <p class="rating-text"><strong>5.0</strong> · 5 reviews · All homemade, all heart</p>
+  </div>
+
 
   <!-- FOOTER -->
   <footer id="contact">
@@ -668,10 +770,11 @@
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
         </div>
-        <div class="footer-col" style="display: none;">
+        <div class="footer-col">
           <h4>Information</h4>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Refund Policy</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
         </div>
         <div class="footer-col">
           <h4>Get In Touch</h4>
@@ -712,6 +815,7 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 
 </html>

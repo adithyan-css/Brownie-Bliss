@@ -540,10 +540,13 @@ nav a:hover {
   border-color: var(--color-primary);
 }
 
-.products-grid {
+.products-grid,
+.all-products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
 }
 
 /* Responsive adjustments */
@@ -3151,10 +3154,13 @@ nav a:hover {
   border-color: var(--brown-dark);
 }
 
-.products-grid {
+.products-grid,
+.all-products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
 }
 
 .product-card {
@@ -3812,24 +3818,23 @@ footer {
     text-align: center;
   }
 
-  .hero-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .hero-favourite-btn {
-    margin: 14px 0 0;
-  }
+.hero-favourite-btn {
+  margin: 14px 0 0;
+}
 
-  .hero-visual {
-    max-width: 600px;
-    margin: 0 auto;
-  }
+.hero-visual {
+  max-width: 600px;
+  margin: 0 auto;
+}
 
-  .admin-body {
-    margin: 20px auto;
-  }
+.admin-body {
+  margin: 20px auto;
 }
 
 
@@ -5513,11 +5518,6 @@ nav a:hover {
   border-color: var(--brown-dark);
 }
 
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
 
 .product-card {
   background: var(--white);
@@ -8907,7 +8907,7 @@ a.logo {
  .some-class {
   color: var(--brown-dark) !important;
 }
-}
+
 html.dark {
   --cream: #1a1008;
   --cream-dark: #221508;
@@ -9101,154 +9101,166 @@ html.dark .theme-toggle-btn:hover {
   background: var(--gold);
 }
 
-  /* ==========================================================================
-   PREMIUM REVIEW & FEEDBACK SECTION OVERLAYS
-   ========================================================================== */
+  .bb-reviews {
+    background: #fdf6ee;
+    padding: 64px 32px;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+  }
 
-/* Cards structural style based on the prompt's layout design */
-.feedback-premium-card {
-background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: var(--radius-md);
-  padding: 40px 35px;
-  text-align: left;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--cream-dark);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-}
+  .bb-reviews .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #b07d3e;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
 
-.feedback-premium-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 45px rgba(74, 44, 10, 0.08);
-}
+  .bb-reviews h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: #3b1f0a;
+    margin: 0 0 48px;
+    line-height: 1.25;
+  }
 
-/* Elegant stylized quotation graphics */
-.premium-quote {
-  font-family: 'Playfair Display', serif;
-  font-size: 80px;
-  color: #EEDCC5;
-  position: absolute;
-  top: 15px;
-  left: 30px;
-  line-height: 0.1;
-  user-select: none;
-}
+  .bb-reviews h2 em {
+    color: #b07d3e;
+    font-style: italic;
+  }
 
-.premium-stars {
-  color: #D4AF37; /* Warm image-accurate gold tint */
-  font-size: 18px;
-  letter-spacing: 3px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 2;
-}
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
 
-.premium-text {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
-  color: #5C2C1A;
-  margin: 0 0 30px 0;
-  flex: 1;
-}
+  .review-card {
+    background: #fff8f0;
+    border: 0.5px solid #e8d0b0;
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: left;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
 
-/* User identity blocks aligned horizontally */
-.premium-user {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+  .review-card .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: #e8d0b0;
+    line-height: 0.6;
+    display: block;
+    margin-bottom: 4px;
+  }
 
-.premium-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(212, 175, 55, 0.25);
-}
+  .review-card .stars {
+    color: #d4882a;
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
 
-.premium-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1A0905;
-  margin-bottom: 2px;
-}
+  .review-card .review-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #5c3d1e;
+    margin: 0;
+    flex: 1;
+  }
 
-.premium-status {
-  font-size: 12px;
-  color: #A08060;
-  margin: 0 !important;
-}
+  .review-card .reviewer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 0.5px solid #e8d0b0;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
 
-/* bottom action component adjustments */
-.feedback-action-container {
-  text-align: center;
-  margin-top: 40px;
-}
+  .reviewer-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: #7a4a1c;
+    background: #f2d9b3;
+  }
 
-.heart-icon-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border: 1.5px solid #D4AF37;
-  border-radius: 50%;
-  color: #D4AF37;
-  margin-bottom: 16px;
-}
+  .reviewer-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #3b1f0a;
+    margin: 0;
+    line-height: 1.2;
+  }
 
-/* "Write a review" customized button styling matching the image blueprint */
-.premium-write-btn {
-  background: #4A2C0A !important;
-  color: #FFF9F2 !important;
-  border-radius: 50px !important; /* Fully rounded elegant pill edge */
-  padding: 14px 36px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  text-transform: none !important; /* Avoid rigid corporate uppercase formats */
-  letter-spacing: 0.5px !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 15px rgba(74, 44, 10, 0.2) !important;
-  border: none !important;
-}
+  .reviewer-location {
+    font-size: 11px;
+    color: #a0714a;
+    margin: 0;
+  }
 
-.premium-write-btn:hover {
-  background: #3C1E14 !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(74, 44, 10, 0.3) !important;
-}
+  .review-card.featured {
+    border-color: #c9923a;
+    background: #fff3e4;
+    grid-column: span 2;
+  }
 
-/* Dark theme specific visual optimizations */
-html.dark .feedback-premium-card {
-  background: #1C1108;
-  border-color: rgba(212, 175, 55, 0.15);
-}
-html.dark .premium-quote {
-  color: #3A2515;
-}
-html.dark .premium-text {
-  color: #C8A882;
-}
-html.dark .premium-name {
-  color: #F0E4D0;
-}
-html.dark .premium-write-btn {
-  background: var(--gold) !important;
-  color: var(--brown-dark) !important;
-}
-html.dark .premium-write-btn:hover {
-  background: var(--gold-light) !important;
-}
+  .review-card.featured .review-text {
+    font-size: 15px;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #c9923a;
+    color: #fff8f0;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  .bb-overall {
+    margin: 48px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .bb-overall .stars-big {
+    color: #d4882a;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .bb-overall .rating-text {
+    font-size: 14px;
+    color: #7a4a1c;
+  }
+
+  .bb-overall .rating-text strong {
+    font-weight: 700;
+    color: #3b1f0a;
+  }
+
+  @media (max-width: 500px) {
+    .review-card.featured { grid-column: span 1; }
+  }
 
 
 .customize-modal {
@@ -9794,57 +9806,159 @@ html.dark .customize-option input[type="checkbox"] {
 html.dark .topping-price {
   color: var(--gold);
 }
-.price-filter-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 40px 0 55px;
+/* TESTIMONIALS */
+.testimonials-section {
+  padding: 100px 0;
+  background: var(--cream);
+  overflow: hidden;
 }
 
-/* ── FIX 5: Checkout & Cart Responsive Audit (OTP sizes & Keyboard scroll behavior) ── */
+.testimonial-marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-top: 60px;
+}
+
+.testimonial-track {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+  width: max-content;
+  flex-wrap: nowrap;
+  animation: scrollTestimonials 40s linear infinite;
+}
+
+.testimonial-marquee:hover .testimonial-track {
+  animation-play-state: paused;
+}
+
+.testimonial-card {
+  min-width: 340px;
+  max-width: 340px;
+  background: var(--white);
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  flex-shrink: 0;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+}
+
+.testimonial-stars {
+  font-size: 20px;
+  color: #d4a017;
+  margin-bottom: 18px;
+  letter-spacing: 3px;
+}
+
+.testimonial-card p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-mid);
+  margin-bottom: 24px;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.testimonial-card h4 {
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--brown-dark);
+  text-transform: uppercase;
+}
+
+@keyframes scrollTestimonials {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-50% - 28px));
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .testimonial-card {
+    min-width: 280px;
+    max-width: 280px;
+    padding: 28px;
+  }
+
+  .testimonial-track {
+    gap: 18px;
+    animation-duration: 20s;
+  }
+}
+
+/* Checkout Responsive */
 @media (max-width: 480px) {
   .checkout-overlay {
-    align-items: flex-start !important; /* Prevent off-screen vertical centering when keyboard is open */
+    align-items: flex-start !important;
     overflow-y: auto !important;
     padding: 20px 10px;
     -webkit-overflow-scrolling: touch;
   }
+
   .checkout-modal {
-    margin: 20px auto !important; /* Centered with vertical safety spacing */
+    margin: 20px auto !important;
     width: 100% !important;
-    max-width: 355px !important; /* Ensures it perfectly fits 375px screens with margin */
+    max-width: 355px !important;
   }
+
   .checkout-body {
-    padding: 24px 16px !important; /* Gives more content room on small mobile widths */
+    padding: 24px 16px !important;
   }
+
   .otp-container {
     justify-content: center !important;
-    gap: 8px !important; /* Tightens gaps to fit exactly six 44px boxes */
+    gap: 8px !important;
   }
+
   .otp-box {
     flex: 0 0 44px !important;
     width: 44px !important;
     height: 44px !important;
     min-width: 44px !important;
     min-height: 44px !important;
-    font-size: 20px !important; /* Adjusted slightly to look proportional inside 44px */
+    font-size: 20px !important;
   }
 }
 
+/* Birthday Slider */
 .birthday-slider::-webkit-scrollbar {
   display: none;
-.price-filter {
+}
+
+.birthday-slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Price Filter */
+.price-filter-wrapper {
   display: flex;
-  align-items: center;
-  gap: 18px;
+  justify-content: center;
+  margin: 40px 0 55px;
+}
+
+.price-filter {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin: 35px 0 !important;
 
   padding: 16px 28px;
-
   background: rgba(255, 248, 243, 0.75);
-
   backdrop-filter: blur(12px);
 
   border: 1px solid rgba(255,255,255,0.4);
-
   border-radius: 999px;
 
   box-shadow:
@@ -9863,12 +9977,8 @@ html.dark .topping-price {
 }
 
 .price-filter label {
-  font-family: 'Playfair Display', serif;
-
-  font-size: 20px;
-
-  color: #5c372c;
-
-  letter-spacing: 0.5px;
+  font-size: 20px !important;
+  font-family: 'Playfair Display', serif !important;
+  color: #5c372c !important;
 }
 }
