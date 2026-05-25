@@ -3,25 +3,25 @@ const API_BASE = '/api';
 
 
 // --- SCROLL TO TOP (NEW FEATURE) ---
-document.addEventListener("keydown", (e) => {
-    if (e.key.toLowerCase() === "t") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+document.addEventListener('keydown', (e) => {
+  if (e.key.toLowerCase() === 't') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 });
 
 
 // --- THEME ---
 function applyTheme(theme) {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    const icon = document.getElementById('themeIcon');
-    if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
 }
 
 function toggleTheme() {
-    const isDark = document.documentElement.classList.contains('dark');
-    const next = isDark ? 'light' : 'dark';
-    localStorage.setItem('bb_theme', next);
-    applyTheme(next);
+  const isDark = document.documentElement.classList.contains('dark');
+  const next = isDark ? 'light' : 'dark';
+  localStorage.setItem('bb_theme', next);
+  applyTheme(next);
 }
 window.toggleTheme = toggleTheme;
 
@@ -30,64 +30,165 @@ window.toggleTheme = toggleTheme;
 let products = [];
 let bdayCakes = {};
 lectedFlavor = 'Red Velvet';
+let selectedFlavor = 'Red Velvet';
+let currentSearchTerm = '';
+let selectedPriceFilter = 'all';
+let recentSearches = JSON.parse(
+  localStorage.getItem('brownie_recent_searches') || '[]'
+);
 let selectedWeight = '1.0';
 
 const BIRTHDAY_BASE_PRICES = {
-    '0.5': 450,
-    '1.0': 850,
-    '1.5': 1250,
-    '2.0': 1600
+  0.5: 450,
+  '1.0': 850,
+  1.5: 1250,
+  '2.0': 1600,
 };
 
 const DEFAUlet seLT_PRODUCTS = [
     { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
     { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
     { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
+const DEFAULT_PRODUCTS = [
+  {
+    id: 1,
+    name: 'Velvet Dream Cake',
+    category: 'cakes',
+    price: 850,
+    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+  },
+  {
+    id: 2,
+    name: 'Dutch Truffle Delight',
+    category: 'cakes',
+    price: 950,
+    img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180',
+  },
+  {
+    id: 3,
+    name: 'Pineapple Fresh Cream',
+    category: 'cakes',
+    price: 675,
+    img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+  },
 ];
 
 const DEFAULT_BDAY_CAKES = {
-    "Red Velvet": { price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    "Dutch Truffle": { price: 950, img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180" }
+  'Red Velvet': {
+    price: 850,
+    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+  },
+  'Dutch Truffle': {
+    price: 950,
+    img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180',
+  },
 };
 
+
+function useFallbackProducts() {
+  products = DEFAULT_PRODUCTS;
+  bdayCakes = { ...DEFAULT_BDAY_CAKES };
+
+  if (document.getElementById('productsGrid')) {
+    filterProducts('all');
+  }
+  if (document.getElementById('cakePrice')) {
+    calculateBdayPrice();
+  }
+}
 
 // --- FAVOURITES ---
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
-let favourites = loadFavourites();
+let favourites = [];
+function buildCatalogFromList(list) {
+  if (list && Array.isArray(list) && list.length) {
+    products = list
+      .filter((p) => p.type === 'standard')
+      .map((p) => ({
+        id: p.id_ref,
+        name: p.name,
+        category: p.category,
+        price: p.price,
+        emoji: p.emoji,
+        img: p.img,
+        description: p.description || '',
+      }));
 
-function loadFavourites() {
-    try {
-        return JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || {
-            bakeries: [],
-            dishes: []
+    bdayCakes = {};
+    const bd = list.filter((p) => p.type === 'birthday');
+    bd.forEach((p) => {
+      bdayCakes[p.id_ref] = {
+        price: p.price,
+        emoji: p.emoji,
+        img: p.img,
+      };
+    });
+  } else {
+    useFallbackProducts();
+  }
+}
+
+async function loadProducts() {
+  try {
+    const res = await fetch(`${API_BASE}/products`);
+    const data = await res.json();
+
+    if (data.success && Array.isArray(data.products) && data.products.length) {
+      products = data.products
+        .filter((p) => p.type === 'standard')
+        .map((p) => ({
+          id: p.id_ref,
+          name: p.name,
+          category: p.category,
+          price: p.price,
+          emoji: p.emoji,
+          img: p.img,
+          description: p.description || '',
+        }));
+
+      bdayCakes = {};
+
+      const bd = data.products.filter((p) => p.type === 'birthday');
+
+      bd.forEach((p) => {
+        bdayCakes[p.id_ref] = {
+          price: p.price,
+          emoji: p.emoji,
+          img: p.img,
         };
-    } catch (e) {
-        console.error("Favourites load error:", e);
-        return { bakeries: [], dishes: [] };
+      });
+    } else {
+      useFallbackProducts();
     }
-}
+  } catch (e) {
+    console.error('Error loading products from database:', e);
+    useFallbackProducts();
+  }
 
-function saveFavourites() {
-    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
-}
+  if (document.getElementById('productsGrid')) {
+    filterProducts('all');
+  }
 
+  if (document.getElementById('cakePrice')) {
+    calculateBdayPrice();
+  }
+}
 
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
-
 let checkoutState = {
-    name: '',
-    phone: '',
-    address: '',
-    city: '',
-    pincode: '',
-    verified: false,
-    currentStep: 1
+  name: '',
+  phone: '',
+  address: '',
+  city: '',
+  pincode: '',
+  verified: false,
+  currentStep: 1,
 };
 
 function saveCart() {
-    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+  localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
 }
 
 
@@ -143,6 +244,60 @@ function updateCartUI() {
                     <button onclick="changeQty(${index}, -1)">-</button>
                     <span>${item.qty}</span>
                     <button onclick="changeQty(${index}, 1)">+</button>
+const cartFooter = document.getElementById('cartFooter');
+const cartTotal = document.getElementById('cartTotal');
+
+// --- CART UI ---
+function updateCartUI() {
+  const cartContainer = document.getElementById('cartItems');
+  if (!cartContainer) return;
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = `
+  <div class="cart-empty-state">
+    <div class="empty-cart-icon">🍫</div>
+
+    <h2>Your cart is empty</h2>
+
+    <p>
+      Looks like you haven't added any brownies yet.
+    </p>
+
+    <a href="products.html" class="shop-now-btn">
+      Shop Now
+    </a>
+  </div>
+`;
+    if (cartFooter) cartFooter.style.display = 'none';
+  } else {
+    cartContainer.innerHTML = cart
+      .map((item, index) => {
+        const c = item.customizations;
+        let customBadges = '';
+        if (c) {
+          if (c.dietary)
+            customBadges += `<span class="cart-custom-badge">${c.dietary === 'eggless' ? '🌱 Eggless' : '🥚 Egg'}</span>`;
+          if (c.toppings && c.toppings.length)
+            customBadges += c.toppings
+              .map((t) => `<span class="cart-custom-badge">+ ${t.name}</span>`)
+              .join('');
+          if (c.message)
+            customBadges += `<span class="cart-custom-badge cart-custom-msg">✉ "${c.message}"</span>`;
+        } else if (item.message) {
+          customBadges = `<span class="cart-custom-badge cart-custom-msg">✉ "${item.message}"</span>`;
+        }
+        return `
+            <div class="cart-item">
+                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
+                    ${customBadges ? `<div class="cart-custom-tags">${customBadges}</div>` : ''}
+                    <div class="cart-qty">
+                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                        <span class="qty-num">${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                    </div>
                 </div>
             </div>
 
@@ -216,26 +371,33 @@ function filterProducts(category) {
             </button>
         </div>
     `).join('');
+        `;
+      })
+      .join('');
+    if (cartFooter) cartFooter.style.display = 'block';
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+  }
 }
 
 // FIXED ADD TO CART
 function addToCart(product) {
-    const existing = cart.find(i => i.name === product.name);
+  const existing = cart.find((i) => i.name === product.name);
 
-    if (existing) existing.qty++;
-    else cart.push({ ...product, qty: 1 });
+  if (existing) existing.qty++;
+  else cart.push({ ...product, qty: 1 });
 
-    saveCart();
-    updateCartUI();
-    showToast('Added to cart! 🛒');
+  saveCart();
+  updateCartUI();
+  showToast('Added to cart! 🛒');
 }
 
 // FIXED QTY
 function changeQty(index, delta) {
-    cart[index].qty += delta;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
-    saveCart();
-    updateCartUI();
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) cart.splice(index, 1);
+  saveCart();
+  updateCartUI();
 }
 
 // --- PRODUCT FILTER ---
@@ -266,16 +428,12 @@ function removeFromCart(index) {
     saveCart();
     updateCartUI();
 }
+// --- LIVE PRODUCT SEARCH ---
 
-function openCart() {
-    document.getElementById('cartSidebar')?.classList.add('open');
-    document.getElementById('cartOverlay')?.classList.add('open');
-}
+function initializeLiveSearch() {
+  const searchInput = document.getElementById('productSearch');
 
-function closeCart() {
-    document.getElementById('cartSidebar')?.classList.remove('open');
-    document.getElementById('cartOverlay')?.classList.remove('open');
-}
+  const suggestionsBox = document.getElementById('searchSuggestions');
 
 // --- CHECKOUT FLOW ---
 function injectCheckoutModal() {
@@ -392,10 +550,11 @@ function openCheckout() {
 
     document.getElementById('checkoutOverlay').classList.add('open');
 }
+  const clearBtn = document.getElementById('clearSearchBtn');
 
-function closeCheckout() {
-    document.getElementById('checkoutOverlay').classList.remove('open');
-}
+  if (!searchInput) return;
+
+  renderRecentSearches();
 
 
 
@@ -430,10 +589,21 @@ async function sendOTP() {
     if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
         showToast('Enter a valid 10-digit phone number');
         return;
+  searchInput.addEventListener('input', function () {
+    const value = this.value.trim();
+
+    currentSearchTerm = value;
+
+    if (value.length > 0) {
+      clearBtn.style.display = 'block';
+      generateSuggestions(value);
+    } else {
+      clearBtn.style.display = 'none';
+      suggestionsBox.style.display = 'none';
     }
 
-    checkoutState.name = name;
-    checkoutState.phone = phone;
+    filterProducts('all');
+  });
 
     const btn = document.querySelector('#checkStep1 .hero-cta');
     if (btn) {
@@ -507,7 +677,34 @@ async function verifyOTP() {
         }
     } catch (e) {
         showToast('Verification failed. Try again.');
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      const value = this.value.trim();
+
+      if (value) {
+        saveRecentSearch(value);
+      }
+
+      suggestionsBox.style.display = 'none';
     }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    currentSearchTerm = '';
+
+    clearBtn.style.display = 'none';
+
+    suggestionsBox.style.display = 'none';
+
+    filterProducts('all');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-section')) {
+      suggestionsBox.style.display = 'none';
+    }
+  });
 }
 
 // --- ADDRESS STEP ---
@@ -519,10 +716,12 @@ function goToConfirm() {
     if (!addr) return showToast('Enter your street address');
     if (!city) return showToast('Enter your city');
     if (!pin || pin.length !== 6) return showToast('Enter valid 6-digit pincode');
+function generateSuggestions(searchTerm) {
+  const suggestionsBox = document.getElementById('searchSuggestions');
 
-    checkoutState.address = addr;
-    checkoutState.city = city;
-    checkoutState.pincode = pin;
+  if (!suggestionsBox) return;
+
+  const term = searchTerm.toLowerCase();
 
     document.getElementById('confirmCustomer').innerHTML = `
         <div style="font-weight:600">${checkoutState.name}</div>
@@ -534,8 +733,33 @@ function goToConfirm() {
         <div class="confirm-row">
             <span>${i.name} × ${i.qty}</span>
             <strong>₹${(i.price * i.qty).toLocaleString()}</strong>
+  const matches = products
+    .filter((product) => {
+      return (
+        product.name.toLowerCase().includes(term) ||
+        product.category.toLowerCase().includes(term) ||
+        (product.description || '').toLowerCase().includes(term)
+      );
+    })
+    .slice(0, 5);
+
+  if (!matches.length) {
+    suggestionsBox.style.display = 'none';
+    return;
+  }
+
+  suggestionsBox.innerHTML = matches
+    .map(
+      (product) => `
+        <div
+            class="search-suggestion-item"
+            onclick="selectSuggestion('${product.name.replace(/'/g, "\\'")}')"
+        >
+            🔍 ${highlightMatch(product.name, searchTerm)}
         </div>
-    `).join('');
+    `
+    )
+    .join('');
 
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
     document.getElementById('confirmTotal').textContent =
@@ -694,7 +918,121 @@ function setCakeFlavor(flavor) {
         } else {
             btn.classList.remove('active');
         }
+  suggestionsBox.style.display = 'block';
+}
+
+function selectSuggestion(value) {
+  const searchInput = document.getElementById('productSearch');
+
+  const suggestionsBox = document.getElementById('searchSuggestions');
+
+  if (!searchInput) return;
+
+  searchInput.value = value;
+
+  currentSearchTerm = value;
+
+  saveRecentSearch(value);
+
+  filterProducts('all');
+
+  suggestionsBox.style.display = 'none';
+}
+
+function highlightMatch(text, term) {
+  if (!term) return text;
+
+  const regex = new RegExp(`(${term})`, 'gi');
+
+  return text.replace(regex, `<span class="highlight-match">$1</span>`);
+}
+
+function saveRecentSearch(search) {
+  if (!search) return;
+
+  recentSearches = recentSearches.filter((item) => item !== search);
+
+  recentSearches.unshift(search);
+
+  recentSearches = recentSearches.slice(0, 5);
+
+  localStorage.setItem(
+    'brownie_recent_searches',
+    JSON.stringify(recentSearches)
+  );
+
+  renderRecentSearches();
+}
+
+function renderRecentSearches() {
+  const container = document.getElementById('recentSearches');
+
+  if (!container) return;
+
+  if (!recentSearches.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = `
+        ${recentSearches
+          .map(
+            (search) => `
+            <div
+                class="recent-search-tag"
+                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
+            >
+                ${search}
+            </div>
+        `
+          )
+          .join('')}
+    `;
+}
+
+function updatePriceFilter() {
+  const filter = document.getElementById('priceFilter');
+
+  if (!filter) return;
+
+  selectedPriceFilter = filter.value;
+
+  filterProducts('all');
+}
+
+window.updatePriceFilter = updatePriceFilter;
+window.selectSuggestion = selectSuggestion;
+
+// --- PRODUCT FILTERING ---
+function filterProducts(category = 'all', btn = null) {
+  const grid = document.getElementById('productsGrid');
+
+  if (!grid) return;
+
+  if (btn) {
+    btn.parentElement
+      .querySelectorAll('.filter-tab')
+      .forEach((b) => b.classList.remove('active'));
+
+    btn.classList.add('active');
+  }
+
+  let filtered =
+    category === 'all'
+      ? [...products]
+      : products.filter((p) => p.category === category);
+
+  if (currentSearchTerm.trim()) {
+    const term = currentSearchTerm.toLowerCase();
+
+    filtered = filtered.filter((product) => {
+      return (
+        product.name.toLowerCase().includes(term) ||
+        product.category.toLowerCase().includes(term) ||
+        (product.description || '').toLowerCase().includes(term)
+      );
     });
+  }
 
     calculateBdayPrice();
 }
@@ -702,39 +1040,44 @@ function setCakeFlavor(flavor) {
 // --- BIRTHDAY CAKE STATE (ONLY ONCE) ---
 let selectedFlavor = "Red Velvet";
 let selectedWeight = "1.0";
+  const emptyState = document.getElementById('noProductsFound');
 
-const BIRTHDAY_BASE_PRICES = {
-    "0.5": 450,
-    "1.0": 850,
-    "1.5": 1250,
-    "2.0": 1600
-};
+  if (emptyState) {
+    emptyState.style.display = filtered.length ? 'none' : 'block';
+  }
 
 // --- SET WEIGHT ---
 function setCakeWeight(weight, event) {
     selectedWeight = weight;
+  grid.innerHTML = filtered
+    .map(
+      (p) => `
+      <div class="product-card">
 
-    document.querySelectorAll('.weight-btn')
-        .forEach(b => b.classList.remove('active'));
+        <div class="product-img-wrap">
 
     if (event?.target) {
         event.target.classList.add('active');
     }
+          <img
+            src="${p.img}"
+            alt="${p.name}"
+          />
 
-    calculateBdayPrice();
-}
+        </div>
 
 // --- PRICE CALCULATION ---
 function calculateBdayPrice() {
     const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+        <div class="product-info">
 
-    const priceEl = document.getElementById('cakePrice');
-    if (priceEl) {
-        priceEl.textContent = `₹ ${price}`;
-    }
+          <div class="product-category">
+            ${p.category}
+          </div>
 
-    updateBirthdayFavouriteButton();
-}
+          <div class="product-name">
+            ${p.name}
+          </div>
 
 // --- FAV ITEM ---
 function getBirthdayFavouriteItem() {
@@ -775,43 +1118,45 @@ function toggleBirthdayFavourite() {
 // --- ADD TO CART ---
 function addBirthdayToCart() {
     if (!bdayCakes[selectedFlavor]) return;
+          <div class="product-desc">
+            ${p.description || ''}
+          </div>
 
-    const basePrices = {
-        "0.5": 450,
-        "1.0": 850,
-        "1.5": 1250,
-        "2.0": 1600
-    };
+          <div class="product-price">
+            ₹${p.price}
+          </div>
 
-    const fallbacks = {
-        'Red Velvet': { img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', emoji: '🎂' },
-        'Dutch Truffle': { img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180', emoji: '🍰' },
-        'Pineapple': { img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg?v=1711124785', emoji: '🍍' },
-        'Chocoholic': { img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267', emoji: '🍫' },
-        'Black Forest': { img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg', emoji: '🌲' },
-        'Cheesecake': { img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg', emoji: '🧀' }
-    };
+          <button
+            class="add-to-cart"
+            onclick='addToCart(${JSON.stringify(p)})'
+          >
+            Add To Cart
+          </button>
 
-    const cakeInfo =
-        bdayCakes[selectedFlavor] ||
-        fallbacks[selectedFlavor] ||
-        fallbacks['Red Velvet'];
+        </div>
 
-    const finalPrice = basePrices[selectedWeight] || 850;
+      </div>
+    `
+    )
+    .join('');
+}
 
-    const msgInput = document.getElementById('cakeMessage');
-    const message = msgInput ? msgInput.value.trim() : '';
+// --- BIRTHDAY CAKE BUILDER ---
+// bdayCakes object is now populated dynamically via loadProducts()
 
-    const item = {
-        id: `bday-${selectedFlavor}-${selectedWeight}`,
-        name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-        price: finalPrice,
-        img: cakeInfo.img,
-        emoji: cakeInfo.emoji,
-        category: 'cakes',
-        message,
-        qty: 1
-    };
+function updateBirthdayCake(flavor) {
+  if (!bdayCakes[flavor]) {
+    console.error('Cake flavor not found:', flavor);
+    return;
+  }
+
+  selectedFlavor = flavor;
+
+  // Update image
+  const cakeImg = document.getElementById('birthdayCakeImg');
+  if (cakeImg && bdayCakes[flavor]) {
+    cakeImg.src = bdayCakes[flavor].img;
+  }
 
     addToCart(item);
     showToast('🎂 Birthday cake added to cart!');
@@ -907,15 +1252,56 @@ const msg =
 
 const url = `https://wa.me/918072596340?text=${encodeURIComponent(msg)}`;
 window.open(url, "_blank");
+  if (cakeImg) {
+    cakeImg.src = bdayCakes[flavor].img;
+  }
+
+  // Update active flavor button
+  document.querySelectorAll('.filter-pill').forEach((btn) => {
+    if (btn.textContent.trim() === flavor) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  calculateBdayPrice();
 }
 
-// --- TOAST ---
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    if (!t) return;
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+function setCakeWeight(weight, event) {
+  selectedWeight = weight;
+
+  document
+    .querySelectorAll('.weight-btn')
+    .forEach((b) => b.classList.remove('active'));
+
+  if (event?.target) event.target.classList.add('active');
+
+  calculateBdayPrice();
+}
+
+function calculateBdayPrice() {
+  const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+
+  const priceEl = document.getElementById('cakePrice');
+  if (priceEl) {
+    priceEl.textContent = `₹ ${price}`;
+  }
+
+  updateBirthdayFavouriteButton();
+}
+
+function getBirthdayFavouriteItem() {
+  const cake = bdayCakes[selectedFlavor] || {};
+
+  return {
+    id: `bday-${selectedFlavor}-${selectedWeight}`,
+    name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+    price: BIRTHDAY_BASE_PRICES[selectedWeight],
+    img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
+    emoji: cake.emoji || '',
+    category: 'cakes',
+  };
 }
 
 // --- INIT ---
@@ -952,25 +1338,36 @@ window.addEventListener("scroll", function () {
     }
 });
 
+function updateBirthdayFavouriteButton() {
+  const btn = document.getElementById('birthdayFavoriteBtn');
+  if (!btn) return;
 
-// --- TRACK ORDER LOGIC ---
-async function trackOrder(id) {
-    const orderIdInput = document.getElementById('orderIdInput');
-    const trackError = document.getElementById('trackError');
-    const result = document.getElementById('result');
+  const item = getBirthdayFavouriteItem();
+  const active = isFavourite('dishes', item.id);
 
-    if (!orderIdInput) return;
+  btn.dataset.favType = 'dishes';
+  btn.dataset.favId = item.id;
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  btn.setAttribute(
+    'title',
+    active ? 'Remove from favourites' : 'Add to favourites'
+  );
 
     if (trackError) {
         trackError.classList.remove('show');
         trackError.textContent = '';
     }
+  btn.innerHTML = active ? '&hearts;' : '&#9825;';
+}
 
-    if (result) {
-        result.style.display = 'none';
-    }
+function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
+  const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
 
-    const orderId = id || orderIdInput.value.trim();
+  const total =
+    typeof orderTotal === 'number'
+      ? orderTotal
+      : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
 
     if (!orderId) {
         if (trackError) {
@@ -979,10 +1376,14 @@ async function trackOrder(id) {
         }
         return;
     }
+  const itemLines = lines
+    .map((i) => {
+      let line = `• ${i.name} × ${i.qty} = ₹${(
+        Number(i.price) * Number(i.qty)
+      ).toLocaleString('en-IN')}`;
 
-    try {
-        const res = await fetch(`${API_BASE}/orders/${orderId}`);
-        const data = await res.json();
+      if (i.customizations) {
+        const c = i.customizations;
 
         if (data.success || data.order) {
             renderOrderDetails(data.order || data);
@@ -995,18 +1396,19 @@ async function trackOrder(id) {
                 trackError.textContent = data.error || 'Order not found';
                 trackError.classList.add('show');
             }
+        const details = [];
+
+        if (c.dietary) {
+          details.push(c.dietary === 'eggless' ? 'Eggless' : 'Egg');
         }
 
-    } catch (e) {
-        console.error(e);
-
-        if (trackError) {
-            trackError.textContent =
-                'Error fetching order. Make sure server is running!';
-            trackError.classList.add('show');
+        if (c.toppings?.length) {
+          details.push(c.toppings.map((t) => `+${t.name}`).join(', '));
         }
-    }
-}
+
+        if (c.message) {
+          details.push(`Msg: "${c.message}"`);
+        }
 
 function renderOrderDetails(order) {
     const resOrderId = document.getElementById('resOrderId');
@@ -1047,8 +1449,29 @@ function renderOrderDetails(order) {
                 if (i < currentIndex) el.classList.add('completed');
                 else if (i === currentIndex) el.classList.add('active');
             });
+        if (details.length) {
+          line += `\n   _${details.join(' | ')}_`;
         }
-    }
+      }
+
+      return line;
+    })
+    .join('\n');
+
+  const message =
+    `🍫 *New Order Received — Brownie Bliss*\n\n` +
+    `📋 *Order ID:* ${orderId}\n` +
+    `👤 *Customer:* ${checkoutState.name}\n` +
+    `📱 *Phone:* +91 ${checkoutState.phone}\n` +
+    `📍 *Address:* ${checkoutState.address}, ${checkoutState.city} - ${checkoutState.pincode}\n\n` +
+    `🛒 *Order Details:*\n${itemLines}\n\n` +
+    `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
+    `_Your order has been recorded. Please share payment receipt for confirmation!_ ✨`;
+
+  const waUrl = `https://wa.me/918072596340?text=${encodeURIComponent(message)}`;
+
+  window.open(waUrl, '_blank');
+}
 
     if (order.created_at) {
         document.getElementById('resDate').textContent =
@@ -1080,3 +1503,69 @@ function initFAQ() {
 document.addEventListener("DOMContentLoaded", () => {
     initFAQ();
 });
+AOS.init({
+  duration: 1000,
+  once: true,
+  easing: "ease-in-out"
+});
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', async () => {
+  applyTheme(localStorage.getItem('bb_theme') || 'light');
+
+  updateCartUI();
+
+  await loadProducts();
+
+  initializeLiveSearch();
+
+  filterProducts('all');
+});
+// Show/hide button on scroll
+
+window.addEventListener('scroll', function () {
+  const btn = document.getElementById('scrollTopBtn');
+
+  if (!btn) return;
+
+  if (window.scrollY > 300) {
+    btn.style.display = 'flex';
+  } else {
+    btn.style.display = 'none';
+  }
+});
+// Scroll to top function
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+window.filterProducts = filterProducts;
+window.updatePriceFilter = updatePriceFilter;
+window.selectSuggestion = selectSuggestion;
