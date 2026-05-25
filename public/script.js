@@ -65,7 +65,6 @@ function useFallbackProducts() {
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
-let favourites = loadFavourites();
 
 function buildCatalogFromList(list) {
     if (list && Array.isArray(list) && list.length) {
@@ -151,7 +150,7 @@ async function loadProducts() {
     if (document.getElementById('cakePrice')) {
         calculateBdayPrice();
     }
-}
+
 // --- CART STATE ---
 let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
 let checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
