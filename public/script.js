@@ -10,18 +10,38 @@ document.addEventListener('keydown', (e) => {
 
 // --- THEME ---
 function applyTheme(theme) {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.classList.toggle(
+    'dark',
+    theme === 'dark'
+  );
+
   const icon = document.getElementById('themeIcon');
-  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+
+  if (icon)
+    icon.textContent =
+      theme === 'dark' ? '☀️' : '🌙';
 }
 
 function toggleTheme() {
-  const isDark = document.documentElement.classList.contains('dark');
-  const next = isDark ? 'light' : 'dark';
+  const isDark =
+    document.documentElement.classList.contains('dark');
+
+  const next =
+    isDark ? 'light' : 'dark';
+
   localStorage.setItem('bb_theme', next);
+
   applyTheme(next);
 }
+
 window.toggleTheme = toggleTheme;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme =
+    localStorage.getItem('bb_theme') || 'light';
+
+  applyTheme(savedTheme);
+});
 
 // --- PRODUCTS DATA ---
 let products = [];
@@ -677,7 +697,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     } else {
         btn.style.display = "none";
     }
-});
+;
 
 // Scroll to top function
 function scrollToTop() {

@@ -42,6 +42,66 @@ html.dark {
   --glass-border: rgba(255, 255, 255, 0.15);
 }
 
+html.dark header,
+html.dark nav,
+html.dark .mobile-menu {
+  background: #1e1e1e !important;
+}
+
+html.dark .product-card,
+html.dark .birthday-card,
+html.dark .contact-form-box,
+html.dark .orders-panel,
+html.dark .hero-card,
+html.dark .stat-card,
+html.dark .cart-sidebar {
+  background: #222 !important;
+  color: var(--text-dark);
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+}
+
+html.dark a {
+  color: var(--gold-light);
+}
+/* GLOBAL DARK MODE SUPPORT */
+
+body {
+  background: var(--cream);
+  color: var(--text-dark);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+header,
+nav,
+.mobile-menu,
+.product-card,
+.birthday-card,
+.contact-form-box,
+.orders-panel,
+.cart-sidebar,
+.hero-card,
+.stat-card,
+.footer,
+input,
+textarea,
+select {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
 * {
   margin: 0;
   padding: 0;
