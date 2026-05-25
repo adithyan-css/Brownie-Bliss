@@ -92,9 +92,54 @@
   color: var(--gold) !important;
 }
 
-    html {
-      scroll-behavior: smooth;
-    }
+   /* Smooth Scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll Navigation Container */
+.scroll-nav-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999; /* Ensures it stays on top of images and cards */
+}
+
+/* Individual Scroll Buttons */
+.scroll-btn {
+  background-color: var(--gold, #c2932b);
+  color: #ffffff !important;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.3s ease;
+}
+
+/* Hover effects */
+.scroll-btn:hover {
+  background-color: #a37a22;
+  transform: scale(1.1);
+}
+
+/* Dark Mode adaptation for the buttons */
+.dark .scroll-btn {
+  background-color: var(--gold, #c2932b);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dark .scroll-btn:hover {
+  background-color: #dfaa33;
+}
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--light);
@@ -755,8 +800,63 @@
           applyTheme(isDark ? "light" : "dark");
         });
       }
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+      const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+
+      if (scrollToTopBtn) {
+        scrollToTopBtn.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        });
+      }
+
+      if (scrollToBottomBtn) {
+        scrollToBottomBtn.addEventListener("click", () => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+          });
+        });
+      }
+
+      // Handle visibility transitions dynamically on scrolling
+      window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.body.scrollHeight;
+        const clientHeight = window.innerHeight;
+
+        if (scrollToTopBtn) {
+          if (scrollTop < 200) {
+            scrollToTopBtn.style.opacity = "0.3";
+            scrollToTopBtn.style.pointerEvents = "none";
+          } else {
+            scrollToTopBtn.style.opacity = "1";
+            scrollToTopBtn.style.pointerEvents = "auto";
+          }
+        }
+
+        if (scrollToBottomBtn) {
+          if (scrollTop + clientHeight >= scrollHeight - 50) {
+            scrollToBottomBtn.style.opacity = "0.3";
+            scrollToBottomBtn.style.pointerEvents = "none";
+          } else {
+            scrollToBottomBtn.style.opacity = "1";
+            scrollToBottomBtn.style.pointerEvents = "auto";
+          }
+        }
+      });
     });
   </script>
   <script src="script.js"></script>
+  <div class="scroll-nav-container">
+  <button id="scrollToTopBtn" class="scroll-btn" title="Go to Top" aria-label="Scroll to top">
+    ▲
+  </button>
+  <button id="scrollToBottomBtn" class="scroll-btn" title="Go to Bottom" aria-label="Scroll to bottom">
+    ▼
+  </button>
+</div>
 </body>
 </html>
