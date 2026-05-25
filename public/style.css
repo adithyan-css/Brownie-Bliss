@@ -8907,7 +8907,7 @@ a.logo {
  .some-class {
   color: var(--brown-dark) !important;
 }
-
+}
 html.dark {
   --cream: #1a1008;
   --cream-dark: #221508;
@@ -9101,166 +9101,154 @@ html.dark .theme-toggle-btn:hover {
   background: var(--gold);
 }
 
-  .bb-reviews {
-    background: #fdf6ee;
-    padding: 64px 32px;
-    font-family: 'Lato', sans-serif;
-    text-align: center;
-  }
+  /* ==========================================================================
+   PREMIUM REVIEW & FEEDBACK SECTION OVERLAYS
+   ========================================================================== */
 
-  .bb-reviews .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: #b07d3e;
-    text-transform: uppercase;
-    margin: 0 0 12px;
-  }
+/* Cards structural style based on the prompt's layout design */
+.feedback-premium-card {
+background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  padding: 40px 35px;
+  text-align: left;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--cream-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+}
 
-  .bb-reviews h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 34px;
-    font-weight: 500;
-    color: #3b1f0a;
-    margin: 0 0 48px;
-    line-height: 1.25;
-  }
+.feedback-premium-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 45px rgba(74, 44, 10, 0.08);
+}
 
-  .bb-reviews h2 em {
-    color: #b07d3e;
-    font-style: italic;
-  }
+/* Elegant stylized quotation graphics */
+.premium-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  color: #EEDCC5;
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  line-height: 0.1;
+  user-select: none;
+}
 
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+.premium-stars {
+  color: #D4AF37; /* Warm image-accurate gold tint */
+  font-size: 18px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
 
-  .review-card {
-    background: #fff8f0;
-    border: 0.5px solid #e8d0b0;
-    border-radius: 16px;
-    padding: 24px 20px;
-    text-align: left;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+.premium-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5C2C1A;
+  margin: 0 0 30px 0;
+  flex: 1;
+}
 
-  .review-card .quote-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 56px;
-    color: #e8d0b0;
-    line-height: 0.6;
-    display: block;
-    margin-bottom: 4px;
-  }
+/* User identity blocks aligned horizontally */
+.premium-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-  .review-card .stars {
-    color: #d4882a;
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
+.premium-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
 
-  .review-card .review-text {
-    font-size: 14px;
-    line-height: 1.65;
-    color: #5c3d1e;
-    margin: 0;
-    flex: 1;
-  }
+.premium-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A0905;
+  margin-bottom: 2px;
+}
 
-  .review-card .reviewer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-top: 0.5px solid #e8d0b0;
-    padding-top: 14px;
-    margin-top: 4px;
-  }
+.premium-status {
+  font-size: 12px;
+  color: #A08060;
+  margin: 0 !important;
+}
 
-  .reviewer-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-    color: #7a4a1c;
-    background: #f2d9b3;
-  }
+/* bottom action component adjustments */
+.feedback-action-container {
+  text-align: center;
+  margin-top: 40px;
+}
 
-  .reviewer-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #3b1f0a;
-    margin: 0;
-    line-height: 1.2;
-  }
+.heart-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1.5px solid #D4AF37;
+  border-radius: 50%;
+  color: #D4AF37;
+  margin-bottom: 16px;
+}
 
-  .reviewer-location {
-    font-size: 11px;
-    color: #a0714a;
-    margin: 0;
-  }
+/* "Write a review" customized button styling matching the image blueprint */
+.premium-write-btn {
+  background: #4A2C0A !important;
+  color: #FFF9F2 !important;
+  border-radius: 50px !important; /* Fully rounded elegant pill edge */
+  padding: 14px 36px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: none !important; /* Avoid rigid corporate uppercase formats */
+  letter-spacing: 0.5px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(74, 44, 10, 0.2) !important;
+  border: none !important;
+}
 
-  .review-card.featured {
-    border-color: #c9923a;
-    background: #fff3e4;
-    grid-column: span 2;
-  }
+.premium-write-btn:hover {
+  background: #3C1E14 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(74, 44, 10, 0.3) !important;
+}
 
-  .review-card.featured .review-text {
-    font-size: 15px;
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: #c9923a;
-    color: #fff8f0;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-  }
-
-  .bb-overall {
-    margin: 48px auto 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .bb-overall .stars-big {
-    color: #d4882a;
-    font-size: 20px;
-    letter-spacing: 3px;
-  }
-
-  .bb-overall .rating-text {
-    font-size: 14px;
-    color: #7a4a1c;
-  }
-
-  .bb-overall .rating-text strong {
-    font-weight: 700;
-    color: #3b1f0a;
-  }
-
-  @media (max-width: 500px) {
-    .review-card.featured { grid-column: span 1; }
-  }
+/* Dark theme specific visual optimizations */
+html.dark .feedback-premium-card {
+  background: #1C1108;
+  border-color: rgba(212, 175, 55, 0.15);
+}
+html.dark .premium-quote {
+  color: #3A2515;
+}
+html.dark .premium-text {
+  color: #C8A882;
+}
+html.dark .premium-name {
+  color: #F0E4D0;
+}
+html.dark .premium-write-btn {
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
+}
+html.dark .premium-write-btn:hover {
+  background: var(--gold-light) !important;
+}
 
 
 .customize-modal {

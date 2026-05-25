@@ -114,16 +114,6 @@ async function loadProducts() {
 
             bdayCakes = {};
 
-        const bd = list.filter(p => p.type === 'birthday');
-        bdayCakes = {};
-        bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
-                price: p.price,
-                emoji: p.emoji,
-                img: p.img
-            };
-        });
-    } else {
             const bd = data.products.filter(p => p.type === 'birthday');
 
             bd.forEach(p => {
@@ -176,10 +166,22 @@ function updateCartUI() {
     if (!cartContainer) return;
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = "Cart empty 🍫";
-        return;
-        cartContainer.innerHTML = '<div class="cart-empty"><span class="cart-empty-icon">🍫</span>Your cart is empty</div>';
-         if (cartFooter) cartFooter.style.display = 'none';
+        cartContainer.innerHTML = `
+  <div class="cart-empty-state">
+    <div class="empty-cart-icon">🍫</div>
+
+    <h2>Your cart is empty</h2>
+
+    <p>
+      Looks like you haven't added any brownies yet.
+    </p>
+
+    <a href="products.html" class="shop-now-btn">
+      Shop Now
+    </a>
+  </div>
+`;
+        if (cartFooter) cartFooter.style.display = 'none';
     } else {
         cartContainer.innerHTML = cart.map((item, index) => {
             const c = item.customizations;
