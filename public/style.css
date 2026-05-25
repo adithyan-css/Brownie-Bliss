@@ -8903,7 +8903,7 @@ a.logo {
   font-size: 13px !important;
   border-radius: 6px !important;
   background: var(--gold) !important;
-
+}
  .some-class {
   color: var(--brown-dark) !important;
 }
@@ -9139,16 +9139,15 @@ html.dark .theme-toggle-btn:hover {
   }
 
   .review-card {
-    background: #fff8f0;
-    border: 0.5px solid #e8d0b0;
-    border-radius: 16px;
-    padding: 24px 20px;
-    text-align: left;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+  background: #fff8f0;
+  border: 0.5px solid #e8d0b0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
   .review-card .quote-mark {
     font-family: 'Playfair Display', serif;
@@ -9182,20 +9181,19 @@ html.dark .theme-toggle-btn:hover {
     margin-top: 4px;
   }
 
-  .reviewer-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-    color: #7a4a1c;
-    background: #f2d9b3;
-  }
-
+ .reviewer-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5e6d0;
+  color: #7a4a1e;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
   .reviewer-name {
     font-size: 13px;
     font-weight: 700;
@@ -9216,24 +9214,24 @@ html.dark .theme-toggle-btn:hover {
     grid-column: span 2;
   }
 
-  .review-card.featured .review-text {
-    font-size: 15px;
-  }
+.review-card.featured {
+  border-color: #c9923a;
+  background: #fff3e4;
+  grid-column: span 2;
+  position: relative;
+}
 
-  .featured-badge {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: #c9923a;
-    color: #fff8f0;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-  }
-
+.featured-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: #faeada;
+  color: #854f0b;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
   .bb-overall {
     margin: 48px auto 0;
     display: flex;
