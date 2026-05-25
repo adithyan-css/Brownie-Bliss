@@ -573,12 +573,31 @@
         Have a custom order, celebration idea, or dessert request?
         Drop us a message and we'll get back to you soon.
       </p>
-      <form onsubmit="event.preventDefault(); showToast('Message sent! We will get back to you soon. 😊'); this.reset();">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <input type="tel" placeholder="Phone Number (optional)">
-        <textarea placeholder="Tell us about your order or query..." required></textarea>
-        <button type="submit" class="cp-submit">Send Message →</button>
+
+      <!-- BUGFIX: Added onsubmit handler to prevent reload, show a toast success message, and clear fields -->
+      <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
+
+        <input
+          type="text"
+          placeholder="Your Name"
+          required
+        >
+
+        <input
+          type="email"
+          placeholder="Your Email"
+          required
+        >
+
+        <textarea
+          placeholder="Tell us about your order..."
+          required
+        ></textarea>
+
+        <button type="submit" class="hero-cta">
+          Send Message →
+        </button>
+
       </form>
     </div>
 
@@ -602,6 +621,12 @@
           <a href="birthday.html">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
           <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
         </div>
       </div>
     </div>

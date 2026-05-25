@@ -7,86 +7,16 @@
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .announcement{background:#1A0905;color:#F4E4BC;text-align:center;padding:10px 20px;font-size:12px;letter-spacing:1.5px;font-family:'DM Sans',sans-serif;}
-    .navbar{background:#fff;border-bottom:1px solid #F5E8D0;position:sticky;top:0;z-index:1000;box-shadow:0 2px 20px rgba(44,24,16,.08);}
-    .nav-inner{max-width:1300px;margin:0 auto;padding:0 30px;height:72px;display:flex;align-items:center;justify-content:space-between;}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
-    .brand-icon{font-size:26px;}
-    .brand-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1A0905;}
-    .brand-tagline{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;}
-    .nav-links{display:flex;gap:28px;}
-    .nav-links a{text-decoration:none;color:#4a2f1a;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;transition:color .2s;}
-    .nav-links a:hover,.nav-links a.active{color:#1A0905;}
-    .cart-trigger{background:none;border:2px solid #1A0905;color:#1A0905;padding:8px 18px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
-    .cart-trigger:hover{background:#1A0905;color:#fff;}
-    .cart-badge-num{background:#D4AF37;color:#1A0905;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
-    /* PAGE */
-    .bday-page{min-height:80vh;background:linear-gradient(135deg,#FFF9F2 0%,#F5E8D0 100%);padding:80px 30px 100px;}
-    .bday-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center;}
-    /* IMAGE */
-    .bday-img-wrap{position:relative;}
-    .bday-img-wrap img{width:100%;height:520px;object-fit:cover;border-radius:20px;box-shadow:0 24px 60px rgba(26,9,5,.20);transition:opacity .3s ease;display:block;}
-    .flavor-badge{position:absolute;bottom:20px;left:20px;background:rgba(26,9,5,.82);color:#F4E4BC;padding:8px 18px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;backdrop-filter:blur(6px);}
-    /* CARD */
-    .bday-card{background:#fff;border-radius:24px;padding:48px 44px;box-shadow:0 8px 40px rgba(26,9,5,.10);border-top:5px solid #D4AF37;}
-    .label-tag{display:block;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:10px;}
-    .bday-card h2{font-family:'Playfair Display',serif;font-size:34px;color:#1A0905;margin-bottom:12px;line-height:1.15;}
-    .bday-card h2 em{font-style:italic;color:#5C2C1A;}
-    .bday-card .desc{font-family:'Cormorant Garamond',serif;font-size:18px;color:#4a2f1a;opacity:.85;line-height:1.65;margin-bottom:28px;}
-    .sec-label{display:block;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#D4AF37;font-weight:700;margin-bottom:12px;}
-    /* FLAVOR GRID */
-    .flavor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
-    .fbtn{padding:11px 8px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;white-space:nowrap;}
-    .fbtn:hover{border-color:#3C1E14;background:#f5ede0;}
-    .fbtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
-    /* WEIGHT */
-    .weight-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
-    .wbtn{padding:9px 18px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;}
-    .wbtn:hover{border-color:#3C1E14;background:#f5ede0;}
-    .wbtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
-    /* EGG */
-    .egg-row{display:flex;gap:12px;margin-bottom:22px;}
-    .ebtn{padding:9px 22px;border:1.5px solid #c8b08a;background:transparent;color:#3C1E14;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;}
-    .ebtn:hover{border-color:#3C1E14;background:#f5ede0;}
-    .ebtn.active{background:#1A0905;color:#D4AF37;border-color:#1A0905;font-weight:700;}
-    /* MESSAGE */
-    .msg-input{width:100%;padding:13px 16px;border:1.5px solid #e0ccb0;border-radius:10px;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:#1A0905;background:#fffaf4;margin-bottom:24px;transition:border-color .2s;box-sizing:border-box;}
-    .msg-input:focus{border-color:#D4AF37;}
-    /* FOOTER ROW */
-    .bday-footer-row{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid #f0e0cc;}
-    .price-label{font-family:'DM Sans',sans-serif;font-size:11px;color:#4a2f1a;opacity:.65;margin-bottom:4px;}
-    .price-val{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#1A0905;}
-    .reserve-btn{background:#1A0905;color:#D4AF37;border:none;padding:15px 36px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .2s;}
-    .reserve-btn:hover{background:#3C1E14;transform:translateY(-2px);}
-    /* CART */
-    .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s;}
-    .cart-overlay.open{opacity:1;pointer-events:all;}
-    .cart-sidebar{position:fixed;top:0;right:0;bottom:0;width:400px;background:#fff;z-index:2001;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.2);}
-    .cart-sidebar.open{transform:translateX(0);}
-    .cart-header{padding:24px;border-bottom:1px solid #F5E8D0;display:flex;justify-content:space-between;align-items:center;background:#1A0905;color:#FFF9F2;}
-    .cart-title{font-family:'Playfair Display',serif;font-size:20px;}
-    .cart-close{background:none;border:none;color:#FFF9F2;font-size:24px;cursor:pointer;padding:4px;}
-    .cart-items{flex:1;overflow-y:auto;padding:20px 24px;}
-    .cart-footer{padding:20px 24px;border-top:1px solid #F5E8D0;}
-    .cart-total{display:flex;justify-content:space-between;margin-bottom:16px;}
-    .cart-total-label{font-family:'DM Sans',sans-serif;font-size:14px;color:#4a2f1a;}
-    .cart-total-amt{font-family:'Playfair Display',serif;font-size:22px;color:#1A0905;font-weight:700;}
-    .whatsapp-btn{width:100%;background:#25D366;color:#fff;border:none;padding:14px;border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;}
-    .whatsapp-note{font-size:12px;color:#999;text-align:center;margin-top:8px;}
-    .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A0905;color:#F4E4BC;padding:14px 28px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:14px;opacity:0;transition:all .3s;z-index:9999;pointer-events:none;}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-    /* FOOTER */
-    .page-footer{background:#1A0905;color:#FFF9F2;padding:50px 30px;}
-    .page-footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap;}
-    .page-footer .fn{font-family:'Playfair Display',serif;font-size:22px;color:#FFF9F2;margin-bottom:4px;}
-    .page-footer .ft{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:#D4AF37;text-transform:uppercase;}
-    .page-footer p{font-size:13px;opacity:.55;margin-top:10px;max-width:280px;line-height:1.6;}
-    .page-footer h4{color:#D4AF37;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;font-family:'DM Sans',sans-serif;}
-    .page-footer a{color:rgba(255,255,255,.65);text-decoration:none;display:block;margin-bottom:8px;font-size:14px;}
-    .page-footer a:hover{color:#D4AF37;}
-    @media(max-width:960px){.bday-inner{grid-template-columns:1fr;}.bday-img-wrap img{height:340px;}.bday-card{padding:32px 24px;}.bday-page{padding:48px 20px 70px;}}
-  </style>
+
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('bb_theme') || 'light';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (_) {}
+  })();
+</script>
+
 </head>
 <body>
 
@@ -139,34 +69,317 @@
       <div class="flavor-badge" id="flavorBadge">Red Velvet</div>
     </div>
 
-    <!-- CUSTOMISER -->
-    <div class="bday-card">
-      <span class="label-tag">Celebrate with Us</span>
-      <h2>Signature <em>Birthday Cakes</em></h2>
-      <p class="desc">Make your special moments unforgettable. Choose your flavor, weight, and preference — we'll bake it fresh for you.</p>
-
-      <span class="sec-label">Select Flavor</span>
-      <div class="flavor-grid">
-        <button class="fbtn active" data-f="Red Velvet">Red Velvet</button>
-        <button class="fbtn" data-f="Dutch Truffle">Dutch Truffle</button>
-        <button class="fbtn" data-f="Pineapple">Pineapple</button>
-        <button class="fbtn" data-f="Chocoholic">Chocoholic</button>
-        <button class="fbtn" data-f="Black Forest">Black Forest</button>
-        <button class="fbtn" data-f="Cheesecake">Cheesecake</button>
+        <div style="margin-bottom: 24px;">
+          <label
+            style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+            Flavor</label>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <button class="filter-pill flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+    <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+      
+      <!-- SLIDE 1: BIRTHDAY CAKES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+          <div class="birthday-visual">
+            <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+              alt="Signature Red Velvet Birthday Cake with cream cheese frosting"
+              style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
+          </div>
+          <div class="birthday-card"
+            style="background: var(--white); padding: 50px; border-radius: 12px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label"
+              style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Celebrate
+              with Us</span>
+            <h2 class="section-title"
+              style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 38px; color: var(--brown);">
+              Signature <em>Birthday Cakes</em></h2>
+            <p
+              style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
+              Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
+              size to get
+              started.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+                Flavor</label>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <button class="filter-pill active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+                <button class="filter-pill" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+                <button class="filter-pill" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+                <button class="filter-pill" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+                <button class="filter-pill" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+                <button class="filter-pill" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
+                (kg)</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-pill" onclick="setCakeWeight('0.5')">0.5 kg</button>
+                <button class="filter-pill active" onclick="setCakeWeight('1.0')">1.0 kg</button>
+                <button class="filter-pill" onclick="setCakeWeight('1.5')">1.5 kg</button>
+                <button class="filter-pill" onclick="setCakeWeight('2.0')">2.0 kg</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
+                on Cake</label>
+              <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
+                style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Pricing
+                    starts
+                    from</span>
+                  <span id="cakePrice"
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹
+                    850</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addBirthdayToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                  Order Now &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <span class="sec-label">Weight (kg)</span>
-      <div class="weight-row">
-        <button class="wbtn" data-w="0.5">0.5 kg</button>
-        <button class="wbtn active" data-w="1.0">1.0 kg</button>
-        <button class="wbtn" data-w="1.5">1.5 kg</button>
-        <button class="wbtn" data-w="2.0">2.0 kg</button>
+      <!-- SLIDE 2: DESSERTS -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+          <div class="birthday-visual">
+            <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
+              alt="Assorted dessert platter with macarons, tarts and pastries"
+              style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
+          </div>
+          <div class="birthday-card"
+            style="background: var(--white); padding: 50px; border-radius: 12px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label"
+              style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Sweet Treats</span>
+            <h2 class="section-title"
+              style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 38px; color: var(--brown);">
+              Exquisite <em>Desserts</em></h2>
+            <p
+              style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
+              Indulge in our curated collection of fine desserts. From macarons to cheesecakes, every bite is a celebration of flavor.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+                Variety</label>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <button class="filter-pill active">Macarons</button>
+                <button class="filter-pill">Tarts</button>
+                <button class="filter-pill">Pastries</button>
+                <button class="filter-pill">Cupcakes</button>
+                <button class="filter-pill">Mousse</button>
+                <button class="filter-pill">Donuts</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-pill">Box of 2</button>
+                <button class="filter-pill active">Box of 4</button>
+                <button class="filter-pill">Box of 6</button>
+                <button class="filter-pill">Box of 12</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special Request</label>
+              <input type="text" placeholder="e.g. Less sugar, Eggless"
+                style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Pricing starts from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 350</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                  Order Now &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <span class="sec-label">Egg Preference</span>
-      <div class="egg-row">
-        <button class="ebtn active" data-e="egg">🥚 Egg</button>
-        <button class="ebtn" data-e="eggless">🌱 Eggless</button>
+      <!-- SLIDE 3: BROWNIES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+          <div class="birthday-visual">
+            <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+              alt="Fudgy Belgian chocolate overload brownie"
+              style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
+          </div>
+          <div class="birthday-card"
+            style="background: var(--white); padding: 50px; border-radius: 12px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label"
+              style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Fudgy Delights</span>
+            <h2 class="section-title"
+              style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 38px; color: var(--brown);">
+              Signature <em>Brownies</em></h2>
+            <p
+              style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
+              Our brownies are legendary. Fudgy, decadent, and made with the finest Belgian chocolate for an unparalleled cocoa experience.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <button class="filter-pill active">Walnut</button>
+                <button class="filter-pill">Overload</button>
+                <button class="filter-pill">Nutella</button>
+                <button class="filter-pill">Red Velvet</button>
+                <button class="filter-pill">Cookie</button>
+                <button class="filter-pill">Assorted</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-pill">Pack of 1</button>
+                <button class="filter-pill active">Pack of 4</button>
+                <button class="filter-pill">Pack of 6</button>
+                <button class="filter-pill">Pack of 12</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift Wrap</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-pill active">Standard</button>
+                <button class="filter-pill">Premium Gold</button>
+              </div>
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Pricing starts from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 250</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addBrownieToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                  Order Now &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: COOKIES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+          <div class="birthday-visual">
+            <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
+              alt="Freshly baked gourmet chocolate chip cookies"
+              style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
+          </div>
+          <div class="birthday-card"
+            style="background: var(--white); padding: 50px; border-radius: 12px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label"
+              style="display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;">Freshly Baked</span>
+            <h2 class="section-title"
+              style="margin-bottom: 20px; font-family: 'Playfair Display', serif; font-size: 38px; color: var(--brown);">
+              Gourmet <em>Cookies</em></h2>
+            <p
+              style="margin-bottom: 30px; color: var(--text2); font-family: 'Cormorant Garamond', serif; font-size: 18px; opacity: 0.8;">
+              Golden, crispy on the edges, and chewy in the middle. Our cookies are packed with premium chocolate chips and baked to perfection.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <button class="filter-pill active">Choco Chip</button>
+                <button class="filter-pill">Double Choco</button>
+                <button class="filter-pill">Oatmeal Raisin</button>
+                <button class="filter-pill">Almond Biscotti</button>
+                <button class="filter-pill">Red Velvet</button>
+                <button class="filter-pill">Assorted</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-pill">Box of 2</button>
+                <button class="filter-pill active">Box of 6</button>
+                <button class="filter-pill">Box of 12</button>
+                <button class="filter-pill">Gift Tin</button>
+              </div>
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text2); opacity: 0.7;">Pricing starts from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown);">₹ 250</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                  Order Now &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+          <button class="btn-primary" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
+            Add to Cart
+          </button>
+        </div>
       </div>
 
       <span class="sec-label">Message on Cake</span>
@@ -196,11 +409,87 @@
       <a href="tel:08072596340">+91 8072596340</a>
       <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
     </div>
-    <div>
-      <h4>Navigate</h4>
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="contact.html">Contact</a>
+  </footer>
+
+  <!-- SHARED COMPONENTS -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button onclick="closeCart()" class="cart-close">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="openCheckout()">Proceed to Order</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-modal" id="checkoutModal">
+      <div class="steps-bar">
+        <div class="step active" id="step1ind"><span>1</span>Your Info</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step2ind"><span>2</span>Verify OTP</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step3ind"><span>3</span>Address</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step4ind"><span>4</span>Confirm</div>
+      </div>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+      <div class="checkout-step" id="checkStep1">
+        <h2>👋 Let's start with your details</h2>
+        <div class="form-group"><label>Full Name *</label><input type="text" id="custName" placeholder="Your full name"
+            class="form-input"></div>
+        <div class="form-group"><label>WhatsApp Number *</label>
+          <div class="phone-row"><span class="phone-code">+91</span><input type="tel" id="custPhone"
+              placeholder="9876543210" maxlength="10" class="form-input"></div>
+        </div>
+        <button class="btn-primary full-w" onclick="sendOTP()">Send OTP →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep2">
+        <div class="otp-icon">📱</div>
+        <h2>Verify Your Number</h2>
+        <p class="step-sub">Enter the 6-digit OTP sent to <strong id="otpPhoneDisp"></strong></p>
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,0)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,1)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,2)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,3)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,4)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,5)">
+        </div>
+        <div class="demo-otp-box" id="demoOtpBox"></div>
+        <button class="btn-primary full-w" onclick="verifyOTP()">Verify OTP →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep3">
+        <h2>📍 Delivery Address</h2>
+        <div class="form-group"><label>Street Address *</label><input type="text" id="custAddr"
+            placeholder="House no., Street, Landmark" class="form-input"></div>
+        <div class="form-row">
+          <div class="form-group"><label>City *</label><input type="text" id="custCity" placeholder="City"
+              class="form-input"></div>
+          <div class="form-group"><label>Pincode *</label><input type="text" id="custPin" placeholder="123456"
+              maxlength="6" class="form-input"></div>
+        </div>
+        <button class="btn-primary full-w" onclick="goToConfirm()">Review Order →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep4">
+        <h2>✅ Review Your Order</h2>
+        <div class="confirm-card">
+          <div id="confirmCustomer"></div>
+          <div id="confirmItems"></div>
+          <div class="confirm-total"><span>Total Amount</span><strong id="confirmTotal"></strong></div>
+        </div>
+        <button class="btn-whatsapp full-w" onclick="placeOrder()">Place Order & Open WhatsApp</button>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
     </div>
   </div>
 </footer>
