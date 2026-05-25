@@ -8907,7 +8907,7 @@ a.logo {
  .some-class {
   color: var(--brown-dark) !important;
 }
-
+}
 html.dark {
   --cream: #1a1008;
   --cream-dark: #221508;
@@ -9101,166 +9101,154 @@ html.dark .theme-toggle-btn:hover {
   background: var(--gold);
 }
 
-  .bb-reviews {
-    background: #fdf6ee;
-    padding: 64px 32px;
-    font-family: 'Lato', sans-serif;
-    text-align: center;
-  }
+  /* ==========================================================================
+   PREMIUM REVIEW & FEEDBACK SECTION OVERLAYS
+   ========================================================================== */
 
-  .bb-reviews .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: #b07d3e;
-    text-transform: uppercase;
-    margin: 0 0 12px;
-  }
+/* Cards structural style based on the prompt's layout design */
+.feedback-premium-card {
+background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  padding: 40px 35px;
+  text-align: left;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--cream-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+}
 
-  .bb-reviews h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 34px;
-    font-weight: 500;
-    color: #3b1f0a;
-    margin: 0 0 48px;
-    line-height: 1.25;
-  }
+.feedback-premium-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 45px rgba(74, 44, 10, 0.08);
+}
 
-  .bb-reviews h2 em {
-    color: #b07d3e;
-    font-style: italic;
-  }
+/* Elegant stylized quotation graphics */
+.premium-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  color: #EEDCC5;
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  line-height: 0.1;
+  user-select: none;
+}
 
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+.premium-stars {
+  color: #D4AF37; /* Warm image-accurate gold tint */
+  font-size: 18px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
 
-  .review-card {
-    background: #fff8f0;
-    border: 0.5px solid #e8d0b0;
-    border-radius: 16px;
-    padding: 24px 20px;
-    text-align: left;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+.premium-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5C2C1A;
+  margin: 0 0 30px 0;
+  flex: 1;
+}
 
-  .review-card .quote-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 56px;
-    color: #e8d0b0;
-    line-height: 0.6;
-    display: block;
-    margin-bottom: 4px;
-  }
+/* User identity blocks aligned horizontally */
+.premium-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-  .review-card .stars {
-    color: #d4882a;
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
+.premium-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
 
-  .review-card .review-text {
-    font-size: 14px;
-    line-height: 1.65;
-    color: #5c3d1e;
-    margin: 0;
-    flex: 1;
-  }
+.premium-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A0905;
+  margin-bottom: 2px;
+}
 
-  .review-card .reviewer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-top: 0.5px solid #e8d0b0;
-    padding-top: 14px;
-    margin-top: 4px;
-  }
+.premium-status {
+  font-size: 12px;
+  color: #A08060;
+  margin: 0 !important;
+}
 
-  .reviewer-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    flex-shrink: 0;
-    color: #7a4a1c;
-    background: #f2d9b3;
-  }
+/* bottom action component adjustments */
+.feedback-action-container {
+  text-align: center;
+  margin-top: 40px;
+}
 
-  .reviewer-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #3b1f0a;
-    margin: 0;
-    line-height: 1.2;
-  }
+.heart-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1.5px solid #D4AF37;
+  border-radius: 50%;
+  color: #D4AF37;
+  margin-bottom: 16px;
+}
 
-  .reviewer-location {
-    font-size: 11px;
-    color: #a0714a;
-    margin: 0;
-  }
+/* "Write a review" customized button styling matching the image blueprint */
+.premium-write-btn {
+  background: #4A2C0A !important;
+  color: #FFF9F2 !important;
+  border-radius: 50px !important; /* Fully rounded elegant pill edge */
+  padding: 14px 36px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: none !important; /* Avoid rigid corporate uppercase formats */
+  letter-spacing: 0.5px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(74, 44, 10, 0.2) !important;
+  border: none !important;
+}
 
-  .review-card.featured {
-    border-color: #c9923a;
-    background: #fff3e4;
-    grid-column: span 2;
-  }
+.premium-write-btn:hover {
+  background: #3C1E14 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(74, 44, 10, 0.3) !important;
+}
 
-  .review-card.featured .review-text {
-    font-size: 15px;
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: #c9923a;
-    color: #fff8f0;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-  }
-
-  .bb-overall {
-    margin: 48px auto 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .bb-overall .stars-big {
-    color: #d4882a;
-    font-size: 20px;
-    letter-spacing: 3px;
-  }
-
-  .bb-overall .rating-text {
-    font-size: 14px;
-    color: #7a4a1c;
-  }
-
-  .bb-overall .rating-text strong {
-    font-weight: 700;
-    color: #3b1f0a;
-  }
-
-  @media (max-width: 500px) {
-    .review-card.featured { grid-column: span 1; }
-  }
+/* Dark theme specific visual optimizations */
+html.dark .feedback-premium-card {
+  background: #1C1108;
+  border-color: rgba(212, 175, 55, 0.15);
+}
+html.dark .premium-quote {
+  color: #3A2515;
+}
+html.dark .premium-text {
+  color: #C8A882;
+}
+html.dark .premium-name {
+  color: #F0E4D0;
+}
+html.dark .premium-write-btn {
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
+}
+html.dark .premium-write-btn:hover {
+  background: var(--gold-light) !important;
+}
 
 
 .customize-modal {
@@ -9933,7 +9921,7 @@ html.dark .topping-price {
     0 0 0 4px rgba(181, 131, 102, 0.18);
 }
 }
-}
+
 .custom-price-filter {
   appearance: none !important;
   background-color: #fff4ec !important;
@@ -9968,7 +9956,7 @@ background-position: right 16px center;
   font-family: 'Playfair Display', serif !important;
   color: #5c372c !important;
 }
-}
+
 #scrollTopBtn {
     position: fixed;
     bottom: 20px;
@@ -9996,4 +9984,190 @@ background-position: right 16px center;
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
+}
+
+/* ============================================================
+   DARK MODE FINAL PATCH — Brownie Bliss
+============================================================ */
+
+html.dark,
+html.dark body {
+  background: var(--cream) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Header / navbar */
+html.dark header,
+html.dark .navbar,
+html.dark .mobile-menu {
+  background: var(--white) !important;
+  border-color: #3a2010 !important;
+}
+
+html.dark .logo-name,
+html.dark .brand-name,
+html.dark nav a,
+html.dark .mobile-menu a {
+  color: var(--text-dark) !important;
+}
+
+html.dark .logo-sub,
+html.dark .brand-tagline {
+  color: var(--gold) !important;
+}
+
+/* Sections */
+html.dark .products-section,
+html.dark .categories-section,
+html.dark .birthday-section,
+html.dark .favourites-page,
+html.dark .contact-page,
+html.dark .page-header,
+html.dark .track-content-wrapper {
+  background: var(--cream) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Cards */
+html.dark .product-card,
+html.dark .birthday-card,
+html.dark .contact-card,
+html.dark .review-card,
+html.dark .testimonial-card,
+html.dark .stat-card,
+html.dark .orders-panel,
+html.dark .login-box,
+html.dark .cart-sidebar,
+html.dark .checkout-modal,
+html.dark .track-container,
+html.dark #result,
+html.dark .favourite-bakery-card {
+  background: var(--white) !important;
+  color: var(--text-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+/* Text */
+html.dark .section-title,
+html.dark .section-title em,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark .product-name,
+html.dark .product-title,
+html.dark .cart-title,
+html.dark .checkout-title,
+html.dark .track-container h2 {
+  color: var(--text-dark) !important;
+}
+
+html.dark p,
+html.dark .product-desc,
+html.dark .checkout-subtitle,
+html.dark .track-subtitle,
+html.dark .favourites-intro,
+html.dark .contact-text,
+html.dark .review-text {
+  color: var(--text-mid) !important;
+}
+
+html.dark .section-label,
+html.dark .product-category,
+html.dark .product-price,
+html.dark #cakePrice,
+html.dark .stars {
+  color: var(--gold) !important;
+}
+
+/* Inputs */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: var(--cream-dark) !important;
+  color: var(--text-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9b7b5c !important;
+}
+
+/* Buttons */
+html.dark .cart-btn,
+html.dark .theme-toggle-btn,
+html.dark .filter-tab {
+  color: var(--text-dark) !important;
+  border-color: var(--gold) !important;
+}
+
+html.dark .hero-cta,
+html.dark .add-to-cart,
+html.dark .whatsapp-btn,
+html.dark .login-btn,
+html.dark .track-container button,
+html.dark .filter-tab.active,
+html.dark .filter-tab:hover {
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
+  border-color: var(--gold) !important;
+}
+
+/* Cart */
+html.dark .cart-item {
+  background: var(--cream-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+html.dark .cart-close,
+html.dark .cart-item-remove {
+  color: var(--text-dark) !important;
+}
+
+/* Checkout */
+html.dark .checkout-overlay,
+html.dark .cart-overlay,
+html.dark .customize-overlay {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+html.dark .confirm-section,
+html.dark .confirm-summary {
+  background: var(--cream-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+/* Favourites */
+html.dark .favorite-btn {
+  background: #2b1a0c !important;
+  color: var(--gold) !important;
+  border-color: #5a3820 !important;
+}
+
+html.dark .favorite-btn.active {
+  background: var(--gold) !important;
+  color: var(--brown-dark) !important;
+}
+
+/* Admin */
+html.dark .admin-page,
+html.dark .admin-body {
+  background: var(--cream) !important;
+  color: var(--text-dark) !important;
+}
+
+html.dark table,
+html.dark th,
+html.dark td {
+  background: var(--white) !important;
+  color: var(--text-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+/* Toast */
+html.dark .toast {
+  background: #1a1008 !important;
+  color: var(--text-dark) !important;
+  border: 1px solid #3a2010 !important;
 }

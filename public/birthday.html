@@ -10,6 +10,16 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('bb_theme') || 'light';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (_) {}
+  })();
+</script>
+
 </head>
 
 <body>
@@ -60,7 +70,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-              alt="Birthday Cake"
+              alt="Signature Red Velvet Birthday Cake with cream cheese frosting"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -142,7 +152,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
-              alt="Desserts"
+              alt="Assorted dessert platter with macarons, tarts and pastries"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -216,7 +226,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
-              alt="Brownies"
+              alt="Fudgy Belgian chocolate overload brownie"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -291,7 +301,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
-              alt="Cookies"
+              alt="Freshly baked gourmet chocolate chip cookies"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
