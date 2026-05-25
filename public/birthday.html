@@ -10,6 +10,16 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('bb_theme') || 'light';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (_) {}
+  })();
+</script>
+
 </head>
 
 <body>
@@ -53,6 +63,17 @@
       Swipe to see Desserts &nbsp; ⟷
     </div>
 
+        <div style="margin-bottom: 24px;">
+          <label
+            style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+            Flavor</label>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <button class="filter-pill flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
     <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
       
       <!-- SLIDE 1: BIRTHDAY CAKES -->
@@ -60,7 +81,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-              alt="Birthday Cake"
+              alt="Signature Red Velvet Birthday Cake with cream cheese frosting"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -142,7 +163,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
-              alt="Desserts"
+              alt="Assorted dessert platter with macarons, tarts and pastries"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -216,7 +237,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
-              alt="Brownies"
+              alt="Fudgy Belgian chocolate overload brownie"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -291,7 +312,7 @@
         <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
-              alt="Cookies"
+              alt="Freshly baked gourmet chocolate chip cookies"
               style="width: 100%; height: 550px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-lg);">
           </div>
           <div class="birthday-card"
@@ -349,6 +370,9 @@
               </div>
             </div>
           </div>
+          <button class="btn-primary" style="padding: 16px 40px;" onclick="addBirthdayToCart()">
+            Add to Cart
+          </button>
         </div>
       </div>
 
@@ -456,6 +480,79 @@
 
   <!-- SHARED COMPONENTS -->
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button onclick="closeCart()" class="cart-close">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="openCheckout()">Proceed to Order</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-modal" id="checkoutModal">
+      <div class="steps-bar">
+        <div class="step active" id="step1ind"><span>1</span>Your Info</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step2ind"><span>2</span>Verify OTP</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step3ind"><span>3</span>Address</div>
+        <div class="step-divider"></div>
+        <div class="step" id="step4ind"><span>4</span>Confirm</div>
+      </div>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+      <div class="checkout-step" id="checkStep1">
+        <h2>👋 Let's start with your details</h2>
+        <div class="form-group"><label>Full Name *</label><input type="text" id="custName" placeholder="Your full name"
+            class="form-input"></div>
+        <div class="form-group"><label>WhatsApp Number *</label>
+          <div class="phone-row"><span class="phone-code">+91</span><input type="tel" id="custPhone"
+              placeholder="9876543210" maxlength="10" class="form-input"></div>
+        </div>
+        <button class="btn-primary full-w" onclick="sendOTP()">Send OTP →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep2">
+        <div class="otp-icon">📱</div>
+        <h2>Verify Your Number</h2>
+        <p class="step-sub">Enter the 6-digit OTP sent to <strong id="otpPhoneDisp"></strong></p>
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,0)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,1)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,2)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,3)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,4)">
+          <input type="text" maxlength="1" class="otp-box" oninput="otpNext(this,5)">
+        </div>
+        <div class="demo-otp-box" id="demoOtpBox"></div>
+        <button class="btn-primary full-w" onclick="verifyOTP()">Verify OTP →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep3">
+        <h2>📍 Delivery Address</h2>
+        <div class="form-group"><label>Street Address *</label><input type="text" id="custAddr"
+            placeholder="House no., Street, Landmark" class="form-input"></div>
+        <div class="form-row">
+          <div class="form-group"><label>City *</label><input type="text" id="custCity" placeholder="City"
+              class="form-input"></div>
+          <div class="form-group"><label>Pincode *</label><input type="text" id="custPin" placeholder="123456"
+              maxlength="6" class="form-input"></div>
+        </div>
+        <button class="btn-primary full-w" onclick="goToConfirm()">Review Order →</button>
+      </div>
+      <div class="checkout-step hidden" id="checkStep4">
+        <h2>✅ Review Your Order</h2>
+        <div class="confirm-card">
+          <div id="confirmCustomer"></div>
+          <div id="confirmItems"></div>
+          <div class="confirm-total"><span>Total Amount</span><strong id="confirmTotal"></strong></div>
+        </div>
+        <button class="btn-whatsapp full-w" onclick="placeOrder()">Place Order & Open WhatsApp</button>
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <span class="cart-title">Your Cart 🛒</span>
