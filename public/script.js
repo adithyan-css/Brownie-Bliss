@@ -28,7 +28,6 @@ let products = [];
 let bdayCakes = {};
 let selectedFlavor = 'Red Velvet';
 let currentSearchTerm = '';
-let selectedPriceFilter = 'all';
 let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
@@ -41,27 +40,9 @@ const BIRTHDAY_BASE_PRICES = {
 };
 
 const DEFAULT_PRODUCTS = [
-  {
-    id: 1,
-    name: 'Velvet Dream Cake',
-    category: 'cakes',
-    price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
-  },
-  {
-    id: 2,
-    name: 'Dutch Truffle Delight',
-    category: 'cakes',
-    price: 950,
-    img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180',
-  },
-  {
-    id: 3,
-    name: 'Pineapple Fresh Cream',
-    category: 'cakes',
-    price: 675,
-    img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
-  },
+    { id: 1, name: "Velvet Dream Cake", category: "cakes", description: "Soft red velvet sponge with cream cheese frosting.", dummyShop: "Bliss Central Kitchen", location: "Krishnagiri", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    { id: 2, name: "Dutch Truffle Delight", category: "cakes", description: "Moist chocolate sponge with rich truffle ganache.", dummyShop: "Choco Street Counter", location: "Hosur", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
+    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", description: "Fresh cream pineapple cake with light sponge layers.", dummyShop: "Bliss Central Kitchen", location: "Dharmapuri", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
 ];
 
 const DEFAULT_BDAY_CAKES = {
@@ -74,6 +55,7 @@ const DEFAULT_BDAY_CAKES = {
     img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180',
   },
 };
+buildCatalogFromList(null);
 
 function useFallbackProducts() {
   products = DEFAULT_PRODUCTS;
@@ -91,50 +73,53 @@ const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
 let favourites = [];
 function buildCatalogFromList(list) {
-  if (list && Array.isArray(list) && list.length) {
-    products = list
-      .filter((p) => p.type === 'standard')
-      .map((p) => ({
-        id: p.id_ref,
-        name: p.name,
-        category: p.category,
-        price: p.price,
-        emoji: p.emoji,
-        img: p.img,
-        description: p.description || '',
-      }));
+    if (list && Array.isArray(list) && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || '',
+            dummyShop: p.dummyShop || '',
+            location: p.location || ''
+        }));
 
-    bdayCakes = {};
-    const bd = list.filter((p) => p.type === 'birthday');
-    bd.forEach((p) => {
-      bdayCakes[p.id_ref] = {
-        price: p.price,
-        emoji: p.emoji,
-        img: p.img,
-      };
-    });
-  } else {
-    useFallbackProducts();
-  }
+        bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
+    } else {
+        useFallbackProducts();
+    }
 }
 
 async function loadProducts() {
-  try {
-    const res = await fetch(`${API_BASE}/products`);
-    const data = await res.json();
+    try {
+        const res = await fetch(`${API_BASE}/products`);
+        const data = await res.json();
 
-    if (data.success && Array.isArray(data.products) && data.products.length) {
-      products = data.products
-        .filter((p) => p.type === 'standard')
-        .map((p) => ({
-          id: p.id_ref,
-          name: p.name,
-          category: p.category,
-          price: p.price,
-          emoji: p.emoji,
-          img: p.img,
-          description: p.description || '',
-        }));
+        if (data.success && Array.isArray(data.products) && data.products.length) {
+
+            products = data.products
+                .filter(p => p.type === 'standard')
+                .map(p => ({
+                    id: p.id_ref,
+                    name: p.name,
+                    category: p.category,
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img,
+                    description: p.description || '',
+                    dummyShop: p.dummyShop || '',
+                    location: p.location || ''
+                }));
 
       bdayCakes = {};
 
@@ -389,10 +374,29 @@ function highlightMatch(text, term) {
   return text.replace(regex, `<span class="highlight-match">$1</span>`);
 }
 
+let selectedPriceFilter = 'all';
+let selectedShopFilter = 'all';
+let selectedLocationFilter = 'all';
+function getActiveCategory() {
+    const activeTab = document.querySelector('.filter-tab.active');
+    return activeTab ? activeTab.textContent.toLowerCase() : 'all';
+}
+function updateShopFilter() {
+    const shopFilterEl = document.getElementById('shopFilter');
+    selectedShopFilter = shopFilterEl ? shopFilterEl.value : 'all';
+    filterProducts(getActiveCategory());
+}
+function updateLocationFilter() {
+    const locationFilterEl = document.getElementById('locationFilter');
+    selectedLocationFilter = locationFilterEl ? locationFilterEl.value : 'all';
+    filterProducts(getActiveCategory());
+}
 function saveRecentSearch(search) {
   if (!search) return;
 
-  recentSearches = recentSearches.filter((item) => item !== search);
+  recentSearches = recentSearches.filter(
+    (item) => item !== search
+  );
 
   recentSearches.unshift(search);
 
@@ -405,7 +409,6 @@ function saveRecentSearch(search) {
 
   renderRecentSearches();
 }
-
 function renderRecentSearches() {
   const container = document.getElementById('recentSearches');
 
@@ -431,6 +434,8 @@ function renderRecentSearches() {
           .join('')}
     `;
 }
+window.updateShopFilter = updateShopFilter;
+window.updateLocationFilter = updateLocationFilter;
 
 function updatePriceFilter() {
   const filter = document.getElementById('priceFilter');
@@ -466,6 +471,7 @@ function filterProducts(category = 'all', btn = null) {
 
   if (currentSearchTerm.trim()) {
     const term = currentSearchTerm.toLowerCase();
+    
 
     filtered = filtered.filter((product) => {
       return (
@@ -475,44 +481,52 @@ function filterProducts(category = 'all', btn = null) {
       );
     });
   }
+  if (selectedShopFilter !== 'all') {
+  filtered = filtered.filter(
+    p => (p.dummyShop || '').toLowerCase() ===
+    selectedShopFilter.toLowerCase()
+  );
+}
 
-  const emptyState = document.getElementById('noProductsFound');
+if (selectedLocationFilter !== 'all') {
+  filtered = filtered.filter(
+    p => (p.location || '').toLowerCase() ===
+    selectedLocationFilter.toLowerCase()
+  );
+}
 
-  if (emptyState) {
-    emptyState.style.display = filtered.length ? 'none' : 'block';
-  }
+if (selectedPriceFilter !== 'all') {
+  if (selectedPriceFilter === 'under500')
+    filtered = filtered.filter(p => p.price < 500);
 
-  grid.innerHTML = filtered
-    .map(
-      (p) => `
+  if (selectedPriceFilter === '500to1000')
+    filtered = filtered.filter(
+      p => p.price >= 500 && p.price <= 1000
+    );
+
+  if (selectedPriceFilter === 'above1000')
+    filtered = filtered.filter(p => p.price > 1000);
+}
+
+const emptyState = document.getElementById('noProductsFound');
+
+if (emptyState) {
+  emptyState.style.display = filtered.length ? 'none' : 'block';
+}
+
+grid.innerHTML = filtered
+  .map(
+    (p) => `
       <div class="product-card">
-
         <div class="product-img-wrap">
-
-          <img
-            src="${p.img}"
-            alt="${p.name}"
-          />
-
+          <img src="${p.img}" alt="${p.name}" />
         </div>
 
         <div class="product-info">
-
-          <div class="product-category">
-            ${p.category}
-          </div>
-
-          <div class="product-name">
-            ${p.name}
-          </div>
-
-          <div class="product-desc">
-            ${p.description || ''}
-          </div>
-
-          <div class="product-price">
-            ₹${p.price}
-          </div>
+          <div class="product-category">${p.category}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.description || ''}</div>
+          <div class="product-price">₹${p.price}</div>
 
           <button
             class="add-to-cart"
@@ -520,15 +534,14 @@ function filterProducts(category = 'all', btn = null) {
           >
             Add To Cart
           </button>
-
         </div>
-
       </div>
-    `
-    )
-    .join('');
+`
+  )
+  .join('');
 }
 
+ 
 // --- BIRTHDAY CAKE BUILDER ---
 // bdayCakes object is now populated dynamically via loadProducts()
 
@@ -543,10 +556,6 @@ function updateBirthdayCake(flavor) {
   // Update image
   const cakeImg = document.getElementById('birthdayCakeImg');
   if (cakeImg && bdayCakes[flavor]) {
-    cakeImg.src = bdayCakes[flavor].img;
-  }
-
-  if (cakeImg) {
     cakeImg.src = bdayCakes[flavor].img;
   }
 
@@ -671,40 +680,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
 
   window.open(waUrl, '_blank');
 }
-
-    if (order.created_at) {
-        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
-    }
-});
-
-// Scroll to top function
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-AOS.init({
-  duration: 1000,
-  once: true,
-  easing: "ease-in-out"
-});
-    const message = document.getElementById('customizeMessage').value.trim();
-
-    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
-    const finalPrice = _customizeProduct.price + toppingsTotal;
-
-    const cartItem = {
-        ..._customizeProduct,
-        price: finalPrice,
-        customizations: {
-            dietary,
-            toppings,
-            message
-        }
-    };
+   
 // ============================================================
 // TOAST
 // ============================================================

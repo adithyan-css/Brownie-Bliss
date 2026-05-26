@@ -9,7 +9,7 @@ const {
 
 const memoryOrders = [];
 
-const STATIC_CATALOG = [
+const BASE_STATIC_CATALOG = [
   { type: 'standard', id_ref: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "🎂", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
   { type: 'standard', id_ref: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "🍰", img: "https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619" },
   { type: 'standard', id_ref: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "🍍", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
@@ -27,6 +27,14 @@ const STATIC_CATALOG = [
   { type: 'birthday', id_ref: 'Black Forest', name: "Black Forest", price: 750, emoji: "🌲", img: 'https://theobroma.in/cdn/shop/files/BlackForestCakehalfkg_Square_400x400.jpg?v=1711124458' },
   { type: 'birthday', id_ref: 'Cheesecake', name: "Cheesecake", price: 1200, emoji: "🧀", img: 'https://theobroma.in/cdn/shop/files/BlueberryCheesecakeCup_400x400.jpg?v=1711514632' }
 ];
+const SHOPS = ['Bliss Central Kitchen', 'Choco Street Counter', 'Brownie Hub Express', 'Dessert Dock', 'Cookie Corner'];
+const LOCATIONS = ['Krishnagiri', 'Hosur', 'Dharmapuri', 'Salem'];
+const STATIC_CATALOG = BASE_STATIC_CATALOG.map((product, index) => ({
+  ...product,
+  description: `${product.name} made with quality ingredients and a signature Brownie Bliss taste profile.`,
+  dummyShop: SHOPS[index % SHOPS.length],
+  location: LOCATIONS[index % LOCATIONS.length],
+}));
 
 function generateOrderId() {
   const date = new Date();
