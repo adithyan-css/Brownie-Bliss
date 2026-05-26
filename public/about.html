@@ -581,13 +581,120 @@
       .about-founder-inner { flex-direction: column; text-align: center; }
     }
 
-    @media (max-width: 600px) {
-      .about-hero { padding: 80px 6% 60px; }
-      .about-features { padding: 70px 6%; }
-      .about-features-grid { grid-template-columns: 1fr; }
-      .about-story { padding: 70px 6%; }
-      .about-stats-grid { grid-template-columns: 1fr 1fr; }
+    /* =========================
+       DARK THEME SUPPORT
+    ========================= */
+
+    html.dark{
+      --dark:#f0e4d0;
+      --brown:#2a140b;
+      --brown2:#caa14a;
+      --light:#140d08;
+      --cream:#f5ede3;
     }
+
+    html.dark body,
+    html.dark .about-section{
+      background:var(--light);
+      color:var(--text-dark);
+    }
+
+    html.dark body::before{
+      opacity:0.03;
+    }
+
+    html.dark header{
+      background:rgba(20,13,8,0.92);
+      border-bottom:1px solid rgba(212,165,55,0.16);
+    }
+
+    html.dark .logo h1,
+    html.dark .logo-name,
+    html.dark nav a{
+      color:var(--text-dark);
+    }
+
+    html.dark .logo span,
+    html.dark .logo-sub{
+      color:var(--gold);
+    }
+
+    html.dark nav a:hover{
+      color:var(--gold);
+    }
+
+    html.dark .large-card,
+    html.dark .small-card,
+    html.dark .premium-feature-card,
+    html.dark .story-card,
+    html.dark .value-card,
+    html.dark .story-img-wrap,
+    html.dark .founder,
+    html.dark .cta{
+      background:var(--white);
+      border-color:#3a2010;
+      box-shadow:0 18px 45px rgba(0,0,0,0.28);
+    }
+
+    html.dark .premium-features,
+    html.dark .story,
+    html.dark .values,
+    html.dark .founder,
+    html.dark .cta{
+      background:linear-gradient(135deg,#1a1008 0%,#221508 100%);
+    }
+
+    html.dark .premium-features::before{
+      background:radial-gradient(circle,rgba(212,165,55,0.1),transparent 70%);
+    }
+
+    html.dark .section-title h2,
+    html.dark .story-card h3,
+    html.dark .premium-feature-card h3,
+    html.dark .value-title,
+    html.dark .founder-name,
+    html.dark .cta-title,
+    html.dark .hero-body,
+    html.dark .story-text .section-title,
+    html.dark .quote-text{
+      color:var(--text-dark);
+    }
+
+    html.dark .section-title h2 em,
+    html.dark .section-title span,
+    html.dark .section-eyebrow,
+    html.dark .story-number,
+    html.dark .premium-icon,
+    html.dark .quote-attr{
+      color:var(--gold);
+    }
+
+    html.dark .premium-feature-card p,
+    html.dark .story-card p,
+    html.dark .story-para,
+    html.dark .value-desc,
+    html.dark .founder-bio,
+    html.dark .cta-sub,
+    html.dark .hero-body,
+    html.dark .story-quote{
+      color:var(--text-mid);
+    }
+
+    html.dark .experience-box{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(212,165,55,0.14);
+    }
+
+    html.dark .footer-links a,
+    html.dark .footer-brand p,
+    html.dark .footer-bottom{
+      color:#e6d6c5;
+    }
+
+    html.dark .footer-links a:hover{
+      color:var(--gold);
+    }
+
   </style>
 </head>
 
@@ -676,21 +783,14 @@
         <div class="about-card-label">☕ Desserts</div>
       </div>
     </div>
-  </div>
-</section>
+    </section>
 
-<!-- PREMIUM FEATURES -->
-<section class="about-features">
-  <div class="about-section-header">
-    <span class="about-section-label">Why Choose Us</span>
-    <h2>What Makes Us <em>Special</em></h2>
-  </div>
-  <div class="about-features-grid">
-    <div class="about-feature-card">
-      <div class="about-feature-glow"></div>
-      <div class="about-feature-icon">📖</div>
-      <h3>Authentic Recipes</h3>
-      <p>Traditional handcrafted baking methods passed with love and care.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Our Story</p>
+      <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
+      <p class="hero-body" style="color:#9b7064">Brownie Bliss began with a simple dream — to bring the warmth of homemade baking into every celebration, every gathering, and every little sweet craving.</p>
     </div>
     <div class="about-feature-card">
       <div class="about-feature-glow"></div>
@@ -698,11 +798,21 @@
       <h3>Baked With Love</h3>
       <p>Every brownie and cake is made fresh daily with passion and warmth.</p>
     </div>
-    <div class="about-feature-card">
-      <div class="about-feature-glow"></div>
-      <div class="about-feature-icon">✨</div>
-      <h3>Premium Quality</h3>
-      <p>Finest ingredients carefully selected for rich, luxurious flavours.</p>
+  </section>
+
+  <!-- STORY -->
+
+  <section class="story">
+
+    <div class="section-title">
+
+      <span>HAND-PICKED FOR YOU</span>
+
+      <h2>
+        Our
+        <em>Full Range</em>
+      </h2>
+
     </div>
     <div class="about-feature-card">
       <div class="about-feature-glow"></div>
@@ -713,17 +823,52 @@
   </div>
 </section>
 
-<!-- OUR STORY -->
-<section class="about-story">
-  <div class="about-section-header">
-    <span class="about-section-label">Hand-Picked for You</span>
-    <h2>Our <em>Full Range</em></h2>
-  </div>
-  <div class="about-story-grid">
-    <div class="about-story-card">
-      <div class="about-story-number">01</div>
-      <h3>Premium Ingredients</h3>
-      <p>Every dessert is made with carefully selected ingredients to create rich flavour, silky textures, and unforgettable sweetness.</p>
+  </section>
+
+  <!-- EXPERIENCE -->
+
+  <section class="experience">
+
+    <div class="experience-box">
+
+      <div class="experience-image">
+
+        <img
+          src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png"
+          alt="Dessert"
+        >
+
+      </div>
+
+      <div class="experience-content">
+
+        <h3>
+          Crafted For Sweet
+          Luxury Moments
+        </h3>
+
+        <p>
+          Brownie Bliss combines rich flavours,
+          elegant presentation,
+          and authentic homemade warmth
+          to create desserts that feel memorable,
+          indulgent, and premium.
+        </p>
+
+        <a href="products.html" class="primary-btn">
+          DISCOVER MORE →
+        </a>
+      </div>
+    
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item reveal">
+      <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+      <div class="stat-label">Homemade Recipes</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-number" style="font-size:40px">Fresh</div>
+      <div class="stat-label">Baked Every Day</div>
     </div>
     <div class="about-story-card">
       <div class="about-story-number">02</div>
@@ -838,6 +983,12 @@
         <a href="products.html">Desserts</a>
         <a href="index.html#birthday">Custom Cakes</a>
         <a href="favourites.html">Favourites</a>
+      </div>
+      <div class="footer-links">
+        <h4>Information</h4>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
       </div>
 
       <div class="footer-col">
