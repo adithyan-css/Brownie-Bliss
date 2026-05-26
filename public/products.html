@@ -375,6 +375,19 @@
           console.error('Failed to load products for products page', error);
         }
 
+        if (!dynamicProducts.length && Array.isArray(productsList)) {
+          dynamicProducts = productsList.map((p) => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            desc: p.desc || '',
+            dummyShop: p.dummyShop || '',
+            location: p.location || '',
+            price: p.price,
+            img: p.img
+          }));
+        }
+
         fillFilterOptions();
         renderDynamicProducts();
       }
