@@ -1045,6 +1045,120 @@
 
     }
 
+    /* =========================
+       DARK THEME SUPPORT
+    ========================= */
+
+    html.dark{
+      --dark:#f0e4d0;
+      --brown:#2a140b;
+      --brown2:#caa14a;
+      --light:#140d08;
+      --cream:#f5ede3;
+    }
+
+    html.dark body,
+    html.dark .about-section{
+      background:var(--light);
+      color:var(--text-dark);
+    }
+
+    html.dark body::before{
+      opacity:0.03;
+    }
+
+    html.dark header{
+      background:rgba(20,13,8,0.92);
+      border-bottom:1px solid rgba(212,165,55,0.16);
+    }
+
+    html.dark .logo h1,
+    html.dark .logo-name,
+    html.dark nav a{
+      color:var(--text-dark);
+    }
+
+    html.dark .logo span,
+    html.dark .logo-sub{
+      color:var(--gold);
+    }
+
+    html.dark nav a:hover{
+      color:var(--gold);
+    }
+
+    html.dark .large-card,
+    html.dark .small-card,
+    html.dark .premium-feature-card,
+    html.dark .story-card,
+    html.dark .value-card,
+    html.dark .story-img-wrap,
+    html.dark .founder,
+    html.dark .cta{
+      background:var(--white);
+      border-color:#3a2010;
+      box-shadow:0 18px 45px rgba(0,0,0,0.28);
+    }
+
+    html.dark .premium-features,
+    html.dark .story,
+    html.dark .values,
+    html.dark .founder,
+    html.dark .cta{
+      background:linear-gradient(135deg,#1a1008 0%,#221508 100%);
+    }
+
+    html.dark .premium-features::before{
+      background:radial-gradient(circle,rgba(212,165,55,0.1),transparent 70%);
+    }
+
+    html.dark .section-title h2,
+    html.dark .story-card h3,
+    html.dark .premium-feature-card h3,
+    html.dark .value-title,
+    html.dark .founder-name,
+    html.dark .cta-title,
+    html.dark .hero-body,
+    html.dark .story-text .section-title,
+    html.dark .quote-text{
+      color:var(--text-dark);
+    }
+
+    html.dark .section-title h2 em,
+    html.dark .section-title span,
+    html.dark .section-eyebrow,
+    html.dark .story-number,
+    html.dark .premium-icon,
+    html.dark .quote-attr{
+      color:var(--gold);
+    }
+
+    html.dark .premium-feature-card p,
+    html.dark .story-card p,
+    html.dark .story-para,
+    html.dark .value-desc,
+    html.dark .founder-bio,
+    html.dark .cta-sub,
+    html.dark .hero-body,
+    html.dark .story-quote{
+      color:var(--text-mid);
+    }
+
+    html.dark .experience-box{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(212,165,55,0.14);
+    }
+
+    html.dark .footer-links a,
+    html.dark .footer-brand p,
+    html.dark .footer-bottom{
+      color:#e6d6c5;
+    }
+
+    html.dark .footer-links a:hover{
+      color:var(--gold);
+    }
+
   </style>
 
 </head>
