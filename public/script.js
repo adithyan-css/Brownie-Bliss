@@ -140,6 +140,33 @@ async function loadProducts() {
 
       const bd = data.products.filter((p) => p.type === 'birthday');
 
+        const bd = list.filter(p => p.type === 'birthday');
+        bdayCakes = {};
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                stock: p.stock,
+                img: p.img
+            }));
+
+            const bd = data.products.filter(p => p.type === 'birthday');
+
+            bd.forEach(p => {
+                bdayCakes[p.id_ref] = {
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img
+                };
+            });
+
+        } else {
+            useFallbackProducts();
+        }
+
+    } catch (e) {
+        console.error('Error loading products from database:', e);
+        useFallbackProducts();
       bd.forEach((p) => {
         bdayCakes[p.id_ref] = {
           price: p.price,
@@ -248,6 +275,17 @@ function updateCartUI() {
 
 // FIXED ADD TO CART
 function addToCart(product) {
+    if (product.stock === 0) {
+    showToast('This item is sold out ');
+    return;
+}
+    const existing = cart.find(i => i.name === product.name && i.message === product.message);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+    const existing = cart.find(i => i.name === product.name);
   const existing = cart.find((i) => i.name === product.name);
 
   if (existing) existing.qty++;
@@ -443,6 +481,31 @@ function renderRecentSearches() {
                 ${search}
 
             </div>
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <div class="product-name">${p.name}</div>
+                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                <div class="product-price">₹${p.price}</div>
+                <div class="stock-status ${
+                 p.stock === 0
+                 ? 'sold-out'
+                 : p.stock <= 3
+                 ? 'low-stock'
+                 : 'available'}">${
+                p.stock === 0
+                ? 'Sold Out'
+                : p.stock <= 3
+                ? 'Low Stock'
+                : 'Available'}</div>
+                <button class="add-to-cart" ${p.stock === 0 ? 'disabled' : ''}
+                onclick='addToCart(${JSON.stringify(p)})'>
+               ${p.stock === 0 ? 'Sold Out' : 'Add to Cart'}</button>
+                <button class="add-to-cart">
+                    Customize & Add
+                </button>
+            </div>
+        </div>
+    `).join('');
         `
           )
           .join('')}
@@ -722,19 +785,20 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   window.open(waUrl, '_blank');
 }
 
-    if (order.created_at) {
-        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
-    }
-});
-
 // Scroll to top function
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+if (typeof AOS !== 'undefined') {
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: 'ease-in-out',
+  });
 }
 
 // ===============================

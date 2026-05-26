@@ -298,15 +298,15 @@
     <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
       
       <!-- SLIDE 1: BIRTHDAY CAKES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
-        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;"; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-grid">
           <div class="birthday-visual">
             <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
               alt="Birthday Cake"
-              style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+              style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
           </div>
           <div class="birthday-card"
-            style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            style="background: var(--white); padding: clamp(20px, 4vw, 50px); border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
             <span class="section-label">Celebrate with Us</span>
             <div class="birthday-title-row">
               <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
@@ -324,7 +324,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div style="display: grid; gap: 10px;" class="responsive-grid">
       <button class="filter-tab flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">
         Red Velvet
       </button>
@@ -355,7 +355,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
-              <div style="display: flex; gap: 15px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
                 <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
                 <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
@@ -397,12 +397,12 @@
       </div>
 
       <!-- SLIDE 2: DESSERTS -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
-        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;"; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-grid">
           <div class="birthday-visual">
             <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427"
               alt="Desserts"
-              style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+              style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
           </div>
           <div class="birthday-card"
             style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
@@ -417,7 +417,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Variety</label>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div class="responsive-grid" style="display: grid; gap: 10px;">
                 <button class="filter-tab active">Macarons</button>
                 <button class="filter-tab">Tarts</button>
                 <button class="filter-tab">Pastries</button>
@@ -431,7 +431,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
                 Size</label>
-              <div style="display: flex; gap: 15px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <button class="filter-tab">Box of 2</button>
                 <button class="filter-tab active">Box of 4</button>
                 <button class="filter-tab">Box of 6</button>
@@ -473,12 +473,12 @@
       </div>
 
       <!-- SLIDE 3: BROWNIES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
-        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;"; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-grid">
           <div class="birthday-visual">
             <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
               alt="Brownies"
-              style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+              style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
           </div>
           <div class="birthday-card"
             style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
@@ -493,7 +493,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div class="responsive-grid" style="display: grid; gap: 10px;">
                 <button class="filter-tab active">Walnut</button>
                 <button class="filter-tab">Overload</button>
                 <button class="filter-tab">Nutella</button>
@@ -507,7 +507,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
                 Size</label>
-              <div style="display: flex; gap: 15px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <button class="filter-tab">Pack of 1</button>
                 <button class="filter-tab active">Pack of 4</button>
                 <button class="filter-tab">Pack of 6</button>
@@ -519,7 +519,7 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift
                 Wrap</label>
-              <div style="display: flex; gap: 15px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <button class="filter-tab active">Standard</button>
                 <button class="filter-tab">Premium Gold</button>
               </div>
@@ -551,12 +551,12 @@
       </div>
 
       <!-- SLIDE 4: COOKIES -->
-      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
-        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;">
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;"; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
           <div class="birthday-visual">
             <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
               alt="Cookies"
-              style="width: 100%; height: 550px; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+              style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
           </div>
           <div class="birthday-card"
             style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
@@ -570,7 +570,7 @@
             <div style="margin-bottom: 24px;">
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
-              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
                 <button class="filter-tab active">Choco Chip</button>
                 <button class="filter-tab">Double Choco</button>
                 <button class="filter-tab">Oatmeal Raisin</button>
@@ -583,7 +583,7 @@
             <div style="margin-bottom: 30px;">
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
-              <div style="display: flex; gap: 15px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <button class="filter-tab">Box of 2</button>
                 <button class="filter-tab active">Box of 6</button>
                 <button class="filter-tab">Box of 12</button>
@@ -637,8 +637,7 @@
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-        
+      <div class="feedback-grid">       
         <!-- Feedback Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a Review</h3>
@@ -882,5 +881,4 @@
   <script src="script.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
-
 </html>
