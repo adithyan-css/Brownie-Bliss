@@ -167,7 +167,7 @@
 
   <div class="products-inner" style="padding: 0 30px 80px;">
     <!-- Price Filter from main branch -->
-    <div class="price-filter-wrapper">
+    <div class="price-filter-wrapper" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
       <div class="price-filter">
         <label for="priceFilter">Filter by Price</label>
         <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
@@ -175,6 +175,18 @@
           <option value="under200">Under ₹200</option>
           <option value="200to500">₹200 - ₹500</option>
           <option value="above500">Above ₹500</option>
+        </select>
+      </div>
+      <div class="price-filter">
+        <label for="shopFilter">Dummy Shop</label>
+        <select id="shopFilter" class="custom-price-filter" onchange="updateShopFilter()">
+          <option value="all">All Shops</option>
+        </select>
+      </div>
+      <div class="price-filter">
+        <label for="locationFilter">Location</label>
+        <select id="locationFilter" class="custom-price-filter" onchange="updateLocationFilter()">
+          <option value="all">All Locations</option>
         </select>
       </div>
     </div>
@@ -281,6 +293,107 @@
       if (typeof updateCartBadge === 'function') updateCartBadge();
       if (typeof updateThemeIcon === 'function') updateThemeIcon();
     });
+  </script>
+  <script>
+    (() => {
+      const API = '/api';
+      let dynamicProducts = [];
+      let selectedPrice = 'all';
+      let selectedShop = 'all';
+      let selectedLocation = 'all';
+
+      const normalize = (value) => String(value || '').trim().toLowerCase();
+
+      function fillFilterOptions() {
+        const shopFilter = document.getElementById('shopFilter');
+        const locationFilter = document.getElementById('locationFilter');
+        if (!shopFilter || !locationFilter) return;
+
+        const shops = [...new Set(dynamicProducts.map((p) => p.dummyShop).filter(Boolean))].sort();
+        const locations = [...new Set(dynamicProducts.map((p) => p.location).filter(Boolean))].sort();
+
+        shopFilter.innerHTML = '<option value="all">All Shops</option>' + shops.map((s) => `<option value="${s}">${s}</option>`).join('');
+        locationFilter.innerHTML = '<option value="all">All Locations</option>' + locations.map((l) => `<option value="${l}">${l}</option>`).join('');
+      }
+
+      function getFilteredProducts() {
+        return dynamicProducts.filter((p) => {
+          const matchPrice = selectedPrice === 'all'
+            || (selectedPrice === 'under200' && p.price < 200)
+            || (selectedPrice === '200to500' && p.price >= 200 && p.price <= 500)
+            || (selectedPrice === 'above500' && p.price > 500);
+          const matchShop = selectedShop === 'all' || normalize(p.dummyShop) === normalize(selectedShop);
+          const matchLocation = selectedLocation === 'all' || normalize(p.location) === normalize(selectedLocation);
+          return matchPrice && matchShop && matchLocation;
+        });
+      }
+
+      function renderDynamicProducts() {
+        const container = document.getElementById('allProductsGrid');
+        if (!container) return;
+
+        const filtered = getFilteredProducts();
+        if (!filtered.length) {
+          container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#777;font-weight:600;">No products available for selected filters.</p>';
+          return;
+        }
+
+        container.innerHTML = filtered.map((p) => `
+          <div class="product-card">
+            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x260?text=Brownie+Bliss'">
+            <div class="product-info">
+              <div class="product-title">${p.name}</div>
+              <div class="product-category">${p.category || ''}</div>
+              ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
+              ${(p.dummyShop || p.location) ? `<div class="product-desc">${p.dummyShop || ''}${p.dummyShop && p.location ? ' • ' : ''}${p.location || ''}</div>` : ''}
+              <div class="product-price">₹${p.price}</div>
+              <button class="add-to-cart-btn" onclick="addToCartFromProducts(${p.id}, '${String(p.name).replace(/'/g, "\\'")}', ${p.price})">Add to Cart 🛒</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      async function loadDynamicProducts() {
+        try {
+          const res = await fetch(`${API}/products`);
+          const data = await res.json();
+          if (data.success && Array.isArray(data.products)) {
+            dynamicProducts = data.products
+              .filter((p) => p.type === 'standard')
+              .map((p) => ({
+                id: p.id_ref,
+                name: p.name,
+                category: p.category,
+                desc: p.description || '',
+                dummyShop: p.dummyShop || '',
+                location: p.location || '',
+                price: p.price,
+                img: p.img
+              }));
+          }
+        } catch (error) {
+          console.error('Failed to load products for products page', error);
+        }
+
+        fillFilterOptions();
+        renderDynamicProducts();
+      }
+
+      window.updatePriceFilter = function updatePriceFilterOverride() {
+        selectedPrice = document.getElementById('priceFilter')?.value || 'all';
+        renderDynamicProducts();
+      };
+      window.updateShopFilter = function updateShopFilter() {
+        selectedShop = document.getElementById('shopFilter')?.value || 'all';
+        renderDynamicProducts();
+      };
+      window.updateLocationFilter = function updateLocationFilter() {
+        selectedLocation = document.getElementById('locationFilter')?.value || 'all';
+        renderDynamicProducts();
+      };
+
+      window.addEventListener('DOMContentLoaded', loadDynamicProducts);
+    })();
   </script>
 </body>
 </html>

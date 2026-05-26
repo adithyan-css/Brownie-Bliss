@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 const { isDbReady } = require('../config/db');
 
-const STATIC_CATALOG = [
+const BASE_STATIC_CATALOG = [
   { type: 'standard', id_ref: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, emoji: "🎂", img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
   { type: 'standard', id_ref: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, emoji: "🍰", img: "https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619" },
   { type: 'standard', id_ref: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, emoji: "🍍", img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785" },
@@ -19,6 +19,14 @@ const STATIC_CATALOG = [
   { type: 'birthday', id_ref: 'Black Forest', name: "Black Forest", price: 750, emoji: "🌲", img: 'https://theobroma.in/cdn/shop/files/BlackForestCakehalfkg_Square_400x400.jpg?v=1711124458' },
   { type: 'birthday', id_ref: 'Cheesecake', name: "Cheesecake", price: 1200, emoji: "🧀", img: 'https://theobroma.in/cdn/shop/files/BlueberryCheesecakeCup_400x400.jpg?v=1711514632' }
 ];
+const SHOPS = ['Bliss Central Kitchen', 'Choco Street Counter', 'Brownie Hub Express', 'Dessert Dock', 'Cookie Corner'];
+const LOCATIONS = ['Krishnagiri', 'Hosur', 'Dharmapuri', 'Salem'];
+const STATIC_CATALOG = BASE_STATIC_CATALOG.map((product, index) => ({
+  ...product,
+  description: `${product.name} made with quality ingredients and a signature Brownie Bliss taste profile.`,
+  dummyShop: SHOPS[index % SHOPS.length],
+  location: LOCATIONS[index % LOCATIONS.length],
+}));
 
 async function getAllProducts(req, res) {
   try {
@@ -38,7 +46,9 @@ async function createProduct(req, res) {
     if (!isDbReady()) {
       return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
     }
-    const { type, name, category, price, emoji, img } = req.body;
+    const {
+      type, name, category, description, dummyShop, location, price, emoji, img,
+    } = req.body;
 
     if (!type || !name || price === undefined) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -52,7 +62,18 @@ async function createProduct(req, res) {
       id_ref = name;
     }
 
-    const product = await Product.create({ type, id_ref, name, category, price: Number(price), emoji, img });
+    const product = await Product.create({
+      type,
+      id_ref,
+      name,
+      category,
+      description: typeof description === 'string' ? description.trim() : '',
+      dummyShop: typeof dummyShop === 'string' ? dummyShop.trim() : '',
+      location: typeof location === 'string' ? location.trim() : '',
+      price: Number(price),
+      emoji,
+      img,
+    });
     res.json({ success: true, product });
   } catch (err) {
     console.error(err);
@@ -65,12 +86,17 @@ async function updateProduct(req, res) {
     if (!isDbReady()) {
       return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
     }
-    const { price, name, img } = req.body;
+    const {
+      price, name, img, description, dummyShop, location,
+    } = req.body;
     const updateData = {};
 
     if (price !== undefined && !isNaN(price) && price >= 0) updateData.price = Number(price);
     if (name !== undefined && name.trim() !== '') updateData.name = name.trim();
     if (img !== undefined) updateData.img = img.trim();
+    if (description !== undefined) updateData.description = String(description).trim();
+    if (dummyShop !== undefined) updateData.dummyShop = String(dummyShop).trim();
+    if (location !== undefined) updateData.location = String(location).trim();
 
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ success: false, message: 'No valid fields provided for update' });

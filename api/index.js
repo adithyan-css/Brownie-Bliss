@@ -101,6 +101,9 @@ const productSchema = new mongoose.Schema({
   id_ref: { type: mongoose.Schema.Types.Mixed },
   name: { type: String, required: true },
   category: { type: String },
+  description: { type: String, default: '' },
+  dummyShop: { type: String, default: '' },
+  location: { type: String, default: '' },
   price: { type: Number, required: true },
   emoji: { type: String },
   img: { type: String },
@@ -115,22 +118,22 @@ async function seedProducts() {
   if (count > 0) return;
 
   const initialProducts = [
-    { type: 'standard', id_ref: 1, name: 'Velvet Dream Cake', category: 'cakes', price: 850, emoji: 'cake', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
-    { type: 'standard', id_ref: 2, name: 'Dutch Truffle Delight', category: 'cakes', price: 950, emoji: 'cake', img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180' },
-    { type: 'standard', id_ref: 3, name: 'Pineapple Fresh Cream', category: 'cakes', price: 675, emoji: 'pineapple', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
-    { type: 'standard', id_ref: 4, name: 'Overload Brownie', category: 'brownies', price: 120, emoji: 'brownie', img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338' },
-    { type: 'standard', id_ref: 5, name: 'Walnut Fudge', category: 'brownies', price: 95, emoji: 'walnut', img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181' },
-    { type: 'standard', id_ref: 6, name: 'Classic Choco', category: 'brownies', price: 80, emoji: 'brownie', img: 'https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg' },
-    { type: 'standard', id_ref: 7, name: 'Chocolate Mousse', category: 'desserts', price: 150, emoji: 'dessert', img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427' },
-    { type: 'standard', id_ref: 8, name: 'Tiramisu Jar', category: 'desserts', price: 180, emoji: 'coffee', img: 'https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg' },
-    { type: 'standard', id_ref: 9, name: 'Choco Chip Cookies', category: 'cookies', price: 250, emoji: 'cookie', img: 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg' },
-    { type: 'standard', id_ref: 10, name: 'Almond Biscotti', category: 'cookies', price: 300, emoji: 'biscotti', img: 'https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg' },
-    { type: 'birthday', id_ref: 'Red Velvet', name: 'Red Velvet', price: 850, emoji: 'cake', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
-    { type: 'birthday', id_ref: 'Dutch Truffle', name: 'Dutch Truffle', price: 950, emoji: 'cake', img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180' },
-    { type: 'birthday', id_ref: 'Pineapple', name: 'Pineapple', price: 675, emoji: 'pineapple', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
-    { type: 'birthday', id_ref: 'Chocoholic', name: 'Chocoholic', price: 900, emoji: 'brownie', img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267' },
-    { type: 'birthday', id_ref: 'Black Forest', name: 'Black Forest', price: 750, emoji: 'cake', img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg' },
-    { type: 'birthday', id_ref: 'Cheesecake', name: 'Cheesecake', price: 1200, emoji: 'cheesecake', img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg' },
+    { type: 'standard', id_ref: 1, name: 'Velvet Dream Cake', category: 'cakes', description: 'Soft red velvet sponge layered with smooth cream cheese frosting for a rich and balanced finish.', dummyShop: 'Bliss Central Kitchen', location: 'Krishnagiri', price: 850, emoji: 'cake', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
+    { type: 'standard', id_ref: 2, name: 'Dutch Truffle Delight', category: 'cakes', description: 'Moist chocolate sponge with deep truffle ganache made for intense chocolate lovers.', dummyShop: 'Choco Street Counter', location: 'Hosur', price: 950, emoji: 'cake', img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180' },
+    { type: 'standard', id_ref: 3, name: 'Pineapple Fresh Cream', category: 'cakes', description: 'Fluffy vanilla sponge, juicy pineapple bits, and light whipped cream in a refreshing classic style.', dummyShop: 'Bliss Central Kitchen', location: 'Dharmapuri', price: 675, emoji: 'pineapple', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
+    { type: 'standard', id_ref: 4, name: 'Overload Brownie', category: 'brownies', description: 'Dense cocoa brownie with extra chocolate chunks for a gooey center and crispy top.', dummyShop: 'Brownie Hub Express', location: 'Krishnagiri', price: 120, emoji: 'brownie', img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338' },
+    { type: 'standard', id_ref: 5, name: 'Walnut Fudge', category: 'brownies', description: 'Classic fudge brownie folded with roasted walnuts for added crunch and nutty depth.', dummyShop: 'Brownie Hub Express', location: 'Salem', price: 95, emoji: 'walnut', img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181' },
+    { type: 'standard', id_ref: 6, name: 'Classic Choco', category: 'brownies', description: 'Everyday chocolate brownie with a balanced sweetness and soft bite, perfect for tea-time.', dummyShop: 'Choco Street Counter', location: 'Hosur', price: 80, emoji: 'brownie', img: 'https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg' },
+    { type: 'standard', id_ref: 7, name: 'Chocolate Mousse', category: 'desserts', description: 'Silky mousse whipped from premium dark chocolate, finished with a velvety, airy texture.', dummyShop: 'Dessert Dock', location: 'Krishnagiri', price: 150, emoji: 'dessert', img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427' },
+    { type: 'standard', id_ref: 8, name: 'Tiramisu Jar', category: 'desserts', description: 'Coffee-soaked sponge and creamy mascarpone layers packed in a handy dessert jar.', dummyShop: 'Dessert Dock', location: 'Dharmapuri', price: 180, emoji: 'coffee', img: 'https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg' },
+    { type: 'standard', id_ref: 9, name: 'Choco Chip Cookies', category: 'cookies', description: 'Buttery cookies with premium chocolate chips, baked for crisp edges and chewy centers.', dummyShop: 'Cookie Corner', location: 'Salem', price: 250, emoji: 'cookie', img: 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg' },
+    { type: 'standard', id_ref: 10, name: 'Almond Biscotti', category: 'cookies', description: 'Twice-baked Italian style biscotti with toasted almonds for a crunchy coffee companion.', dummyShop: 'Cookie Corner', location: 'Hosur', price: 300, emoji: 'biscotti', img: 'https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg' },
+    { type: 'birthday', id_ref: 'Red Velvet', name: 'Red Velvet', category: 'cakes', description: 'Signature red velvet celebration cake with cream cheese frosting and a tender crumb.', dummyShop: 'Celebration Cakes Studio', location: 'Krishnagiri', price: 850, emoji: 'cake', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
+    { type: 'birthday', id_ref: 'Dutch Truffle', name: 'Dutch Truffle', category: 'cakes', description: 'Birthday truffle cake layered with rich chocolate ganache and smooth finishing glaze.', dummyShop: 'Celebration Cakes Studio', location: 'Hosur', price: 950, emoji: 'cake', img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180' },
+    { type: 'birthday', id_ref: 'Pineapple', name: 'Pineapple', category: 'cakes', description: 'Light pineapple cream cake with juicy fruit notes and soft sponge for celebrations.', dummyShop: 'Celebration Cakes Studio', location: 'Dharmapuri', price: 675, emoji: 'pineapple', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
+    { type: 'birthday', id_ref: 'Chocoholic', name: 'Chocoholic', category: 'cakes', description: 'Loaded chocolate birthday cake with premium cocoa layers and indulgent frosting.', dummyShop: 'Celebration Cakes Studio', location: 'Salem', price: 900, emoji: 'brownie', img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267' },
+    { type: 'birthday', id_ref: 'Black Forest', name: 'Black Forest', category: 'cakes', description: 'Classic black forest profile with chocolate sponge, whipped cream, and cherry notes.', dummyShop: 'Celebration Cakes Studio', location: 'Krishnagiri', price: 750, emoji: 'cake', img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg' },
+    { type: 'birthday', id_ref: 'Cheesecake', name: 'Cheesecake', category: 'cakes', description: 'Creamy baked cheesecake with a buttery base and smooth finish for premium occasions.', dummyShop: 'Celebration Cakes Studio', location: 'Hosur', price: 1200, emoji: 'cheesecake', img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg' },
   ];
 
   await Product.insertMany(initialProducts);
@@ -258,7 +261,9 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', adminAuth, async (req, res) => {
   try {
-    const { type, name, category, price, emoji, img } = req.body;
+    const {
+      type, name, category, description, dummyShop, location, price, emoji, img,
+    } = req.body;
 
     if (!type || !name || price === undefined) {
       return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -277,6 +282,9 @@ app.post('/api/products', adminAuth, async (req, res) => {
       id_ref,
       name,
       category,
+      description: typeof description === 'string' ? description.trim() : '',
+      dummyShop: typeof dummyShop === 'string' ? dummyShop.trim() : '',
+      location: typeof location === 'string' ? location.trim() : '',
       price: Number(price),
       emoji,
       img,
@@ -291,7 +299,9 @@ app.post('/api/products', adminAuth, async (req, res) => {
 
 app.patch('/api/products/:id', adminAuth, async (req, res) => {
   try {
-    const { price, name, img } = req.body;
+    const {
+      price, name, img, description, dummyShop, location,
+    } = req.body;
     const updateData = {};
 
     if (price !== undefined && !Number.isNaN(Number(price)) && Number(price) >= 0) {
@@ -302,6 +312,15 @@ app.patch('/api/products/:id', adminAuth, async (req, res) => {
     }
     if (img !== undefined) {
       updateData.img = img.trim();
+    }
+    if (description !== undefined) {
+      updateData.description = String(description).trim();
+    }
+    if (dummyShop !== undefined) {
+      updateData.dummyShop = String(dummyShop).trim();
+    }
+    if (location !== undefined) {
+      updateData.location = String(location).trim();
     }
 
     if (Object.keys(updateData).length === 0) {
@@ -483,14 +502,6 @@ function startServer(port) {
     }
     console.error('❌ Server startup error:', err);
     process.exit(1);
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, (err) => {
-    if (err) {
-      console.error('Server startup error:', err);
-      return;
-    }
-
-    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 

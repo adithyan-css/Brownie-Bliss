@@ -39,9 +39,9 @@ const BIRTHDAY_BASE_PRICES = {
 
 // buildCatalogFromList(null);
 const DEFAULT_PRODUCTS = [
-    { id: 1, name: "Velvet Dream Cake", category: "cakes", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
-    { id: 2, name: "Dutch Truffle Delight", category: "cakes", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
-    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
+    { id: 1, name: "Velvet Dream Cake", category: "cakes", description: "Soft red velvet sponge with cream cheese frosting.", dummyShop: "Bliss Central Kitchen", location: "Krishnagiri", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+    { id: 2, name: "Dutch Truffle Delight", category: "cakes", description: "Moist chocolate sponge with rich truffle ganache.", dummyShop: "Choco Street Counter", location: "Hosur", price: 950, img: "https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180" },
+    { id: 3, name: "Pineapple Fresh Cream", category: "cakes", description: "Fresh cream pineapple cake with light sponge layers.", dummyShop: "Bliss Central Kitchen", location: "Dharmapuri", price: 675, img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg" }
 ];
 
 const DEFAULT_BDAY_CAKES = {
@@ -76,7 +76,9 @@ function buildCatalogFromList(list) {
             price: p.price,
             emoji: p.emoji,
             img: p.img,
-            description: p.description || ''
+            description: p.description || '',
+            dummyShop: p.dummyShop || '',
+            location: p.location || ''
         }));
 
         bdayCakes = {};
@@ -109,7 +111,9 @@ async function loadProducts() {
                     price: p.price,
                     emoji: p.emoji,
                     img: p.img,
-                    description: p.description || ''
+                    description: p.description || '',
+                    dummyShop: p.dummyShop || '',
+                    location: p.location || ''
                 }));
 
             bdayCakes = {};
@@ -626,19 +630,26 @@ function sendToWhatsApp() {
 }
 
 let selectedPriceFilter = 'all';
+let selectedShopFilter = 'all';
+let selectedLocationFilter = 'all';
+function getActiveCategory() {
+    const activeTab = document.querySelector('.filter-tab.active');
+    return activeTab ? activeTab.textContent.toLowerCase() : 'all';
+}
 function updatePriceFilter() {
-    selectedPriceFilter =
-        document.getElementById('priceFilter').value;
-
-    const activeTab =
-        document.querySelector('.filter-tab.active');
-
-    const activeCategory =
-        activeTab
-            ? activeTab.textContent.toLowerCase()
-            : 'all';
-
-    filterProducts(activeCategory);
+    const priceFilterEl = document.getElementById('priceFilter');
+    selectedPriceFilter = priceFilterEl ? priceFilterEl.value : 'all';
+    filterProducts(getActiveCategory());
+}
+function updateShopFilter() {
+    const shopFilterEl = document.getElementById('shopFilter');
+    selectedShopFilter = shopFilterEl ? shopFilterEl.value : 'all';
+    filterProducts(getActiveCategory());
+}
+function updateLocationFilter() {
+    const locationFilterEl = document.getElementById('locationFilter');
+    selectedLocationFilter = locationFilterEl ? locationFilterEl.value : 'all';
+    filterProducts(getActiveCategory());
 }
 // --- PRODUCT FILTERING ---
 function filterProducts(category, btn) {
@@ -667,6 +678,14 @@ else if (selectedPriceFilter === 'above500') {
     filtered = filtered.filter(p => p.price > 500);
 }
 
+if (selectedShopFilter !== 'all') {
+    filtered = filtered.filter(p => (p.dummyShop || '').toLowerCase() === selectedShopFilter.toLowerCase());
+}
+
+if (selectedLocationFilter !== 'all') {
+    filtered = filtered.filter(p => (p.location || '').toLowerCase() === selectedLocationFilter.toLowerCase());
+}
+
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
             <div class="product-img-wrap">
@@ -687,6 +706,7 @@ else if (selectedPriceFilter === 'above500') {
                 <div class="product-category">${p.category}</div>
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                ${(p.dummyShop || p.location) ? `<div class="product-desc">${p.dummyShop || ''}${p.dummyShop && p.location ? ' • ' : ''}${p.location || ''}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
                 <button class="add-to-cart">
                     Customize & Add
@@ -695,6 +715,8 @@ else if (selectedPriceFilter === 'above500') {
         </div>
     `).join('');
 }
+window.updateShopFilter = updateShopFilter;
+window.updateLocationFilter = updateLocationFilter;
 
 // --- BIRTHDAY CAKE BUILDER ---
 // bdayCakes object is now populated dynamically via loadProducts()

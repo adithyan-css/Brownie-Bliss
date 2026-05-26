@@ -230,6 +230,26 @@
               <option value="desserts">Desserts</option>
             </select>
           </div>
+          <div>
+            <label
+              style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Description</label>
+            <textarea id="newProdDescription" rows="3" placeholder="Write a user-friendly product description..."
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';resize:vertical;"></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <label
+                style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Dummy Shop</label>
+              <input type="text" id="newProdDummyShop" placeholder="e.g. Bliss Central Kitchen"
+                style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:12px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">Location</label>
+              <input type="text" id="newProdLocation" placeholder="e.g. Krishnagiri"
+                style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:'DM Sans';">
+            </div>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
             <div>
               <label
@@ -678,11 +698,16 @@
           </td>
           <td style="font-weight:600;color:var(--brown-dark)">
             <div id="name_view_${p._id}">
-              ${p.emoji || ''} ${p.name}
+              <div>${p.emoji || ''} ${p.name}</div>
+              ${p.description ? `<div style="font-size:11px;color:#666;font-weight:500;margin-top:4px;">${p.description}</div>` : ''}
+              ${(p.dummyShop || p.location) ? `<div style="font-size:11px;color:#8a6f5d;margin-top:3px;">${p.dummyShop || ''}${p.dummyShop && p.location ? ' • ' : ''}${p.location || ''}</div>` : ''}
               <button onclick="toggleEditProduct('${p._id}')" class="btn-outline" style="padding:2px 6px;font-size:10px;margin-left:8px;border:1px solid #ddd;">✎</button>
             </div>
             <div id="name_edit_${p._id}" style="display:none;">
               <input type="text" id="input_name_${p._id}" value="${p.name}" style="width:140px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-size:12px;">
+              <textarea id="input_description_${p._id}" rows="2" placeholder="Description" style="width:100%;margin-top:6px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-size:12px;resize:vertical;">${p.description || ''}</textarea>
+              <input type="text" id="input_dummyShop_${p._id}" value="${p.dummyShop || ''}" placeholder="Dummy Shop" style="width:100%;margin-top:6px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-size:12px;">
+              <input type="text" id="input_location_${p._id}" value="${p.location || ''}" placeholder="Location" style="width:100%;margin-top:6px;padding:6px;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans';font-size:12px;">
             </div>
           </td>
           <td style="text-transform:uppercase;font-size:12px;letter-spacing:1px;color:#888;">${p.type === 'birthday' ? 'Birthday Cake' : p.category}</td>
@@ -726,6 +751,12 @@
       // Optional fields if they are being displayed/edited
       const nameInput = document.getElementById(`input_name_${id}`);
       if (nameInput) payload.name = nameInput.value;
+      const descriptionInput = document.getElementById(`input_description_${id}`);
+      if (descriptionInput) payload.description = descriptionInput.value;
+      const dummyShopInput = document.getElementById(`input_dummyShop_${id}`);
+      if (dummyShopInput) payload.dummyShop = dummyShopInput.value;
+      const locationInput = document.getElementById(`input_location_${id}`);
+      if (locationInput) payload.location = locationInput.value;
 
       if (isNaN(newPrice) || newPrice < 0) {
         showToast('Invalid price');
@@ -786,6 +817,9 @@
       const type = document.getElementById('newProdType').value;
       const name = document.getElementById('newProdName').value;
       const category = document.getElementById('newProdCategory').value;
+      const description = document.getElementById('newProdDescription').value;
+      const dummyShop = document.getElementById('newProdDummyShop').value;
+      const location = document.getElementById('newProdLocation').value;
       const price = Number(document.getElementById('newProdPrice').value);
       const emoji = document.getElementById('newProdEmoji').value;
       const img = document.getElementById('newProdImg').value;
@@ -799,7 +833,17 @@
         const res = await authFetch(`${API}/products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type, name, category: type === 'birthday' ? 'cakes' : category, price, emoji, img })
+          body: JSON.stringify({
+            type,
+            name,
+            category: type === 'birthday' ? 'cakes' : category,
+            description,
+            dummyShop,
+            location,
+            price,
+            emoji,
+            img
+          })
         });
         const data = await res.json();
         if (data.success) {
@@ -807,6 +851,9 @@
           closeAddProductModal();
           // Reset form
           document.getElementById('newProdName').value = '';
+          document.getElementById('newProdDescription').value = '';
+          document.getElementById('newProdDummyShop').value = '';
+          document.getElementById('newProdLocation').value = '';
           document.getElementById('newProdPrice').value = '';
           document.getElementById('newProdImg').value = '';
           loadProducts(); // refresh table

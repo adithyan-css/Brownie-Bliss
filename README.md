@@ -131,6 +131,14 @@ msg91.sendOTP(phone, otp);
 - Add more order statuses in `admin.html`
 - Modify receipt template in `admin.html` → `viewReceipt()` function
 
+### Product metadata fields
+Products now support richer catalog metadata through `/api/products`:
+- `description` — user-friendly product details
+- `dummyShop` — dummy store/category grouping
+- `location` — city/region availability
+
+Use these fields in admin product management and frontend filters to improve product discovery.
+
 ---
 
 ## 🔐 Admin Security (Production)
