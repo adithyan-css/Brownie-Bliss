@@ -59,6 +59,11 @@ const inMemoryProducts = STATIC_CATALOG.map((p, idx) => ({
 
 const inMemoryOrders = [];
 const inMemoryOtps = [];
+if (!MONGO_URI) {
+  console.warn(
+    'MONGO_URI is not set. Database-backed API routes will fail until it is configured.'
+  );
+}
 
 let isConnected = false;
 
@@ -87,36 +92,49 @@ async function connectDB() {
   }
 }
 
-const orderItemSchema = new mongoose.Schema({
-  id: { type: Number },
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  qty: { type: Number, required: true },
-  emoji: { type: String, default: 'brownie' },
-  category: { type: String },
-}, { _id: false });
+const orderItemSchema = new mongoose.Schema(
+  {
+    id: { type: Number },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    qty: { type: Number, required: true },
+    emoji: { type: String, default: 'brownie' },
+    category: { type: String },
+  },
+  { _id: false }
+);
 
-const orderSchema = new mongoose.Schema({
-  order_id: { type: String, unique: true, required: true },
-  customer_name: { type: String, required: true },
-  phone: { type: String, required: true },
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  pincode: { type: String, required: true },
-  items: { type: [orderItemSchema], required: true },
-  total: { type: Number, required: true },
-  status: { type: String, enum: ORDER_STATUSES, default: 'pending' },
-  payment_status: { type: String, enum: ['unpaid', 'paid'], default: 'unpaid' },
-  notes: { type: String, default: '' },
-  confirmed_at: { type: Date, default: null },
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
+const orderSchema = new mongoose.Schema(
+  {
+    order_id: { type: String, unique: true, required: true },
+    customer_name: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    pincode: { type: String, required: true },
+    items: { type: [orderItemSchema], required: true },
+    total: { type: Number, required: true },
+    status: { type: String, enum: ORDER_STATUSES, default: 'pending' },
+    payment_status: {
+      type: String,
+      enum: ['unpaid', 'paid'],
+      default: 'unpaid',
+    },
+    notes: { type: String, default: '' },
+    confirmed_at: { type: Date, default: null },
+  },
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
+);
 
-const otpSchema = new mongoose.Schema({
-  phone: { type: String, required: true },
-  otp: { type: String, required: true },
-  expires_at: { type: Date, required: true },
-  used: { type: Boolean, default: false },
-}, { timestamps: { createdAt: 'created_at' } });
+const otpSchema = new mongoose.Schema(
+  {
+    phone: { type: String, required: true },
+    otp: { type: String, required: true },
+    expires_at: { type: Date, required: true },
+    used: { type: Boolean, default: false },
+  },
+  { timestamps: { createdAt: 'created_at' } }
+);
 
 otpSchema.index({ expires_at: 1 }, { expireAfterSeconds: 0 });
 
@@ -135,13 +153,14 @@ const productSchema = new mongoose.Schema({
 
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 const Otp = mongoose.models.Otp || mongoose.model('Otp', otpSchema);
-const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+const Product =
+  mongoose.models.Product || mongoose.model('Product', productSchema);
 
 async function seedProducts() {
   const count = await Product.countDocuments();
   if (count > 0) return;
 
-  await Product.insertMany(STATIC_CATALOG);
+await Product.insertMany(STATIC_CATALOG);
   console.log('Seeded initial products to database');
 }
 
@@ -163,7 +182,12 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (err) {
-    res.status(503).json({ success: false, message: `Database connection failed: ${err.message}` });
+    res
+      .status(503)
+      .json({
+        success: false,
+        message: `Database connection failed: ${err.message}`,
+      });
   }
 });
 
@@ -171,15 +195,21 @@ app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body || {};
 
   if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_JWT_SECRET) {
-    return res.status(500).json({ success: false, message: 'Admin auth not configured' });
+    return res
+      .status(500)
+      .json({ success: false, message: 'Admin auth not configured' });
   }
 
   if (!username || !password) {
-    return res.status(400).json({ success: false, message: 'Username and password are required' });
+    return res
+      .status(400)
+      .json({ success: false, message: 'Username and password are required' });
   }
 
   if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-    return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    return res
+      .status(401)
+      .json({ success: false, message: 'Invalid credentials' });
   }
 
   const token = jwt.sign({ username: ADMIN_USERNAME }, ADMIN_JWT_SECRET, {
@@ -193,7 +223,9 @@ app.post('/api/send-otp', async (req, res) => {
   try {
     const { phone } = req.body;
     if (!phone || phone.length < 10) {
-      return res.status(400).json({ success: false, message: 'Invalid phone number' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid phone number' });
     }
 
     if (!isConnected) {
@@ -253,7 +285,10 @@ app.post('/api/send-otp', async (req, res) => {
         });
         console.log(`SMS sent to ${phone}`);
       } catch (smsErr) {
-        console.error('Fast2SMS Error:', smsErr.response ? smsErr.response.data : smsErr.message);
+        console.error(
+          'Fast2SMS Error:',
+          smsErr.response ? smsErr.response.data : smsErr.message
+        );
       }
     } else {
       console.log(`[DEMO MODE] OTP for ${phone}: ${otp}`);
@@ -292,7 +327,9 @@ app.post('/api/verify-otp', async (req, res) => {
     }).sort({ created_at: -1 });
 
     if (!record) {
-      return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid or expired OTP' });
     }
 
     record.used = true;
@@ -321,12 +358,22 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', adminAuth, async (req, res) => {
   try {
-    const {
-      type, name, category, description, dummyShop, location, price, emoji, img,
-    } = req.body;
+const {
+  type,
+  name,
+  category,
+  description,
+  dummyShop,
+  location,
+  price,
+  emoji,
+  img,
+} = req.body;
 
     if (!type || !name || price === undefined) {
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Missing required fields' });
     }
 
     if (!isConnected) {
@@ -359,8 +406,13 @@ app.post('/api/products', adminAuth, async (req, res) => {
 
     let id_ref;
     if (type === 'standard') {
-      const lastProduct = await Product.findOne({ type: 'standard' }).sort({ id_ref: -1 });
-      id_ref = lastProduct && typeof lastProduct.id_ref === 'number' ? lastProduct.id_ref + 1 : 1;
+      const lastProduct = await Product.findOne({ type: 'standard' }).sort({
+        id_ref: -1,
+      });
+      id_ref =
+        lastProduct && typeof lastProduct.id_ref === 'number'
+          ? lastProduct.id_ref + 1
+          : 1;
     } else {
       id_ref = name;
     }
@@ -392,7 +444,11 @@ app.patch('/api/products/:id', adminAuth, async (req, res) => {
     } = req.body;
     const updateData = {};
 
-    if (price !== undefined && !Number.isNaN(Number(price)) && Number(price) >= 0) {
+    if (
+      price !== undefined &&
+      !Number.isNaN(Number(price)) &&
+      Number(price) >= 0
+    ) {
       updateData.price = Number(price);
     }
     if (name !== undefined && name.trim() !== '') {
@@ -412,7 +468,12 @@ app.patch('/api/products/:id', adminAuth, async (req, res) => {
     }
 
     if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({ success: false, message: 'No valid fields provided for update' });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: 'No valid fields provided for update',
+        });
     }
 
     if (!isConnected) {
@@ -429,7 +490,9 @@ app.patch('/api/products/:id', adminAuth, async (req, res) => {
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
     if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found' });
     }
 
     res.json({ success: true, product });
@@ -453,7 +516,9 @@ app.delete('/api/products/:id', adminAuth, async (req, res) => {
 
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found' });
     }
     res.json({ success: true, message: 'Product deleted' });
   } catch (err) {
@@ -464,10 +529,21 @@ app.delete('/api/products/:id', adminAuth, async (req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   try {
-    const { customer_name, phone, address, city, pincode, items, total } = req.body;
+    const { customer_name, phone, address, city, pincode, items, total } =
+      req.body;
 
-    if (!customer_name || !phone || !address || !city || !pincode || !items || !total) {
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    if (
+      !customer_name ||
+      !phone ||
+      !address ||
+      !city ||
+      !pincode ||
+      !items ||
+      !total
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Missing required fields' });
     }
 
     if (!isConnected) {
@@ -504,7 +580,11 @@ app.post('/api/orders', async (req, res) => {
       total,
     });
 
-    res.json({ success: true, order_id: order.order_id, message: 'Order placed successfully' });
+    res.json({
+      success: true,
+      order_id: order.order_id,
+      message: 'Order placed successfully',
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: err.message });
@@ -548,7 +628,10 @@ app.get('/api/orders/:orderId', adminAuth, async (req, res) => {
     }
 
     const order = await Order.findOne({ order_id: req.params.orderId }).lean();
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    if (!order)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Order not found' });
     res.json({ success: true, order });
   } catch (err) {
     console.error(err);
@@ -590,14 +673,16 @@ app.patch('/api/orders/:orderId/confirm-payment', adminAuth, async (req, res) =>
     console.error(err);
     res.status(500).json({ success: false, message: 'Server error' });
   }
-});
+);
 
 app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
   try {
     const { status } = req.body;
 
     if (!ORDER_STATUSES.includes(status)) {
-      return res.status(400).json({ success: false, message: 'Invalid order status' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid order status' });
     }
 
     if (!isConnected) {
@@ -615,7 +700,10 @@ app.patch('/api/orders/:orderId/status', adminAuth, async (req, res) => {
       { new: true }
     );
 
-    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    if (!order)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Order not found' });
     res.json({ success: true });
   } catch (err) {
     console.error(err);
@@ -687,20 +775,23 @@ function startServer(port) {
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE' && !process.env.PORT) {
       const nextPort = Number(port) + 1;
-      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+
+      console.warn(`⚠️ Port ${port} is already in use. Trying ${nextPort}...`);
+
       startServer(nextPort);
       return;
     }
+
     console.error('❌ Server startup error:', err);
     process.exit(1);
   });
 }
 
-// ─── LOCAL PORT BINDING ────────────────────────────────────────────────────────
+// ─── START LOCAL SERVER ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
   startServer(PORT);
 }
 
+// ─── EXPORTS ───────────────────────────────────────────────────────────────────
 module.exports = app;
 module.exports.handler = serverless(app);

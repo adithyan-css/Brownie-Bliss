@@ -44,20 +44,40 @@ async function getAllProducts(req, res) {
 async function createProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
+      return res
+        .status(503)
+        .json({
+          success: false,
+          message: 'Product admin requires MongoDB (set MONGO_URI).',
+        });
     }
-    const {
-      type, name, category, description, dummyShop, location, price, emoji, img,
-    } = req.body;
+const {
+  type,
+  name,
+  category,
+  description,
+  dummyShop,
+  location,
+  price,
+  emoji,
+  img,
+} = req.body;
 
     if (!type || !name || price === undefined) {
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
+      return res
+        .status(400)
+        .json({ success: false, message: 'Missing required fields' });
     }
 
     let id_ref;
     if (type === 'standard') {
-      const lastProduct = await Product.findOne({ type: 'standard' }).sort({ id_ref: -1 });
-      id_ref = lastProduct && typeof lastProduct.id_ref === 'number' ? lastProduct.id_ref + 1 : 1;
+      const lastProduct = await Product.findOne({ type: 'standard' }).sort({
+        id_ref: -1,
+      });
+      id_ref =
+        lastProduct && typeof lastProduct.id_ref === 'number'
+          ? lastProduct.id_ref + 1
+          : 1;
     } else {
       id_ref = name;
     }
@@ -84,14 +104,20 @@ async function createProduct(req, res) {
 async function updateProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
+      return res
+        .status(503)
+        .json({
+          success: false,
+          message: 'Product admin requires MongoDB (set MONGO_URI).',
+        });
     }
     const {
       price, name, img, description, dummyShop, location,
     } = req.body;
     const updateData = {};
 
-    if (price !== undefined && !isNaN(price) && price >= 0) updateData.price = Number(price);
+    if (price !== undefined && !isNaN(price) && price >= 0)
+      updateData.price = Number(price);
     if (name !== undefined && name.trim() !== '') updateData.name = name.trim();
     if (img !== undefined) updateData.img = img.trim();
     if (description !== undefined) updateData.description = String(description).trim();
@@ -99,11 +125,21 @@ async function updateProduct(req, res) {
     if (location !== undefined) updateData.location = String(location).trim();
 
     if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({ success: false, message: 'No valid fields provided for update' });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: 'No valid fields provided for update',
+        });
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true });
-    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
+    if (!product)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found' });
 
     res.json({ success: true, product });
   } catch (err) {
@@ -115,10 +151,18 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
+      return res
+        .status(503)
+        .json({
+          success: false,
+          message: 'Product admin requires MongoDB (set MONGO_URI).',
+        });
     }
     const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+    if (!product)
+      return res
+        .status(404)
+        .json({ success: false, message: 'Product not found' });
     res.json({ success: true, message: 'Product deleted' });
   } catch (err) {
     console.error(err);
@@ -126,4 +170,9 @@ async function deleteProduct(req, res) {
   }
 }
 
-module.exports = { getAllProducts, createProduct, updateProduct, deleteProduct };
+module.exports = {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
