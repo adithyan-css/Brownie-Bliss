@@ -454,6 +454,22 @@ function renderRecentSearches() {
     return;
   }
 
+
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card" onclick='trackViewedProduct(${JSON.stringify(p).replace(/'/g, "&#39;")}); openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+            <div class="product-img-wrap">
+                <img src="${p.img}" alt="${p.name}">
+                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+                    type="button"
+                    data-fav-type="dishes"
+                    data-fav-id="${p.id}"
+                    aria-label="Toggle ${p.name} favourite"
+                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+                    onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+                </button>
+                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
   container.innerHTML = `
         ${recentSearches
           .map(
@@ -463,6 +479,7 @@ function renderRecentSearches() {
                 onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
             >
                 ${search}
+
             </div>
             <div class="product-info">
                 <div class="product-category">${p.category}</div>
@@ -661,9 +678,42 @@ function getBirthdayFavouriteItem() {
   };
 }
 
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(localStorage.getItem('bb_theme') || 'light');
+    updateCartUI();
+    loadProducts(); // Load and then automatically re-render main grid/birthday block
+    updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+    updateFavouritesCount();
+    renderFavouritesPage();
+
+    // Track Order auto-fill if on track.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    const input = document.getElementById('orderIdInput');
+    if (idParam && input) {
+        input.value = idParam;
+        trackOrder(idParam);
+    }
+    loadProducts();
+        renderRecommendations();
+
+    const wishlistCount =
+        document.getElementById("wishlistCount");
+
+    if (wishlistCount) {
+        wishlistCount.textContent =
+            `${favourites.dishes.length} Desserts`;
+    }
+});
+// Show/hide button on scroll
+window.addEventListener("scroll", function () {
+    const btn = document.getElementById("scrollTopBtn");
+
 function updateBirthdayFavouriteButton() {
   const btn = document.getElementById('birthdayFavoriteBtn');
   if (!btn) return;
+
 
   const item = getBirthdayFavouriteItem();
   const active = isFavourite('dishes', item.id);
@@ -750,6 +800,97 @@ if (typeof AOS !== 'undefined') {
     easing: 'ease-in-out',
   });
 }
+
+// ===============================
+// PERSONALIZED RECOMMENDATION SYSTEM
+// ===============================
+
+const RECENTLY_VIEWED_KEY = "bb_recently_viewed";
+
+// SAVE VIEWED PRODUCT
+function trackViewedProduct(product) {
+
+    let viewed =
+        JSON.parse(
+            localStorage.getItem(RECENTLY_VIEWED_KEY)
+        ) || [];
+
+    // remove duplicate
+    viewed = viewed.filter(p => p.id !== product.id);
+
+    // add latest at beginning
+    viewed.unshift(product);
+
+    // keep only latest 6
+    viewed = viewed.slice(0, 6);
+
+    localStorage.setItem(
+        RECENTLY_VIEWED_KEY,
+        JSON.stringify(viewed)
+    );
+
+    renderRecommendations();
+}
+
+// LOAD RECENT PRODUCTS
+function getRecentlyViewedProducts() {
+
+    return JSON.parse(
+        localStorage.getItem(RECENTLY_VIEWED_KEY)
+    ) || [];
+
+    // RENDER RECOMMENDATIONS
+function renderRecommendations() {
+
+    const recommendationSection =
+        document.querySelector(".recommendation-grid");
+
+    if (!recommendationSection) return;
+
+    const viewed = getRecentlyViewedProducts();
+
+    // fallback products
+    const recommended =
+        viewed.length
+            ? viewed
+            : products.slice(0, 3);
+
+    recommendationSection.innerHTML =
+        recommended.map(item => `
+            <div class="recommendation-card">
+                <img src="${item.img}" alt="${item.name}">
+               <div class="recommendation-top">
+                    <span class="trend-badge">🔥 Trending</span>
+                    </div>
+
+                    <h3>${item.name}</h3>
+                <p>
+                    Premium handcrafted dessert specially
+                    recommended based on your taste preferences.
+                </p>
+            </div>
+        `).join('');
+}
+
+AOS.init({
+  duration: 1000,
+  once: true,
+  easing: "ease-in-out"
+});
+    const message = document.getElementById('customizeMessage').value.trim();
+
+    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
+    const finalPrice = _customizeProduct.price + toppingsTotal;
+
+    const cartItem = {
+        ..._customizeProduct,
+        price: finalPrice,
+        customizations: {
+            dietary,
+            toppings,
+            message
+        }
+    };
 // ============================================================
 // TOAST
 // ============================================================
@@ -797,3 +938,4 @@ function scrollToTop() {
 window.filterProducts = filterProducts;
 window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
+

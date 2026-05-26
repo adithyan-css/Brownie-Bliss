@@ -10677,6 +10677,146 @@ html.dark .toast {
   margin-bottom: 14px;
 }
 
+
+#scrollTopBtn:hover {
+    background-color: #8b5a3c;
+    transform: scale(1.1);
+}
+/* PERSONALIZED DASHBOARD */
+
+.recommendation-dashboard {
+  padding: 100px 30px;
+  background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
+}
+
+.dashboard-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.taste-card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  border-top: 4px solid var(--gold);
+  text-align: center;
+}
+
+.taste-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.taste-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.taste-card h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--brown-dark);
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.taste-card p {
+  color: var(--text-mid);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* RECOMMENDATION GRID */
+
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.recommendation-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: all 0.35s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.15),
+    0 0 25px rgba(197,139,69,0.35);
+}
+
+.recommendation-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.recommendation-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--brown-dark);
+  padding: 24px 24px 10px;
+}
+
+.recommendation-card p {
+  padding: 0 24px 24px;
+  color: var(--text-mid);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 768px) {
+
+  .recommendation-dashboard {
+    padding: 70px 20px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .recommendation-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+.recommendation-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  color: var(--brown-dark);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.recommendation-top {
+  padding: 18px 24px 0;
+}
+
+.trend-badge {
+  background: linear-gradient(135deg, #8b4513, #c58b45);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 .legal-card p {
   color: var(--text-mid);
   line-height: 1.8;
