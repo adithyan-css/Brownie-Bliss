@@ -1,116 +1,1414 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brownie Bliss — Our Full Range</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('bb_theme') || 'light';
+          if (t === 'dark') document.documentElement.classList.add('dark');
+        } catch (_) {}
+      })();
+    </script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Products — Freshly Baked Delights</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
+    <style>
+      /* ─── DESIGN TOKENS ─────────────────────────────────────────────── */
+      :root {
+        --gold: #c8963e;
+        --gold-light: #e8c878;
+        --gold-pale: #fdf6e7;
+        --gold-glow: rgba(200, 150, 62, 0.15);
+        --brown: #2c1a0e;
+        --brown-mid: #5c3d1e;
+        --brown-light: #a07040;
+        --cream: #faf6f0;
+        --cream-dark: #f0e8d8;
+        --cream-mid: #f5ede0;
+        --text: #1e1108;
+        --text-mid: #6b4c2a;
+        --text-light: #a88060;
+        --card-bg: #fffdf8;
+        --border: rgba(200, 150, 62, 0.2);
+        --border-soft: rgba(200, 150, 62, 0.1);
+        --shadow-card: 0 8px 32px rgba(44, 26, 14, 0.1);
+        --shadow-hover: 0 24px 56px rgba(44, 26, 14, 0.18);
+        --radius: 18px;
+        --radius-sm: 10px;
+        --radius-pill: 999px;
+      }
 
-<body>
+      .dark {
+        --cream: #141008;
+        --cream-dark: #1e160a;
+        --cream-mid: #1a1208;
+        --card-bg: #1c1409;
+        --text: #f5ede0;
+        --text-mid: #c8a878;
+        --text-light: #8a6840;
+        --border: rgba(200, 150, 62, 0.18);
+        --border-soft: rgba(200, 150, 62, 0.08);
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 24px 56px rgba(0, 0, 0, 0.5);
+      }
 
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+      /* ─── BASE RESET ────────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-  <!-- HEADER -->
-  <header>
-    <div class="header-inner">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      <a href="index.html" class="logo">
-        <span class="logo-name">Brownie Bliss</span>
-        <span class="logo-sub">Homemade Treats</span>
-      </a>
-      <nav>
-        <a href="index.html#home">Home</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#birthday">Birthday Cakes</a>
-        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
-        <a href="index.html#contact">Contact</a>
-        <a href="track.html">Track Order</a>
-      </nav>
-      <div class="header-actions">
-        <button class="cart-btn" onclick="openCart()">
-          🛒 Cart
-          <span class="cart-count" id="cartBadge">0</span>
-        </button>
-      </div>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--cream);
+        color: var(--text);
+        min-height: 100vh;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* ─── ANNOUNCEMENT BAR ──────────────────────────────────────────── */
+      .announcement {
+        background: var(--brown);
+        color: var(--gold-light);
+        text-align: center;
+        padding: 11px 20px;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-family: 'Outfit', sans-serif;
+      }
+
+      /* ─── HEADER / NAV ──────────────────────────────────────────────── */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(250, 246, 240, 0.94);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border);
+        transition: background 0.3s;
+      }
+
+      .dark header {
+        background: rgba(20, 16, 8, 0.94);
+      }
+
+      .header-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 36px;
+        height: 74px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      /* Logo */
+      a.logo,
+      .logo {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+        text-decoration: none;
+        flex-shrink: 0;
+      }
+
+      .logo-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--brown);
+        letter-spacing: 0.01em;
+        transition: color 0.2s;
+      }
+
+      .dark .logo-name {
+        color: var(--gold-light);
+      }
+
+      .logo-sub {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-light);
+        margin-top: 3px;
+        font-weight: 500;
+      }
+
+      /* Nav links */
+      header nav {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        flex: 1;
+        flex-wrap: wrap;
+      }
+
+      header nav a {
+        padding: 8px 13px;
+        font-size: 0.8rem;
+        color: var(--text-mid);
+        font-weight: 500;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s;
+        white-space: nowrap;
+        position: relative;
+      }
+
+      header nav a:hover {
+        color: var(--gold);
+        background: var(--gold-glow);
+      }
+
+      header nav a.active {
+        color: var(--gold);
+        background: var(--gold-glow);
+      }
+
+      .nav-count {
+        background: var(--gold);
+        color: var(--brown);
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: var(--radius-pill);
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+
+      /* Header actions */
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .theme-toggle-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--card-bg);
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s;
+      }
+
+      .theme-toggle-btn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        transform: rotate(20deg);
+      }
+
+      .cart-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--brown);
+        color: var(--gold-light);
+        border: none;
+        padding: 10px 22px;
+        border-radius: var(--radius-pill);
+        font-size: 0.8rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: all 0.25s;
+        white-space: nowrap;
+      }
+
+      .cart-btn:hover {
+        background: var(--gold);
+        color: var(--brown);
+        transform: translateY(-1px);
+      }
+
+      .cart-count {
+        background: var(--gold);
+        color: var(--brown);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        font-size: 0.68rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      /* Hamburger */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--border);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        color: var(--text);
+        margin-left: auto;
+      }
+
+      /* Mobile menu */
+      .mobile-menu {
+        display: none;
+        flex-direction: column;
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      .mobile-menu a {
+        padding: 13px 28px;
+        font-size: 0.9rem;
+        color: var(--text-mid);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+      }
+
+      .mobile-menu a:hover {
+        color: var(--gold);
+        background: var(--gold-glow);
+        border-left-color: var(--gold);
+      }
+
+      .mobile-menu.open {
+        display: flex;
+      }
+
+      /* ─── PAGE HERO ─────────────────────────────────────────────────── */
+      .page-header {
+        padding: 80px 36px 64px;
+        text-align: center;
+        background: var(--cream-dark);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+          circle,
+          rgba(200, 150, 62, 0.12) 1px,
+          transparent 1px
+        );
+        background-size: 36px 36px;
+        pointer-events: none;
+      }
+
+      .page-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(to top, var(--cream), transparent);
+      }
+
+      .page-header h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2.8rem, 7vw, 4.6rem);
+        font-weight: 700;
+        color: var(--brown);
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .dark .page-header h1 {
+        color: var(--gold-pale);
+      }
+
+      .page-header h1 em {
+        color: var(--gold);
+        font-style: italic;
+        font-weight: 600;
+      }
+
+      .page-header p {
+        margin-top: 18px;
+        color: var(--text-light);
+        font-size: 1.05rem;
+        font-weight: 300;
+        letter-spacing: 0.03em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-header-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 30px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-header-divider span {
+        height: 1px;
+        width: 80px;
+        background: var(--gold-light);
+        opacity: 0.6;
+      }
+
+      .page-header-divider small {
+        font-size: 0.68rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      /* ─── PRODUCTS INNER WRAPPER ────────────────────────────────────── */
+      .products-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+      }
+
+      /* ─── SEARCH SECTION ────────────────────────────────────────────── */
+      .search-section {
+        max-width: 680px;
+        margin: 52px auto 48px;
+      }
+
+      .search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: var(--card-bg);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-pill);
+        box-shadow: var(--shadow-card);
+        transition: all 0.3s ease;
+      }
+
+      .search-box:focus-within {
+        border-color: var(--gold);
+        box-shadow: 0 4px 32px rgba(200, 150, 62, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 22px;
+        font-size: 1rem;
+        opacity: 0.5;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .product-search-input {
+        width: 100%;
+        padding: 17px 52px 17px 54px;
+        border: none;
+        outline: none;
+        font-size: 0.95rem;
+        font-family: 'Outfit', sans-serif;
+        color: var(--text);
+        background: transparent;
+        border-radius: var(--radius-pill);
+      }
+
+      .product-search-input::placeholder {
+        color: var(--text-light);
+        font-weight: 300;
+      }
+
+      .clear-search-btn {
+        position: absolute;
+        right: 14px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: none;
+        background: var(--cream-dark);
+        cursor: pointer;
+        font-size: 0.78rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        color: var(--text-mid);
+      }
+
+      .clear-search-btn:hover {
+        background: var(--gold);
+        color: white;
+      }
+
+      /* Search suggestions */
+      .search-suggestions {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .search-suggestion-item {
+        padding: 8px 18px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 500;
+        color: var(--text-mid);
+        transition: all 0.22s ease;
+        letter-spacing: 0.03em;
+      }
+
+      .search-suggestion-item:hover {
+        background: var(--brown);
+        color: var(--gold-light);
+        border-color: var(--brown);
+        transform: translateY(-2px);
+      }
+
+      /* Recent searches */
+      .recent-searches {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .recent-search-tag {
+        background: var(--gold-glow);
+        border: 1px solid var(--border-soft);
+        padding: 7px 16px;
+        border-radius: var(--radius-pill);
+        font-size: 0.78rem;
+        cursor: pointer;
+        color: var(--text-mid);
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+
+      .recent-search-tag:hover {
+        background: var(--gold);
+        color: var(--brown);
+        border-color: var(--gold);
+      }
+
+      /* ─── PRODUCTS GRID ─────────────────────────────────────────────── */
+      .all-products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 28px;
+      }
+
+      /* ─── PRODUCT CARD (injected by script.js) ──────────────────────── */
+      /*
+        script.js renders cards into #productsGrid.
+        We style the classes it commonly uses:
+        .product-card, .product-img / .product-image-wrap,
+        .product-info / .product-body, .product-name, .product-desc,
+        .product-price, .add-to-cart-btn / .add-btn,
+        .product-badge, .fav-btn
+      */
+
+      .product-card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.32s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        animation: bbFadeUp 0.5s both;
+      }
+
+      .product-card:hover {
+        transform: translateY(-9px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      /* Image wrapper */
+      .product-image-wrap,
+      .product-img-wrap,
+      .card-image-wrap {
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+        background: var(--cream-dark);
+        flex-shrink: 0;
+      }
+
+      .product-image-wrap img,
+      .product-img-wrap img,
+      .card-image-wrap img,
+      .product-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+      }
+
+      .product-card:hover .product-image-wrap img,
+      .product-card:hover .product-img-wrap img,
+      .product-card:hover .card-image-wrap img {
+        transform: scale(1.07);
+      }
+
+      /* Badge */
+      .product-badge,
+      .card-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: var(--brown);
+        color: var(--gold-light);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 5px 13px;
+        border-radius: var(--radius-pill);
+        font-family: 'Outfit', sans-serif;
+        z-index: 2;
+      }
+
+      /* Fav button */
+      .fav-btn,
+      .favourite-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(6px);
+        cursor: pointer;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.22s;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+      }
+
+      .fav-btn:hover,
+      .favourite-btn:hover {
+        background: white;
+        transform: scale(1.15);
+      }
+
+      .fav-btn.active,
+      .favourite-btn.active {
+        background: #fee2e2;
+      }
+
+      /* Card body */
+      .product-info,
+      .product-body,
+      .card-body {
+        padding: 20px 22px 22px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      .product-category,
+      .card-category {
+        font-size: 0.65rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-light);
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-family: 'Outfit', sans-serif;
+      }
+
+      .product-name,
+      .card-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--brown);
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+
+      .dark .product-name,
+      .dark .card-name {
+        color: var(--gold-pale);
+      }
+
+      .product-desc,
+      .card-desc {
+        font-size: 0.81rem;
+        color: var(--text-light);
+        line-height: 1.65;
+        font-weight: 300;
+        margin-bottom: 18px;
+        flex: 1;
+      }
+
+      /* Price + CTA row */
+      .product-footer,
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: auto;
+      }
+
+      .product-price,
+      .card-price {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+      }
+
+      .product-price small,
+      .card-price small {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 400;
+        font-family: 'Outfit', sans-serif;
+        color: var(--text-light);
+        margin-top: 3px;
+      }
+
+      .add-to-cart-btn,
+      .add-btn,
+      .add-cart-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--brown);
+        color: var(--gold-light);
+        border: none;
+        padding: 10px 18px;
+        border-radius: var(--radius-pill);
+        font-size: 0.75rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        transition: all 0.25s;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .add-to-cart-btn:hover,
+      .add-btn:hover,
+      .add-cart-btn:hover {
+        background: var(--gold);
+        color: var(--brown);
+        transform: translateY(-1px);
+      }
+
+      .add-to-cart-btn.added,
+      .add-btn.added,
+      .add-cart-btn.added {
+        background: #2d6a4f;
+        color: #d8f3dc;
+      }
+
+      /* Highlight match */
+      .highlight-match {
+        background: rgba(200, 150, 62, 0.28);
+        border-radius: 4px;
+        padding: 0 3px;
+      }
+
+      /* ─── NO PRODUCTS FOUND ─────────────────────────────────────────── */
+      .no-products-found {
+        text-align: center;
+        padding: 90px 20px;
+        grid-column: 1 / -1;
+      }
+
+      .no-products-found h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--brown);
+      }
+
+      .dark .no-products-found h2 {
+        color: var(--gold-pale);
+      }
+
+      .no-products-found p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        font-weight: 300;
+      }
+
+      /* ─── CART OVERLAY & SIDEBAR ────────────────────────────────────── */
+      .cart-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(28, 14, 6, 0.55);
+        z-index: 200;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+
+      .cart-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(430px, 100vw);
+        background: var(--card-bg);
+        z-index: 201;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.34, 1, 0.64, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -10px 0 60px rgba(44, 26, 14, 0.14);
+      }
+
+      .cart-sidebar.open {
+        transform: translateX(0);
+      }
+
+      .cart-header {
+        padding: 24px 28px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+
+      .cart-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.55rem;
+        font-weight: 600;
+        color: var(--brown);
+        letter-spacing: 0.01em;
+      }
+
+      .dark .cart-title {
+        color: var(--gold-pale);
+      }
+
+      .cart-close {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: var(--text-mid);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .cart-close:hover {
+        background: var(--brown);
+        color: var(--gold-light);
+        border-color: var(--brown);
+      }
+
+      .cart-items {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 28px;
+      }
+
+      /* Cart item styles (script.js injects these) */
+      .cart-item {
+        display: flex;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .cart-item-img {
+        width: 62px;
+        height: 62px;
+        border-radius: var(--radius-sm);
+        object-fit: cover;
+        background: var(--cream-dark);
+        flex-shrink: 0;
+      }
+
+      .cart-item-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .cart-item-name {
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--brown);
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .dark .cart-item-name {
+        color: var(--gold-pale);
+      }
+
+      .cart-item-price {
+        color: var(--gold);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .cart-item-qty {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .qty-btn {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: none;
+        cursor: pointer;
+        font-size: 1rem;
+        color: var(--text-mid);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.18s;
+        line-height: 1;
+      }
+
+      .qty-btn:hover {
+        background: var(--brown);
+        color: var(--gold-light);
+        border-color: var(--brown);
+      }
+
+      .cart-item-qty span {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--brown);
+        min-width: 16px;
+        text-align: center;
+      }
+
+      .dark .cart-item-qty span {
+        color: var(--gold-pale);
+      }
+
+      .cart-remove-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-light);
+        font-size: 0.8rem;
+        padding: 4px;
+        transition: color 0.2s;
+        margin-left: 4px;
+      }
+
+      .cart-remove-btn:hover {
+        color: #c0392b;
+      }
+
+      /* Cart footer */
+      .cart-footer {
+        padding: 20px 28px 28px;
+        border-top: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .cart-total-label {
+        font-size: 0.82rem;
+        color: var(--text-light);
+        font-weight: 500;
+        letter-spacing: 0.04em;
+      }
+
+      .cart-total-amt {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--brown);
+        letter-spacing: -0.01em;
+      }
+
+      .dark .cart-total-amt {
+        color: var(--gold-pale);
+      }
+
+      .whatsapp-btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 14px;
+        background: #25d366;
+        color: white;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: all 0.25s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .whatsapp-btn:hover {
+        background: #1ebe5d;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+      }
+
+      .whatsapp-note {
+        text-align: center;
+        font-size: 0.72rem;
+        color: var(--text-light);
+        margin-top: 10px;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      /* ─── TOAST ─────────────────────────────────────────────────────── */
+      .toast {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%) translateY(90px);
+        background: var(--brown);
+        color: var(--gold-light);
+        padding: 12px 26px;
+        border-radius: var(--radius-pill);
+        font-size: 0.84rem;
+        font-weight: 500;
+        z-index: 300;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        white-space: nowrap;
+        pointer-events: none;
+        font-family: 'Outfit', sans-serif;
+        letter-spacing: 0.03em;
+        box-shadow: 0 8px 32px rgba(44, 26, 14, 0.25);
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ─── FOOTER ────────────────────────────────────────────────────── */
+      footer {
+        background: var(--brown);
+        color: var(--gold-pale);
+        padding: 64px 36px 36px;
+      }
+
+      .footer-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 52px;
+        padding-bottom: 44px;
+        border-bottom: 1px solid rgba(200, 150, 62, 0.18);
+      }
+
+      .footer-brand .logo-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--gold-light);
+      }
+
+      .footer-brand .logo-sub {
+        color: rgba(253, 246, 231, 0.5);
+      }
+
+      .footer-brand p {
+        margin-top: 14px;
+        font-size: 0.82rem;
+        color: rgba(253, 246, 231, 0.55);
+        line-height: 1.75;
+        font-weight: 300;
+      }
+
+      .footer-col h4 {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        margin-bottom: 18px;
+        font-weight: 600;
+      }
+
+      .footer-col a {
+        display: block;
+        color: rgba(253, 246, 231, 0.55);
+        text-decoration: none;
+        font-size: 0.82rem;
+        margin-bottom: 10px;
+        transition: color 0.2s;
+        font-weight: 300;
+      }
+
+      .footer-col a:hover {
+        color: var(--gold-light);
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 30px;
+        font-size: 0.73rem;
+        color: rgba(253, 246, 231, 0.3);
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      /* ─── ANIMATION ─────────────────────────────────────────────────── */
+      @keyframes bbFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ─── RESPONSIVE ────────────────────────────────────────────────── */
+      @media (max-width: 1024px) {
+        .footer-top {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-brand {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-inner {
+          padding: 0 20px;
+          height: 64px;
+          flex-wrap: wrap;
+        }
+
+        header nav {
+          display: none;
+        }
+
+        .menu-toggle {
+          display: flex;
+        }
+
+        .page-header {
+          padding: 56px 20px 48px;
+        }
+
+        .products-inner {
+          padding: 0 20px 60px !important;
+        }
+
+        .search-section {
+          margin: 36px auto 36px;
+        }
+
+        .all-products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 20px;
+        }
+
+        .footer-top {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .footer-inner {
+          padding: 0;
+        }
+
+        footer {
+          padding: 48px 24px 28px;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+
+        .cart-sidebar {
+          width: 100vw;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .all-products-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .product-image-wrap,
+        .card-image-wrap {
+          height: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="announcement">
+      ✦ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
+      HAPPINESS IN EVERY BITE &nbsp; ✦
     </div>
-  </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
-  <!-- PRODUCTS SECTION -->
-  <section class="products-section" id="products" style="padding: 60px 30px; min-height: 80vh;">
-    <div class="products-inner">
-      <div class="section-header">
-        <span class="section-label">Hand-picked for you</span>
-        <h2 class="section-title">Our <em>Full Range</em></h2>
-      </div>
 
-      <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
-        <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
-        <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
-        <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
-      </div>
-
-      <div class="products-grid" id="productsGrid"></div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer id="contact">
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="logo">
-            <span class="logo-name">Brownie Bliss</span>
-            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
-          </div>
-          <p>Hand-crafted with love in Krishnagiri. One unwavering passion for quality and taste.</p>
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-name">Brownie Bliss</span>
+          <span class="logo-sub">Homemade Treats</span>
+        </a>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="products.html" class="active">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="index.html#feedback">Feedback</a>
+          <a href="favourites.html"
+            >Favourites
+            <span class="nav-count" data-favourites-count style="display: none"
+              >0</span
+            ></a
+          >
+          <a href="index.html#contact">Contact</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="track.html">Track Order</a>
+        </nav>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <div class="header-actions">
+          <button
+            id="themeToggleBtn"
+            class="theme-toggle-btn"
+            onclick="toggleTheme()"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon">🌙</span>
+          </button>
+          <button class="cart-btn" onclick="openCart()">
+            🛒 Cart
+            <span class="cart-count" id="cartBadge">0</span>
+          </button>
+        </div>
+        <div class="footer-col">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
         </div>
         <div class="footer-col">
           <h4>Get In Touch</h4>
           <a href="tel:08072596340">+91 8072596340</a>
           <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
         </div>
       </div>
-    </div>
-  </footer>
-
-  <!-- SHARED COMPONENTS -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none">
-      <div class="cart-total">
-        <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="products.html">Our Products</a>
+      <a href="index.html#birthday">Birthday Cakes</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="track.html">Track Order</a>
     </div>
-  </div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+    <div class="page-header">
+      <h1>Our <em>Full Range</em></h1>
+      <p>
+        Hand-crafted with love &amp; the finest ingredients — every bite tells a
+        story.
+      </p>
+      <div class="page-header-divider">
+        <span></span>
+        <small>Handmade · Premium · Delivered Fresh</small>
+        <span></span>
+      </div>
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <div class="products-inner" style="padding: 0 36px 80px">
+      <!-- Live Search -->
+      <div class="search-section">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
 
+          <input
+            type="text"
+            id="productSearch"
+            class="product-search-input"
+            placeholder="Search cakes, brownies, cookies..."
+            autocomplete="off"
+            aria-label="Search products"
+          />
+
+          <button
+            id="clearSearchBtn"
+            class="clear-search-btn"
+            aria-label="Clear search"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Search Suggestions -->
+        <div id="searchSuggestions" class="search-suggestions"></div>
+
+        <!-- Recent Searches -->
+        <div id="recentSearches" class="recent-searches"></div>
+      </div>
+
+      <!-- Product grid -->
+      <div class="all-products-grid" id="productsGrid"></div>
+
+      <div id="noProductsFound" class="no-products-found" style="display: none">
+        <h2>No products found 🍪</h2>
+        <p>Try searching for another brownie, cake, or dessert.</p>
+      </div>
+    </div>
+
+    <footer id="contact">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-name">Brownie Bliss</span>
+              <span class="logo-sub"
+                >Homemade Treats · Happiness in every bite</span
+              >
+            </div>
+            <p>
+              Hand-crafted with love by A.R. Shanmugapriya. Bringing you the
+              finest homemade brownies, cakes, and cookies in Krishnagiri.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Navigate</h4>
+            <a href="index.html">Home</a>
+            <a href="products.html">Our Products</a>
+            <a href="index.html#birthday">Birthday Cakes</a>
+            <a href="favourites.html">Favourites</a>
+            <a href="track.html">Track Order</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+          <div class="footer-col">
+            <h4>Get In Touch</h4>
+            <a href="tel:08072596340">+91 8072596340</a>
+            <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+            <a
+              href="https://instagram.com/brownie_bliss_"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram: @brownie_bliss_</a
+            >
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+          <span>Made with ❤️ in Krishnagiri</span>
+        </div>
+      </div>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <span class="cart-title">Your Cart 🛒</span>
+        <button class="cart-close" onclick="closeCart()">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span class="cart-total-label">Total Amount</span>
+          <span class="cart-total-amt" id="cartTotal">₹0</span>
+        </div>
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+          💬 &nbsp; Order via WhatsApp
+        </button>
+        <p class="whatsapp-note">
+          You'll be redirected to WhatsApp to confirm your order
+        </p>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

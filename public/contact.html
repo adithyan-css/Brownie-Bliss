@@ -10,6 +10,15 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
 </head>
 
 <body>
@@ -51,6 +60,7 @@
       </div>
     </div>
   </header>
+
 
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html#home">Home</a>
@@ -126,6 +136,16 @@
       </div>
     </div>
   </section> -->
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="favourites.html">Favourites</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="track.html">Track Order</a>
+</div>
+
 
   <section class="contact-page">
 
@@ -260,7 +280,8 @@
         We'd love to hear from you.
       </p>
 
-      <form>
+      <!-- BUGFIX: Added onsubmit handler to prevent reload, show a toast success message, and clear fields -->
+      <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
 
         <input
           type="text"
@@ -284,6 +305,16 @@
         </button>
 
       </form>
+
+          <div class="map-box">
+
+            <iframe
+              src="https://www.google.com/maps?q=Krishnagiri,Tamil%20Nadu&output=embed"
+              loading="lazy"
+              allowfullscreen>
+            </iframe>
+
+          </div>
 
     </div>
 
@@ -313,6 +344,12 @@
           <a href="birthday.html">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
           <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
         </div>
       </div>
     </div>
