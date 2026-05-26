@@ -7,6 +7,7 @@ const path = require('path');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const serverless = require('serverless-http');
+const rateLimit = require('express-rate-limit');
 const adminAuth = require('../middlewares/adminAuth');
 
 const app = express();
@@ -32,6 +33,14 @@ app.set('trust proxy', 1);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
+
+const orderCreationRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many order requests from this IP, please try again after 15 minutes' },
+});
 
 if (!MONGO_URI) {
   console.warn(
@@ -73,6 +82,11 @@ const orderItemSchema = new mongoose.Schema(
     qty: { type: Number, required: true },
     emoji: { type: String, default: 'brownie' },
     category: { type: String },
+    customizations: {
+      dietary: { type: String, enum: ['egg', 'eggless'], default: 'egg' },
+      toppings: [{ name: String, price: Number }],
+      message: { type: String, default: '' },
+    },
   },
   { _id: false }
 );
@@ -81,6 +95,7 @@ const orderSchema = new mongoose.Schema(
   {
     order_id: { type: String, unique: true, required: true },
     customer_name: { type: String, required: true },
+    email: { type: String, trim: true, lowercase: true, default: '' },
     phone: { type: String, required: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
@@ -109,238 +124,6 @@ const otpSchema = new mongoose.Schema(
   { timestamps: { createdAt: 'created_at' } }
 );
 
-otpSchema.index({ expires_at: 1 }, { expireAfterSeconds: 0 });
-
-const productSchema = new mongoose.Schema({
-  type: { type: String, enum: ['standard', 'birthday'], required: true },
-  id_ref: { type: mongoose.Schema.Types.Mixed },
-  name: { type: String, required: true },
-  category: { type: String },
-  price: { type: Number, required: true },
-  emoji: { type: String },
-  img: { type: String },
-});
-
-const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
-const Otp = mongoose.models.Otp || mongoose.model('Otp', otpSchema);
-const Product =
-  mongoose.models.Product || mongoose.model('Product', productSchema);
-
-async function seedProducts() {
-  const count = await Product.countDocuments();
-  if (count > 0) return;
-
-  const initialProducts = [
-    {
-      type: 'standard',
-      id_ref: 1,
-      name: 'Velvet Dream Cake',
-      category: 'cakes',
-      price: 850,
-      emoji: 'cake',
-      img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
-    },
-    {
-      type: 'standard',
-      id_ref: 2,
-      name: 'Dutch Truffle Delight',
-      category: 'cakes',
-      price: 950,
-      emoji: 'cake',
-      img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180',
-    },
-    {
-      type: 'standard',
-      id_ref: 3,
-      name: 'Pineapple Fresh Cream',
-      category: 'cakes',
-      price: 675,
-      emoji: 'pineapple',
-      img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785',
-    },
-    {
-      type: 'standard',
-      id_ref: 4,
-      name: 'Overload Brownie',
-      category: 'brownies',
-      price: 120,
-      emoji: 'brownie',
-      img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
-    },
-    {
-      type: 'standard',
-      id_ref: 5,
-      name: 'Walnut Fudge',
-      category: 'brownies',
-      price: 95,
-      emoji: 'walnut',
-      img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181',
-    },
-    {
-      type: 'standard',
-      id_ref: 6,
-      name: 'Classic Choco',
-      category: 'brownies',
-      price: 80,
-      emoji: 'brownie',
-      img: 'https://www.labonelfinebaking.shop/wp-content/uploads/2021/02/CLASSIC-CHOCOLATE-CAKE.jpg',
-    },
-    {
-      type: 'standard',
-      id_ref: 7,
-      name: 'Chocolate Mousse',
-      category: 'desserts',
-      price: 150,
-      emoji: 'dessert',
-      img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
-    },
-    {
-      type: 'standard',
-      id_ref: 8,
-      name: 'Tiramisu Jar',
-      category: 'desserts',
-      price: 180,
-      emoji: 'coffee',
-      img: 'https://brokenovenbaking.com/wp-content/uploads/2021/12/gingerbread-tiramisu-jars-14-1024x1024.jpg',
-    },
-    {
-      type: 'standard',
-      id_ref: 9,
-      name: 'Choco Chip Cookies',
-      category: 'cookies',
-      price: 250,
-      emoji: 'cookie',
-      img: 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
-    },
-    {
-      type: 'standard',
-      id_ref: 10,
-      name: 'Almond Biscotti',
-      category: 'cookies',
-      price: 300,
-      emoji: 'biscotti',
-      img: 'https://theglutenfreeaustrian.com/wp-content/uploads/2023/12/almondbiscotti9-768x768.jpg',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Red Velvet',
-      name: 'Red Velvet',
-      price: 850,
-      emoji: 'cake',
-      img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Dutch Truffle',
-      name: 'Dutch Truffle',
-      price: 950,
-      emoji: 'cake',
-      img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Pineapple',
-      name: 'Pineapple',
-      price: 675,
-      emoji: 'pineapple',
-      img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Chocoholic',
-      name: 'Chocoholic',
-      price: 900,
-      emoji: 'brownie',
-      img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Black Forest',
-      name: 'Black Forest',
-      price: 750,
-      emoji: 'cake',
-      img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg',
-    },
-    {
-      type: 'birthday',
-      id_ref: 'Cheesecake',
-      name: 'Cheesecake',
-      price: 1200,
-      emoji: 'cheesecake',
-      img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg',
-    },
-  ];
-
-  await Product.insertMany(initialProducts);
-  console.log('Seeded initial products to database');
-}
-
-function generateOrderId() {
-  const date = new Date();
-  const datePart = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-  const rand = Math.floor(1000 + Math.random() * 9000);
-  return `BB-${datePart}-${rand}`;
-}
-
-function generateOTP() {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-app.use(async (req, res, next) => {
-  if (req.path === '/' || !req.path.startsWith('/api')) return next();
-
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    res
-      .status(503)
-      .json({
-        success: false,
-        message: `Database connection failed: ${err.message}`,
-      });
-  }
-});
-
-// ─── SCHEMAS ───────────────────────────────────────────────────────────────────
-const orderItemSchema = new mongoose.Schema({
-  id: { type: Number },
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  qty: { type: Number, required: true },
-  emoji: { type: String, default: '🍫' },
-  category: { type: String },
-  customizations: {
-    dietary: { type: String, enum: ['egg', 'eggless'], default: 'egg' },
-    toppings: [{ name: String, price: Number }],
-    message: { type: String, default: '' }
-  }
-}, { _id: false });
-
-const orderSchema = new mongoose.Schema({
-  order_id: { type: String, unique: true, required: true },
-  customer_name: { type: String, required: true },
-  email: { type: String, trim: true, lowercase: true, default: '' },
-  phone: { type: String, required: true },
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  pincode: { type: String, required: true },
-  items: { type: [orderItemSchema], required: true },
-  total: { type: Number, required: true },
-  status: { type: String, enum: ['pending', 'confirmed', 'preparing', 'delivered', 'cancelled'], default: 'pending' },
-  payment_status: { type: String, enum: ['unpaid', 'paid'], default: 'unpaid' },
-  notes: { type: String, default: '' },
-  confirmed_at: { type: Date, default: null },
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
-
-const otpSchema = new mongoose.Schema({
-  phone: { type: String, required: true },
-  otp: { type: String, required: true },
-  expires_at: { type: Date, required: true },
-  used: { type: Boolean, default: false },
-}, { timestamps: { createdAt: 'created_at' } });
-
-// Auto-delete OTP documents after they expire (TTL index)
 otpSchema.index({ expires_at: 1 }, { expireAfterSeconds: 0 });
 
 const productSchema = new mongoose.Schema({
@@ -456,9 +239,6 @@ app.post('/api/admin/login', (req, res) => {
     ADMIN_JWT_SECRET,
     { expiresIn: ADMIN_JWT_EXPIRES_IN }
   );
-  const token = jwt.sign({ username: ADMIN_USERNAME }, ADMIN_JWT_SECRET, {
-    expiresIn: ADMIN_JWT_EXPIRES_IN,
-  });
 
   return res.json({ success: true, token, expiresIn: ADMIN_JWT_EXPIRES_IN });
 });
@@ -466,7 +246,6 @@ app.post('/api/admin/login', (req, res) => {
 // ─── OTP ROUTES ────────────────────────────────────────────────────────────────
 
 // Send OTP  (demo — shows OTP in response; in production wire up MSG91 / Twilio)
-app.post('/api/send-otp', otpRateLimiter, async (req, res) => {
 app.post('/api/send-otp', async (req, res) => {
   try {
     const { phone } = req.body;
@@ -485,13 +264,6 @@ app.post('/api/send-otp', async (req, res) => {
     await Otp.create({ phone, otp, expires_at });
 
     // --- FAST2SMS INTEGRATION ---
-    await Otp.updateMany({ phone, used: false }, { used: true });
-
-    const otp = generateOTP();
-    const expires_at = new Date(Date.now() + 5 * 60 * 1000);
-
-    await Otp.create({ phone, otp, expires_at });
-
     const apiKey = process.env.FAST2SMS_API_KEY;
     if (apiKey && apiKey !== 'your_actual_api_key_here') {
       try {
@@ -518,20 +290,6 @@ app.post('/api/send-otp', async (req, res) => {
       success: true,
       message: 'OTP sent successfully',
     });
-          headers: { authorization: apiKey },
-        });
-        console.log(`SMS sent to ${phone}`);
-      } catch (smsErr) {
-        console.error(
-          'Fast2SMS Error:',
-          smsErr.response ? smsErr.response.data : smsErr.message
-        );
-      }
-    } else {
-      console.log(`[DEMO MODE] OTP for ${phone}: ${otp}`);
-    }
-
-    res.json({ success: true, message: 'OTP sent successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Server error' });
@@ -573,8 +331,6 @@ app.get('/api/products', async (req, res) => {
     if (!isDbReady()) {
       return res.json({ success: true, products: STATIC_CATALOG });
     }
-app.get('/api/products', async (req, res) => {
-  try {
     const products = await Product.find().lean();
     res.json({ success: true, products });
   } catch (err) {
@@ -639,7 +395,6 @@ app.patch('/api/products/:id', adminAuth, async (req, res) => {
     if (name !== undefined && name.trim() !== '') {
       updateData.name = name.trim();
     }
-    if (img !== undefined) { // Allow empty string to clear image if desired
     if (img !== undefined) {
       updateData.img = img.trim();
     }
@@ -676,8 +431,6 @@ app.delete('/api/products/:id', adminAuth, async (req, res) => {
     if (!isDbReady()) {
       return res.status(503).json({ success: false, message: 'Product admin requires MongoDB (set MONGO_URI).' });
     }
-app.delete('/api/products/:id', adminAuth, async (req, res) => {
-  try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {
       return res
@@ -737,35 +490,38 @@ app.post('/api/orders', orderCreationRateLimiter, async (req, res) => {
     }
 
     const order_id = generateOrderId();
-app.post('/api/orders', async (req, res) => {
-  try {
-    const { customer_name, phone, address, city, pincode, items, total } =
-      req.body;
+    const orderDoc = {
+      order_id,
+      customer_name: String(customer_name).trim().slice(0, 120),
+      email: typeof email === 'string' ? email.trim().slice(0, 254) : '',
+      phone: phoneDigits.slice(0, 15),
+      address: String(address).trim().slice(0, 500),
+      city: String(city).trim().slice(0, 80),
+      pincode: String(pincode).trim().slice(0, 12),
+      items: sanitizedItems,
+      total: finalTotal,
+    };
 
-    if (
-      !customer_name ||
-      !phone ||
-      !address ||
-      !city ||
-      !pincode ||
-      !items ||
-      !total
-    ) {
-      return res
-        .status(400)
-        .json({ success: false, message: 'Missing required fields' });
+    if (!isDbReady()) {
+      const now = new Date();
+      memoryOrders.unshift({
+        ...orderDoc,
+        status: 'pending',
+        payment_status: 'unpaid',
+        notes: '',
+        confirmed_at: null,
+        created_at: now,
+        updated_at: now,
+      });
+
+      return res.json({
+        success: true,
+        order_id,
+        message: 'Order placed successfully (memory mode — add MONGO_URI to persist orders in MongoDB).',
+      });
     }
 
-    const order = await Order.create({
-      order_id: generateOrderId(),
-      customer_name,
-      phone,
-      address,
-      city,
-      pincode,
-      items,
-      total,
-    });
+    const order = await Order.create(orderDoc);
 
     res.json({
       success: true,
@@ -774,7 +530,7 @@ app.post('/api/orders', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: err.message || 'Server error' });
   }
 });
 
