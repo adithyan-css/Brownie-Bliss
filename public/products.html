@@ -15,109 +15,6 @@
       } catch(_) {}
     })();
   </script>
-  <style>
-    .all-products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 40px;
-      margin: 60px 0 80px;
-    }
-    .product-card {
-      background: var(--white);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 30px rgba(0,0,0,0.1);
-    }
-    .product-img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: block;
-    }
-    .product-info {
-      padding: 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--brown-dark);
-    }
-    .product-category {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-    .product-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      margin-bottom: 16px;
-      line-height: 1.4;
-      flex-grow: 1;
-    }
-    .product-price {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--brown-dark);
-      margin-bottom: 16px;
-    }
-    .add-to-cart-btn {
-      background: var(--gold);
-      border: none;
-      padding: 10px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.2s;
-      width: 100%;
-      margin-top: auto;
-    }
-    .add-to-cart-btn:hover {
-      background: #c9a03d;
-    }
-    .page-header {
-      text-align: center;
-      padding: 60px 20px 20px;
-      background: var(--cream);
-    }
-    .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      color: var(--brown-dark);
-    }
-    .page-header p {
-      color: var(--text-mid);
-      max-width: 600px;
-      margin: 10px auto;
-    }
-    .dark .product-card {
-      background: var(--brown-dark);
-    }
-    .dark .product-title,
-    .dark .product-price {
-      color: var(--white);
-    }
-    .dark .product-desc {
-      color: rgba(255,255,255,0.8);
-    }
-  </style>
 </head>
 <body>
 
@@ -166,7 +63,7 @@
   </div>
 
   <div class="products-inner" style="padding: 0 30px 80px;">
-    <!-- Price Filter from main branch -->
+    <!-- Price Filter -->
     <div class="price-filter-wrapper">
       <div class="price-filter">
         <label for="priceFilter">Filter by Price</label>
@@ -179,8 +76,17 @@
       </div>
     </div>
 
-    <!-- Product grid from feature branch -->
-    <div class="all-products-grid" id="allProductsGrid"></div>
+    <!-- Category Filter -->
+    <div class="filter-tabs" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 40px;">
+      <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+      <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
+      <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
+      <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
+      <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
+    </div>
+
+    <!-- Product grid -->
+    <div class="products-grid" id="productsGrid"></div>
   </div>
 
   <footer id="contact">
@@ -242,9 +148,8 @@
   <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
-  <script>
-    const productsList = [
-      { id: 1, name: "Signature Red Velvet Cake", category: "Cakes", desc: "Velvety crumb, cream cheese frosting – a classic favorite.", price: 850, img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" },
+</body>
+</html>
       { id: 2, name: "Fudgy Walnut Brownie", category: "Brownies", desc: "Rich, dense, loaded with crunchy walnuts.", price: 250, img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" },
       { id: 3, name: "Belgian Chocolate Overload", category: "Brownies", desc: "Double chocolate, gooey centre, pure bliss.", price: 280, img: "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/RX_THUMBNAIL/IMAGES/VENDOR/2024/8/26/b43c6202-69b6-47ea-9aeb-362b00c152c6_753203.ss.jpg" },
       { id: 4, name: "Assorted Macaron Box", category: "Desserts", desc: "6 French macarons – vanilla, pistachio, raspberry.", price: 450, img: "https://www.labellemiette.com.au/cdn/shop/files/12pc_Assorted.png?v=1697772671&width=1946" },
