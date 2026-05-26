@@ -3838,7 +3838,7 @@ footer {
 .admin-body {
   margin: 20px auto;
 }
-
+}
 
 /* Admin Panel Additions */
 .panel-title-group {
@@ -10066,89 +10066,52 @@ background-position: right 16px center;
   color: #5c372c !important;
 }
 
+#scrollTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #6b3e26;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    display: none;
+    z-index: 9999;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
 }
 
-/* LEGAL PAGES */
-
-.legal-container {
-  max-width: 1100px;
-  margin: 0 auto;
+#backToTopBtn {
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  z-index: 99999 !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: #7b3f00 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+  display: none;
 }
-
-.legal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 28px;
-  align-items: stretch;
-}
-
-.legal-card {
-  background: var(--white);
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 22px;
-  height: 100%;
-  padding: 32px;
-  transition: all 0.35s ease;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-}
-
-.legal-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  border-color: var(--gold);
-  box-shadow: 0 18px 45px rgba(0,0,0,0.08);
-}
-
-.legal-card h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  color: var(--brown-dark);
-  margin-bottom: 14px;
-}
-
-.legal-card p {
-  color: var(--text-mid);
-  line-height: 1.8;
-  font-size: 15px;
-}
-
-.legal-hero {
-  padding: 140px 24px 80px;
-  background: linear-gradient(
-    to bottom,
-    var(--cream),
-    var(--cream-dark)
-  );
-  text-align: center;
-}
-
-.legal-hero p {
-  max-width: 650px;
-  margin: 18px auto 0;
-  color: var(--text-mid);
-}
-
-.legal-back {
-  text-align: center;
-  margin-top: 55px;
-}
-
-.legal-back-btn {
-  display: inline-block;
-  padding: 14px 30px;
-  background: var(--gold);
-  color: #000;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
-}
-
-.legal-back-btn:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 18px 35px rgba(212, 175, 55, 0.35);
-  background: #e6c14d;
+#backToTopBtn:hover {
+  background: #5a2d00 !important;
+  transform: translateY(-3px);
 }
