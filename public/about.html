@@ -2,65 +2,70 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>Brownie Bliss | About</title>
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <title>About — Brownie Bliss</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
-    (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
   </script>
 </head>
-<body>
-<!-- ANNOUNCEMENT -->
-<div class="announcement">
-  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES
-  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
-</div>
 
-<!-- HEADER -->
-<header>
-  <div class="header-inner">
-<button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <a href="index.html" class="logo">
-      <span class="logo-name">Brownie Bliss</span>
-      <span class="logo-sub">Homemade Treats</span>
-    </a>
+<body id="about">
 
-    <nav>
-      <a href="index.html#home">Home</a>
-      <a href="about.html">Abput</a>
-      <a href="index.html#products">Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
-      <a href="contact.html">Contact</a>
-      <a href="track.html">Track Order</a>
-    </nav>
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+    BITE &nbsp; ✨</div>
 
-    <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
     </div>
+  </header>
 
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="about.html" class="active">About</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="favourites.html">Favourites</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="track.html">Track Order</a>
   </div>
-</header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
 <!-- ABOUT SECTION -->
  <link rel="stylesheet" href="style.css">
 <section class="about-section">
@@ -1047,34 +1052,10 @@
 
   </style>
 
+  <script src="script.js"></script>
 </head>
 
-<body>
-
-  <!-- NAVBAR -->
-
-  <header>
-
-    <div class="navbar">
-
-      <a href="index.html" class="logo">
-        <h1>Brownie Bliss</h1>
-        <span>HOMEMADE TREATS</span>
-      </a>
-
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="products.html">Products</a>
-        <a href="birthday.html">Birthday Cakes</a>
-        <a href="favourites.html">Favourites</a>
-        <a href="contact.html">Contact</a>
-        <a href="track.html">Track Order</a>
-      </nav>
-
-    </div>
-
-  </header>
+<body id="about">
 
   <!-- HERO -->
 
@@ -1234,121 +1215,9 @@
         </p>
 
       </div>
-    </div>
-    </section>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-left">
-      <p class="hero-eyebrow">Our Story</p>
-      <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
-      <p class="hero-body" style="color:#9b7064">Brownie Bliss began with a simple dream — to bring the warmth of homemade baking into every celebration, every gathering, and every little sweet craving.</p>
-    </div>
-    <div class="hero-right">
-      <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownie Bliss treats" />
-      <div class="hero-right-overlay"></div>
-      <div class="hero-badge">Made with ❤️ in Krishnagiri</div>
-    </div>
-  </section>
+  </div>
 
-  <!-- STORY -->
-
-  <section class="story">
-
-    <div class="section-title">
-
-      <span>HAND-PICKED FOR YOU</span>
-
-      <h2>
-        Our
-        <em>Full Range</em>
-      </h2>
-
-    </div>
-
-    <div class="story-grid">
-
-      <div class="story-card">
-
-        <div class="story-number">01</div>
-
-        <h3>Premium Ingredients</h3>
-
-        <p>
-          Every dessert is made with carefully selected
-          ingredients to create rich flavour,
-          silky textures, and unforgettable sweetness.
-        </p>
-
-      </div>
-
-      <div class="story-card">
-
-        <div class="story-number">02</div>
-
-        <h3>Handcrafted Daily</h3>
-
-        <p>
-          Our cakes and brownies are baked fresh daily
-          in small batches for authentic luxury
-          and homemade warmth.
-        </p>
-
-      </div>
-
-      <div class="story-card">
-
-        <div class="story-number">03</div>
-
-        <h3>Elegant Presentation</h3>
-
-        <p>
-          From luxury celebration cakes
-          to handcrafted brownies,
-          every dessert is designed beautifully.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- EXPERIENCE -->
-
-  <section class="experience">
-
-    <div class="experience-box">
-
-      <div class="experience-image">
-
-        <img
-          src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png"
-          alt="Dessert"
-        >
-
-      </div>
-
-      <div class="experience-content">
-
-        <h3>
-          Crafted For Sweet
-          Luxury Moments
-        </h3>
-
-        <p>
-          Brownie Bliss combines rich flavours,
-          elegant presentation,
-          and authentic homemade warmth
-          to create desserts that feel memorable,
-          indulgent, and premium.
-        </p>
-
-        <a href="products.html" class="primary-btn">
-          DISCOVER MORE →
-        </a>
-      </div>
-    
   <!-- Stats -->
   <div class="stats">
     <div class="stat-item reveal">
@@ -1465,20 +1334,23 @@
         <a href="contact.html">Contact</a>
 
       </div>
+
       <div class="footer-links">
-        <h4>Information</h4>
+
+        <h4>INFORMATION</h4>
+
         <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-service.html">Terms of Service</a>
         <a href="refund-policy.html">Refund Policy</a>
+
       </div>
 
       <div class="footer-links">
 
         <h4>CONTACT</h4>
 
-        <a href="#">+91 9876543210</a>
-        <a href="#">orders@browniebliss.com</a>
-        <a href="#">Chennai, India</a>
+        <a href="tel:08072596340">+91 8072596340</a>
+        <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+        <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
 
       </div>
 
@@ -1489,8 +1361,6 @@
     </div>
 
   </footer>
-
-</body>
 
   <!-- Quote -->
   <div class="quote-banner reveal">
@@ -1518,7 +1388,6 @@
     </div>
   </div>
 
-</footer>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
 </body>
