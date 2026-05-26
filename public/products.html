@@ -117,6 +117,211 @@
     .dark .product-desc {
       color: rgba(255,255,255,0.8);
     }
+
+    /* Premium Search & Filter Console */
+    .filter-console {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 24px 30px;
+      margin: -20px auto 40px;
+      max-width: 900px;
+      position: relative;
+      z-index: 10;
+      border: 1px solid var(--cream-dark);
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .filter-console:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    .search-row {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--color-accent);
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+    .search-input {
+      width: 100%;
+      padding: 15px 18px 15px 48px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 30px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text-dark);
+      background: var(--cream);
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(26, 9, 5, 0.03);
+      transition: all 0.3s ease;
+    }
+    .search-input::placeholder {
+      color: rgba(74, 44, 10, 0.5);
+    }
+    .search-input:focus {
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15), inset 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .search-input:focus + .search-icon {
+      color: var(--gold);
+    }
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      align-items: center;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .filter-group label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-accent);
+      margin-left: 8px;
+    }
+    .console-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 100%;
+      padding: 12px 40px 12px 16px;
+      border: 2px solid var(--cream-dark);
+      border-radius: 30px;
+      background: var(--cream);
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23D2691E' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26, 9, 5, 0.04);
+      transition: all 0.3s ease;
+    }
+    .console-select:hover {
+      background-color: var(--white);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+    .console-select:focus {
+      border-color: var(--gold);
+      background-color: var(--white);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    }
+    .clear-filters-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .clear-filters-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .btn-clear-filters {
+      background: none;
+      border: none;
+      color: var(--text-mid);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .btn-clear-filters:hover {
+      color: var(--color-accent);
+      background: var(--cream);
+      transform: scale(1.03);
+    }
+    
+    /* Micro badges for dummyShop and location */
+    .badge-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .meta-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(26, 9, 5, 0.03);
+      border: 1px solid var(--cream-dark);
+    }
+    .badge-shop {
+      background: var(--cream);
+      color: var(--text-mid);
+    }
+    .badge-location {
+      background: var(--gold-light);
+      color: var(--color-primary);
+    }
+
+    /* Dark Mode Overrides */
+    .dark .filter-console {
+      background: var(--cream-dark);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .dark .search-input {
+      background: rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--white);
+    }
+    .dark .search-input:focus {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: var(--gold);
+    }
+    .dark .console-select {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--white);
+    }
+    .dark .console-select:hover,
+    .dark .console-select:focus {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-color: var(--gold);
+    }
+    .dark .meta-badge {
+      border-color: rgba(255,255,255,0.08);
+    }
+    .dark .badge-shop {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--white);
+    }
+    .dark .badge-location {
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold-light);
+    }
   </style>
 </head>
 <body>
@@ -166,28 +371,40 @@
   </div>
 
   <div class="products-inner" style="padding: 0 30px 80px;">
-    <!-- Price Filter from main branch -->
-    <div class="price-filter-wrapper" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-      <div class="price-filter">
-        <label for="priceFilter">Filter by Price</label>
-        <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
-          <option value="all">All Prices</option>
-          <option value="under200">Under ₹200</option>
-          <option value="200to500">₹200 - ₹500</option>
-          <option value="above500">Above ₹500</option>
-        </select>
+
+    <!-- Premium Search & Filter Console -->
+    <div class="filter-console">
+      <div class="search-row">
+        <input type="text" id="searchText" class="search-input" placeholder="Search for brownies, cakes, cookies..." oninput="updateSearchFilter()">
+        <span class="search-icon">🔍</span>
       </div>
-      <div class="price-filter">
-        <label for="shopFilter">Dummy Shop</label>
-        <select id="shopFilter" class="custom-price-filter" onchange="updateShopFilter()">
-          <option value="all">All Shops</option>
-        </select>
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="priceFilter">Price Range</label>
+          <select id="priceFilter" class="console-select" onchange="updatePriceFilter()">
+            <option value="all">All Prices</option>
+            <option value="under200">Under ₹200</option>
+            <option value="200to500">₹200 - ₹500</option>
+            <option value="above500">Above ₹500</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="shopFilter">Dummy Shop</label>
+          <select id="shopFilter" class="console-select" onchange="updateShopFilter()">
+            <option value="all">All Shops</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="locationFilter">Location</label>
+          <select id="locationFilter" class="console-select" onchange="updateLocationFilter()">
+            <option value="all">All Locations</option>
+          </select>
+        </div>
       </div>
-      <div class="price-filter">
-        <label for="locationFilter">Location</label>
-        <select id="locationFilter" class="custom-price-filter" onchange="updateLocationFilter()">
-          <option value="all">All Locations</option>
-        </select>
+      <div class="clear-filters-container" id="clearFiltersContainer">
+        <button class="btn-clear-filters" onclick="clearAllFilters()">
+          <span>✕</span> Clear All Filters
+        </button>
       </div>
     </div>
 
@@ -301,8 +518,20 @@
       let selectedPrice = 'all';
       let selectedShop = 'all';
       let selectedLocation = 'all';
+      let selectedSearch = '';
 
       const normalize = (value) => String(value || '').trim().toLowerCase();
+
+      function updateClearFiltersVisibility() {
+        const clearBtnContainer = document.getElementById('clearFiltersContainer');
+        if (!clearBtnContainer) return;
+        const isAnyFilterActive = selectedPrice !== 'all' || selectedShop !== 'all' || selectedLocation !== 'all' || selectedSearch.trim() !== '';
+        if (isAnyFilterActive) {
+          clearBtnContainer.classList.add('visible');
+        } else {
+          clearBtnContainer.classList.remove('visible');
+        }
+      }
 
       function fillFilterOptions() {
         const shopFilter = document.getElementById('shopFilter');
@@ -324,7 +553,14 @@
             || (selectedPrice === 'above500' && p.price > 500);
           const matchShop = selectedShop === 'all' || normalize(p.dummyShop) === normalize(selectedShop);
           const matchLocation = selectedLocation === 'all' || normalize(p.location) === normalize(selectedLocation);
-          return matchPrice && matchShop && matchLocation;
+          
+          const searchLower = selectedSearch.toLowerCase().trim();
+          const matchSearch = !searchLower
+            || p.name.toLowerCase().includes(searchLower)
+            || (p.desc && p.desc.toLowerCase().includes(searchLower))
+            || (p.category && p.category.toLowerCase().includes(searchLower));
+
+          return matchPrice && matchShop && matchLocation && matchSearch;
         });
       }
 
@@ -333,21 +569,30 @@
         if (!container) return;
 
         const filtered = getFilteredProducts();
+        updateClearFiltersVisibility();
+
         if (!filtered.length) {
-          container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#777;font-weight:600;">No products available for selected filters.</p>';
+          container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-mid);font-weight:600;padding:40px 0;">No products available for selected filters.</p>';
           return;
         }
 
         container.innerHTML = filtered.map((p) => `
           <div class="product-card">
-            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x260?text=Brownie+Bliss'">
+            <div class="product-img-wrap">
+              <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x260?text=Brownie+Bliss'">
+            </div>
             <div class="product-info">
-              <div class="product-title">${p.name}</div>
-              <div class="product-category">${p.category || ''}</div>
+              <div class="product-category">${p.category || 'Treat'}</div>
+              <div class="product-name">${p.name}</div>
               ${p.desc ? `<div class="product-desc">${p.desc}</div>` : ''}
-              ${(p.dummyShop || p.location) ? `<div class="product-desc">${p.dummyShop || ''}${p.dummyShop && p.location ? ' • ' : ''}${p.location || ''}</div>` : ''}
+              ${(p.dummyShop || p.location) ? `
+                <div class="badge-container">
+                  ${p.dummyShop ? `<span class="meta-badge badge-shop">🏪 ${p.dummyShop}</span>` : ''}
+                  ${p.location ? `<span class="meta-badge badge-location">📍 ${p.location}</span>` : ''}
+                </div>
+              ` : ''}
               <div class="product-price">₹${p.price}</div>
-              <button class="add-to-cart-btn" onclick='addToCartFromProducts(${p.id}, ${JSON.stringify(p.name)}, ${p.price})'>Add to Cart 🛒</button>
+              <button class="add-to-cart" onclick='addToCartFromProducts(${p.id}, ${JSON.stringify(p.name)}, ${p.price})'>Add to Cart 🛒</button>
             </div>
           </div>
         `).join('');
@@ -402,6 +647,28 @@
       };
       window.updateLocationFilter = function updateLocationFilter() {
         selectedLocation = document.getElementById('locationFilter')?.value || 'all';
+        renderDynamicProducts();
+      };
+      window.updateSearchFilter = function updateSearchFilter() {
+        selectedSearch = document.getElementById('searchText')?.value || '';
+        renderDynamicProducts();
+      };
+      window.clearAllFilters = function clearAllFilters() {
+        selectedPrice = 'all';
+        selectedShop = 'all';
+        selectedLocation = 'all';
+        selectedSearch = '';
+
+        const priceEl = document.getElementById('priceFilter');
+        const shopEl = document.getElementById('shopFilter');
+        const locEl = document.getElementById('locationFilter');
+        const searchEl = document.getElementById('searchText');
+
+        if (priceEl) priceEl.value = 'all';
+        if (shopEl) shopEl.value = 'all';
+        if (locEl) locEl.value = 'all';
+        if (searchEl) searchEl.value = '';
+
         renderDynamicProducts();
       };
 
