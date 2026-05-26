@@ -1044,7 +1044,146 @@
       }
 
     }
+/* ==========================================================================
+   UI Fix: Centered Philosophy Quote & Founder Section Styling (#412)
+   ========================================================================== */
 
+/* Main Containers Base Reset */
+.philosophy-section,
+.custom-founder-section,
+.custom-cta-section {
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+    text-align: center !important;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px 24px;
+    box-sizing: border-box;
+}
+
+/* Quote Layout */
+.philosophy-quote {
+    font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+    margin: 0 auto;
+    padding: 35px 20px;
+    position: relative;
+    border-top: 1px solid rgba(45, 18, 13, 0.15);
+    border-bottom: 1px solid rgba(45, 18, 13, 0.15);
+}
+
+.quote-text {
+    font-style: italic;
+    font-size: 2.2rem;
+    line-height: 1.4;
+    color: #2d120d; /* Brand deep brown */
+    margin: 0 0 15px 0;
+}
+
+.quote-attr {
+    font-size: 13px;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--gold, #c5a880);
+    display: block;
+}
+
+/* Founder Component */
+.founder-emoji {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.founder-title-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: #2d120d;
+    margin: 5px 0;
+}
+
+.founder-role-sub {
+    font-style: italic;
+    color: #795548;
+    font-size: 16px;
+    margin: 0 0 20px 0;
+}
+
+.founder-description-bio {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #555555;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Call to Action Layout */
+.custom-cta-section {
+    padding-bottom: 90px; /* Generous breathing room before the footer starts */
+}
+
+.custom-cta-head {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    color: #2d120d;
+    margin-bottom: 10px;
+}
+
+.custom-cta-subhead {
+    font-size: 17px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* CTA Action Buttons Styling */
+.custom-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.menu-btn-dark {
+    background-color: #2d120d;
+    color: #ffffff;
+    padding: 14px 28px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-btn-dark:hover {
+    background-color: #4a1f18;
+}
+
+.touch-btn-outline {
+    background-color: transparent;
+    color: #2d120d;
+    border: 2px solid #2d120d;
+    padding: 12px 26px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.touch-btn-outline:hover {
+    background-color: #2d120d;
+    color: #ffffff;
+}
+
+/* Mobile Screens Adjustments */
+@media(max-width: 600px) {
+    .quote-text { font-size: 1.6rem; }
+    .custom-cta-head { font-size: 28px; }
+    .custom-cta-buttons { flex-direction: column; align-items: stretch; }
+}
   </style>
 
 </head>
@@ -1437,7 +1576,28 @@
     </div>
 
   </section>
+ <section class="philosophy-section">
+    <blockquote class="philosophy-quote">
+        <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+        <cite class="quote-attr">— The Brownie Bliss Philosophy</cite>
+    </blockquote>
+</section>
 
+<section class="custom-founder-section">
+    <span class="founder-emoji">👩‍🍳</span>
+    <h3 class="founder-title-name">A.R. Shanmugapriya</h3>
+    <p class="founder-role-sub">Founder & Head Baker</p>
+    <p class="founder-description-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
+</section>
+
+<section class="custom-cta-section">
+    <h2 class="custom-cta-head">Ready to Taste the Difference?</h2>
+    <p class="custom-cta-subhead">Explore our full range of brownies, cakes, and desserts.</p>
+    <div class="custom-cta-buttons">
+        <a href="products.html" class="menu-btn-dark">Browse Our Menu</a>
+        <a href="contact.html" class="touch-btn-outline">Get in Touch</a>
+    </div>
+</section>
   <!-- FOOTER -->
 
   <footer>
@@ -1492,34 +1652,5 @@
 
 </body>
 
-  <!-- Quote -->
-  <div class="quote-banner reveal">
-    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
-    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
-  </div>
-
-  <!-- Founder -->
-  <section class="founder reveal">
-    <div class="founder-img-placeholder">👩‍🍳</div>
-    <div>
-      <h3 class="founder-name">A.R. Shanmugapriya</h3>
-      <p class="founder-role">Founder & Head Baker</p>
-      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <div class="cta reveal">
-    <h2 class="cta-title">Ready to Taste the Difference?</h2>
-    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
-    <div class="cta-buttons">
-      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
-      <a href="contact.html" class="btn-outline">Get in Touch</a>
-    </div>
-  </div>
-
-</footer>
-  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-  <script src="script.js"></script>
 </body>
 </html>
