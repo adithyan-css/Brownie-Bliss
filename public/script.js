@@ -53,7 +53,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Dutch Truffle Delight',
     category: 'cakes',
     price: 950,
-    img: 'https://tse3.mm.bing.net/th/id/OIP.6wMpc_E6xsHLl3zT2ItBSQHaHa?pid=Api&P=0&h=180',
+    img: 'assets/dutch_truffle.png',
   },
   {
     id: 3,
@@ -71,7 +71,7 @@ const DEFAULT_BDAY_CAKES = {
   },
   'Dutch Truffle': {
     price: 950,
-    img: 'https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180',
+    img: 'assets/dutch_truffle.png',
   },
 };
 
@@ -88,8 +88,123 @@ function useFallbackProducts() {
 }
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
+const BROWNIE_BLISS_BAKERY = {
+    id: 'brownie-bliss',
+    name: 'Brownie Bliss',
+    category: 'Homemade Bakery',
+    location: 'Krishnagiri',
+    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338'
+};
 
-let favourites = [];
+let favouriteItems = { bakeries: [], dishes: [] };
+try {
+  favouriteItems = JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
+  if (!favouriteItems.bakeries) favouriteItems.bakeries = [];
+  if (!favouriteItems.dishes) favouriteItems.dishes = [];
+} catch (e) {
+  console.error('Error parsing favourites from localStorage:', e);
+}
+
+function saveFavourites() {
+  try {
+    localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favouriteItems));
+  } catch (e) {
+    console.error('Error saving favourites to localStorage:', e);
+  }
+}
+
+function isFavourite(type, id) {
+  return favouriteItems[type]?.some(item => item.id === id) || false;
+}
+
+function toggleFavourite(type, item) {
+  if (!favouriteItems[type]) favouriteItems[type] = [];
+  const idx = favouriteItems[type].findIndex(f => f.id === item.id);
+  if (idx >= 0) {
+    favouriteItems[type].splice(idx, 1);
+    showToast('Removed from favourites 💔');
+  } else {
+    favouriteItems[type].push(item);
+    showToast('Added to favourites ❤️');
+  }
+  saveFavourites();
+  updateFavouriteButtons(type, item.id);
+  updateFavouritesCount();
+  renderFavouritesPage();
+}
+
+function updateFavouriteButtons(type, id) {
+  document.querySelectorAll(`.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`).forEach(btn => {
+    const active = isFavourite(type, id);
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    btn.innerHTML = active ? '&hearts;' : '&#9825;';
+  });
+}
+
+function updateFavouritesCount() {
+  const total = (favouriteItems.bakeries?.length || 0) + (favouriteItems.dishes?.length || 0);
+  document.querySelectorAll('.fav-count, [data-favourites-count]').forEach(el => {
+    el.textContent = total;
+    el.style.display = total ? 'inline-block' : 'none';
+  });
+}
+
+function toggleBakeryFavourite() {
+  toggleFavourite('bakeries', BROWNIE_BLISS_BAKERY);
+}
+
+function toggleBirthdayFavourite() {
+  toggleFavourite('dishes', getBirthdayFavouriteItem());
+}
+
+function renderFavouritesPage() {
+  const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
+  const dishesGrid = document.getElementById('favouriteDishesGrid');
+  if (!bakeryGrid && !dishesGrid) return;
+
+  if (bakeryGrid) {
+    bakeryGrid.innerHTML = favouriteItems.bakeries.map(bakery => `
+      <article class="favourite-bakery-card">
+        <img src="${bakery.img}" alt="${bakery.name}">
+        <div class="favourite-bakery-info">
+          <div class="product-category">${bakery.category || ''}</div>
+          <h3>${bakery.name}</h3>
+          <p>${bakery.location || ''}</p>
+          <button class="add-to-cart favourite-remove" type="button"
+            onclick='toggleFavourite("bakeries", ${JSON.stringify(bakery)})'>
+            Remove Favourite
+          </button>
+        </div>
+      </article>
+    `).join('') || '<p>No favourite bakeries yet.</p>';
+  }
+
+  if (dishesGrid) {
+    dishesGrid.innerHTML = favouriteItems.dishes.map(dish => `
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+          <button class="favorite-btn active" type="button"
+            data-fav-type="dishes" data-fav-id="${dish.id}"
+            aria-label="Remove ${dish.name} from favourites" aria-pressed="true"
+            title="Remove from favourites"
+            onclick='toggleFavourite("dishes", ${JSON.stringify(dish)})'>
+            &hearts;
+          </button>
+        </div>
+        <div class="product-info">
+          <div class="product-category">${dish.category || 'favourite'}</div>
+          <div class="product-name">${dish.name}</div>
+          ${dish.price ? `<div class="product-price">₹${dish.price}</div>` : ''}
+          <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    `).join('') || '<p>No favourite dishes yet.</p>';
+  }
+}
 function buildCatalogFromList(list) {
   if (list && Array.isArray(list) && list.length) {
     products = list
@@ -133,17 +248,17 @@ async function loadProducts() {
           price: p.price,
           emoji: p.emoji,
           img: p.img,
+          stock: p.stock,
           description: p.description || '',
         }));
 
       bdayCakes = {};
-
       const bd = data.products.filter((p) => p.type === 'birthday');
-
       bd.forEach((p) => {
         bdayCakes[p.id_ref] = {
           price: p.price,
           emoji: p.emoji,
+          stock: p.stock,
           img: p.img,
         };
       });
@@ -165,7 +280,15 @@ async function loadProducts() {
 }
 
 // --- CART STATE ---
-let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+let cart = [];
+try {
+  cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+  if (!Array.isArray(cart)) cart = [];
+} catch (e) {
+  console.error('Error parsing cart from localStorage:', e);
+  cart = [];
+}
+
 let checkoutState = {
   name: '',
   phone: '',
@@ -177,7 +300,11 @@ let checkoutState = {
 };
 
 function saveCart() {
-  localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+  try {
+    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+  } catch (e) {
+    console.error('Error saving cart to localStorage:', e);
+  }
 }
 
 const cartFooter = document.getElementById('cartFooter');
@@ -244,14 +371,41 @@ function updateCartUI() {
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
   }
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const badge = document.getElementById('cartBadge');
+  if (!badge) return;
+  const count = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+  badge.textContent = count;
 }
 
 // FIXED ADD TO CART
 function addToCart(product) {
-  const existing = cart.find((i) => i.name === product.name);
+  if (product.stock === 0) {
+    showToast('This item is sold out 😞');
+    return;
+  }
+  
+  const existing = cart.find(i => {
+    if (i.name !== product.name || i.message !== product.message) return false;
+    const hasCustom1 = !!i.customizations;
+    const hasCustom2 = !!product.customizations;
+    if (hasCustom1 !== hasCustom2) return false;
+    if (hasCustom1 && hasCustom2) {
+      return JSON.stringify(i.customizations) === JSON.stringify(product.customizations);
+    }
+    return true;
+  });
 
-  if (existing) existing.qty++;
-  else cart.push({ ...product, qty: 1 });
+  if (existing) {
+    existing.qty++;
+  } else {
+    const newItem = { ...product };
+    if (!newItem.qty) newItem.qty = 1;
+    cart.push(newItem);
+  }
 
   saveCart();
   updateCartUI();
@@ -260,10 +414,34 @@ function addToCart(product) {
 
 // FIXED QTY
 function changeQty(index, delta) {
+  if (!cart[index]) return;
   cart[index].qty += delta;
   if (cart[index].qty <= 0) cart.splice(index, 1);
   saveCart();
   updateCartUI();
+}
+
+function removeFromCart(index) {
+  if (cart[index]) {
+    cart.splice(index, 1);
+    saveCart();
+    updateCartUI();
+    showToast('Removed from cart 🗑️');
+  }
+}
+
+function openCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  if (sidebar) sidebar.classList.add('open');
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
 }
 
 // --- LIVE PRODUCT SEARCH ---
@@ -672,48 +850,32 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   window.open(waUrl, '_blank');
 }
 
-    if (order.created_at) {
-        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
-    }
-});
-
 // Scroll to top function
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 }
-AOS.init({
-  duration: 1000,
-  once: true,
-  easing: "ease-in-out"
-});
-    const message = document.getElementById('customizeMessage').value.trim();
 
-    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
-    const finalPrice = _customizeProduct.price + toppingsTotal;
+if (typeof AOS !== 'undefined') {
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: 'ease-in-out',
+  });
+}
+// ============================================================
+// TOAST & ADDITIONAL HELPERS
+// ============================================================
+const BIRTHDAY_FALLBACKS = DEFAULT_BDAY_CAKES;
 
-    const cartItem = {
-        ..._customizeProduct,
-        price: finalPrice,
-        customizations: {
-            dietary,
-            toppings,
-            message
-        }
-    };
-// ============================================================
-// TOAST
-// ============================================================
 function showToast(msg) {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.textContent = msg;
+  t.innerHTML = msg;          // innerHTML to allow the track-order anchor
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 5000);
 }
 
     addToCart(cartItem);
@@ -727,20 +889,17 @@ document.querySelectorAll('.mobile-menu a').forEach(link => {
     document.getElementById('mobileMenu').classList.remove('show');
   });
 });
-// Show/hide button on scroll
 
 window.addEventListener('scroll', function () {
   const btn = document.getElementById('scrollTopBtn');
-
   if (!btn) return;
-
   if (window.scrollY > 300) {
     btn.style.display = 'flex';
   } else {
     btn.style.display = 'none';
   }
 });
-// Scroll to top function
+
 function scrollToTop() {
   window.scrollTo({
     top: 0,
