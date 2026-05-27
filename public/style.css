@@ -10116,7 +10116,7 @@ html.dark .topping-price {
   box-shadow:
     0 0 0 4px rgba(181, 131, 102, 0.18);
 }
-}
+
 
 .custom-price-filter {
   appearance: none !important;
@@ -10442,7 +10442,7 @@ button,
 .menu-toggle{
   display:none;
 }
-}
+
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);

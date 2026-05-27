@@ -2,11 +2,6 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <title>Brownie Bliss | About</title>
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Brownie Bliss</title>
@@ -25,17 +20,18 @@
 <!-- HEADER -->
 <header>
   <div class="header-inner">
-<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <a href="index.html" class="logo">
       <span class="logo-name">Brownie Bliss</span>
       <span class="logo-sub">Homemade Treats</span>
     </a>
 
     <nav>
-      <a href="index.html#home">Home</a>
-      <a href="about.html">Abput</a>
-      <a href="index.html#products">Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="products.html">Products</a>
+      <a href="birthday.html">Birthday Cakes</a>
+      <a href="favourites.html">Favourites</a>
       <a href="contact.html">Contact</a>
       <a href="track.html">Track Order</a>
     </nav>
@@ -776,6 +772,116 @@
       margin-bottom:40px;
     }
 
+    .stats{
+      max-width:1450px;
+      margin:70px auto 0;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:36px 32px;
+      padding:0 20px;
+      align-items:start;
+    }
+
+    .stat-item{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:left;
+      padding-left:10px;
+    }
+
+    .stat-number{
+      color:#fff4e6;
+      font-size:3.1rem;
+      line-height:1.05;
+      letter-spacing:0.02em;
+      margin:0;
+    }
+
+    .stat-number span{
+      font-size:0.45em;
+      vertical-align:text-top;
+      margin-left:4px;
+    }
+
+    .stat-label{
+      color:rgba(255,244,230,0.75);
+      font-size:16px;
+      line-height:1.9;
+      letter-spacing:0.01em;
+      max-width:280px;
+      margin:0;
+    }
+
+    .values{
+      padding:140px 8% 120px;
+    }
+
+    .values .section-title{
+      color:#fff4e6;
+      font-weight:600;
+      margin-bottom:18px;
+    }
+
+    .values .section-title em{
+      color:var(--gold);
+    }
+
+    .values-grid{
+      max-width:1450px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:38px;
+    }
+
+    .value-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .value-icon{
+      font-size:32px;
+      display:inline-flex;
+      margin-bottom:10px;
+    }
+
+    .value-title{
+      color:#fff4e6;
+      font-weight:600;
+      font-size:30px;
+      line-height:1.2;
+      margin:0;
+    }
+
+    .value-desc{
+      color:rgba(255,244,230,0.88);
+      line-height:2.1;
+      font-size:16px;
+      margin:0;
+    }
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .values-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:700px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .values-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
     /* =========================
        LUXURY BANNER
     ========================= */
@@ -1159,36 +1265,492 @@
       color:var(--gold);
     }
 
+    /* =========================
+       ADDITIONAL PREMIUM STYLES FOR ABOUT PAGE
+    ========================= */
+    .story-hero {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 100px 8%;
+      min-height: auto !important;
+      background: linear-gradient(rgba(45,18,13,0.92), rgba(45,18,13,0.96)) !important;
+    }
+    
+    .story-hero .hero-left {
+      text-align: left;
+    }
+    
+    .story-hero .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+    
+    .story-hero .hero-body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #f3e4d2 !important;
+      margin-bottom: 0;
+    }
+    
+    .story-hero .hero-right {
+      position: relative;
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+    }
+    
+    .story-hero .hero-right img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .story-hero .hero-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(45,18,13,0.6), transparent);
+      pointer-events: none;
+    }
+    
+    .story-hero .hero-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 8px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .story-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 120px 8%;
+    }
+    
+    .story-img-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    }
+    
+    .story-img-wrap img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .story-img-accent {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--gold);
+      margin: 15px;
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    
+    .story-quote {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      background: rgba(45, 18, 13, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border: 1px solid rgba(212, 165, 55, 0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .story-text {
+      text-align: left;
+    }
+    
+    .story-text .section-eyebrow {
+      color: var(--gold);
+      letter-spacing: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .story-text .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      color: var(--dark);
+      margin-bottom: 24px;
+      line-height: 1.15;
+      text-align: left;
+    }
+    
+    .story-text .section-title em {
+      color: var(--brown2);
+      font-style: italic;
+    }
+    
+    .story-para {
+      color: #6d4b42;
+      line-height: 1.8;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .story-para:last-child {
+      margin-bottom: 0;
+    }
+    
+    .values {
+      background: linear-gradient(135deg, #4a1f14, #2d120d) !important;
+      padding: 120px 8% !important;
+    }
+    
+    .values .section-eyebrow {
+      color: var(--gold);
+      letter-spacing: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+      text-align: center;
+    }
+    
+    .values .section-title {
+      color: #fff4e6 !important;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .values .section-title em {
+      color: var(--gold) !important;
+      font-style: italic;
+    }
+    
+    .values-grid {
+      max-width: 1450px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    
+    .value-card {
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(212, 165, 55, 0.1) !important;
+      padding: 40px 30px !important;
+      border-radius: 24px !important;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.4s ease;
+    }
+    
+    .value-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(212, 165, 55, 0.25) !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .value-icon {
+      font-size: 36px;
+      display: inline-flex;
+      margin-bottom: 8px;
+    }
+    
+    .value-title {
+      color: #fff4e6 !important;
+      font-weight: 600;
+      font-size: 26px;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    .value-desc {
+      color: rgba(255, 244, 230, 0.8) !important;
+      line-height: 1.8;
+      font-size: 15px;
+      margin: 0;
+    }
+    
+    .quote-banner {
+      background: var(--brown);
+      padding: 100px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 120px rgba(212, 175, 55, 0.08);
+      margin: 80px 0;
+    }
+    
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      line-height: 1.4;
+      color: var(--cream) !important;
+      font-style: italic;
+      max-width: 1000px;
+      margin: 0 auto 20px;
+    }
+    
+    .quote-attr {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--gold) !important;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    
+    .founder {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 120px auto;
+      padding: 60px;
+      background: white;
+      border-radius: 35px;
+      align-items: center;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(212, 165, 55, 0.08);
+    }
+    
+    .founder-img-placeholder {
+      width: 240px;
+      height: 240px;
+      background: var(--cream);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 15px 30px rgba(212, 165, 55, 0.15);
+    }
+    
+    .founder-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      color: var(--dark) !important;
+      margin-bottom: 8px;
+    }
+    
+    .founder-role {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--gold) !important;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    
+    .founder-bio {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #6e4c42 !important;
+    }
+    
+    .cta {
+      text-align: center;
+      padding: 100px 30px;
+      background: linear-gradient(135deg, #fff7f0 0%, #f8ede2 100%);
+      border-radius: 35px;
+      max-width: 1450px;
+      margin: 120px auto;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(212, 165, 55, 0.05);
+    }
+    
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      color: var(--dark) !important;
+      margin-bottom: 16px;
+    }
+    
+    .cta-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      color: #6e4c42 !important;
+      margin-bottom: 40px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    
+    .btn-dark {
+      padding: 18px 36px;
+      background: var(--brown);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: 0.3s ease;
+      box-shadow: 0 10px 20px rgba(74, 31, 20, 0.15);
+    }
+    
+    .btn-dark:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(212, 165, 55, 0.2);
+    }
+    
+    .btn-outline {
+      padding: 18px 36px;
+      background: transparent;
+      border: 1px solid var(--brown);
+      color: var(--brown);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: 0.3s ease;
+    }
+    
+    .btn-outline:hover {
+      background: rgba(74, 31, 20, 0.05);
+      transform: translateY(-3px);
+    }
+
+    /* RESPONSIVE UPDATES */
+    @media(max-width:900px){
+      .story-hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        min-height: auto !important;
+        padding: 80px 20px;
+      }
+      .story-hero .hero-right img {
+        height: 300px;
+      }
+      .story-split {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 20px;
+      }
+      .story-img-wrap img {
+        height: 350px;
+      }
+      .story-text .section-title {
+        font-size: 40px;
+      }
+      .values {
+        padding: 80px 20px !important;
+      }
+      .values .section-title {
+        font-size: 40px;
+        margin-bottom: 40px;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .founder {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 40px 20px;
+        margin: 60px 20px;
+        gap: 30px;
+      }
+      .founder-img-placeholder {
+        margin: 0 auto;
+      }
+      .founder-name {
+        font-size: 32px;
+      }
+      .cta {
+        margin: 60px 20px;
+        padding: 60px 20px;
+      }
+      .cta-title {
+        font-size: 36px;
+      }
+      .cta-sub {
+        font-size: 16px;
+      }
+      .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* DARK MODE STYLES */
+    html.dark .story-split {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+    }
+    html.dark .story-text .section-title,
+    html.dark .founder-name,
+    html.dark .cta-title,
+    html.dark .founder-bio,
+    html.dark .cta-sub {
+      color: var(--text-dark) !important;
+    }
+    html.dark .founder {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+      border-color: #3a2010 !important;
+    }
+    html.dark .founder-img-placeholder {
+      background: #2a140b !important;
+      border-color: var(--gold) !important;
+    }
+    html.dark .cta {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+      border-color: #3a2010 !important;
+    }
+    html.dark .btn-dark {
+      background: var(--gold) !important;
+      color: var(--dark) !important;
+    }
+    html.dark .btn-outline {
+      border-color: var(--gold) !important;
+      color: var(--gold) !important;
+    }
+    html.dark .btn-outline:hover {
+      background: rgba(212, 165, 55, 0.08) !important;
+    }
   </style>
-
-</head>
-
-<body>
-
-  <!-- NAVBAR -->
-
-  <header>
-
-    <div class="navbar">
-
-      <a href="index.html" class="logo">
-        <h1>Brownie Bliss</h1>
-        <span>HOMEMADE TREATS</span>
-      </a>
-
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="products.html">Products</a>
-        <a href="birthday.html">Birthday Cakes</a>
-        <a href="favourites.html">Favourites</a>
-        <a href="contact.html">Contact</a>
-        <a href="track.html">Track Order</a>
-      </nav>
-
-    </div>
-
-  </header>
 
   <!-- HERO -->
 
@@ -1352,7 +1914,7 @@
     </section>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero story-hero">
     <div class="hero-left">
       <p class="hero-eyebrow">Our Story</p>
       <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
@@ -1462,29 +2024,31 @@
           DISCOVER MORE →
         </a>
       </div>
-    
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-item reveal">
-      <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
-      <div class="stat-label">Homemade Recipes</div>
     </div>
-    <div class="stat-item reveal" style="transition-delay:0.1s">
-      <div class="stat-number" style="font-size:40px">Fresh</div>
-      <div class="stat-label">Baked Every Day</div>
+  
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+        <div class="stat-label">Homemade Recipes</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.1s">
+        <div class="stat-number" style="font-size:40px">Fresh</div>
+        <div class="stat-label">Baked Every Day</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.2s">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Sweet Memories</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.3s">
+        <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+        <div class="stat-label">Always Fresh, Never Factory</div>
+      </div>
     </div>
-    <div class="stat-item reveal" style="transition-delay:0.2s">
-      <div class="stat-number">∞</div>
-      <div class="stat-label">Sweet Memories</div>
-    </div>
-    <div class="stat-item reveal" style="transition-delay:0.3s">
-      <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
-      <div class="stat-label">Always Fresh, Never Factory</div>
-    </div>
-  </div>
+  </section>
 
   <!-- Story Section -->
-  <section class="story">
+  <section class="story story-split">
     <div class="story-img-wrap reveal">
       <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
       <div class="story-img-accent"></div>
@@ -1522,8 +2086,6 @@
     </div>
   </section>
 
-  </section>
-
   <!-- LUXURY BANNER -->
 
   <section class="luxury-banner">
@@ -1551,6 +2113,32 @@
     </div>
 
   </section>
+
+  <!-- Quote -->
+  <div class="quote-banner reveal">
+    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
+  </div>
+
+  <!-- Founder -->
+  <section class="founder reveal">
+    <div class="founder-img-placeholder">👩‍🍳</div>
+    <div>
+      <h3 class="founder-name">A.R. Shanmugapriya</h3>
+      <p class="founder-role">Founder & Head Baker</p>
+      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta reveal">
+    <h2 class="cta-title">Ready to Taste the Difference?</h2>
+    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
+    <div class="cta-buttons">
+      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
+      <a href="contact.html" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
 
   <!-- FOOTER -->
 
@@ -1604,35 +2192,6 @@
 
   </footer>
 
-</body>
-
-  <!-- Quote -->
-  <div class="quote-banner reveal">
-    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
-    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
-  </div>
-
-  <!-- Founder -->
-  <section class="founder reveal">
-    <div class="founder-img-placeholder">👩‍🍳</div>
-    <div>
-      <h3 class="founder-name">A.R. Shanmugapriya</h3>
-      <p class="founder-role">Founder & Head Baker</p>
-      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <div class="cta reveal">
-    <h2 class="cta-title">Ready to Taste the Difference?</h2>
-    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
-    <div class="cta-buttons">
-      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
-      <a href="contact.html" class="btn-outline">Get in Touch</a>
-    </div>
-  </div>
-
-</footer>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
 </body>
