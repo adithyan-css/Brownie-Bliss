@@ -12,7 +12,7 @@ document.addEventListener('keydown', (e) => {
 function applyTheme(theme) {
   document.documentElement.classList.toggle('dark', theme === 'dark');
   const icon = document.getElementById('themeIcon');
-  if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+  if (icon) icon.textContent = theme === 'dark' ? '☀' : '◐';
 }
 
 function toggleTheme() {
