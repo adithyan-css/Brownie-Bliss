@@ -42,6 +42,65 @@ html.dark {
   --glass-border: rgba(255, 255, 255, 0.15);
 }
 
+html.dark header,
+html.dark nav,
+html.dark .mobile-menu {
+  background: #1e1e1e !important;
+}
+
+html.dark .product-card,
+html.dark .birthday-card,
+html.dark .contact-form-box,
+html.dark .orders-panel,
+html.dark .hero-card,
+html.dark .stat-card,
+html.dark .cart-sidebar {
+  background: #222 !important;
+  color: var(--text-dark);
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+}
+
+html.dark a {
+  color: var(--gold-light);
+}
+/* GLOBAL DARK MODE SUPPORT */
+
+body {
+  background: var(--cream);
+  color: var(--text-dark);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+header,
+nav,
+.mobile-menu,
+.product-card,
+.birthday-card,
+.contact-form-box,
+.orders-panel,
+.cart-sidebar,
+.hero-card,
+.stat-card,
+.footer,
+input,
+textarea,
+select {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
 
 * {
   margin: 0;
@@ -3821,6 +3880,274 @@ footer {
 
 .modal-confirm:hover {
   background: #20b95a;
+}
+/* ===== PREMIUM REVIEWS SECTION ===== */
+
+.bb-reviews {
+  padding: 110px 30px;
+  background:
+    linear-gradient(
+      180deg,
+      var(--cream) 0%,
+      #fffaf5 100%
+    );
+
+  text-align: center;
+}
+
+.bb-reviews .eyebrow {
+  color: var(--gold);
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  margin-bottom: 14px;
+}
+
+.bb-reviews h2 {
+  font-family: 'Playfair Display', serif;
+
+  font-size: clamp(2.3rem, 4vw, 4rem);
+
+  color: var(--brown-dark);
+
+  margin-bottom: 70px;
+
+  font-weight: 600;
+}
+
+.bb-reviews h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.reviews-grid {
+  max-width: 1300px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(300px, 1fr));
+
+  gap: 30px;
+}
+
+/* ===== Review Cards ===== */
+
+.review-card {
+  position: relative;
+
+  background: rgba(255,255,255,0.92);
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 28px;
+
+  padding: 36px 32px;
+
+  text-align: left;
+
+  border: 1px solid rgba(0,0,0,0.05);
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,0.08);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-10px);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.12);
+}
+
+/* ===== Featured Review ===== */
+
+.review-card.featured {
+  background:
+    linear-gradient(
+      135deg,
+      #fff6ea 0%,
+      #ffffff 100%
+    );
+
+  border: 1px solid rgba(212,163,115,0.3);
+}
+
+.featured-badge {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  background: var(--gold);
+
+  color: white;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+/* ===== Quote Mark ===== */
+
+.quote-mark {
+  font-size: 62px;
+
+  line-height: 1;
+
+  color: rgba(212,163,115,0.18);
+
+  position: absolute;
+
+  top: 18px;
+  left: 24px;
+
+  font-family: serif;
+}
+
+/* ===== Stars ===== */
+
+.stars {
+  color: var(--gold);
+
+  font-size: 18px;
+
+  letter-spacing: 3px;
+
+  margin-bottom: 22px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+/* ===== Review Text ===== */
+
+.review-text {
+  font-size: 15.5px;
+
+  line-height: 1.9;
+
+  color: var(--text-mid);
+
+  margin-bottom: 30px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+/* ===== Reviewer ===== */
+
+.reviewer {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: auto;
+}
+
+.reviewer-avatar {
+  width: 54px;
+  height: 54px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold),
+      #f4c27a
+    );
+
+  color: var(--brown-dark);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+
+  font-size: 16px;
+
+  box-shadow:
+    0 6px 16px rgba(212,163,115,0.25);
+}
+
+.reviewer-name {
+  font-weight: 700;
+
+  color: var(--brown-dark);
+
+  margin-bottom: 4px;
+}
+
+.reviewer-location {
+  color: var(--text-mid);
+
+  font-size: 13px;
+}
+
+/* ===== Overall Rating ===== */
+
+.bb-overall {
+  margin-top: 60px;
+}
+
+.stars-big {
+  font-size: 28px;
+
+  color: var(--gold);
+
+  letter-spacing: 5px;
+
+  display: block;
+
+  margin-bottom: 14px;
+}
+
+.rating-text {
+  color: var(--text-mid);
+
+  font-size: 15px;
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 768px) {
+
+  .bb-reviews {
+    padding: 80px 20px;
+  }
+
+  .review-card {
+    padding: 28px 24px;
+  }
+
+  .bb-reviews h2 {
+    margin-bottom: 50px;
+  }
 }
 
 /* RESPONSIVE */
