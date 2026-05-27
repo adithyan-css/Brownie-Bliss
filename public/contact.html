@@ -198,7 +198,8 @@
         We'd love to hear from you.
       </p>
 
-      <form>
+      <!-- BUGFIX: Added onsubmit handler to prevent reload, show a toast success message, and clear fields -->
+      <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
 
         <input
           type="text"
@@ -222,6 +223,16 @@
         </button>
 
       </form>
+
+          <div class="map-box">
+
+            <iframe
+              src="https://www.google.com/maps?q=Krishnagiri,Tamil%20Nadu&output=embed"
+              loading="lazy"
+              allowfullscreen>
+            </iframe>
+
+          </div>
 
     </div>
 
@@ -251,6 +262,12 @@
           <a href="birthday.html">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
           <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
         </div>
       </div>
     </div>
