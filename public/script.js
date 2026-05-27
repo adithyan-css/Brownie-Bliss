@@ -173,6 +173,34 @@ async function loadProducts() {
 
       bdayCakes = {};
       const bd = data.products.filter((p) => p.type === 'birthday');
+
+        const bd = list.filter(p => p.type === 'birthday');
+        bdayCakes = {};
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                stock: p.stock,
+                img: p.img
+            }));
+
+            const bd = data.products.filter(p => p.type === 'birthday');
+
+            bd.forEach(p => {
+                bdayCakes[p.id_ref] = {
+                    price: p.price,
+                    emoji: p.emoji,
+                    img: p.img
+                };
+            });
+
+        } else {
+            useFallbackProducts();
+        }
+
+    } catch (e) {
+        console.error('Error loading products from database:', e);
+        useFallbackProducts();
       bd.forEach((p) => {
         bdayCakes[p.id_ref] = {
           price: p.price,
@@ -443,14 +471,45 @@ function renderRecentSearches() {
     return;
   }
 
-  container.innerHTML = recentSearches
-    .map(
-      (search) => `
-        <div class="recent-search-tag" onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')">
-            ${search}
-        </div>`
-    )
-    .join('');
+  container.innerHTML = `
+        ${recentSearches
+          .map(
+            (search) => `
+            <div
+                class="recent-search-tag"
+                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
+            >
+                ${search}
+            </div>
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <div class="product-name">${p.name}</div>
+                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                <div class="product-price">₹${p.price}</div>
+                <div class="stock-status ${
+                 p.stock === 0
+                 ? 'sold-out'
+                 : p.stock <= 3
+                 ? 'low-stock'
+                 : 'available'}">${
+                p.stock === 0
+                ? 'Sold Out'
+                : p.stock <= 3
+                ? 'Low Stock'
+                : 'Available'}</div>
+                <button class="add-to-cart" ${p.stock === 0 ? 'disabled' : ''}
+                onclick='addToCart(${JSON.stringify(p)})'>
+               ${p.stock === 0 ? 'Sold Out' : 'Add to Cart'}</button>
+                <button class="add-to-cart">
+                    Customize & Add
+                </button>
+            </div>
+        </div>
+    `).join('');
+        `
+          )
+          .join('')}
+    `;
 }
 
 function updatePriceFilter() {
@@ -1210,79 +1269,22 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   window.open(waUrl, '_blank');
 }
 
-function sendToWhatsApp() { openCheckout(); }
-
-// =========================================
-// TRACK ORDER
-// =========================================
-
-async function trackOrder(id) {
-  const orderIdInput = document.getElementById('orderIdInput');
-  const trackError = document.getElementById('trackError');
-  const result = document.getElementById('result');
-
-  if (!orderIdInput) return;
-  if (trackError) { trackError.classList.remove('show'); trackError.textContent = ''; }
-  if (result) result.style.display = 'none';
-
-  const orderId = id || orderIdInput.value.trim();
-  if (!orderId) {
-    if (trackError) { trackError.textContent = 'Please enter an Order ID'; trackError.classList.add('show'); }
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_BASE}/orders/${orderId}`);
-    const data = await res.json();
-    if (data.success || data.order) {
-      renderOrderDetails(data.order || data);
-      if (result) result.style.display = 'block';
-    } else {
-      if (trackError) { trackError.textContent = data.error || 'Order not found'; trackError.classList.add('show'); }
-    }
-  } catch (e) {
-    console.error(e);
-    if (trackError) { trackError.textContent = 'Error fetching order. Make sure server is running!'; trackError.classList.add('show'); }
-  }
+// Scroll to top function
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 }
 
-function renderOrderDetails(order) {
-  const resOrderId = document.getElementById('resOrderId');
-  if (!resOrderId) return;
-
-  resOrderId.textContent = order.id || order.order_id;
-
-  const resTotalTop = document.getElementById('resTotalTop');
-  if (resTotalTop) resTotalTop.textContent = order.total;
-
-  const statusLower = (order.status || 'pending').toLowerCase();
-  const timeline = document.getElementById('trackingTimeline');
-  const cancelledAlert = document.getElementById('cancelledAlert');
-
-  if (timeline && cancelledAlert) {
-    if (statusLower === 'cancelled') {
-      timeline.style.display = 'none';
-      cancelledAlert.style.display = 'block';
-    } else {
-      timeline.style.display = 'block';
-      cancelledAlert.style.display = 'none';
-      const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
-      const currentIndex = steps.indexOf(statusLower) > -1 ? steps.indexOf(statusLower) : 0;
-      steps.forEach((s, i) => {
-        const el = document.getElementById(`step-${s}`);
-        if (!el) return;
-        el.classList.remove('active', 'completed');
-        if (i < currentIndex) el.classList.add('completed');
-        else if (i === currentIndex) el.classList.add('active');
-      });
-    }
-  }
-
-  const resDate = document.getElementById('resDate');
-  if (resDate && order.created_at) resDate.textContent = new Date(order.created_at).toLocaleString();
+if (typeof AOS !== 'undefined') {
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: 'ease-in-out',
+  });
 }
-
-// =========================================
+// ============================================================
 // TOAST
 // =========================================
 

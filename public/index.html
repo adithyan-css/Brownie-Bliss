@@ -231,44 +231,93 @@
         Swipe to see Desserts &nbsp; ⟷
       </div>
 
-      <div
-        class="birthday-slider"
-        style="
-          display: flex;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          scroll-behavior: smooth;
-        "
-      >
-        <!-- SLIDE 1: BIRTHDAY CAKES -->
-        <div
-          class="bday-slide"
-          style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px"
-        >
-          <div
-            style="
-              max-width: 1300px;
-              margin: 0 auto;
-              display: grid;
-              grid-template-columns: 1fr 1.2fr;
-              gap: 60px;
-              align-items: center;
-            "
-          >
-            <div class="birthday-visual">
-              <img
-                id="birthdayCakeImg"
-                src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-                alt="Birthday Cake"
-                style="
-                  width: 100%;
-                  height: 550px;
-                  object-fit: cover;
-                  border-radius: 4px;
-                  box-shadow: var(--shadow);
-                "
-              />
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
+  <section class="birthday-section" data-aos="fade-up"></section>
+    style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
+    
+    <!-- Slider Hint -->
+    <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
+      Swipe to see Desserts &nbsp; ⟷
+    </div>
+
+    <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+      
+      <!-- SLIDE 1: BIRTHDAY CAKES -->
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;"; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-grid">
+          <div class="birthday-visual">
+            <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+              alt="Birthday Cake"
+              style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+          </div>
+          <div class="birthday-card"
+            style="background: var(--white); padding: clamp(20px, 4vw, 50px); border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label">Celebrate with Us</span>
+            <div class="birthday-title-row">
+              <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+              <button id="birthdayFavoriteBtn" class="favorite-btn favorite-btn-inline" type="button"
+                aria-label="Toggle birthday cake favourite" aria-pressed="false" onclick="toggleBirthdayFavourite()">&#9825;</button>
+            </div>
+            <p
+              style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+              Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
+              size to get
+              started.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+                Flavor</label>
+              <div style="display: grid; gap: 10px;" class="responsive-grid">
+      <button class="filter-tab flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">
+        Red Velvet
+      </button>
+    
+      <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">
+        Dutch Truffle
+      </button>
+    
+      <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Pineapple')">
+        Pineapple
+      </button>
+    
+      <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Chocoholic')">
+        Chocoholic
+      </button>
+    
+      <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Black Forest')">
+        Black Forest
+      </button>
+    
+      <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Cheesecake')">
+        Cheesecake
+      </button>
+    </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
+                (kg)</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
+                <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
+                on Cake</label>
+              <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
+                style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div
               class="birthday-card"
@@ -1548,24 +1597,12 @@
         </p>
       </div>
     </div>
+  </div>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
-
-    <!-- BACK TO TOP BUTTON -->
-    <button
-      id="scrollTopBtn"
-      class="scroll-top-btn"
-      onclick="scrollToTop()"
-      aria-label="Back to top"
-      title="Back to top"
-      tabindex="0"
-      style="padding: 9px; padding-left: 16px;"
-    >
-      ↑
-    </button>
-
-    <script src="script.js"></script>
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  </body>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+</body>
 </html>
