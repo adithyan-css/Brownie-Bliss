@@ -10448,9 +10448,15 @@ button,
     transform: scale(1.1);
 }
 
+.flavor-btn.active,
+.weight-btn.active {
+  background: #5c2c06 !important;
+  color: white !important;
+  border: 2px solid #5c2c06 !important;
+  transition: 0.3s ease;
+}
 /* ============================================================
    DARK MODE FINAL PATCH — Brownie Bliss
-============================================================ */
 
 html.dark,
 html.dark body {

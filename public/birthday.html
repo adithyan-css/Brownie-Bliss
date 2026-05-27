@@ -104,12 +104,11 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-pill active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+                <button class="filter-pill flavor-btn active" onclick="updateBirthdayCake('Red Velvet', event)">Red Velvet</button>
+                <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Dutch Truffle', event)">Dutch Truffle</button>                <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Pineapple', event)">Pineapple</button>
+                <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Chocoholic', event)">Chocoholic</button>
+                <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Black Forest', event)">Black Forest</button>
+                <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Cheesecake', event)">Cheesecake</button>
               </div>
             </div>
     
@@ -118,10 +117,9 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill" onclick="setCakeWeight('0.5')">0.5 kg</button>
-                <button class="filter-pill active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('1.5')">1.5 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                <button class="filter-pill weight-btn" onclick="setCakeWeight('0.5', event)">0.5 kg</button>                <button class="filter-pill weight-btn active" onclick="setCakeWeight('1.0', event)">1.0 kg</button>
+                <button class="filter-pill weight-btn" onclick="setCakeWeight('1.5', event)">1.5 kg</button>
+                <button class="filter-pill weight-btn" onclick="setCakeWeight('2.0', event)">2.0 kg</button>
               </div>
             </div>
     
@@ -132,7 +130,9 @@
               <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
                 style="width: 100%; padding: 14px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
-    
+    <div id="recipeBox"
+        style="margin-bottom:20px;padding:15px;background:#fff7f0;border-radius:10px;">
+    </div>
             <div
               style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream2);">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -575,6 +575,91 @@
   <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
+  <script>
+  const flavorData = {
+    "Red Velvet": {
+      price: 850,
+      img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860",
+      description: "A rich cocoa cake with cream cheese frosting.",
+      ingredients: "Cocoa powder, buttermilk, cream cheese frosting",
+      allergens: "Contains dairy, eggs, gluten"
+    },
+    "Dutch Truffle": {
+      price: 950,
+      img: "https://tse2.mm.bing.net/th/id/OIP.RFIPPxLpOU7C0ryaVA5hMwHaHa?pid=Api&P=0&h=180",
+      description: "Chocolate truffle cake with dark ganache.",
+      ingredients: "Dark chocolate, cocoa powder, fresh cream",
+      allergens: "Contains dairy, gluten"
+    },
+    "Pineapple": {
+      price: 700,
+      img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg",
+      description: "Fresh pineapple cream cake.",
+      ingredients: "Pineapple chunks, whipped cream, vanilla sponge",
+      allergens: "Contains dairy, eggs, gluten"
+    }
+  };
+
+  let selectedFlavor = "Red Velvet";
+  let selectedWeight = "1.0";
+
+  const weightPrices = {
+    "0.5": 0.6,
+    "1.0": 1,
+    "1.5": 1.5,
+    "2.0": 2
+  };
+
+  function updateBirthdayCake(flavor, event) {
+    selectedFlavor = flavor;
+
+    document.querySelectorAll(".flavor-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    event.target.classList.add("active");
+
+    const cake = flavorData[flavor];
+
+    document.getElementById("birthdayCakeImg").src = cake.img;
+
+    updatePrice();
+    updateRecipe(flavor);
+  }
+
+  function setCakeWeight(weight, event) {
+    selectedWeight = weight;
+
+    document.querySelectorAll(".weight-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    event.target.classList.add("active");
+
+    updatePrice();
+  }
+
+  function updatePrice() {
+    const basePrice = flavorData[selectedFlavor].price;
+    const finalPrice = Math.round(basePrice * weightPrices[selectedWeight]);
+
+    document.getElementById("cakePrice").textContent =
+      `₹ ${finalPrice}`;
+  }
+
+  function updateRecipe(flavor) {
+    const cake = flavorData[flavor];
+
+    document.getElementById("recipeBox").innerHTML = `
+      <h3>Recipe & Ingredients</h3>
+      <p><strong>Description:</strong> ${cake.description}</p>
+      <p><strong>Ingredients:</strong> ${cake.ingredients}</p>
+      <p><strong>Allergens:</strong> ${cake.allergens}</p>
+    `;
+  }
+
+  updateRecipe("Red Velvet");
+</script>
 </body>
 
 </html>
