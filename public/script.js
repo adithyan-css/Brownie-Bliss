@@ -444,6 +444,114 @@ function closeCart() {
   if (overlay) overlay.classList.remove('open');
 }
 
+// --- CHECKOUT FLOW ---
+function injectCheckoutModal() {
+    if (document.getElementById('checkoutOverlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'checkoutOverlay';
+    overlay.className = 'checkout-overlay';
+    overlay.innerHTML = 
+        <div class="checkout-modal">
+            <div class="checkout-head">
+                <div class="checkout-steps">
+                    <div class="step-indicator active" id="step1ind">1</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" id="step2ind">2</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" id="step3ind">3</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" id="step4ind">4</div>
+                </div>
+                <button class="checkout-close" onclick="closeCheckout()">✕</button>
+            </div>
+            <div class="checkout-body">
+                <!-- STEP 1: CONTACT -->
+                <div id="checkStep1">
+                    <h3 class="checkout-title">Contact Information</h3>
+                    <p class="checkout-subtitle">We'll use this to coordinate your delivery.</p>
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" id="custName" placeholder="e.g. Adithi" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="phone-input-group">
+                            <span class="prefix">+91</span>
+                            <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
+                        </div>
+                    </div>
+                    <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="sendOTP()">
+                        Send Verification OTP &rarr;
+                    </button>
+                </div>
+                <!-- STEP 2: OTP -->
+                <div id="checkStep2" class="hidden">
+                    <h3 class="checkout-title">Confirm Number</h3>
+                    <p class="checkout-subtitle">Enter the 6-digit code sent to <strong id="otpPhoneDisp"></strong></p>
+                    <div class="otp-container">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 0)">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 1)">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 2)">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 3)">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 4)">
+                        <input type="text" class="otp-box" maxlength="1" onkeyup="otpNext(this, 5)">
+                    </div>
+                    <div id="demoOtpBox" style="display:none; margin-bottom: 20px;"></div>
+                    <button class="hero-cta" style="width: 100%;" onclick="verifyOTP()">
+                        Verify & Continue &rarr;
+                    </button>
+                    <button class="text-link" onclick="showCheckoutStep(1)">Change Phone Number</button>
+                </div>
+                <!-- STEP 3: ADDRESS -->
+                <div id="checkStep3" class="hidden">
+                    <h3 class="checkout-title">Delivery Details</h3>
+                    <p class="checkout-subtitle">Where should we bring your treats?</p>
+                    <div class="form-group">
+                        <label>Street Address</label>
+                        <textarea id="custAddr" placeholder="House No, Street, Area..."></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" id="custCity" placeholder="City">
+                        </div>
+                        <div class="form-group">
+                            <label>Pincode</label>
+                            <input type="text" id="custPin" placeholder="6-digit" maxlength="6">
+                        </div>
+                    </div>
+                    <button class="hero-cta" style="width: 100%; margin-top: 20px;" onclick="goToConfirm()">
+                        Review Order &rarr;
+                    </button>
+                </div>
+                <!-- STEP 4: CONFIRM -->
+                <div id="checkStep4" class="hidden">
+                    <h3 class="checkout-title">Final Review</h3>
+                    <div class="confirm-summary">
+                        <div class="confirm-section">
+                            <label>Delivery to</label>
+                            <div id="confirmCustomer"></div>
+                        </div>
+                        <div class="confirm-section">
+                            <label>Order Items</label>
+                            <div id="confirmItems"></div>
+                            <div class="confirm-total">
+                                <span>Total Payable</span>
+                                <strong id="confirmTotal"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="whatsapp-btn" style="border-radius: 0;" onclick="placeOrder()">
+                        Place Order & Confirm via WhatsApp &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
 // --- LIVE PRODUCT SEARCH ---
 
 function initializeLiveSearch() {
