@@ -2,202 +2,610 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Track Order - Brownie Bliss</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- GOOGLE FONT -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
-    <script>
-        (function () {
-            try {
-                var t = localStorage.getItem('bb_theme') || 'light';
-                if (t === 'dark') document.documentElement.classList.add('dark');
-            } catch (_) { }
-        })();
-    </script>
+
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff8f3;
+            font-family: 'DM Sans', sans-serif;
+            color: #4e342e;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background: white;
+            padding: 18px 40px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #8b5e3c;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo-sub {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        nav {
+            display: flex;
+            gap: 22px;
+        }
+
+        nav a {
+            font-weight: 500;
+        }
+
+        .track-container {
+            max-width: 1150px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .track-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .track-subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .input-box input,
+        .input-box textarea {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .track-btn {
+            margin-top: 20px;
+            padding: 16px 30px;
+            border: none;
+            border-radius: 16px;
+            background: #8b5e3c;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .track-btn:hover {
+            background: #6f472c;
+        }
+
+        #result {
+            margin-top: 40px;
+        }
+
+        .order-top {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .order-card {
+            flex: 1;
+            min-width: 220px;
+            background: #fff8f3;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .order-card span {
+            display: block;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .order-card strong {
+            color: #5c3b28;
+            font-size: 1.1rem;
+        }
+
+        /* TIMELINE */
+
+        .tracking-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin: 35px 0;
+        }
+
+        .timeline-step {
+            background: #fff7f2;
+            padding: 22px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+        }
+
+        .timeline-step.active {
+            border-color: #8b5e3c;
+            background: #fff1e7;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .step-desc {
+            color: #777;
+            font-size: 0.92rem;
+        }
+
+        /* MAP */
+
+        .delivery-map-card {
+            margin-top: 30px;
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(139, 94, 60, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .delivery-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .delivery-top h3 {
+            font-size: 1.5rem;
+            color: #5c3b28;
+            margin-bottom: 5px;
+        }
+
+        .delivery-info-boxes {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .delivery-time-box {
+            background: #fff3e8;
+            padding: 16px 22px;
+            border-radius: 20px;
+            text-align: center;
+            min-width: 170px;
+        }
+
+        .delivery-time-box span {
+            display: block;
+            color: #777;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .delivery-time-box strong {
+            font-size: 1.3rem;
+            color: #8b5e3c;
+        }
+
+        #deliveryMap {
+            width: 100%;
+            height: 450px;
+            border-radius: 22px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .delivery-rider {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: 600;
+            color: #6b4b35;
+        }
+
+        footer {
+            margin-top: 60px;
+            background: #3b2419;
+            color: white;
+            padding: 45px 30px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media(max-width:768px) {
+
+            header {
+                padding: 18px 20px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .track-container {
+                margin: 20px;
+                padding: 25px;
+            }
+
+            #deliveryMap {
+                height: 320px;
+            }
+        }
+    </style>
 </head>
 
-<body class="track-page-body">
+<body>
 
     <!-- HEADER -->
+
     <header>
+
         <div class="header-inner">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            <a href="index.html" class="logo">
+
+            <a href="#" class="logo">
                 <span class="logo-name">Brownie Bliss</span>
                 <span class="logo-sub">Homemade Treats</span>
             </a>
+
             <nav>
-                <a href="index.html#home">Home</a>
-                <a href="index.html#products">Products</a>
-                <a href="index.html#birthday">Birthday Cakes</a>
-                <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
-                <a href="index.html#contact">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="birthday.html">Birthday Cakes</a>
                 <a href="track.html">Track Order</a>
+                <a href="contact.html">Contact</a>
             </nav>
-            <div class="header-actions">
-                <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-                    aria-label="Toggle dark mode" title="Toggle dark mode">
-                    <span id="themeIcon">🌙</span>
-                </button>
-                <button class="cart-btn" onclick="openCart()">
-                    🛒 Cart <span class="cart-count" id="cartBadge">0</span>
-                </button>
-            </div>
+
         </div>
+
     </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
-    <div class="track-content-wrapper">
-        <div class="track-container">
-            <h2>Track Your Order</h2>
-            <p class="track-subtitle">Enter your Order ID below to check the current status.</p>
 
-            <div class="track-input-group">
-                <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
-                <button onclick="trackOrder()">Track Order</button>
+    <!-- MAIN -->
+
+    <div class="track-container">
+
+        <h2>Track Your Order</h2>
+
+        <p class="track-subtitle">
+            Enter your details to get delivery distance and approximate arrival time.
+        </p>
+
+        <!-- INPUT -->
+
+        <div class="input-grid">
+
+            <div class="input-box">
+                <input type="text" id="orderId" placeholder="Enter Order ID">
             </div>
 
-            <div id="trackError" class="track-error"></div>
-
-            <div id="result">
-                <h3>Order <span id="resOrderId"></span></h3>
-
-                <div class="order-meta">
-                    <div>
-                        <span class="meta-label">Date Placed</span>
-                        <div id="resDate" class="meta-value"></div>
-                    </div>
-                    <div>
-                        <span class="meta-label">Total Amount</span>
-                        <div class="meta-value">₹<span id="resTotalTop"></span></div>
-                    </div>
-                </div>
-
-                <div class="tracking-timeline" id="trackingTimeline">
-                    <div class="timeline-step" id="step-pending">
-                        <div class="step-icon">⏳</div>
-                        <div class="step-content">
-                            <div class="step-title">Order Placed</div>
-                            <div class="step-desc">We have received your order</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-confirmed">
-                        <div class="step-icon">✅</div>
-                        <div class="step-content">
-                            <div class="step-title">Confirmed</div>
-                            <div class="step-desc">Your order has been confirmed</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-preparing">
-                        <div class="step-icon">🧑‍🍳</div>
-                        <div class="step-content">
-                            <div class="step-title">Preparing</div>
-                            <div class="step-desc">We are baking your treats</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-delivered">
-                        <div class="step-icon">🚚</div>
-                        <div class="step-content">
-                            <div class="step-title">Delivered</div>
-                            <div class="step-desc">Enjoy your Brownie Bliss!</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="cancelledAlert" class="cancelled-alert" style="display: none;">
-                    ❌ This order has been cancelled. Please contact support.
-                </div>
-
-                <h4>Items</h4>
-                <table class="receipt-table">
-                    <tbody id="resItems"></tbody>
-                    <tfoot>
-                        <tr class="result-total">
-                            <td>Total</td>
-                            <td class="text-right">₹<span id="resTotal"></span></td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="input-box">
+                <input type="date" id="orderDate">
             </div>
+
         </div>
+
+        <div class="input-box">
+            <textarea id="customerAddress" rows="4"
+                placeholder="Enter your full delivery address"></textarea>
+        </div>
+
+        <button class="track-btn" onclick="trackOrder()">
+            🚚 Track Delivery
+        </button>
+
+        <!-- RESULT -->
+
+        <div id="result">
+
+            <div class="order-top">
+
+                <div class="order-card">
+                    <span>📦 Order ID</span>
+                    <strong id="showOrderId">BB-20260527</strong>
+                </div>
+
+                <div class="order-card">
+                    <span>📅 Delivery Date</span>
+                    <strong id="showDate">27 May 2026</strong>
+                </div>
+
+                <div class="order-card">
+                    <span>📍 Delivery Address</span>
+                    <strong id="showAddress">Customer Address</strong>
+                </div>
+
+            </div>
+
+            <!-- TIMELINE -->
+
+            <div class="tracking-timeline">
+
+                <div class="timeline-step active">
+                    <div class="step-icon">⏳</div>
+                    <div class="step-title">Order Placed</div>
+                    <div class="step-desc">We received your order</div>
+                </div>
+
+                <div class="timeline-step active">
+                    <div class="step-icon">✅</div>
+                    <div class="step-title">Confirmed</div>
+                    <div class="step-desc">Order confirmed successfully</div>
+                </div>
+
+                <div class="timeline-step active">
+                    <div class="step-icon">🧑‍🍳</div>
+                    <div class="step-title">Preparing</div>
+                    <div class="step-desc">Baking your sweet treats</div>
+                </div>
+
+                <div class="timeline-step active">
+                    <div class="step-icon">🚚</div>
+                    <div class="step-title">Out For Delivery</div>
+                    <div class="step-desc">Delivery partner is on the way</div>
+                </div>
+
+            </div>
+
+            <!-- MAP -->
+
+            <div class="delivery-map-card">
+
+                <div class="delivery-top">
+
+                    <div>
+                        <h3>🚚 Live Delivery Tracking</h3>
+                        <p>Your cake is on the way</p>
+                    </div>
+
+                    <div class="delivery-info-boxes">
+
+                        <div class="delivery-time-box">
+                            <span>📍 Distance</span>
+                            <strong id="distanceText">-- km</strong>
+                        </div>
+
+                        <div class="delivery-time-box">
+                            <span>⏰ Arrival Time</span>
+                            <strong id="etaText">Calculating...</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="deliveryMap"></div>
+
+                <div class="delivery-rider">
+                    🚴 Rahul is delivering your order
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- FOOTER -->
-    <footer id="contact">
+
+    <footer>
+
         <div class="footer-inner">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <span class="logo-name">Brownie Bliss</span>
-                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
-                    </div>
-                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-                        and cookies in Krishnagiri.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Navigate</h4>
-                    <a href="index.html#home">Home</a>
-                    <a href="index.html#products">Our Products</a>
-                    <a href="index.html#birthday">Birthday Cakes</a>
-                    <a href="favourites.html">Favourites</a>
-                    <a href="track.html">Track Order</a>
-                    <a href="index.html#contact">Contact Us</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Information</h4>
-                    <a href="privacy-policy.html">Privacy Policy</a>
-                    <a href="terms-of-service.html">Terms of Service</a>
-                    <a href="refund-policy.html">Refund Policy</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Get In Touch</h4>
-                    <a href="tel:08072596340">+91 8072596340</a>
-                    <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-                    <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
-                </div>
-            </div>
+
             <div class="footer-bottom">
                 <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
                 <span>Made with ❤️ in Krishnagiri</span>
             </div>
+
         </div>
+
     </footer>
 
-    <!-- SHARED COMPONENTS -->
-    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <span class="cart-title">Your Cart 🛒</span>
-            <button class="cart-close" onclick="closeCart()">✕</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer" id="cartFooter" style="display:none">
-            <div class="cart-total">
-                <span class="cart-total-label">Total Amount</span>
-                <span class="cart-total-amt" id="cartTotal">₹0</span>
-            </div>
-            <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-                Order via WhatsApp
-            </button>
-            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
-        </div>
-    </div>
+    <!-- LEAFLET -->
 
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <script src="script.js"></script>
+    <script>
+
+        // BAKERY LOCATION
+        const bakeryLocation = [12.5186, 78.2137];
+
+        // MAP
+        const map = L.map('deliveryMap').setView(bakeryLocation, 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // BAKERY MARKER
+        L.marker(bakeryLocation)
+            .addTo(map)
+            .bindPopup("🍰 Brownie Bliss Bakery")
+            .openPopup();
+
+        let customerMarker;
+        let routeLine;
+
+        async function trackOrder() {
+
+            const address = document.getElementById("customerAddress").value;
+            const orderId = document.getElementById("orderId").value;
+            const orderDate = document.getElementById("orderDate").value;
+
+            if (!address) {
+                alert("Please enter your delivery address");
+                return;
+            }
+
+            // SHOW DETAILS
+
+            document.getElementById("showOrderId").innerText =
+                orderId || "BB-20260527";
+
+            document.getElementById("showDate").innerText =
+                orderDate || "27 May 2026";
+
+            document.getElementById("showAddress").innerText =
+                address;
+
+            // GET LOCATION
+
+            const geoResponse = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+            );
+
+            const geoData = await geoResponse.json();
+
+            if (geoData.length === 0) {
+                alert("Address not found");
+                return;
+            }
+
+            const customerLat = parseFloat(geoData[0].lat);
+            const customerLng = parseFloat(geoData[0].lon);
+
+            // REMOVE OLD MARKER & ROUTE
+
+            if (customerMarker) {
+                map.removeLayer(customerMarker);
+            }
+
+            if (routeLine) {
+                map.removeLayer(routeLine);
+            }
+
+            // CUSTOMER MARKER
+
+            customerMarker = L.marker([customerLat, customerLng])
+                .addTo(map)
+                .bindPopup("📍 Delivery Location")
+                .openPopup();
+
+            // ROUTE LINE
+
+            routeLine = L.polyline(
+                [
+                    bakeryLocation,
+                    [customerLat, customerLng]
+                ],
+                {
+                    color: '#8b5e3c',
+                    weight: 5,
+                    dashArray: '10,10'
+                }
+            ).addTo(map);
+
+            map.fitBounds(routeLine.getBounds());
+
+            // DISTANCE CALCULATION
+
+            const distanceInKm =
+                (
+                    map.distance(
+                        bakeryLocation,
+                        [customerLat, customerLng]
+                    ) / 1000
+                ).toFixed(2);
+
+            // SHOW DISTANCE
+
+            document.getElementById("distanceText").innerText =
+                `${distanceInKm} km`;
+
+            // APPROX DELIVERY TIME
+
+            const averageSpeed = 25;
+
+            const totalMinutes =
+                Math.round((distanceInKm / averageSpeed) * 60);
+
+            // ARRIVAL TIME
+
+            const now = new Date();
+
+            now.setMinutes(now.getMinutes() + totalMinutes);
+
+            const arrivalTime =
+                now.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+            // SHOW ETA
+
+            document.getElementById("etaText").innerText =
+                `${totalMinutes} mins (${arrivalTime})`;
+
+        }
+
+    </script>
+
 </body>
 
 </html>
