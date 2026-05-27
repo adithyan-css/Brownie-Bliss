@@ -137,37 +137,8 @@ async function loadProducts() {
         }));
 
       bdayCakes = {};
-
-      const bd = data.products.filter((p) => p.type === 'birthday');
-
-        const bd = list.filter(p => p.type === 'birthday');
-        bdayCakes = {};
-        bd.forEach(p => {
-            bdayCakes[p.id_ref] = {
-                price: p.price,
-                emoji: p.emoji,
-                stock: p.stock,
-                img: p.img
-            }));
-
-            const bd = data.products.filter(p => p.type === 'birthday');
-
-            bd.forEach(p => {
-                bdayCakes[p.id_ref] = {
-                    price: p.price,
-                    emoji: p.emoji,
-                    img: p.img
-                };
-            });
-
-        } else {
-            useFallbackProducts();
-        }
-
-    } catch (e) {
-        console.error('Error loading products from database:', e);
-        useFallbackProducts();
-      bd.forEach((p) => {
+      const birthdayItems = data.products.filter((p) => p.type === 'birthday');
+      birthdayItems.forEach((p) => {
         bdayCakes[p.id_ref] = {
           price: p.price,
           emoji: p.emoji,
@@ -275,21 +246,20 @@ function updateCartUI() {
 
 // FIXED ADD TO CART
 function addToCart(product) {
-    if (product.stock === 0) {
-    showToast('This item is sold out ');
+  if (product.stock === 0) {
+    showToast('This item is sold out');
     return;
-}
-    const existing = cart.find(i => i.name === product.name && i.message === product.message);
-    if (existing) {
-        existing.qty++;
-    } else {
-        cart.push({ ...product, qty: 1 });
-    }
-    const existing = cart.find(i => i.name === product.name);
-  const existing = cart.find((i) => i.name === product.name);
+  }
 
-  if (existing) existing.qty++;
-  else cart.push({ ...product, qty: 1 });
+  const existing = cart.find(
+    (i) => i.name === product.name && i.message === product.message
+  );
+
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
 
   saveCart();
   updateCartUI();
@@ -454,45 +424,18 @@ function renderRecentSearches() {
     return;
   }
 
-  container.innerHTML = `
-        ${recentSearches
-          .map(
-            (search) => `
-            <div
-                class="recent-search-tag"
-                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
-            >
-                ${search}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <div class="stock-status ${
-                 p.stock === 0
-                 ? 'sold-out'
-                 : p.stock <= 3
-                 ? 'low-stock'
-                 : 'available'}">${
-                p.stock === 0
-                ? 'Sold Out'
-                : p.stock <= 3
-                ? 'Low Stock'
-                : 'Available'}</div>
-                <button class="add-to-cart" ${p.stock === 0 ? 'disabled' : ''}
-                onclick='addToCart(${JSON.stringify(p)})'>
-               ${p.stock === 0 ? 'Sold Out' : 'Add to Cart'}</button>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
+  container.innerHTML = recentSearches
+    .map(
+      (search) => `
+        <div
+          class="recent-search-tag"
+          onclick="selectSuggestion('${search.replace(/'/g, "\\'")}');"
+        >
+          ${search}
         </div>
-    `).join('');
-        `
-          )
-          .join('')}
-    `;
+      `
+    )
+    .join('');
 }
 
 function updatePriceFilter() {
@@ -665,8 +608,11 @@ function updateBirthdayFavouriteButton() {
   const btn = document.getElementById('birthdayFavoriteBtn');
   if (!btn) return;
 
-  const item = getBirthdayFavouriteItem();
-  const active = isFavourite('dishes', item.id);
+  item = getBirthdayFavouriteItem();
+
+if (!item) return;
+
+const active = false;
 
   btn.dataset.favType = 'dishes';
   btn.dataset.favId = item.id;
@@ -797,3 +743,98 @@ function scrollToTop() {
 window.filterProducts = filterProducts;
 window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
+
+// --- CUSTOM CURSOR + REVEAL EFFECTS ---
+function initCustomCursor() {
+  const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 1;
+  if (!hasFinePointer || isTouchDevice) return;
+
+  const cursor = document.getElementById('customCursor');
+  const trail = document.getElementById('cursorTrail');
+  if (!cursor || !trail) return;
+
+  document.body.classList.add('custom-cursor-enabled');
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let trailX = mouseX;
+  let trailY = mouseY;
+
+  function updateCursorPosition(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    cursor.style.left = `${mouseX}px`;
+    cursor.style.top = `${mouseY}px`;
+  }
+
+  function animateCursor() {
+    trailX += (mouseX - trailX) * 0.14;
+    trailY += (mouseY - trailY) * 0.14;
+    trail.style.left = `${trailX}px`;
+    trail.style.top = `${trailY}px`;
+    requestAnimationFrame(animateCursor);
+  }
+
+  const hoverElements = document.querySelectorAll(
+    'a, button, .hero-cta, .cart-btn, .add-to-cart, .filter-tab'
+  );
+
+  hoverElements.forEach((el) => {
+    el.addEventListener('pointerenter', () => {
+      cursor.classList.add('cursor-hover');
+      trail.classList.add('cursor-hover');
+    });
+    el.addEventListener('pointerleave', () => {
+      cursor.classList.remove('cursor-hover');
+      trail.classList.remove('cursor-hover');
+      el.style.transform = '';
+    });
+  });
+
+  const magneticItems = document.querySelectorAll('.magnetic, .hero-cta, .cart-btn, .add-to-cart');
+  magneticItems.forEach((item) => {
+    item.addEventListener('pointermove', (event) => {
+      const rect = item.getBoundingClientRect();
+      const offsetX = event.clientX - rect.left - rect.width / 2;
+      const offsetY = event.clientY - rect.top - rect.height / 2;
+      const strength = 0.12;
+      item.style.transform = `translate3d(${offsetX * strength}px, ${offsetY * strength}px, 0) scale(1.01)`;
+    });
+    item.addEventListener('pointerleave', () => {
+      item.style.transform = '';
+    });
+  });
+
+  document.addEventListener('mousemove', updateCursorPosition);
+  animateCursor();
+}
+
+function initRevealEffects() {
+  if (!('IntersectionObserver' in window)) return;
+
+  const revealTargets = document.querySelectorAll(
+    'section, .hero-card, .product-card, .value-item, .section-header, .birthday-card'
+  );
+
+  revealTargets.forEach((el) => el.classList.add('reveal'));
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.18, rootMargin: '0px 0px -80px 0px' }
+  );
+
+  revealTargets.forEach((el) => observer.observe(el));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initCustomCursor();
+  initRevealEffects();
+});
