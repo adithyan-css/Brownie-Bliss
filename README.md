@@ -1,9 +1,13 @@
 # 🍫 Brownie Bliss — Full Stack Order System
 
+#Live Demo Link : https://brownie-bliss-g5przdn30-adithyansubramani1-1657s-projects.vercel.app
+
+
+
 ## What's Included
 - **Frontend**: Homepage, Products, Birthday, Contact pages
 - **Checkout Flow**: Name → Phone → OTP Verification → Address → WhatsApp order
-- **Backend**: Node.js + Express + SQLite (no external DB needed)
+- **Backend**: Node.js + Express + MongoDB / Mongoose
 - **Admin Panel**: View all orders, confirm payments, generate receipts
 
 ---
@@ -11,17 +15,17 @@
 ## 📁 Project Structure
 ```
 brownie-bliss/
-├── server.js          ← Backend (Express + SQLite)
+├── api/index.js       ← Backend entry point (Express + MongoDB)
 ├── package.json
-├── brownie_bliss.db   ← Created automatically on first run
-└── public/
-    ├── index.html     ← Homepage
-    ├── products.html  ← All products
-    ├── birthday.html  ← Birthday packages
-    ├── contact.html   ← Contact page
-    ├── admin.html     ← Admin panel (orders + receipts)
-    ├── cart.js        ← Shared cart + checkout + OTP logic
-    └── style.css      ← All styles
+├── public/
+│   ├── index.html     ← Homepage
+│   ├── products.html  ← All products
+│   ├── birthday.html  ← Birthday packages
+│   ├── contact.html   ← Contact page
+│   ├── admin.html     ← Admin panel (orders + receipts)
+│   ├── script.js      ← Shared cart + checkout + OTP logic
+│   └── style.css      ← All styles
+└── .env               ← Local environment variables (not committed)
 ```
 
 ---
@@ -35,13 +39,38 @@ npm install
 ```
 
 ### 2. Configure WhatsApp Number
-Open `public/cart.js` and update line 3:
+Open `public/script.js` and update the `fullPhone` variable inside the `sendWhatsAppFinal` function:
 ```js
-const BUSINESS_WHATSAPP = '919876543210'; // Replace with YOUR WhatsApp number
+const fullPhone = `918072596340`; // Replace with YOUR WhatsApp number
 ```
-Format: country code + number, no + or spaces. E.g., `919876543210`
+Format: country code + number, no plus sign or spaces. E.g., `919876543210`
 
-### 3. Start the Server
+### 3. Configure Environment Variables
+Create a `.env` file in the project root to configure admin credentials, JWT signing, and the database connection.
+
+Required keys:
+- `ADMIN_USERNAME` — admin username for the admin panel
+- `ADMIN_PASSWORD` — admin password
+- `ADMIN_JWT_SECRET` — long random secret used to sign JWTs
+- `MONGO_URI` — MongoDB connection string
+
+Optional keys:
+- `ADMIN_JWT_EXPIRES_IN` — JWT expiry (e.g. `2h`, defaults to `2h`)
+- `FAST2SMS_API_KEY` — optional SMS provider API key for OTP delivery
+
+Example `.env`:
+```
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=changeme
+ADMIN_JWT_SECRET=replace_with_long_random_secret
+ADMIN_JWT_EXPIRES_IN=2h
+MONGO_URI=mongodb://127.0.0.1:27017/brownie_bliss
+FAST2SMS_API_KEY=your_fast2sms_api_key_here
+```
+
+After editing `.env`, restart the server so the new values are picked up.
+
+### 4. Start the Server
 ```bash
 npm start
 ```
@@ -50,7 +79,7 @@ or for auto-reload during development:
 npm run dev
 ```
 
-### 4. Open in Browser
+### 5. Open in Browser
 - **Shop**: http://localhost:3000
 - **Admin Panel**: http://localhost:3000/admin.html
 
@@ -87,7 +116,7 @@ To integrate real SMS OTP, use one of:
 - **Twilio**: https://twilio.com
 - **Fast2SMS**: https://fast2sms.com (cheapest for India)
 
-Replace the `sendOTP` endpoint in `server.js`:
+Replace the `sendOTP` logic in `api/index.js`:
 ```js
 // After generating OTP, add SMS sending:
 const msg91 = require('msg91');
@@ -105,9 +134,11 @@ msg91.sendOTP(phone, otp);
 ---
 
 ## 🔐 Admin Security (Production)
-Currently the admin panel has no password. For production, add:
-1. A simple password prompt in `admin.html`
-2. Or JWT authentication via Express middleware
+Admin authentication now uses secure JWT-based server-side authentication with credentials stored in environment variables.
+
+To set up the admin panel:
+1. Ensure `.env` is configured with `ADMIN_USERNAME`, `ADMIN_PASSWORD`, and `ADMIN_JWT_SECRET`.
+2. Access `/admin-login.html` to log in securely.
 
 ---
 

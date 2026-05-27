@@ -10,14 +10,23 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
   <script>
-    if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+    if (sessionStorage.getItem('adminLoggedIn') !== 'true' || !sessionStorage.getItem('adminToken')) {
       window.location.href = 'admin-login.html';
     }
     function logoutAdmin() {
       sessionStorage.removeItem('adminLoggedIn');
+      sessionStorage.removeItem('adminToken');
       window.location.href = 'admin-login.html';
     }
   </script>
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('bb_theme') || 'light';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (_) {}
+  })();
+</script>
 </head>
 
 <body class="admin-page">
@@ -90,13 +99,17 @@
       <!-- ORDERS TABLE -->
       <div class="orders-panel">
         <div class="panel-head">
-          <h2>All Orders</h2>
+          <div class="panel-title-group">
+            <h2>All Orders</h2>
+            <button onclick="exportCSV()" class="btn-confirm btn-export">Export CSV</button>
+          </div>
           <div class="orders-filter">
             <button class="of-btn active" onclick="filterOrders('all',this)">All</button>
             <button class="of-btn" onclick="filterOrders('pending',this)">⏳ Pending</button>
-            <button class="of-btn" onclick="filterOrders('confirmed',this)">✅ Confirmed</button>
-            <button class="of-btn" onclick="filterOrders('preparing',this)">👨‍🍳 Preparing</button>
-            <button class="of-btn" onclick="filterOrders('delivered',this)">🚚 Delivered</button>
+            <button class="of-btn" onclick="filterOrders('payment_confirmed',this)">✅ Payment Confirmed</button>
+            <button class="of-btn" onclick="filterOrders('preparing',this)">👨‍🍳 Baking / Preparing</button>
+            <button class="of-btn" onclick="filterOrders('out_for_delivery',this)">🚚 Out for Delivery</button>
+            <button class="of-btn" onclick="filterOrders('completed',this)">Completed</button>
             <button class="of-btn" onclick="filterOrders('cancelled',this)">❌ Cancelled</button>
           </div>
         </div>
@@ -259,9 +272,51 @@
 
   <script>
     const API = '/api'; // Using relative path for better compatibility
+    const adminToken = sessionStorage.getItem('adminToken');
+    if (!adminToken) {
+      window.location.href = 'admin-login.html';
+    }
+
+    function clearAdminSession() {
+      sessionStorage.removeItem('adminLoggedIn');
+      sessionStorage.removeItem('adminToken');
+    }
+
+    async function authFetch(url, options = {}) {
+      const headers = { ...(options.headers || {}) };
+
+      if (!headers.Authorization) {
+        headers.Authorization = `Bearer ${adminToken}`;
+      }
+
+      const res = await fetch(url, { ...options, headers });
+
+      if (res.status === 401 || res.status === 403) {
+        clearAdminSession();
+        window.location.replace('admin-login.html');
+        throw new Error('Session expired. Redirecting to login.');
+      }
+
+      return res;
+    }
     let allOrders = [];
     let currentFilter = 'all';
     let allProducts = [];
+
+    const statusLabels = {
+      pending: '⏳ Pending',
+      payment_confirmed: '✅ Payment Confirmed',
+      preparing: '👨‍🍳 Baking / Preparing',
+      out_for_delivery: '🚚 Out for Delivery',
+      completed: 'Completed',
+      cancelled: '❌ Cancelled',
+      confirmed: '✅ Payment Confirmed',
+      delivered: 'Completed'
+    };
+
+    function getStatusLabel(status) {
+      return statusLabels[status] || status;
+    }
 
     // ─── SIDEBAR & TAB SWITCHING ───────────────────────────────────────────────────
     function toggleSidebar() {
@@ -293,7 +348,7 @@
     // ─── LOAD STATS ────────────────────────────────────────────────────────────────
     async function loadStats() {
       try {
-        const res = await fetch(`${API}/stats`);
+        const res = await authFetch(`${API}/stats`);
         const data = await res.json();
         if (data.success) {
           const s = data.stats;
@@ -308,7 +363,7 @@
     // ─── LOAD ORDERS ───────────────────────────────────────────────────────────────
     async function loadOrders() {
       try {
-        const res = await fetch(`${API}/orders`);
+        const res = await authFetch(`${API}/orders`);
         const data = await res.json();
         if (data.success) {
           allOrders = data.orders;
@@ -365,9 +420,10 @@
         <select class="status-select" onchange="updateStatus('${o.order_id}',this.value)" 
           style="font-size:12px;padding:4px 8px;border:1px solid #ddd;border-radius:6px;cursor:pointer">
           <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-          <option value="confirmed" ${o.status === 'confirmed' ? 'selected' : ''}>✅ Confirmed</option>
-          <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>👨‍🍳 Preparing</option>
-          <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>🚚 Delivered</option>
+          <option value="payment_confirmed" ${o.status === 'payment_confirmed' || o.status === 'confirmed' ? 'selected' : ''}>✅ Payment Confirmed</option>
+          <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>👨‍🍳 Baking / Preparing</option>
+          <option value="out_for_delivery" ${o.status === 'out_for_delivery' ? 'selected' : ''}>🚚 Out for Delivery</option>
+          <option value="completed" ${o.status === 'completed' || o.status === 'delivered' ? 'selected' : ''}>Completed</option>
           <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
         </select>
       </td>
@@ -376,7 +432,7 @@
         <div class="action-row">
           ${o.payment_status !== 'paid' && o.status !== 'cancelled' ? `<button class="btn-confirm" onclick="confirmPayment('${o.order_id}')">✅ Confirm Payment</button>` : o.payment_status === 'paid' ? `<button class="btn-view" onclick="viewReceipt('${o.order_id}')">🧾 Receipt</button>` : ''}
           <button class="btn-view" onclick="viewOrder('${o.order_id}')">👁 View</button>
-          ${o.status !== 'cancelled' && o.status !== 'delivered' ? `<button class="btn-view" onclick="cancelOrder('${o.order_id}')" style="background:#dc3545;color:white;border:none">❌ Cancel</button>` : ''}
+          ${o.status !== 'cancelled' && o.status !== 'completed' && o.status !== 'delivered' ? `<button class="btn-view" onclick="cancelOrder('${o.order_id}')" style="background:#dc3545;color:white;border:none">❌ Cancel</button>` : ''}
         </div>
       </td>
     </tr>`;
@@ -388,7 +444,7 @@
       if (!confirm(`Confirm payment received for order ${orderId}?`)) return;
 
       try {
-        const res = await fetch(`${API}/orders/${orderId}/confirm-payment`, {
+        const res = await authFetch(`${API}/orders/${orderId}/confirm-payment`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ notes: 'Payment confirmed via WhatsApp' })
@@ -413,12 +469,12 @@
     // ─── UPDATE STATUS ─────────────────────────────────────────────────────────────
     async function updateStatus(orderId, status) {
       try {
-        await fetch(`${API}/orders/${orderId}/status`, {
+        await authFetch(`${API}/orders/${orderId}/status`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status })
         });
-        showToast(`Status updated to "${status}"`);
+        showToast(`Status updated to "${getStatusLabel(status)}"`);
         loadOrders();
       } catch (e) {
         showToast('Error updating status');
@@ -429,7 +485,7 @@
     async function cancelOrder(orderId) {
       if (!confirm(`Are you sure you want to cancel order ${orderId}?`)) return;
       try {
-        const res = await fetch(`${API}/orders/${orderId}/status`, {
+        const res = await authFetch(`${API}/orders/${orderId}/status`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: 'cancelled' })
@@ -461,7 +517,7 @@
       <div class="info-item"><label>Phone</label><span>+91 ${order.phone}</span></div>
       <div class="info-item" style="grid-column:span 2"><label>Delivery Address</label><span>${order.address}, ${order.city} - ${order.pincode}</span></div>
       <div class="info-item"><label>Payment</label><span class="status-pill ${order.payment_status === 'paid' ? 'pay-paid' : 'pay-unpaid'}" style="font-size:12px">${order.payment_status === 'paid' ? '✅ Paid' : '⏳ Unpaid'}</span></div>
-      <div class="info-item"><label>Order Status</label><span>${order.status}</span></div>
+      <div class="info-item"><label>Order Status</label><span>${getStatusLabel(order.status)}</span></div>
       ${order.confirmed_at ? `<div class="info-item" style="grid-column:span 2"><label>Confirmed At</label><span>${new Date(order.confirmed_at).toLocaleString('en-IN')}</span></div>` : ''}
     </div>
     <div class="items-list">
@@ -488,13 +544,14 @@
       const items = Array.isArray(order.items) ? order.items : JSON.parse(order.items || '[]');
       const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
       const confirmedDate = order.confirmed_at ? new Date(order.confirmed_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+      const isPaid = order.payment_status === 'paid';
 
       document.getElementById('receiptBody').innerHTML = `
     <div class="receipt-container">
       <div class="receipt-head">
         <div style="font-size:36px;margin-bottom:8px">🍫</div>
         <h2>Brownie Bliss</h2>
-        <p>Baked with Love · Official Receipt</p>
+        <p>Premium Bakery Receipt</p>
       </div>
       <div class="receipt-body">
         <div class="receipt-row"><span>Receipt No.</span><strong>${order.order_id}</strong></div>
@@ -503,6 +560,7 @@
         <div class="receipt-row"><span>Customer</span><strong>${order.customer_name}</strong></div>
         <div class="receipt-row"><span>Phone</span><strong>+91 ${order.phone}</strong></div>
         <div class="receipt-row"><span>Delivery Address</span><strong>${order.address}, ${order.city} - ${order.pincode}</strong></div>
+        <div class="receipt-row"><span>Order Status</span><strong>${getStatusLabel(order.status)}</strong></div>
         <hr class="receipt-divider">
         ${items.map(i => `
           <div class="receipt-row">
@@ -512,11 +570,11 @@
         `).join('')}
         <div class="receipt-row total"><span>TOTAL AMOUNT</span><strong>₹${order.total.toLocaleString('en-IN')}</strong></div>
         <hr class="receipt-divider">
-        <div class="receipt-row"><span>Payment Status</span><strong style="color:#198754">✅ PAID</strong></div>
+        <div class="receipt-row"><span>Payment Status</span><strong style="color:${isPaid ? '#198754' : '#b7791f'}">${isPaid ? '✅ PAID' : '⏳ UNPAID'}</strong></div>
         <div class="receipt-row"><span>Payment Confirmed</span><strong>${confirmedDate}</strong></div>
-        <div style="text-align:center;margin-top:16px">
+        ${isPaid ? `<div style="text-align:center;margin-top:16px">
           <div class="receipt-stamp">PAID</div>
-        </div>
+        </div>` : ''}
       </div>
       <div class="receipt-foot">
         Thank you for choosing Brownie Bliss! 🍫<br>
@@ -541,18 +599,66 @@
       <title>Receipt — Brownie Bliss</title>
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="style.css">
-      <style>body{background:white;padding:20px} @media print{.no-print{display:none}}</style>
+      <style>
+        body{background:white;padding:20px}
+        .print-action{display:block;margin:16px auto;padding:10px 24px;background:#3b1a08;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600}
+        @media print{.no-print,.print-action{display:none!important}body{padding:0}.receipt-container{box-shadow:none!important}}
+      </style>
     </head>
-    <body>${content}<br><button class="no-print" onclick="window.print()" style="display:block;margin:16px auto;padding:10px 24px;background:#3b1a08;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600">🖨️ Print Receipt</button></body>
+    <body>${content}<br><button class="print-action" onclick="window.print()">🖨️ Print Receipt</button></body>
     </html>
   `);
       win.document.close();
     }
 
+    //export csv for orders
+    async function exportCSV() {
+      try {
+        const res = await authFetch(`${API}/orders`);
+        const data = await res.json();
+        if (data.success) {
+          // Just extracting the array of data
+          const ordersDataArray = data.orders.map(o => ({
+            orderId: o.order_id,
+            date: o.created_at,
+            price: o.total,
+            customer: o.customer_name,
+            phone: o.phone,
+            items: o.items,
+            status: o.status,
+            payment_status: o.payment_status
+          }));
+          let csv = `Order ID,Date,Price,Customer,Phone,Items,Status,Payment Status\n`;
+          ordersDataArray.forEach((order) => {
+            const itemsList = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+            const itemsStr = `"${itemsList.map(i => `${i.name} x${i.qty}`).join(', ')}"`;
+            csv += `${order.orderId},${order.date},${order.price},${order.customer},${order.phone},${itemsStr},${order.status},${order.payment_status}\n`;
+          });
+
+          //create blob
+          const blob = new Blob([csv], { type: "text/csv" });
+          //create download link
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "orders.csv";
+
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+          return ordersDataArray;
+        }
+      } catch (e) {
+        console.error('Error fetching orders for export', e);
+      }
+    }
+
+
     // ─── PRODUCTS ──────────────────────────────────────────────────────────────────
     async function loadProducts() {
       try {
-        const res = await fetch(`${API}/products`);
+        const res = await authFetch(`${API}/products`);
         const data = await res.json();
         if (data.success) {
           allProducts = data.products;
@@ -635,7 +741,7 @@
       }
 
       try {
-        const res = await fetch(`${API}/products/${id}`, {
+        const res = await authFetch(`${API}/products/${id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -658,7 +764,7 @@
 
       try {
         console.log(`Frontend: Requesting delete for ${id}`);
-        const res = await fetch(`${API}/products/${id}`, {
+        const res = await authFetch(`${API}/products/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -698,7 +804,7 @@
       }
 
       try {
-        const res = await fetch(`${API}/products`, {
+        const res = await authFetch(`${API}/products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type, name, category: type === 'birthday' ? 'cakes' : category, price, emoji, img })
