@@ -392,3 +392,33 @@
   .card-head h2 { font-size: 24px; }
   .ob { font-size: 18px; }
 }
+html.dark .login-card,
+html.dark .card-body {
+  background: var(--white) !important;
+  color: var(--text-dark) !important;
+}
+
+html.dark .step h3 {
+  color: var(--text-dark) !important;
+}
+
+html.dark .ssub,
+html.dark .field label {
+  color: var(--text-mid) !important;
+}
+
+html.dark .field input {
+  background: var(--cream-dark) !important;
+  color: var(--text-dark) !important;
+  border-color: #3a2010 !important;
+}
+
+html.dark .field input:focus {
+  background: #1a1008 !important;
+  border-color: var(--gold) !important;
+}
+
+html.dark .pcode {
+  background: #2b1a0c !important;
+  color: var(--gold) !important;
+}
