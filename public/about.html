@@ -4,2195 +4,2079 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   <title>About — Brownie Bliss</title>
-  <link rel="stylesheet" href="style.css">
-  <script>
-    (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
-  </script>
-</head>
-<body>
-<!-- ANNOUNCEMENT -->
-<div class="announcement">
-  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES
-  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
-</div>
-
-<!-- HEADER -->
-<header>
-  <div class="header-inner">
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <a href="index.html" class="logo">
-      <span class="logo-name">Brownie Bliss</span>
-      <span class="logo-sub">Homemade Treats</span>
-    </a>
-
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="products.html">Products</a>
-      <a href="birthday.html">Birthday Cakes</a>
-      <a href="favourites.html">Favourites</a>
-      <a href="contact.html">Contact</a>
-      <a href="track.html">Track Order</a>
-    </nav>
-
-    <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
-    </div>
-
-  </div>
-</header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
-<!-- ABOUT SECTION -->
- <link rel="stylesheet" href="style.css">
-<section class="about-section">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () { try { var t = localStorage.getItem('bb_theme') || 'light'; if (t === 'dark') document.documentElement.classList.add('dark'); } catch (_) { } }());
+  </script>
+</head>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<body>
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
+    BITE &nbsp; ✨</div>
 
-  <style>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count
+            style="display:none">0</span></a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">
+        ☰
+      </button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode"
+          title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="track.html">Track Order</a>
+  </div>
+  
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+  <!-- ABOUT SECTION -->
+  <section class="about-section">
 
-    :root{
-      --dark:#2d120d;
-      --brown:#4a1f14;
-      --brown2:#5b2417;
-      --gold:#d4a537;
-      --cream:#f5ede3;
-      --light:#fffaf4;
-    }
+    <style>
+      .about-section {
+        --dark: #2d120d;
+        --brown: #4a1f14;
+        --brown2: #5b2417;
+        --gold: #d4a537;
+        --cream: #f5ede3;
+        --light: #fffaf4;
+        font-family: 'Montserrat', sans-serif;
+        background: var(--light);
+        color: #2d120d;
+      }
 
-    html{
-      scroll-behavior:smooth;
-    }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: url('https://grainy-gradients.vercel.app/noise.svg');
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 9999;
+      }
 
-    body{
-      font-family:'Montserrat',sans-serif;
-      background:var(--light);
-      overflow-x:hidden;
-      color:#2d120d;
-    }
 
-    body::before{
-      content:'';
-      position:fixed;
-      inset:0;
-      background:url('https://grainy-gradients.vercel.app/noise.svg');
-      opacity:0.04;
-      pointer-events:none;
-      z-index:9999;
-    }
-
-    /* =========================
-       NAVBAR
-    ========================= */
-
-    header{
-      position:fixed;
-      width:100%;
-      top:0;
-      z-index:1000;
-
-      backdrop-filter:blur(18px);
-
-      background:
-      rgba(255,250,244,0.92);
-
-      border-bottom:
-      1px solid rgba(0,0,0,0.05);
-    }
-
-    .navbar{
-      max-width:1450px;
-      margin:auto;
-
-      padding:10px 60px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .logo{
-      text-decoration:none;
-    }
-
-    .logo h1{
-      font-size:34px;
-      color:var(--dark);
-      font-family:'Cormorant Garamond',serif;
-      line-height:1;
-    }
-
-    .logo span{
-      color:var(--gold);
-      font-size:9px;
-      letter-spacing:5px;
-    }
-
-    nav{
-      display:flex;
-      gap:38px;
-    }
-
-    nav a{
-      text-decoration:none;
-      color:var(--dark);
-      font-size:14px;
-      font-weight:500;
-      letter-spacing:1px;
-      position:relative;
-      transition:0.4s ease;
-    }
-
-    nav a::after{
-      content:'';
-      position:absolute;
-      left:0;
-      bottom:-8px;
-      width:0%;
-      height:2px;
-      background:var(--gold);
-      transition:0.4s ease;
-    }
-
-    nav a:hover{
-      color:var(--gold);
-    }
-
-    nav a:hover::after{
-      width:100%;
-    }
-
-    /* =========================
+      /* =========================
        HERO
     ========================= */
 
-    .hero{
+      .hero {
 
-      min-height:100vh;
+        min-height: 100vh;
 
-      display:flex;
-      align-items:center;
+        display: flex;
+        align-items: center;
 
-      padding:170px 8% 120px;
+        padding: 170px 8% 120px;
 
-      background:
-      linear-gradient(
-      rgba(45,18,13,0.88),
-      rgba(45,18,13,0.92)
-      ),
+        background:
+          linear-gradient(rgba(45, 18, 13, 0.88),
+            rgba(45, 18, 13, 0.92)),
 
-      url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
+          url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
 
-      background-size:cover;
-      background-position:center;
+        background-size: cover;
+        background-position: center;
 
-      position:relative;
-      overflow:hidden;
-    }
+        position: relative;
+        overflow: hidden;
+      }
 
-    .hero-wrapper{
+      .hero-wrapper {
 
-      max-width:1450px;
+        max-width: 1450px;
 
-      margin:auto;
+        margin: auto;
 
-      width:100%;
+        width: 100%;
 
-      display:grid;
+        display: grid;
 
-      grid-template-columns:1.1fr 1fr;
+        grid-template-columns: 1.1fr 1fr;
 
-      gap:90px;
+        gap: 90px;
 
-      align-items:center;
+        align-items: center;
 
-      position:relative;
-      z-index:2;
-    }
+        position: relative;
+        z-index: 2;
+      }
 
-    .hero-tag{
+      .hero-tag {
 
-      display:inline-block;
+        display: inline-block;
 
-      border:
-      1px solid rgba(212,165,55,0.5);
+        border:
+          1px solid rgba(212, 165, 55, 0.5);
 
-      color:var(--gold);
+        color: var(--gold);
 
-      padding:14px 22px;
+        padding: 14px 22px;
 
-      letter-spacing:4px;
+        letter-spacing: 4px;
 
-      font-size:11px;
+        font-size: 11px;
 
-      margin-bottom:35px;
-    }
+        margin-bottom: 35px;
+      }
 
-    .hero-title{
+      .hero-title {
 
-      font-family:'Cormorant Garamond',serif;
+        font-family: 'Cormorant Garamond', serif;
 
-      font-size:70px;
+        font-size: 70px;
 
-      line-height:1.05;
-      
-       max-width:600px;
+        line-height: 1.05;
 
-      color:var(--cream);
+        max-width: 600px;
 
-      margin-bottom:35px;
-    }
+        color: var(--cream);
 
-    .hero-title span{
-      color:var(--gold);
-      font-style:italic;
-    }
+        margin-bottom: 35px;
+      }
 
-    .hero-subtitle{
+      .hero-title span {
+        color: var(--gold);
+        font-style: italic;
+      }
 
-      color:#f3e4d2;
+      .hero-subtitle {
 
-      font-size:22px;
+        color: #f3e4d2;
 
-      line-height:2;
+        font-size: 22px;
 
-      max-width:650px;
+        line-height: 2;
 
-      margin-bottom:45px;
-    }
+        max-width: 650px;
 
-    .hero-buttons{
-      display:flex;
-      gap:20px;
-    }
+        margin-bottom: 45px;
+      }
 
-    .primary-btn,
-    .secondary-btn{
+      .hero-buttons {
+        display: flex;
+        gap: 20px;
+      }
 
-      text-decoration:none;
+      .primary-btn,
+      .secondary-btn {
 
-      display:inline-flex;
+        text-decoration: none;
 
-      align-items:center;
+        display: inline-flex;
 
-      justify-content:center;
-    }
+        align-items: center;
 
-    .primary-btn{
+        justify-content: center;
+      }
 
-      padding:20px 42px;
+      .primary-btn {
 
-      background:var(--gold);
+        padding: 20px 42px;
 
-      color:#2d120d;
+        background: var(--gold);
 
-      border:none;
+        color: #2d120d;
 
-      font-weight:600;
+        border: none;
 
-      letter-spacing:2px;
+        font-weight: 600;
 
-      transition:0.4s ease;
-    }
+        letter-spacing: 2px;
 
-    .primary-btn:hover{
-      transform:translateY(-5px);
-      box-shadow:0 15px 35px rgba(212,165,55,0.3);
-    }
+        transition: 0.4s ease;
+      }
 
-    .secondary-btn{
+      .primary-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(212, 165, 55, 0.3);
+      }
 
-      padding:20px 42px;
+      .secondary-btn {
 
-      background:transparent;
+        padding: 20px 42px;
 
-      border:
-      1px solid rgba(212,165,55,0.4);
+        background: transparent;
 
-      color:var(--cream);
+        border:
+          1px solid rgba(212, 165, 55, 0.4);
 
-      transition:0.4s ease;
-    }
+        color: var(--cream);
 
-    .secondary-btn:hover{
-      background:rgba(255,255,255,0.08);
-    }
+        transition: 0.4s ease;
+      }
 
-    /* HERO IMAGES */
+      .secondary-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
 
-    .hero-images{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
-    }
+      /* HERO IMAGES */
 
-    .large-card{
-      grid-column:span 2;
+      .hero-images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
 
-      background:#fff;
+      .large-card {
+        grid-column: span 2;
 
-      border-radius:24px;
+        background: #fff;
 
-      overflow:hidden;
+        border-radius: 24px;
 
-      box-shadow:
-      0 20px 45px rgba(0,0,0,0.35);
+        overflow: hidden;
 
-      transition:0.6s ease;
-    }
+        box-shadow:
+          0 20px 45px rgba(0, 0, 0, 0.35);
 
-    .large-card:hover{
-      transform:translateY(-10px);
-    }
+        transition: 0.6s ease;
+      }
 
-    .large-card img{
-      width:100%;
-      height:320px;
-      object-fit:cover;
-    }
+      .large-card:hover {
+        transform: translateY(-10px);
+      }
 
-    .card-label{
-      padding:20px;
+      .large-card img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+      }
 
-      background:
-      linear-gradient(
-      90deg,
-      rgba(74,31,20,0.95),
-      rgba(91,36,23,0.85)
-      );
+      .card-label {
+        padding: 20px;
 
-      color:var(--cream);
+        background:
+          linear-gradient(90deg,
+            rgba(74, 31, 20, 0.95),
+            rgba(91, 36, 23, 0.85));
 
-      font-weight:600;
-    }
+        color: var(--cream);
 
-    .small-card{
+        font-weight: 600;
+      }
 
-      background:#fff;
+      .small-card {
 
-      border-radius:24px;
+        background: #fff;
 
-      overflow:hidden;
+        border-radius: 24px;
 
-      box-shadow:
-      0 20px 45px rgba(0,0,0,0.25);
+        overflow: hidden;
 
-      transition:0.6s ease;
-    }
+        box-shadow:
+          0 20px 45px rgba(0, 0, 0, 0.25);
 
-    .small-card:hover{
-      transform:translateY(-10px);
-    }
+        transition: 0.6s ease;
+      }
 
-    .small-card img{
-      width:100%;
-      height:220px;
-      object-fit:cover;
-    }
+      .small-card:hover {
+        transform: translateY(-10px);
+      }
 
-    /* =========================
+      .small-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+
+      /* =========================
        PREMIUM FEATURES
     ========================= */
 
-    .premium-features{
+      .premium-features {
 
-      padding:110px 8%;
+        padding: 110px 8%;
 
-      background:
-      linear-gradient(
-      135deg,
-      #fff7f0 0%,
-      #f8ede2 100%
-      );
+        background:
+          linear-gradient(135deg,
+            #fff7f0 0%,
+            #f8ede2 100%);
 
-      position:relative;
+        position: relative;
 
-      overflow:hidden;
-    }
+        overflow: hidden;
+      }
 
-    .premium-features::before{
+      .premium-features::before {
 
-      content:'';
+        content: '';
 
-      position:absolute;
+        position: absolute;
 
-      width:700px;
-      height:700px;
+        width: 700px;
+        height: 700px;
 
-      background:
-      radial-gradient(
-      circle,
-      rgba(212,165,55,0.08),
-      transparent 70%
-      );
+        background:
+          radial-gradient(circle,
+            rgba(212, 165, 55, 0.08),
+            transparent 70%);
 
-      top:-300px;
-      right:-250px;
-    }
+        top: -300px;
+        right: -250px;
+      }
 
-    .premium-features-wrapper{
+      .premium-features-wrapper {
 
-      max-width:1450px;
+        max-width: 1450px;
 
-      margin:auto;
+        margin: auto;
 
-      display:grid;
+        display: grid;
 
-      grid-template-columns:repeat(4,1fr);
+        grid-template-columns: repeat(4, 1fr);
 
-      gap:35px;
+        gap: 35px;
 
-      position:relative;
-      z-index:2;
-    }
+        position: relative;
+        z-index: 2;
+      }
 
-    .premium-feature-card{
+      .premium-feature-card {
 
-      background:white;
+        background: white;
 
-      border-radius:30px;
+        border-radius: 30px;
 
-      padding:45px 35px;
+        padding: 45px 35px;
 
-      position:relative;
+        position: relative;
 
-      overflow:hidden;
+        overflow: hidden;
 
-      transition:
-      transform 0.6s ease,
-      box-shadow 0.6s ease;
+        transition:
+          transform 0.6s ease,
+          box-shadow 0.6s ease;
 
-      border:
-      1px solid rgba(212,165,55,0.08);
+        border:
+          1px solid rgba(212, 165, 55, 0.08);
 
-      box-shadow:
-      0 20px 45px rgba(0,0,0,0.06);
-    }
+        box-shadow:
+          0 20px 45px rgba(0, 0, 0, 0.06);
+      }
 
-    .premium-feature-card:hover{
+      .premium-feature-card:hover {
 
-      transform:
-      translateY(-15px);
+        transform:
+          translateY(-15px);
 
-      box-shadow:
-      0 35px 70px rgba(0,0,0,0.12);
-    }
+        box-shadow:
+          0 35px 70px rgba(0, 0, 0, 0.12);
+      }
 
-    .feature-glow{
+      .feature-glow {
 
-      position:absolute;
+        position: absolute;
 
-      width:220px;
-      height:220px;
+        width: 220px;
+        height: 220px;
 
-      border-radius:50%;
+        border-radius: 50%;
 
-      background:
-      radial-gradient(
-      circle,
-      rgba(212,165,55,0.14),
-      transparent 70%
-      );
+        background:
+          radial-gradient(circle,
+            rgba(212, 165, 55, 0.14),
+            transparent 70%);
 
-      top:-100px;
-      right:-100px;
-    }
+        top: -100px;
+        right: -100px;
+      }
 
-    .premium-icon{
+      .premium-icon {
 
-      width:75px;
-      height:75px;
+        width: 75px;
+        height: 75px;
 
-      border-radius:22px;
+        border-radius: 22px;
 
-      background:
-      linear-gradient(
-      135deg,
-      #d4a537,
-      #f1c96b
-      );
+        background:
+          linear-gradient(135deg,
+            #d4a537,
+            #f1c96b);
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-      font-size:32px;
+        font-size: 32px;
 
-      margin-bottom:28px;
+        margin-bottom: 28px;
 
-      box-shadow:
-      0 15px 30px rgba(212,165,55,0.25);
-    }
+        box-shadow:
+          0 15px 30px rgba(212, 165, 55, 0.25);
+      }
 
-    .premium-feature-card h3{
+      .premium-feature-card h3 {
 
-      font-size:30px;
+        font-size: 30px;
 
-      color:#2d120d;
+        color: #2d120d;
 
-      margin-bottom:18px;
+        margin-bottom: 18px;
 
-      font-family:'Cormorant Garamond',serif;
-    }
+        font-family: 'Cormorant Garamond', serif;
+      }
 
-    .premium-feature-card p{
+      .premium-feature-card p {
 
-      color:#6e4c42;
+        color: #6e4c42;
 
-      line-height:2;
+        line-height: 2;
 
-      font-size:15px;
-    }
+        font-size: 15px;
+      }
 
-    /* =========================
+      /* =========================
        STORY
     ========================= */
 
-    .story{
+      .story {
 
-      padding:160px 8%;
+        padding: 160px 8%;
 
-      background:var(--light);
-    }
+        background: var(--light);
+      }
 
-    .section-title{
-      text-align:center;
-      margin-bottom:90px;
-    }
+      .section-title {
+        text-align: center;
+        margin-bottom: 90px;
+      }
 
-    .section-title span{
+      .section-title span {
 
-      color:var(--gold);
+        color: var(--gold);
 
-      letter-spacing:5px;
+        letter-spacing: 5px;
 
-      font-size:12px;
-    }
+        font-size: 12px;
+      }
 
-    .section-title h2{
+      .section-title h2 {
 
-      font-family:'Cormorant Garamond',serif;
+        font-family: 'Cormorant Garamond', serif;
 
-      font-size:82px;
+        font-size: 82px;
 
-      margin-top:20px;
+        margin-top: 20px;
 
-      color:var(--dark);
-    }
+        color: var(--dark);
+      }
 
-    .section-title h2 em{
-      color:var(--brown2);
-      font-style:italic;
-    }
+      .section-title h2 em {
+        color: var(--brown2);
+        font-style: italic;
+      }
 
-    .story-grid{
+      .story-grid {
 
-      max-width:1450px;
+        max-width: 1450px;
 
-      margin:auto;
+        margin: auto;
 
-      display:grid;
+        display: grid;
 
-      grid-template-columns:repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
 
-      gap:35px;
-    }
+        gap: 35px;
+      }
 
-    .story-card{
+      .story-card {
 
-      background:white;
+        background: white;
 
-      border-radius:28px;
+        border-radius: 28px;
 
-      padding:55px 45px;
+        padding: 55px 45px;
 
-      position:relative;
+        position: relative;
 
-      overflow:hidden;
+        overflow: hidden;
 
-      transition:0.6s ease;
+        transition: 0.6s ease;
 
-      box-shadow:
-      0 15px 40px rgba(0,0,0,0.08);
-    }
+        box-shadow:
+          0 15px 40px rgba(0, 0, 0, 0.08);
+      }
 
-    .story-card::before{
-      content:'';
+      .story-card::before {
+        content: '';
 
-      position:absolute;
+        position: absolute;
 
-      width:220px;
-      height:220px;
+        width: 220px;
+        height: 220px;
 
-      border-radius:50%;
+        border-radius: 50%;
 
-      background:
-      rgba(212,165,55,0.08);
+        background:
+          rgba(212, 165, 55, 0.08);
 
-      top:-100px;
-      right:-100px;
-    }
+        top: -100px;
+        right: -100px;
+      }
 
-    .story-card:hover{
-      transform:translateY(-14px);
+      .story-card:hover {
+        transform: translateY(-14px);
 
-      box-shadow:
-      0 30px 60px rgba(0,0,0,0.12);
-    }
+        box-shadow:
+          0 30px 60px rgba(0, 0, 0, 0.12);
+      }
 
-    .story-number{
+      .story-number {
 
-      font-size:60px;
+        font-size: 60px;
 
-      color:rgba(212,165,55,0.25);
+        color: rgba(212, 165, 55, 0.25);
 
-      font-family:'Cormorant Garamond',serif;
+        font-family: 'Cormorant Garamond', serif;
 
-      margin-bottom:25px;
-    }
+        margin-bottom: 25px;
+      }
 
-    .story-card h3{
+      .story-card h3 {
 
-      font-size:40px;
+        font-size: 40px;
 
-      color:var(--dark);
+        color: var(--dark);
 
-      margin-bottom:22px;
+        margin-bottom: 22px;
 
-      font-family:'Cormorant Garamond',serif;
-    }
+        font-family: 'Cormorant Garamond', serif;
+      }
 
-    .story-card p{
+      .story-card p {
 
-      color:#6d4b42;
+        color: #6d4b42;
 
-      line-height:2;
+        line-height: 2;
 
-      font-size:16px;
-    }
+        font-size: 16px;
+      }
 
-    /* =========================
+      /* =========================
        EXPERIENCE
     ========================= */
 
-    .experience{
+      .experience {
 
-      padding:170px 8%;
+        padding: 170px 8%;
 
-      background:
-      linear-gradient(
-      135deg,
-      #4a1f14,
-      #2d120d
-      );
-    }
-
-    .experience-box{
-
-      max-width:1450px;
-
-      margin:auto;
-
-      display:grid;
-
-      grid-template-columns:1fr 1fr;
-
-      border-radius:35px;
-
-      overflow:hidden;
-
-      background:
-      rgba(255,255,255,0.04);
-
-      backdrop-filter:blur(14px);
-
-      box-shadow:
-      0 25px 60px rgba(0,0,0,0.3);
-    }
-
-    .experience-image img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .experience-content{
-
-      padding:90px 70px;
-
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-
-    .experience-content h3{
-
-      font-size:72px;
-
-      color:var(--cream);
-
-      line-height:1.1;
-
-      margin-bottom:30px;
-
-      font-family:'Cormorant Garamond',serif;
-    }
-
-    .experience-content p{
-
-      color:#f2dfcf;
-
-      line-height:2;
-
-      font-size:17px;
-
-      margin-bottom:40px;
-    }
-
-    .stats{
-      max-width:1450px;
-      margin:70px auto 0;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:36px 32px;
-      padding:0 20px;
-      align-items:start;
-    }
-
-    .stat-item{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      text-align:left;
-      padding-left:10px;
-    }
-
-    .stat-number{
-      color:#fff4e6;
-      font-size:3.1rem;
-      line-height:1.05;
-      letter-spacing:0.02em;
-      margin:0;
-    }
-
-    .stat-number span{
-      font-size:0.45em;
-      vertical-align:text-top;
-      margin-left:4px;
-    }
-
-    .stat-label{
-      color:rgba(255,244,230,0.75);
-      font-size:16px;
-      line-height:1.9;
-      letter-spacing:0.01em;
-      max-width:280px;
-      margin:0;
-    }
-
-    .values{
-      padding:140px 8% 120px;
-    }
-
-    .values .section-title{
-      color:#fff4e6;
-      font-weight:600;
-      margin-bottom:18px;
-    }
-
-    .values .section-title em{
-      color:var(--gold);
-    }
-
-    .values-grid{
-      max-width:1450px;
-      margin:auto;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:38px;
-    }
-
-    .value-card{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .value-icon{
-      font-size:32px;
-      display:inline-flex;
-      margin-bottom:10px;
-    }
-
-    .value-title{
-      color:#fff4e6;
-      font-weight:600;
-      font-size:30px;
-      line-height:1.2;
-      margin:0;
-    }
-
-    .value-desc{
-      color:rgba(255,244,230,0.88);
-      line-height:2.1;
-      font-size:16px;
-      margin:0;
-    }
-
-    @media(max-width:900px){
-      .stats{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+        background:
+          linear-gradient(135deg,
+            #4a1f14,
+            #2d120d);
       }
 
-      .values-grid{
-        grid-template-columns:1fr 1fr;
-      }
-    }
+      .experience-box {
 
-    @media(max-width:700px){
-      .stats{
-        grid-template-columns:1fr;
+        max-width: 1450px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        border-radius: 35px;
+
+        overflow: hidden;
+
+        background:
+          rgba(255, 255, 255, 0.04);
+
+        backdrop-filter: blur(14px);
+
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.3);
       }
 
-      .values-grid{
-        grid-template-columns:1fr;
+      .experience-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
-    }
 
-    /* =========================
+      .experience-content {
+
+        padding: 90px 70px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .experience-content h3 {
+
+        font-size: 72px;
+
+        color: var(--cream);
+
+        line-height: 1.1;
+
+        margin-bottom: 30px;
+
+        font-family: 'Cormorant Garamond', serif;
+      }
+
+      .experience-content p {
+
+        color: #f2dfcf;
+
+        line-height: 2;
+
+        font-size: 17px;
+
+        margin-bottom: 40px;
+      }
+
+      .stats {
+        max-width: 1450px;
+        margin: 70px auto 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 36px 32px;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        text-align: left;
+        padding-left: 10px;
+      }
+
+      .stat-number {
+        color: #fff4e6;
+        font-size: 3.1rem;
+        line-height: 1.05;
+        letter-spacing: 0.02em;
+        margin: 0;
+      }
+
+      .stat-number span {
+        font-size: 0.45em;
+        vertical-align: text-top;
+        margin-left: 4px;
+      }
+
+      .stat-label {
+        color: rgba(255, 244, 230, 0.75);
+        font-size: 16px;
+        line-height: 1.9;
+        letter-spacing: 0.01em;
+        max-width: 280px;
+        margin: 0;
+      }
+
+      .values {
+        padding: 140px 8% 120px;
+      }
+
+      .values .section-title {
+        color: #fff4e6;
+        font-weight: 600;
+        margin-bottom: 18px;
+      }
+
+      .values .section-title em {
+        color: var(--gold);
+      }
+
+      .values-grid {
+        max-width: 1450px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 38px;
+      }
+
+      .value-card {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .value-icon {
+        font-size: 32px;
+        display: inline-flex;
+        margin-bottom: 10px;
+      }
+
+      .value-title {
+        color: #fff4e6;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 1.2;
+        margin: 0;
+      }
+
+      .value-desc {
+        color: rgba(255, 244, 230, 0.88);
+        line-height: 2.1;
+        font-size: 16px;
+        margin: 0;
+      }
+
+      @media(max-width:900px) {
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .values-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media(max-width:700px) {
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .values-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* =========================
        LUXURY BANNER
     ========================= */
 
-    .luxury-banner{
+      .luxury-banner {
 
-      position:relative;
+        position: relative;
 
-      height:85vh;
+        height: 85vh;
 
-      background:
-      url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
+        background:
+          url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
 
-      background-size:cover;
-      background-position:center;
+        background-size: cover;
+        background-position: center;
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-      overflow:hidden;
-    }
+        overflow: hidden;
+      }
 
-    .luxury-overlay{
+      .luxury-overlay {
 
-      position:absolute;
-      inset:0;
+        position: absolute;
+        inset: 0;
 
-      background:
-      linear-gradient(
-      rgba(45,18,13,0.72),
-      rgba(45,18,13,0.72)
-      );
+        background:
+          linear-gradient(rgba(45, 18, 13, 0.72),
+            rgba(45, 18, 13, 0.72));
 
-      backdrop-filter:blur(2px);
-    }
+        backdrop-filter: blur(2px);
+      }
 
-    .luxury-content{
+      .luxury-content {
 
-      position:relative;
-      z-index:2;
+        position: relative;
+        z-index: 2;
 
-      text-align:center;
+        text-align: center;
 
-      max-width:1000px;
+        max-width: 1000px;
 
-      padding:0 20px;
-    }
+        padding: 0 20px;
+      }
 
-    .luxury-content span{
+      .luxury-content span {
 
-      color:var(--gold);
+        color: var(--gold);
 
-      letter-spacing:5px;
+        letter-spacing: 5px;
 
-      font-size:13px;
+        font-size: 13px;
 
-      text-transform:uppercase;
-    }
+        text-transform: uppercase;
+      }
 
-    .luxury-content h2{
+      .luxury-content h2 {
 
-      font-family:'Cormorant Garamond',serif;
+        font-family: 'Cormorant Garamond', serif;
 
-      font-size:90px;
+        font-size: 90px;
 
-      color:white;
+        color: white;
 
-      line-height:1.1;
+        line-height: 1.1;
 
-      margin:30px 0;
-    }
+        margin: 30px 0;
+      }
 
-    .luxury-content p{
+      .luxury-content p {
 
-      color:#f3e4d2;
+        color: #f3e4d2;
 
-      font-size:22px;
+        font-size: 22px;
 
-      line-height:2;
+        line-height: 2;
 
-      margin-bottom:45px;
-    }
+        margin-bottom: 45px;
+      }
 
-    /* =========================
+      /* =========================
        FOOTER
     ========================= */
 
-    footer{
+      footer {
 
-      background:#2d120d;
+        background: #2d120d;
 
-      padding:120px 8% 50px;
-    }
+        padding: 120px 8% 50px;
+      }
 
-    .footer-grid{
+      .footer-grid {
 
-      max-width:1450px;
+        max-width: 1450px;
 
-      margin:auto;
+        margin: auto;
 
-      display:grid;
+        display: grid;
 
-      grid-template-columns:2fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr 1fr;
 
-      gap:100px;
-    }
+        gap: 100px;
+      }
 
-    .footer-brand h2{
+      .footer-brand h2 {
 
-      color:white;
+        color: white;
 
-      font-size:58px;
+        font-size: 58px;
 
-      margin-bottom:24px;
+        margin-bottom: 24px;
 
-      font-family:'Cormorant Garamond',serif;
-    }
+        font-family: 'Cormorant Garamond', serif;
+      }
 
-    .footer-brand p{
+      .footer-brand p {
 
-      color:#f2dfcf;
+        color: #f2dfcf;
 
-      line-height:2.1;
+        line-height: 2.1;
 
-      font-size:17px;
+        font-size: 17px;
 
-      max-width:500px;
-    }
+        max-width: 500px;
+      }
 
-    .footer-links h4{
+      .footer-links h4 {
 
-      color:var(--gold);
+        color: var(--gold);
 
-      margin-bottom:30px;
+        margin-bottom: 30px;
 
-      letter-spacing:4px;
+        letter-spacing: 4px;
 
-      font-size:13px;
-    }
+        font-size: 13px;
+      }
 
-    .footer-links a{
+      .footer-links a {
 
-      display:block;
+        display: block;
 
-      text-decoration:none;
+        text-decoration: none;
 
-      color:#f7ead8;
+        color: #f7ead8;
 
-      margin-bottom:20px;
+        margin-bottom: 20px;
 
-      font-size:16px;
+        font-size: 16px;
 
-      transition:0.4s ease;
-    }
+        transition: 0.4s ease;
+      }
 
-    .footer-links a:hover{
-      color:var(--gold);
-      transform:translateX(8px);
-    }
+      .footer-links a:hover {
+        color: var(--gold);
+        transform: translateX(8px);
+      }
 
-    .footer-bottom{
+      .footer-bottom {
 
-      border-top:
-      1px solid rgba(255,255,255,0.08);
+        border-top:
+          1px solid rgba(255, 255, 255, 0.08);
 
-      margin-top:80px;
+        margin-top: 80px;
 
-      padding-top:35px;
+        padding-top: 35px;
 
-      text-align:center;
+        text-align: center;
 
-      color:#d5c2af;
-    }
+        color: #d5c2af;
+      }
 
-    /* =========================
+      /* =========================
        RESPONSIVE
     ========================= */
 
-    @media(max-width:1200px){
+      @media(max-width:1200px) {
 
-      .hero-title{
-        font-size:74px;
+        .hero-title {
+          font-size: 74px;
+        }
+
+        .story-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .experience-box {
+          grid-template-columns: 1fr;
+        }
+
+        .luxury-content h2 {
+          font-size: 58px;
+        }
+
       }
 
-      .story-grid{
-        grid-template-columns:repeat(2,1fr);
+      @media(max-width:1100px) {
+
+        .premium-features-wrapper {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
       }
 
-      .experience-box{
-        grid-template-columns:1fr;
+      @media(max-width:900px) {
+
+        .hero-wrapper,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .story-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-images {
+          margin-top: 40px;
+        }
+
       }
 
-      .luxury-content h2{
-        font-size:58px;
+      @media(max-width:700px) {
+
+        .premium-features-wrapper {
+          grid-template-columns: 1fr;
+        }
+
       }
 
-    }
+      @media(max-width:600px) {
 
-    @media(max-width:1100px){
+        .hero,
+        .story,
+        .experience,
+        .luxury-banner,
+        footer {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
 
-      .premium-features-wrapper{
-        grid-template-columns:repeat(2,1fr);
+        .hero-title,
+        .section-title h2,
+        .experience-content h3,
+        .luxury-content h2 {
+          font-size: 48px;
+        }
+
+        .hero-subtitle,
+        .luxury-content p {
+          font-size: 17px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+        }
+
       }
 
-    }
-
-    @media(max-width:900px){
-
-      nav{
-        display:none;
-      }
-
-      .hero-wrapper,
-      .footer-grid{
-        grid-template-columns:1fr;
-      }
-
-      .story-grid{
-        grid-template-columns:1fr;
-      }
-
-      .hero-images{
-        margin-top:40px;
-      }
-
-    }
-
-    @media(max-width:700px){
-
-      .premium-features-wrapper{
-        grid-template-columns:1fr;
-      }
-
-    }
-
-    @media(max-width:600px){
-
-      .navbar{
-        padding:20px;
-      }
-
-      .hero,
-      .story,
-      .experience,
-      .luxury-banner,
-      footer{
-        padding-left:20px;
-        padding-right:20px;
-      }
-
-      .hero-title,
-      .section-title h2,
-      .experience-content h3,
-      .luxury-content h2{
-        font-size:48px;
-      }
-
-      .hero-subtitle,
-      .luxury-content p{
-        font-size:17px;
-      }
-
-      .hero-buttons{
-        flex-direction:column;
-      }
-
-    }
-
-    /* =========================
+      /* =========================
        DARK THEME SUPPORT
     ========================= */
 
-    html.dark{
-      --dark:#f0e4d0;
-      --brown:#2a140b;
-      --brown2:#caa14a;
-      --light:#140d08;
-      --cream:#f5ede3;
-    }
+      html.dark .about-section {
+        --dark: #f0e4d0;
+        --brown: #2a140b;
+        --brown2: #caa14a;
+        --light: #140d08;
+        --cream: #f5ede3;
+        background: var(--light);
+        color: var(--text-dark);
+      }
 
-    html.dark body,
-    html.dark .about-section{
-      background:var(--light);
-      color:var(--text-dark);
-    }
+      html.dark body::before {
+        opacity: 0.03;
+      }
 
-    html.dark body::before{
-      opacity:0.03;
-    }
+      html.dark .large-card,
+      html.dark .small-card,
+      html.dark .premium-feature-card,
+      html.dark .story-card,
+      html.dark .value-card,
+      html.dark .story-img-wrap,
+      html.dark .founder,
+      html.dark .cta {
+        background: var(--white);
+        border-color: #3a2010;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      }
 
-    html.dark header{
-      background:rgba(20,13,8,0.92);
-      border-bottom:1px solid rgba(212,165,55,0.16);
-    }
+      html.dark .premium-features,
+      html.dark .story,
+      html.dark .values,
+      html.dark .founder,
+      html.dark .cta {
+        background: linear-gradient(135deg, #1a1008 0%, #221508 100%);
+      }
 
-    html.dark .logo h1,
-    html.dark .logo-name,
-    html.dark nav a{
-      color:var(--text-dark);
-    }
+      html.dark .premium-features::before {
+        background: radial-gradient(circle, rgba(212, 165, 55, 0.1), transparent 70%);
+      }
 
-    html.dark .logo span,
-    html.dark .logo-sub{
-      color:var(--gold);
-    }
+      html.dark .section-title h2,
+      html.dark .story-card h3,
+      html.dark .premium-feature-card h3,
+      html.dark .value-title,
+      html.dark .founder-name,
+      html.dark .cta-title,
+      html.dark .hero-body,
+      html.dark .story-text .section-title,
+      html.dark .quote-text {
+        color: var(--text-dark);
+      }
 
-    html.dark nav a:hover{
-      color:var(--gold);
-    }
+      html.dark .section-title h2 em,
+      html.dark .section-title span,
+      html.dark .section-eyebrow,
+      html.dark .story-number,
+      html.dark .premium-icon,
+      html.dark .quote-attr {
+        color: var(--gold);
+      }
 
-    html.dark .large-card,
-    html.dark .small-card,
-    html.dark .premium-feature-card,
-    html.dark .story-card,
-    html.dark .value-card,
-    html.dark .story-img-wrap,
-    html.dark .founder,
-    html.dark .cta{
-      background:var(--white);
-      border-color:#3a2010;
-      box-shadow:0 18px 45px rgba(0,0,0,0.28);
-    }
+      html.dark .premium-feature-card p,
+      html.dark .story-card p,
+      html.dark .story-para,
+      html.dark .value-desc,
+      html.dark .founder-bio,
+      html.dark .cta-sub,
+      html.dark .hero-body,
+      html.dark .story-quote {
+        color: var(--text-mid);
+      }
 
-    html.dark .premium-features,
-    html.dark .story,
-    html.dark .values,
-    html.dark .founder,
-    html.dark .cta{
-      background:linear-gradient(135deg,#1a1008 0%,#221508 100%);
-    }
+      html.dark .experience-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(212, 165, 55, 0.14);
+      }
 
-    html.dark .premium-features::before{
-      background:radial-gradient(circle,rgba(212,165,55,0.1),transparent 70%);
-    }
+      html.dark .footer-links a,
+      html.dark .footer-brand p,
+      html.dark .footer-bottom {
+        color: #e6d6c5;
+      }
 
-    html.dark .section-title h2,
-    html.dark .story-card h3,
-    html.dark .premium-feature-card h3,
-    html.dark .value-title,
-    html.dark .founder-name,
-    html.dark .cta-title,
-    html.dark .hero-body,
-    html.dark .story-text .section-title,
-    html.dark .quote-text{
-      color:var(--text-dark);
-    }
+      html.dark .footer-links a:hover {
+        color: var(--gold);
+      }
 
-    html.dark .section-title h2 em,
-    html.dark .section-title span,
-    html.dark .section-eyebrow,
-    html.dark .story-number,
-    html.dark .premium-icon,
-    html.dark .quote-attr{
-      color:var(--gold);
-    }
-
-    html.dark .premium-feature-card p,
-    html.dark .story-card p,
-    html.dark .story-para,
-    html.dark .value-desc,
-    html.dark .founder-bio,
-    html.dark .cta-sub,
-    html.dark .hero-body,
-    html.dark .story-quote{
-      color:var(--text-mid);
-    }
-
-    html.dark .experience-box{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(212,165,55,0.14);
-    }
-
-    html.dark .footer-links a,
-    html.dark .footer-brand p,
-    html.dark .footer-bottom{
-      color:#e6d6c5;
-    }
-
-    html.dark .footer-links a:hover{
-      color:var(--gold);
-    }
-
-    /* =========================
+      /* =========================
        ADDITIONAL PREMIUM STYLES FOR ABOUT PAGE
     ========================= */
-    .story-hero {
-      display: grid !important;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 80px;
-      align-items: center;
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 100px 8%;
-      min-height: auto !important;
-      background: linear-gradient(rgba(45,18,13,0.92), rgba(45,18,13,0.96)) !important;
-    }
-    
-    .story-hero .hero-left {
-      text-align: left;
-    }
-    
-    .story-hero .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 56px;
-      line-height: 1.1;
-      color: var(--cream);
-      margin-bottom: 24px;
-    }
-    
-    .story-hero .hero-body {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 16px;
-      line-height: 1.8;
-      color: #f3e4d2 !important;
-      margin-bottom: 0;
-    }
-    
-    .story-hero .hero-right {
-      position: relative;
-      width: 100%;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
-    }
-    
-    .story-hero .hero-right img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .story-hero .hero-right-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(45,18,13,0.6), transparent);
-      pointer-events: none;
-    }
-    
-    .story-hero .hero-badge {
-      position: absolute;
-      bottom: 24px;
-      left: 24px;
-      background: var(--gold);
-      color: var(--dark);
-      padding: 8px 16px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      border-radius: 30px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .story-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 120px 8%;
-    }
-    
-    .story-img-wrap {
-      position: relative;
-      width: 100%;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
-    }
-    
-    .story-img-wrap img {
-      width: 100%;
-      height: 480px;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .story-img-accent {
-      position: absolute;
-      inset: 0;
-      border: 2px solid var(--gold);
-      margin: 15px;
-      border-radius: 20px;
-      pointer-events: none;
-      opacity: 0.8;
-    }
-    
-    .story-quote {
-      position: absolute;
-      bottom: 30px;
-      left: 30px;
-      background: rgba(45, 18, 13, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--cream);
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      border: 1px solid rgba(212, 165, 55, 0.3);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    .story-text {
-      text-align: left;
-    }
-    
-    .story-text .section-eyebrow {
-      color: var(--gold);
-      letter-spacing: 4px;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: block;
-    }
-    
-    .story-text .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 52px;
-      color: var(--dark);
-      margin-bottom: 24px;
-      line-height: 1.15;
-      text-align: left;
-    }
-    
-    .story-text .section-title em {
-      color: var(--brown2);
-      font-style: italic;
-    }
-    
-    .story-para {
-      color: #6d4b42;
-      line-height: 1.8;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-    
-    .story-para:last-child {
-      margin-bottom: 0;
-    }
-    
-    .values {
-      background: linear-gradient(135deg, #4a1f14, #2d120d) !important;
-      padding: 120px 8% !important;
-    }
-    
-    .values .section-eyebrow {
-      color: var(--gold);
-      letter-spacing: 4px;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: block;
-      text-align: center;
-    }
-    
-    .values .section-title {
-      color: #fff4e6 !important;
-      font-weight: 600;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 52px;
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    
-    .values .section-title em {
-      color: var(--gold) !important;
-      font-style: italic;
-    }
-    
-    .values-grid {
-      max-width: 1450px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-    }
-    
-    .value-card {
-      background: rgba(255, 255, 255, 0.03) !important;
-      border: 1px solid rgba(212, 165, 55, 0.1) !important;
-      padding: 40px 30px !important;
-      border-radius: 24px !important;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: all 0.4s ease;
-    }
-    
-    .value-card:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(212, 165, 55, 0.25) !important;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    }
-    
-    .value-icon {
-      font-size: 36px;
-      display: inline-flex;
-      margin-bottom: 8px;
-    }
-    
-    .value-title {
-      color: #fff4e6 !important;
-      font-weight: 600;
-      font-size: 26px;
-      line-height: 1.2;
-      margin: 0;
-      font-family: 'Cormorant Garamond', serif;
-    }
-    
-    .value-desc {
-      color: rgba(255, 244, 230, 0.8) !important;
-      line-height: 1.8;
-      font-size: 15px;
-      margin: 0;
-    }
-    
-    .quote-banner {
-      background: var(--brown);
-      padding: 100px 30px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 0 120px rgba(212, 175, 55, 0.08);
-      margin: 80px 0;
-    }
-    
-    .quote-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(28px, 3.5vw, 44px);
-      line-height: 1.4;
-      color: var(--cream) !important;
-      font-style: italic;
-      max-width: 1000px;
-      margin: 0 auto 20px;
-    }
-    
-    .quote-attr {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: var(--gold) !important;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-    
-    .founder {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 60px;
-      max-width: 1200px;
-      margin: 120px auto;
-      padding: 60px;
-      background: white;
-      border-radius: 35px;
-      align-items: center;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(212, 165, 55, 0.08);
-    }
-    
-    .founder-img-placeholder {
-      width: 240px;
-      height: 240px;
-      background: var(--cream);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 80px;
-      border: 2px solid var(--gold);
-      box-shadow: 0 15px 30px rgba(212, 165, 55, 0.15);
-    }
-    
-    .founder-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 40px;
-      color: var(--dark) !important;
-      margin-bottom: 8px;
-    }
-    
-    .founder-role {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
-      letter-spacing: 2px;
-      color: var(--gold) !important;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-    
-    .founder-bio {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 16px;
-      line-height: 1.8;
-      color: #6e4c42 !important;
-    }
-    
-    .cta {
-      text-align: center;
-      padding: 100px 30px;
-      background: linear-gradient(135deg, #fff7f0 0%, #f8ede2 100%);
-      border-radius: 35px;
-      max-width: 1450px;
-      margin: 120px auto;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
-      border: 1px solid rgba(212, 165, 55, 0.05);
-    }
-    
-    .cta-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 52px;
-      color: var(--dark) !important;
-      margin-bottom: 16px;
-    }
-    
-    .cta-sub {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 18px;
-      color: #6e4c42 !important;
-      margin-bottom: 40px;
-    }
-    
-    .cta-buttons {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-    }
-    
-    .btn-dark {
-      padding: 18px 36px;
-      background: var(--brown);
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-size: 12px;
-      transition: 0.3s ease;
-      box-shadow: 0 10px 20px rgba(74, 31, 20, 0.15);
-    }
-    
-    .btn-dark:hover {
-      background: var(--gold);
-      color: var(--dark);
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(212, 165, 55, 0.2);
-    }
-    
-    .btn-outline {
-      padding: 18px 36px;
-      background: transparent;
-      border: 1px solid var(--brown);
-      color: var(--brown);
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-size: 12px;
-      transition: 0.3s ease;
-    }
-    
-    .btn-outline:hover {
-      background: rgba(74, 31, 20, 0.05);
-      transform: translateY(-3px);
-    }
-
-    /* RESPONSIVE UPDATES */
-    @media(max-width:900px){
       .story-hero {
-        grid-template-columns: 1fr;
-        gap: 40px;
+        display: grid !important;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1450px;
+        margin: 0 auto;
+        padding: 100px 8%;
         min-height: auto !important;
-        padding: 80px 20px;
+        background: linear-gradient(rgba(45, 18, 13, 0.92), rgba(45, 18, 13, 0.96)) !important;
       }
+
+      .story-hero .hero-left {
+        text-align: left;
+      }
+
+      .story-hero .hero-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 56px;
+        line-height: 1.1;
+        color: var(--cream);
+        margin-bottom: 24px;
+      }
+
+      .story-hero .hero-body {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        line-height: 1.8;
+        color: #f3e4d2 !important;
+        margin-bottom: 0;
+      }
+
+      .story-hero .hero-right {
+        position: relative;
+        width: 100%;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+      }
+
       .story-hero .hero-right img {
-        height: 300px;
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        display: block;
       }
+
+      .story-hero .hero-right-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(45, 18, 13, 0.6), transparent);
+        pointer-events: none;
+      }
+
+      .story-hero .hero-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        background: var(--gold);
+        color: var(--dark);
+        padding: 8px 16px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border-radius: 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
       .story-split {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 60px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1450px;
+        margin: 0 auto;
+        padding: 120px 8%;
       }
+
+      .story-img-wrap {
+        position: relative;
+        width: 100%;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+      }
+
       .story-img-wrap img {
-        height: 350px;
+        width: 100%;
+        height: 480px;
+        object-fit: cover;
+        display: block;
       }
+
+      .story-img-accent {
+        position: absolute;
+        inset: 0;
+        border: 2px solid var(--gold);
+        margin: 15px;
+        border-radius: 20px;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      .story-quote {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        background: rgba(45, 18, 13, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--cream);
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        border: 1px solid rgba(212, 165, 55, 0.3);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .story-text {
+        text-align: left;
+      }
+
+      .story-text .section-eyebrow {
+        color: var(--gold);
+        letter-spacing: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: block;
+      }
+
       .story-text .section-title {
-        font-size: 40px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 52px;
+        color: var(--dark);
+        margin-bottom: 24px;
+        line-height: 1.15;
+        text-align: left;
       }
+
+      .story-text .section-title em {
+        color: var(--brown2);
+        font-style: italic;
+      }
+
+      .story-para {
+        color: #6d4b42;
+        line-height: 1.8;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .story-para:last-child {
+        margin-bottom: 0;
+      }
+
       .values {
-        padding: 80px 20px !important;
+        background: linear-gradient(135deg, #4a1f14, #2d120d) !important;
+        padding: 120px 8% !important;
       }
+
+      .values .section-eyebrow {
+        color: var(--gold);
+        letter-spacing: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: block;
+        text-align: center;
+      }
+
       .values .section-title {
+        color: #fff4e6 !important;
+        font-weight: 600;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 52px;
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .values .section-title em {
+        color: var(--gold) !important;
+        font-style: italic;
+      }
+
+      .values-grid {
+        max-width: 1450px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+
+      .value-card {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(212, 165, 55, 0.1) !important;
+        padding: 40px 30px !important;
+        border-radius: 24px !important;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition: all 0.4s ease;
+      }
+
+      .value-card:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-color: rgba(212, 165, 55, 0.25) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      }
+
+      .value-icon {
+        font-size: 36px;
+        display: inline-flex;
+        margin-bottom: 8px;
+      }
+
+      .value-title {
+        color: #fff4e6 !important;
+        font-weight: 600;
+        font-size: 26px;
+        line-height: 1.2;
+        margin: 0;
+        font-family: 'Cormorant Garamond', serif;
+      }
+
+      .value-desc {
+        color: rgba(255, 244, 230, 0.8) !important;
+        line-height: 1.8;
+        font-size: 15px;
+        margin: 0;
+      }
+
+      .quote-banner {
+        background: var(--brown);
+        padding: 100px 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 0 120px rgba(212, 175, 55, 0.08);
+        margin: 80px 0;
+      }
+
+      .quote-text {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(28px, 3.5vw, 44px);
+        line-height: 1.4;
+        color: var(--cream) !important;
+        font-style: italic;
+        max-width: 1000px;
+        margin: 0 auto 20px;
+      }
+
+      .quote-attr {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        letter-spacing: 3px;
+        color: var(--gold) !important;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
+      .founder {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 60px;
+        max-width: 1200px;
+        margin: 120px auto;
+        padding: 60px;
+        background: white;
+        border-radius: 35px;
+        align-items: center;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(212, 165, 55, 0.08);
+      }
+
+      .founder-img-placeholder {
+        width: 240px;
+        height: 240px;
+        background: var(--cream);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        border: 2px solid var(--gold);
+        box-shadow: 0 15px 30px rgba(212, 165, 55, 0.15);
+      }
+
+      .founder-name {
+        font-family: 'Cormorant Garamond', serif;
         font-size: 40px;
+        color: var(--dark) !important;
+        margin-bottom: 8px;
+      }
+
+      .founder-role {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 13px;
+        letter-spacing: 2px;
+        color: var(--gold) !important;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+
+      .founder-bio {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        line-height: 1.8;
+        color: #6e4c42 !important;
+      }
+
+      .cta {
+        text-align: center;
+        padding: 100px 30px;
+        background: linear-gradient(135deg, #fff7f0 0%, #f8ede2 100%);
+        border-radius: 35px;
+        max-width: 1450px;
+        margin: 120px auto;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(212, 165, 55, 0.05);
+      }
+
+      .cta-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 52px;
+        color: var(--dark) !important;
+        margin-bottom: 16px;
+      }
+
+      .cta-sub {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        color: #6e4c42 !important;
         margin-bottom: 40px;
       }
-      .values-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      .founder {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding: 40px 20px;
-        margin: 60px 20px;
-        gap: 30px;
-      }
-      .founder-img-placeholder {
-        margin: 0 auto;
-      }
-      .founder-name {
-        font-size: 32px;
-      }
-      .cta {
-        margin: 60px 20px;
-        padding: 60px 20px;
-      }
-      .cta-title {
-        font-size: 36px;
-      }
-      .cta-sub {
-        font-size: 16px;
-      }
+
       .cta-buttons {
-        flex-direction: column;
-        gap: 15px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
       }
-    }
 
-    /* DARK MODE STYLES */
-    html.dark .story-split {
-      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
-    }
-    html.dark .story-text .section-title,
-    html.dark .founder-name,
-    html.dark .cta-title,
-    html.dark .founder-bio,
-    html.dark .cta-sub {
-      color: var(--text-dark) !important;
-    }
-    html.dark .founder {
-      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
-      border-color: #3a2010 !important;
-    }
-    html.dark .founder-img-placeholder {
-      background: #2a140b !important;
-      border-color: var(--gold) !important;
-    }
-    html.dark .cta {
-      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
-      border-color: #3a2010 !important;
-    }
-    html.dark .btn-dark {
-      background: var(--gold) !important;
-      color: var(--dark) !important;
-    }
-    html.dark .btn-outline {
-      border-color: var(--gold) !important;
-      color: var(--gold) !important;
-    }
-    html.dark .btn-outline:hover {
-      background: rgba(212, 165, 55, 0.08) !important;
-    }
-  </style>
+      .btn-dark {
+        padding: 18px 36px;
+        background: var(--brown);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 12px;
+        transition: 0.3s ease;
+        box-shadow: 0 10px 20px rgba(74, 31, 20, 0.15);
+      }
 
-  <!-- HERO -->
+      .btn-dark:hover {
+        background: var(--gold);
+        color: var(--dark);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(212, 165, 55, 0.2);
+      }
 
-  <section class="hero">
+      .btn-outline {
+        padding: 18px 36px;
+        background: transparent;
+        border: 1px solid var(--brown);
+        color: var(--brown);
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 12px;
+        transition: 0.3s ease;
+      }
 
-    <div class="hero-wrapper">
+      .btn-outline:hover {
+        background: rgba(74, 31, 20, 0.05);
+        transform: translateY(-3px);
+      }
 
-      <div>
+      /* RESPONSIVE UPDATES */
+      @media(max-width:900px) {
+        .story-hero {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          min-height: auto !important;
+          padding: 80px 20px;
+        }
 
-        <div class="hero-tag">
-          HOMEMADE TREATS • HAPPINESS IN EVERY BITE
-        </div>
+        .story-hero .hero-right img {
+          height: 300px;
+        }
 
-        <h1 class="hero-title">
-          Freshly Baked
-          <span>Delights</span>
-          Delivered to You
-        </h1>
+        .story-split {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding: 60px 20px;
+        }
 
-        <p class="hero-subtitle">
-          Authentic recipes, traditional methods,
-          the finest ingredients — baked with love
-          and served with care, every single day.
-        </p>
+        .story-img-wrap img {
+          height: 350px;
+        }
 
-        <div class="hero-buttons">
+        .story-text .section-title {
+          font-size: 40px;
+        }
 
-          <a href="products.html" class="primary-btn">
-            EXPLORE OUR MENU →
-          </a>
+        .values {
+          padding: 80px 20px !important;
+        }
 
-          <a href="favourites.html" class="secondary-btn">
-            ♡ FAVOURITE BAKERY
-          </a>
+        .values .section-title {
+          font-size: 40px;
+          margin-bottom: 40px;
+        }
 
-        </div>
+        .values-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
 
-      </div>
+        .founder {
+          grid-template-columns: 1fr;
+          text-align: center;
+          padding: 40px 20px;
+          margin: 60px 20px;
+          gap: 30px;
+        }
 
-      <div class="hero-images">
+        .founder-img-placeholder {
+          margin: 0 auto;
+        }
 
-        <div class="large-card">
+        .founder-name {
+          font-size: 32px;
+        }
 
-          <img
-            src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
-            alt="Cake"
-          >
+        .cta {
+          margin: 60px 20px;
+          padding: 60px 20px;
+        }
 
-          <div class="card-label">
-            🍰 Signature Cakes
+        .cta-title {
+          font-size: 36px;
+        }
+
+        .cta-sub {
+          font-size: 16px;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+
+      /* DARK MODE STYLES */
+      html.dark .story-split {
+        background: linear-gradient(135deg, #1a1008 0%, #221508 100%) !important;
+      }
+
+      html.dark .story-text .section-title,
+      html.dark .founder-name,
+      html.dark .cta-title,
+      html.dark .founder-bio,
+      html.dark .cta-sub {
+        color: var(--text-dark) !important;
+      }
+
+      html.dark .founder {
+        background: linear-gradient(135deg, #1a1008 0%, #221508 100%) !important;
+        border-color: #3a2010 !important;
+      }
+
+      html.dark .founder-img-placeholder {
+        background: #2a140b !important;
+        border-color: var(--gold) !important;
+      }
+
+      html.dark .cta {
+        background: linear-gradient(135deg, #1a1008 0%, #221508 100%) !important;
+        border-color: #3a2010 !important;
+      }
+
+      html.dark .btn-dark {
+        background: var(--gold) !important;
+        color: var(--dark) !important;
+      }
+
+      html.dark .btn-outline {
+        border-color: var(--gold) !important;
+        color: var(--gold) !important;
+      }
+
+      html.dark .btn-outline:hover {
+        background: rgba(212, 165, 55, 0.08) !important;
+      }
+    </style>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-wrapper">
+
+        <div>
+
+          <div class="hero-tag">
+            HOMEMADE TREATS • HAPPINESS IN EVERY BITE
+          </div>
+
+          <h1 class="hero-title">
+            Freshly Baked
+            <span>Delights</span>
+            Delivered to You
+          </h1>
+
+          <p class="hero-subtitle">
+            Authentic recipes, traditional methods,
+            the finest ingredients — baked with love
+            and served with care, every single day.
+          </p>
+
+          <div class="hero-buttons">
+
+            <a href="products.html" class="primary-btn">
+              EXPLORE OUR MENU →
+            </a>
+
+            <a href="favourites.html" class="secondary-btn">
+              ♡ FAVOURITE BAKERY
+            </a>
+
           </div>
 
         </div>
 
-        <div class="small-card">
+        <div class="hero-images">
 
-          <img
-            src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop"
-            alt="Brownies"
-          >
+          <div class="large-card">
 
-          <div class="card-label">
-            🍫 Brownies
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
+              alt="Cake">
+
+            <div class="card-label">
+              🍰 Signature Cakes
+            </div>
+
+          </div>
+
+          <div class="small-card">
+
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop"
+              alt="Brownies">
+
+            <div class="card-label">
+              🍫 Brownies
+            </div>
+
+          </div>
+
+          <div class="small-card">
+
+            <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1200&auto=format&fit=crop"
+              alt="Desserts">
+
+            <div class="card-label">
+              ☕ Desserts
+            </div>
+
           </div>
 
         </div>
 
-        <div class="small-card">
-
-          <img
-            src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1200&auto=format&fit=crop"
-            alt="Desserts"
-          >
-
-          <div class="card-label">
-            ☕ Desserts
-          </div>
-
-        </div>
-
       </div>
 
-    </div>
-
-  </section>
-
-  <!-- PREMIUM FEATURES -->
-
-  <section class="premium-features">
-
-    <div class="premium-features-wrapper">
-
-      <div class="premium-feature-card">
-
-        <div class="feature-glow"></div>
-
-        <div class="premium-icon">
-          📖
-        </div>
-
-        <h3>Authentic Recipes</h3>
-
-        <p>
-          Traditional handcrafted baking methods
-          passed with love and care.
-        </p>
-
-      </div>
-
-      <div class="premium-feature-card">
-
-        <div class="feature-glow"></div>
-
-        <div class="premium-icon">
-          💗
-        </div>
-
-        <h3>Baked With Love</h3>
-
-        <p>
-          Every brownie and cake is made
-          fresh daily with passion.
-        </p>
-
-      </div>
-
-      <div class="premium-feature-card">
-
-        <div class="feature-glow"></div>
-
-        <div class="premium-icon">
-          ✨
-        </div>
-
-        <h3>Premium Quality</h3>
-
-        <p>
-          Finest ingredients carefully selected
-          for rich luxurious flavours.
-        </p>
-
-      </div>
-
-      <div class="premium-feature-card">
-
-        <div class="feature-glow"></div>
-
-        <div class="premium-icon">
-          🍫
-        </div>
-
-        <h3>Luxury Desserts</h3>
-
-        <p>
-          Elegant presentation with unforgettable
-          chocolate experiences.
-        </p>
-
-      </div>
-    </div>
     </section>
 
-  <!-- Hero -->
-  <section class="hero story-hero">
-    <div class="hero-left">
-      <p class="hero-eyebrow">Our Story</p>
-      <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
-      <p class="hero-body" style="color:#9b7064">Brownie Bliss began with a simple dream — to bring the warmth of homemade baking into every celebration, every gathering, and every little sweet craving.</p>
-    </div>
-    <div class="hero-right">
-      <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownie Bliss treats" />
-      <div class="hero-right-overlay"></div>
-      <div class="hero-badge">Made with ❤️ in Krishnagiri</div>
-    </div>
-  </section>
+    <!-- PREMIUM FEATURES -->
 
-  <!-- STORY -->
+    <section class="premium-features">
 
-  <section class="story">
+      <div class="premium-features-wrapper">
 
-    <div class="section-title">
+        <div class="premium-feature-card">
 
-      <span>HAND-PICKED FOR YOU</span>
+          <div class="feature-glow"></div>
 
-      <h2>
-        Our
-        <em>Full Range</em>
-      </h2>
+          <div class="premium-icon">
+            📖
+          </div>
 
-    </div>
+          <h3>Authentic Recipes</h3>
 
-    <div class="story-grid">
+          <p>
+            Traditional handcrafted baking methods
+            passed with love and care.
+          </p>
 
-      <div class="story-card">
+        </div>
 
-        <div class="story-number">01</div>
+        <div class="premium-feature-card">
 
-        <h3>Premium Ingredients</h3>
+          <div class="feature-glow"></div>
 
-        <p>
-          Every dessert is made with carefully selected
-          ingredients to create rich flavour,
-          silky textures, and unforgettable sweetness.
-        </p>
+          <div class="premium-icon">
+            💗
+          </div>
+
+          <h3>Baked With Love</h3>
+
+          <p>
+            Every brownie and cake is made
+            fresh daily with passion.
+          </p>
+
+        </div>
+
+        <div class="premium-feature-card">
+
+          <div class="feature-glow"></div>
+
+          <div class="premium-icon">
+            ✨
+          </div>
+
+          <h3>Premium Quality</h3>
+
+          <p>
+            Finest ingredients carefully selected
+            for rich luxurious flavours.
+          </p>
+
+        </div>
+
+        <div class="premium-feature-card">
+
+          <div class="feature-glow"></div>
+
+          <div class="premium-icon">
+            🍫
+          </div>
+
+          <h3>Luxury Desserts</h3>
+
+          <p>
+            Elegant presentation with unforgettable
+            chocolate experiences.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero -->
+    <section class="hero story-hero">
+      <div class="hero-left">
+        <p class="hero-eyebrow">Our Story</p>
+        <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
+        <p class="hero-body" style="color:#9b7064">Brownie Bliss began with a simple dream — to bring the warmth of
+          homemade baking into every celebration, every gathering, and every little sweet craving.</p>
+      </div>
+      <div class="hero-right">
+        <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+          alt="Brownie Bliss treats" />
+        <div class="hero-right-overlay"></div>
+        <div class="hero-badge">Made with ❤️ in Krishnagiri</div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+
+    <section class="story">
+
+      <div class="section-title">
+
+        <span>HAND-PICKED FOR YOU</span>
+
+        <h2>
+          Our
+          <em>Full Range</em>
+        </h2>
 
       </div>
 
-      <div class="story-card">
+      <div class="story-grid">
 
-        <div class="story-number">02</div>
+        <div class="story-card">
 
-        <h3>Handcrafted Daily</h3>
+          <div class="story-number">01</div>
 
-        <p>
-          Our cakes and brownies are baked fresh daily
-          in small batches for authentic luxury
-          and homemade warmth.
-        </p>
+          <h3>Premium Ingredients</h3>
+
+          <p>
+            Every dessert is made with carefully selected
+            ingredients to create rich flavour,
+            silky textures, and unforgettable sweetness.
+          </p>
+
+        </div>
+
+        <div class="story-card">
+
+          <div class="story-number">02</div>
+
+          <h3>Handcrafted Daily</h3>
+
+          <p>
+            Our cakes and brownies are baked fresh daily
+            in small batches for authentic luxury
+            and homemade warmth.
+          </p>
+
+        </div>
+
+        <div class="story-card">
+
+          <div class="story-number">03</div>
+
+          <h3>Elegant Presentation</h3>
+
+          <p>
+            From luxury celebration cakes
+            to handcrafted brownies,
+            every dessert is designed beautifully.
+          </p>
+
+        </div>
 
       </div>
 
-      <div class="story-card">
+    </section>
 
-        <div class="story-number">03</div>
+    <!-- EXPERIENCE -->
 
-        <h3>Elegant Presentation</h3>
+    <section class="experience">
 
-        <p>
-          From luxury celebration cakes
-          to handcrafted brownies,
-          every dessert is designed beautifully.
-        </p>
+      <div class="experience-box">
 
+        <div class="experience-image">
+
+          <img
+            src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png"
+            alt="Dessert">
+
+        </div>
+
+        <div class="experience-content">
+
+          <h3>
+            Crafted For Sweet
+            Luxury Moments
+          </h3>
+
+          <p>
+            Brownie Bliss combines rich flavours,
+            elegant presentation,
+            and authentic homemade warmth
+            to create desserts that feel memorable,
+            indulgent, and premium.
+          </p>
+
+          <a href="products.html" class="primary-btn">
+            DISCOVER MORE →
+          </a>
+        </div>
       </div>
 
-    </div>
-
-  </section>
-
-  <!-- EXPERIENCE -->
-
-  <section class="experience">
-
-    <div class="experience-box">
-
-      <div class="experience-image">
-
-        <img
-          src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png"
-          alt="Dessert"
-        >
-
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat-item reveal">
+          <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+          <div class="stat-label">Homemade Recipes</div>
+        </div>
+        <div class="stat-item reveal" style="transition-delay:0.1s">
+          <div class="stat-number" style="font-size:40px">Fresh</div>
+          <div class="stat-label">Baked Every Day</div>
+        </div>
+        <div class="stat-item reveal" style="transition-delay:0.2s">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Sweet Memories</div>
+        </div>
+        <div class="stat-item reveal" style="transition-delay:0.3s">
+          <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+          <div class="stat-label">Always Fresh, Never Factory</div>
+        </div>
       </div>
+    </section>
 
-      <div class="experience-content">
+    <!-- Story Section -->
+    <section class="story story-split">
+      <div class="story-img-wrap reveal">
+        <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
+        <div class="story-img-accent"></div>
+        <div class="story-quote">✦ Passion in Every Bite</div>
+      </div>
+      <div class="story-text reveal" style="transition-delay:0.15s">
+        <p class="section-eyebrow">How it all began</p>
+        <h2 class="section-title">Every Dessert Has a <em>Story to Tell</em></h2>
+        <p class="story-para">What started as passion-filled baking sessions in a home kitchen slowly turned into
+          something much more meaningful — handcrafted brownies, rich cakes, delicate pastries and comforting desserts
+          made not in factories, but with genuine love and care.</p>
+        <p class="story-para">Every recipe carries a homemade touch. Every brownie is baked in small batches. Every cake
+          is thoughtfully crafted to make someone's day special.</p>
+        <p class="story-para">At Brownie Bliss, we believe desserts are not just food — they are emotions, memories and
+          happiness shared with people you love.</p>
+      </div>
+    </section>
 
-        <h3>
-          Crafted For Sweet
-          Luxury Moments
-        </h3>
+    <!-- Values -->
+    <section class="values">
+      <p class="section-eyebrow reveal">What we stand for</p>
+      <h2 class="section-title reveal">Baked into <em style="color:var(--gold-light)">Everything We Do</em></h2>
+      <div class="values-grid">
+        <div class="value-card reveal">
+          <span class="value-icon">🍫</span>
+          <h3 class="value-title">Handcrafted Daily</h3>
+          <p class="value-desc">Freshly baked in small batches to ensure warmth, softness and authentic homemade flavour
+            — every single day.</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.1s">
+          <span class="value-icon">✨</span>
+          <h3 class="value-title">Premium Ingredients</h3>
+          <p class="value-desc">Only carefully selected ingredients go into our desserts, because quality creates
+            unforgettable taste and real smiles.</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.2s">
+          <span class="value-icon">❤️</span>
+          <h3 class="value-title">Baked with Love</h3>
+          <p class="value-desc">Every dessert is thoughtfully prepared with passion, creativity and attention to detail
+            — from batter to box.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LUXURY BANNER -->
+
+    <section class="luxury-banner">
+
+      <div class="luxury-overlay"></div>
+
+      <div class="luxury-content">
+
+        <span>Brownie Bliss Experience</span>
+
+        <h2>
+          Crafted With Warmth,
+          Elegance & Chocolate Dreams
+        </h2>
 
         <p>
-          Brownie Bliss combines rich flavours,
-          elegant presentation,
-          and authentic homemade warmth
-          to create desserts that feel memorable,
-          indulgent, and premium.
+          Every brownie, pastry and cake is handcrafted
+          to create moments worth remembering.
         </p>
 
         <a href="products.html" class="primary-btn">
-          DISCOVER MORE →
+          Explore Desserts →
         </a>
+
       </div>
-    </div>
-  
-    <!-- Stats -->
-    <div class="stats">
-      <div class="stat-item reveal">
-        <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
-        <div class="stat-label">Homemade Recipes</div>
-      </div>
-      <div class="stat-item reveal" style="transition-delay:0.1s">
-        <div class="stat-number" style="font-size:40px">Fresh</div>
-        <div class="stat-label">Baked Every Day</div>
-      </div>
-      <div class="stat-item reveal" style="transition-delay:0.2s">
-        <div class="stat-number">∞</div>
-        <div class="stat-label">Sweet Memories</div>
-      </div>
-      <div class="stat-item reveal" style="transition-delay:0.3s">
-        <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
-        <div class="stat-label">Always Fresh, Never Factory</div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Story Section -->
-  <section class="story story-split">
-    <div class="story-img-wrap reveal">
-      <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
-      <div class="story-img-accent"></div>
-      <div class="story-quote">✦ Passion in Every Bite</div>
-    </div>
-    <div class="story-text reveal" style="transition-delay:0.15s">
-      <p class="section-eyebrow">How it all began</p>
-      <h2 class="section-title">Every Dessert Has a <em>Story to Tell</em></h2>
-      <p class="story-para">What started as passion-filled baking sessions in a home kitchen slowly turned into something much more meaningful — handcrafted brownies, rich cakes, delicate pastries and comforting desserts made not in factories, but with genuine love and care.</p>
-      <p class="story-para">Every recipe carries a homemade touch. Every brownie is baked in small batches. Every cake is thoughtfully crafted to make someone's day special.</p>
-      <p class="story-para">At Brownie Bliss, we believe desserts are not just food — they are emotions, memories and happiness shared with people you love.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Values -->
-  <section class="values">
-    <p class="section-eyebrow reveal">What we stand for</p>
-    <h2 class="section-title reveal">Baked into <em style="color:var(--gold-light)">Everything We Do</em></h2>
-    <div class="values-grid">
-      <div class="value-card reveal">
-        <span class="value-icon">🍫</span>
-        <h3 class="value-title">Handcrafted Daily</h3>
-        <p class="value-desc">Freshly baked in small batches to ensure warmth, softness and authentic homemade flavour — every single day.</p>
-      </div>
-      <div class="value-card reveal" style="transition-delay:0.1s">
-        <span class="value-icon">✨</span>
-        <h3 class="value-title">Premium Ingredients</h3>
-        <p class="value-desc">Only carefully selected ingredients go into our desserts, because quality creates unforgettable taste and real smiles.</p>
-      </div>
-      <div class="value-card reveal" style="transition-delay:0.2s">
-        <span class="value-icon">❤️</span>
-        <h3 class="value-title">Baked with Love</h3>
-        <p class="value-desc">Every dessert is thoughtfully prepared with passion, creativity and attention to detail — from batter to box.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- LUXURY BANNER -->
-
-  <section class="luxury-banner">
-
-    <div class="luxury-overlay"></div>
-
-    <div class="luxury-content">
-
-      <span>Brownie Bliss Experience</span>
-
-      <h2>
-        Crafted With Warmth,
-        Elegance & Chocolate Dreams
-      </h2>
-
-      <p>
-        Every brownie, pastry and cake is handcrafted
-        to create moments worth remembering.
-      </p>
-
-      <a href="products.html" class="primary-btn">
-        Explore Desserts →
-      </a>
-
+    <!-- Quote -->
+    <div class="quote-banner reveal">
+      <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+      <p class="quote-attr">— The Brownie Bliss Philosophy</p>
     </div>
 
-  </section>
+    <!-- Founder -->
+    <section class="founder reveal">
+      <div class="founder-img-placeholder">👩‍🍳</div>
+      <div>
+        <h3 class="founder-name">A.R. Shanmugapriya</h3>
+        <p class="founder-role">Founder & Head Baker</p>
+        <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss
+          is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food.
+          Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a
+          time.</p>
+      </div>
+    </section>
 
-  <!-- Quote -->
-  <div class="quote-banner reveal">
-    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
-    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
-  </div>
-
-  <!-- Founder -->
-  <section class="founder reveal">
-    <div class="founder-img-placeholder">👩‍🍳</div>
-    <div>
-      <h3 class="founder-name">A.R. Shanmugapriya</h3>
-      <p class="founder-role">Founder & Head Baker</p>
-      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
+    <!-- CTA -->
+    <div class="cta reveal">
+      <h2 class="cta-title">Ready to Taste the Difference?</h2>
+      <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
+      <div class="cta-buttons">
+        <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
+        <a href="contact.html" class="btn-outline">Get in Touch</a>
+      </div>
     </div>
-  </section>
 
-  <!-- CTA -->
-  <div class="cta reveal">
-    <h2 class="cta-title">Ready to Taste the Difference?</h2>
-    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
-    <div class="cta-buttons">
-      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
-      <a href="contact.html" class="btn-outline">Get in Touch</a>
-    </div>
-  </div>
+    <!-- FOOTER -->
 
-  <!-- FOOTER -->
+    <footer>
 
-  <footer>
+      <div class="footer-grid">
 
-    <div class="footer-grid">
+        <div class="footer-brand">
 
-      <div class="footer-brand">
+          <h2>Brownie Bliss</h2>
 
-        <h2>Brownie Bliss</h2>
+          <p>
+            A luxury dessert boutique creating handcrafted cakes,
+            premium brownies, and unforgettable chocolate experiences.
+          </p>
 
-        <p>
-          A luxury dessert boutique creating handcrafted cakes,
-          premium brownies, and unforgettable chocolate experiences.
-        </p>
+        </div>
+
+        <div class="footer-links">
+
+          <h4>EXPLORE</h4>
+
+          <a href="about.html">About Us</a>
+          <a href="products.html">Desserts</a>
+          <a href="birthday.html">Custom Cakes</a>
+          <a href="contact.html">Contact</a>
+
+        </div>
+        <div class="footer-links">
+          <h4>Information</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="refund-policy.html">Refund Policy</a>
+        </div>
+
+        <div class="footer-links">
+
+          <h4>CONTACT</h4>
+
+          <a href="#">+91 9876543210</a>
+          <a href="#">orders@browniebliss.com</a>
+          <a href="#">Chennai, India</a>
+
+        </div>
 
       </div>
 
-      <div class="footer-links">
-
-        <h4>EXPLORE</h4>
-
-        <a href="about.html">About Us</a>
-        <a href="products.html">Desserts</a>
-        <a href="birthday.html">Custom Cakes</a>
-        <a href="contact.html">Contact</a>
-
-      </div>
-      <div class="footer-links">
-        <h4>Information</h4>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-service.html">Terms of Service</a>
-        <a href="refund-policy.html">Refund Policy</a>
+      <div class="footer-bottom">
+        © 2026 Brownie Bliss • Happiness In Every Bite
       </div>
 
-      <div class="footer-links">
+    </footer>
 
-        <h4>CONTACT</h4>
-
-        <a href="#">+91 9876543210</a>
-        <a href="#">orders@browniebliss.com</a>
-        <a href="#">Chennai, India</a>
-
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      © 2026 Brownie Bliss • Happiness In Every Bite
-    </div>
-
-  </footer>
-
-  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-  <script src="script.js"></script>
+    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <script src="script.js"></script>
 </body>
+
 </html>
