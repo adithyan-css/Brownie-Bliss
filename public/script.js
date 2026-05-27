@@ -297,8 +297,11 @@ async function loadProducts() {
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
-  }
 
+    updateFavouritesCount();
+
+    renderFavouritesPage();
+  }
   if (document.getElementById('cakePrice')) {
     calculateBdayPrice();
   }
