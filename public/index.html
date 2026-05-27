@@ -10,7 +10,8 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  
+  <link rel="stylesheet" href="loader.css" />
+
   <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
   <script>
     (function () {
@@ -23,6 +24,37 @@
 </head>
 
 <body id="home">
+
+<!-- LOADER - must be first -->
+  <div id="bb-loader" role="status" aria-label="Loading Brownie Bliss">
+    <div class="bb-bg" aria-hidden="true"></div>
+    <div class="bb-overlay" aria-hidden="true"></div>
+    <div class="bb-content">
+      <div class="bb-rule" aria-hidden="true">
+        <div class="bb-rule-line"></div>
+        <div class="bb-rule-diamond"></div>
+        <div class="bb-rule-line right"></div>
+      </div>
+      <div class="bb-logo">
+        <h1 class="bb-logo-title">Brownie Bliss</h1>
+        <p class="bb-logo-sub">Homemade Treats</p>
+      </div>
+      <p class="bb-tagline">Baking something delightful for you…</p>
+      <div class="bb-progress-wrap">
+        <div class="bb-progress-track">
+          <div class="bb-progress-bar" id="bb-progress-bar"></div>
+        </div>
+        <div class="bb-status" id="bb-status-text">Loading</div>
+      </div>
+      <div class="bb-dots" aria-hidden="true">
+        <div class="bb-dot"></div>
+        <div class="bb-dot"></div>
+        <div class="bb-dot"></div>
+      </div>
+      <p class="bb-bottom-rule">Happiness in every bite</p>
+    </div>
+  </div>
+  <!-- end #bb-loader -->
 
   <!-- ANNOUNCEMENT -->
   <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
@@ -802,5 +834,6 @@
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="loader.js"></script>
 </body>
 </html>
