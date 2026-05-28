@@ -203,6 +203,8 @@ nav a:hover {
   position: absolute;
   inset: 0;
   background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at 30% 50%,
       rgba(201, 169, 110, 0.15) 0%,
       transparent 60%
@@ -296,12 +298,15 @@ nav a:hover {
   font-family: "DM Sans", sans-serif;
   cursor: pointer;
   border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
 }
 
 .hero-cta:hover {
   background: var(--cream);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 20px rgba(217, 119, 87, 0.3);
 }
 
 .hero-visual {
@@ -600,7 +605,9 @@ nav a:hover {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -664,7 +671,10 @@ nav a:hover {
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 18px rgba(26, 9, 5, 0.15);
-  transition: transform 0.2s, background 0.2s, color 0.2s;
+  transition:
+    transform 0.2s,
+    background 0.2s,
+    color 0.2s;
 }
 
 .favorite-btn:hover {
@@ -1745,6 +1755,10 @@ html {
   margin-bottom: 20px;
 }
 
+.form-actions {
+  margin-top: 5px;
+}
+
 .form-group label {
   display: block;
   font-size: 11px;
@@ -1753,6 +1767,11 @@ html {
   letter-spacing: 1px;
   margin-bottom: 8px;
   font-weight: 700;
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
 }
 
 .form-group input,
@@ -2847,6 +2866,8 @@ nav a:hover {
   position: absolute;
   inset: 0;
   background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at 30% 50%,
       rgba(201, 169, 110, 0.15) 0%,
       transparent 60%
@@ -3047,18 +3068,21 @@ nav a:hover {
 
 .section-label {
   font-family: "DM Sans", sans-serif;
-  font-size: 10px;
-  letter-spacing: 4px;
+  font-size: 14px;
+  letter-spacing: 2px;
   color: var(--gold);
   text-transform: uppercase;
   margin-bottom: 12px;
   display: block;
+  font-weight: 600;
 }
 
 .section-title {
   font-family: "Playfair Display", serif;
   font-size: clamp(28px, 3vw, 40px);
   font-weight: 600;
+  line-height: 1.2;
+  margin: 10px 0 15px;
   color: var(--brown-dark);
 }
 
@@ -3942,7 +3966,9 @@ nav a,
 input,
 textarea,
 select {
-  transition: background-color 0.28s ease, color 0.28s ease,
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
     border-color 0.28s ease;
 }
 
@@ -4060,6 +4086,38 @@ html.dark label[style] {
 
 /* Footer (bg stays dark, text was already okay except logo) */
 html.dark .footer-brand .logo-name {
+  color: var(--text-dark);
+}
+html.dark .footer-bottom {
+  color: rgba(240, 228, 208, 0.4);
+}
+html.dark .footer-col a {
+  color: rgba(240, 228, 208, 0.6);
+}
+html.dark .footer-col a:hover {
+  color: var(--gold-light);
+}
+
+/* Cart sidebar */
+html.dark .cart-title {
+  color: var(--text-dark);
+}
+html.dark .cart-item-name {
+  color: var(--text-dark);
+}
+html.dark .cart-item-price {
+  color: var(--gold);
+}
+html.dark .cart-total-label,
+html.dark .cart-total-amt {
+  color: var(--text-dark);
+}
+
+/* Inputs / textareas */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background: var(--cream-dark);
   color: var(--text-dark);
 }
 html.dark .footer-bottom {
@@ -4212,7 +4270,9 @@ html.dark .theme-toggle-btn:hover {
   border-radius: 14px;
   padding: 24px 20px 20px;
   box-shadow: 0 4px 18px rgba(26, 9, 5, 0.07);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .testimonial-card:hover {
@@ -4440,9 +4500,14 @@ html.dark .theme-toggle-btn:hover {
 
 .contact-socials {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin-top: 20px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 14px;
+  background: #faf7f5;
+  transition: 0.3s ease;
 }
 
 .contact-socials a {
@@ -4459,6 +4524,11 @@ html.dark .theme-toggle-btn:hover {
   background: var(--brown-dark);
   color: var(--cream);
   border-color: var(--brown-dark);
+}
+
+.contact-social:hover {
+  transform: translateY(-3px);
+  background: #f3ece7;
 }
 
 /* =========================
@@ -4495,15 +4565,23 @@ html.dark .theme-toggle-btn:hover {
   align-items: start;
 }
 
+/* Fix imbalance between columns */
+.contact-left,
+.contact-form-box {
+  height: fit-content;
+}
+
 /* LEFT */
 
 .contact-desc {
   font-family: "Cormorant Garamond", serif;
-  font-size: 24px;
-  line-height: 1.8;
-  color: var(--text-mid);
-
-  margin: 30px 0 50px;
+  font-size: 28px;
+  line-height: 1.7;
+  color: #5c5148;
+  max-width: 520px;
+  line-height: 1.6;
+  opacity: 0.85;
+  margin: 30px 0 60px;
 }
 */
 
@@ -4511,8 +4589,8 @@ html.dark .theme-toggle-btn:hover {
 
 .contact-info-grid {
   display: grid;
-  gap: 18px;
-
+  gap: 14px;
+  margin-top: 25px;
   margin-bottom: 50px;
 }
 
@@ -4532,7 +4610,8 @@ html.dark .theme-toggle-btn:hover {
 }
 
 .contact-info-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
+  background: #f3ece7;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
 }
 
@@ -4587,7 +4666,9 @@ html.dark .theme-toggle-btn:hover {
 .hours-card h3 {
   font-family: "Playfair Display", serif;
 
-  margin-bottom: 26px;
+  font-size: 30px;
+
+  margin-bottom: 12px;
 
   color: #2d211c;
 }
@@ -4735,6 +4816,12 @@ html.dark .theme-toggle-btn:hover {
   background: #f1ebe5;
 }
 
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .contact-form-box input::placeholder,
 .contact-form-box textarea::placeholder {
   color: #9a8f86;
@@ -4772,7 +4859,17 @@ html.dark .theme-toggle-btn:hover {
 @media (max-width: 900px) {
   .contact-inner {
     grid-template-columns: 1fr;
+    gap: 35px;
   }
+
+  .section-title {
+    font-size: 32px;
+  }
+
+  .contact-form-box {
+    padding: 20px;
+  }
+}
 
   .contact-desc {
     font-size: 24px;
@@ -4784,6 +4881,17 @@ html.dark .theme-toggle-btn:hover {
 
   .form-top h3 {
     font-size: 30px;
+@media (max-width: 480px) {
+  .contact-page {
+    padding: 40px 15px;
+  }
+
+  .hero-cta {
+    font-size: 15px;
+  }
+
+  .contact-info-card {
+    flex-direction: row;
   }
 }
 
@@ -4983,7 +5091,9 @@ nav a,
 input,
 textarea,
 select {
-  transition: background-color 0.28s ease, color 0.28s ease,
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
     border-color 0.28s ease;
 }
 
@@ -5354,7 +5464,8 @@ nav a:hover {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at 30% 50%,
       rgba(201, 169, 110, 0.15) 0%,
       transparent 60%
@@ -6626,11 +6737,11 @@ footer {
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 14px;
   border: 1px solid var(--cream-dark);
-  border-radius: 2px;
+  border-radius: 10px;
   font-family: "DM Sans", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -6638,6 +6749,8 @@ footer {
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--gold);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.2);
 }
 
 .phone-input-group {
@@ -8233,7 +8346,9 @@ nav a,
 input,
 textarea,
 select {
-  transition: background-color 0.28s ease, color 0.28s ease,
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
     border-color 0.28s ease;
 }
 
@@ -9355,6 +9470,109 @@ html.dark .theme-toggle-btn:hover {
   margin-bottom: 4px;
 }
 
+.theme-toggle-btn:hover {
+  background: var(--brown-dark);
+  transform: rotate(22deg) scale(1.08);
+}
+html.dark .theme-toggle-btn {
+  border-color: var(--gold);
+}
+html.dark .theme-toggle-btn:hover {
+  background: var(--gold);
+}
+.stock-status {
+  margin: 8px 0;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+}
+
+.available {
+  background: #f3e5d8;
+  color: #5c3b2e;
+  border-color: #c8a58f;
+}
+
+.low-stock {
+  background: #e8d3b9;
+  color: #6b3f1d;
+  border-color: #b7865e;
+}
+
+.sold-out {
+  background: #4b2e2e;
+  color: #f5e6d3;
+  border-color: #7a4b4b;
+}
+
+.add-to-cart:disabled {
+  background: #4b2e2e;
+  color: #f5e6d3;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+.bb-reviews {
+  background: #fdf6ee;
+  padding: 64px 32px;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+}
+
+.bb-reviews .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #b07d3e;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.bb-reviews h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 34px;
+  font-weight: 500;
+  color: #3b1f0a;
+  margin: 0 0 48px;
+  line-height: 1.25;
+}
+
+.bb-reviews h2 em {
+  color: #b07d3e;
+  font-style: italic;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.review-card {
+  background: #fff8f0;
+  border: 0.5px solid #e8d0b0;
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: left;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-card .quote-mark {
+  font-family: "Playfair Display", serif;
+  font-size: 56px;
+  color: #e8d0b0;
+  line-height: 0.6;
+  display: block;
+  margin-bottom: 4px;
+}
+
 .review-card .stars {
   color: #d4882a;
   font-size: 15px;
@@ -10038,7 +10256,10 @@ html.dark .topping-price {
   border-radius: 18px;
   box-shadow: var(--shadow);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease;
+
   flex-shrink: 0;
 }
 
@@ -10133,47 +10354,39 @@ html.dark .topping-price {
 }
 
 .price-filter {
-  display: flex;
-  justify-content: center;
-  margin: 40px 0 55px;
-}
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 35px 0 !important;
 
-.price-filter {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 14px !important;
-  margin: 35px 0 !important;
+    padding: 16px 28px;
+    background: rgba(255, 248, 243, 0.75);
+    backdrop-filter: blur(12px);
 
-  padding: 16px 28px;
-  background: rgba(255, 248, 243, 0.75);
-  backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
 
-  border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 8px 30px rgba(111, 67, 44, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
-  border-radius: 999px;
-
-  box-shadow: 0 8px 30px rgba(111, 67, 44, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-
-  transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .price-filter:hover {
   transform: translateY(-2px);
 
-  box-shadow: 0 12px 35px rgba(111, 67, 44, 0.12),
+  box-shadow:
+    0 12px 35px rgba(111, 67, 44, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .price-filter label {
-  font-family: "Playfair Display", serif;
-
-  font-size: 20px;
-
-  color: #5c372c;
-
-  letter-spacing: 0.5px;
+    font-family: "Playfair Display", serif !important;
+    font-size: 20px !important;
+    color: #5c372c !important;
+    letter-spacing: 0.5px;
 }
 
 .custom-price-filter {
@@ -10192,16 +10405,20 @@ html.dark .topping-price {
   text-align: left;
   color: #5c372c !important;
 
-  font-size: 15px;
-  font-weight: 600;
-
-  font-family: "DM Sans", sans-serif;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  font-family: "DM Sans", sans-serif !important;
 
   cursor: pointer !important;
   outline: none !important;
 
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8),
-    0 3px 10px rgba(0, 0, 0, 0.05);
+  box-shadow:
+      inset 0 1px 2px rgba(255, 255, 255, 0.8),
+      0 4px 12px rgba(0, 0, 0, 0.08) !important;
+
+  background-image: url(...);
+  background-repeat: no-repeat;
+  background-position: right 16px center;
 
   transition: all 0.3s ease;
 }
