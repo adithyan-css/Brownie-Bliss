@@ -10480,3 +10480,109 @@ html.dark .bb-overall {
 html.dark .rating-text { color: #c49a65; }
 html.dark .rating-text strong { color: #f0d9b8; }
 
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: #fffaf4;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.26s ease, box-shadow 0.26s ease;
+  box-shadow: 0 2px 12px rgba(58, 30, 8, 0.07);
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(58, 30, 8, 0.13);
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card-body {
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.product-card-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #3b1f0a;
+  margin: 0;
+}
+
+.product-card-body .product-desc {
+  font-size: 13px;
+  color: #a07050;
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 16px;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.product-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b1f0a;
+}
+
+.product-price span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #a07050;
+  margin-left: 2px;
+}
+
+.btn-add-cart {
+  background: #3b1f0a;
+  color: #fff8ec;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-add-cart:hover {
+  background: #b07d3e;
+  transform: scale(1.04);
+}
+
+/* Dark mode */
+html.dark .product-card {
+  background: #2a1506;
+  border-color: rgba(212, 175, 55, 0.12);
+}
+html.dark .product-card-body h3 { color: #f0d9b8; }
+html.dark .product-card-body .product-desc { color: #a07050; }
+html.dark .product-price { color: #f0d9b8; }
+html.dark .btn-add-cart { background: #c9923a; color: #1e0f05; }
+html.dark .btn-add-cart:hover { background: #d4a831; }
