@@ -10744,3 +10744,17 @@ html.dark .legal-card p,
 html.dark .legal-hero p {
   color: var(--text-mid);
 }
+html.dark body,
+html.dark {
+  background: #121212 !important;
+  color: #f5f5f5 !important;
+}
+
+html.dark header,
+html.dark .card,
+html.dark .product-card,
+html.dark .hero,
+html.dark .products-section {
+  background: #1a1a1a !important;
+  color: #f5f5f5 !important;
+}
