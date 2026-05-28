@@ -21,14 +21,20 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────
-app.use(async (req, res, next) => {
-  try {
+let dbConnected = false;
+
+const initDB = async () => {
+  if (!dbConnected) {
     await connectDB();
-    next();
-  } catch (err) {
-    res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
+    dbConnected = true;
   }
+};
+
+initDB().catch(err => {
+  console.error("DB connection failed:", err);
+  process.exit(1);
 });
+
 
 // ─── API ROUTES ─────────────────────────────────────────────────────────────────
 app.use('/api/admin', adminRoutes);
