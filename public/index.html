@@ -521,21 +521,26 @@
         <!-- Feedback Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a Review</h3>
-          <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
+          <form id="reviewForm" onsubmit="submitReview(event)">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
-              <div style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream-dark);">★</span>
+              <div id="starRating" style="display: flex; gap: 5px; font-size: 28px; cursor: pointer; user-select: none;">
+                <span class="rev-star" data-val="1" style="color: var(--cream-dark);">★</span>
+                <span class="rev-star" data-val="2" style="color: var(--cream-dark);">★</span>
+                <span class="rev-star" data-val="3" style="color: var(--cream-dark);">★</span>
+                <span class="rev-star" data-val="4" style="color: var(--cream-dark);">★</span>
+                <span class="rev-star" data-val="5" style="color: var(--cream-dark);">★</span>
               </div>
+              <input type="hidden" id="reviewRating" value="0">
             </div>
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Name</label>
-              <input type="text" placeholder="Your Name" required
+              <input type="text" id="reviewName" placeholder="Your Name" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Message</label>
-              <textarea placeholder="Tell us about your experience..." rows="4" required
+              <textarea id="reviewMessage" placeholder="Tell us about your experience..." rows="4" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif; resize: none;"></textarea>
             </div>
             <button class="hero-cta" type="submit" style="width: 100%; padding: 16px;">Submit Review</button>
@@ -583,18 +588,22 @@
 
     <div class="reviews-grid">
 
-      <!-- Featured card -->
+      <!-- Featured card — full-width horizontal layout -->
       <div class="review-card featured">
         <div class="card-inner">
-          <span class="featured-badge">⭐ Top Review</span>
-          <div class="quote-icon">"</div>
-          <p class="review-text">The brownies were unbelievably rich and fresh. You can genuinely feel the homemade touch in every bite. This isn't just food — it's comfort wrapped in chocolate.</p>
-          <div class="stars">★★★★★</div>
-          <div class="reviewer">
-            <div class="reviewer-avatar">KS</div>
-            <div class="reviewer-info">
-              <p class="reviewer-name">Keerthana S.</p>
-              <p class="reviewer-location">📍 Krishnagiri</p>
+          <div class="featured-left">
+            <span class="featured-badge">⭐ Top Review</span>
+            <div class="quote-icon">"</div>
+            <p class="review-text">The brownies were unbelievably rich and fresh. You can genuinely feel the homemade touch in every bite. This isn't just food — it's comfort wrapped in chocolate.</p>
+          </div>
+          <div class="featured-right">
+            <div class="stars" style="font-size:20px; letter-spacing:4px;">★★★★★</div>
+            <div class="reviewer" style="border-top:none; padding-top:0; margin-top:0;">
+              <div class="reviewer-avatar">KS</div>
+              <div class="reviewer-info">
+                <p class="reviewer-name">Keerthana S.</p>
+                <p class="reviewer-location">📍 Krishnagiri</p>
+              </div>
             </div>
           </div>
         </div>
@@ -665,6 +674,21 @@
       </div>
 
     </div><!-- /reviews-grid -->
+
+    <!-- See More / See Less button -->
+    <div style="text-align:center; margin: 36px 0 12px;">
+      <button id="seeMoreBtn"
+        onclick="toggleSeeMore()"
+        data-expanded="false"
+        style="display:none; background:transparent; border:2px solid var(--gold); color:var(--gold);
+               font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:1.5px;
+               text-transform:uppercase; padding:14px 36px; border-radius:2px; cursor:pointer;
+               transition:all 0.25s;"
+        onmouseover="this.style.background='var(--gold)';this.style.color='var(--brown-dark)'"
+        onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">
+        See All Reviews →
+      </button>
+    </div>
 
     <!-- Overall rating strip -->
     <div class="bb-overall">
@@ -740,6 +764,139 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <script>
+    // ── Star rating + See More/Less ──────────────────────────────────────────
+    (function() {
+      var VISIBLE_LIMIT = 6;
+
+      function initStars() {
+        var stars = document.querySelectorAll('.rev-star');
+        var ratingInput = document.getElementById('reviewRating');
+        if (!stars.length || !ratingInput) return;
+        function highlight(n) {
+          stars.forEach(function(s) {
+            s.style.color = parseInt(s.getAttribute('data-val')) <= n ? 'var(--gold)' : 'var(--cream-dark)';
+          });
+        }
+        stars.forEach(function(star) {
+          star.addEventListener('mouseover', function() { highlight(parseInt(this.getAttribute('data-val'))); });
+          star.addEventListener('click', function() {
+            var val = parseInt(this.getAttribute('data-val'));
+            ratingInput.value = val;
+            highlight(val);
+          });
+        });
+        var container = document.getElementById('starRating');
+        if (container) {
+          container.addEventListener('mouseleave', function() {
+            highlight(parseInt(ratingInput.value) || 0);
+          });
+        }
+      }
+
+      function applyVisibilityLimit() {
+        var grid = document.querySelector('.reviews-grid');
+        if (!grid) return;
+        var cards = grid.querySelectorAll('.review-card');
+        var btn   = document.getElementById('seeMoreBtn');
+        var total = cards.length;
+        var expanded = btn && btn.getAttribute('data-expanded') === 'true';
+        cards.forEach(function(card, i) {
+          card.style.display = (expanded || i < VISIBLE_LIMIT) ? '' : 'none';
+        });
+        if (!btn) return;
+        if (total <= VISIBLE_LIMIT) {
+          btn.style.display = 'none';
+        } else {
+          btn.style.display = 'inline-block';
+          btn.textContent = expanded ? 'Show Less ↑' : 'See All Reviews (' + total + ') →';
+        }
+      }
+
+      function toggleSeeMore() {
+        var btn = document.getElementById('seeMoreBtn');
+        if (!btn) return;
+        var expanded = btn.getAttribute('data-expanded') === 'true';
+        btn.setAttribute('data-expanded', expanded ? 'false' : 'true');
+        applyVisibilityLimit();
+        if (expanded) {
+          var section = document.querySelector('.bb-reviews');
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      window.toggleSeeMore = toggleSeeMore;
+      window._applyVisibilityLimit = applyVisibilityLimit;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        initStars();
+        applyVisibilityLimit();
+      });
+    })();
+
+    // ── Submit review ────────────────────────────────────────────────────────
+    function submitReview(e) {
+      e.preventDefault();
+      var rating = parseInt(document.getElementById('reviewRating').value);
+      var name   = document.getElementById('reviewName').value.trim();
+      var msg    = document.getElementById('reviewMessage').value.trim();
+      if (rating === 0) {
+        if (typeof showToast === 'function') showToast('Please select a star rating first ⭐');
+        return;
+      }
+      if (!name || !msg) return;
+
+      var starStr  = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+      var parts    = name.split(' ');
+      var initials = parts.map(function(p){ return p[0] || ''; }).join('').toUpperCase().slice(0, 2);
+
+      var card = document.createElement('div');
+      card.className = 'review-card';
+
+      var inner = document.createElement('div');
+      inner.className = 'card-inner';
+      // no inline opacity — fadeInUp keyframe handles the animation
+      card.style.cssText = 'animation:fadeInUp 0.45s ease both;';
+      inner.innerHTML =
+        '<div class="quote-icon">“</div>' +
+        '<p class="review-text">' + escapeHtml(msg) + '</p>' +
+        '<div class="stars" style="color:var(--gold);font-size:18px;margin:8px 0;">' + starStr + '</div>' +
+        '<div class="reviewer">' +
+          '<div class="reviewer-avatar" style="background:linear-gradient(135deg,var(--gold),#b07d3e);color:#1a0905;">' + initials + '</div>' +
+          '<div class="reviewer-info">' +
+            '<p class="reviewer-name">' + escapeHtml(name) + '</p>' +
+            '<p class="reviewer-location">&#128205; Krishnagiri</p>' +
+          '</div>' +
+        '</div>';
+      card.appendChild(inner);
+
+      var grid = document.querySelector('.reviews-grid');
+      if (grid) {
+        var firstNonFeatured = grid.querySelector('.review-card:not(.featured)');
+        if (firstNonFeatured) {
+          grid.insertBefore(card, firstNonFeatured);
+        } else {
+          grid.appendChild(card);
+        }
+      }
+
+      document.getElementById('reviewForm').reset();
+      document.getElementById('reviewRating').value = '0';
+      document.querySelectorAll('.rev-star').forEach(function(s){ s.style.color = 'var(--cream-dark)'; });
+
+      // Always expand so the new review is visible
+      var btn = document.getElementById('seeMoreBtn');
+      if (btn) btn.setAttribute('data-expanded', 'true');
+      if (typeof window._applyVisibilityLimit === 'function') window._applyVisibilityLimit();
+
+      if (typeof showToast === 'function') showToast('Thank you for your review! ⭐');
+      setTimeout(function(){ card.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
 </body>
 
 </html>
