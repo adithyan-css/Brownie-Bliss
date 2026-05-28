@@ -10586,3 +10586,64 @@ html.dark .product-card-body .product-desc { color: #a07050; }
 html.dark .product-price { color: #f0d9b8; }
 html.dark .btn-add-cart { background: #c9923a; color: #1e0f05; }
 html.dark .btn-add-cart:hover { background: #d4a831; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — Fix elements that use --brown-dark / --brown-mid as backgrounds.
+   In dark mode, --brown-dark flips to #f5e6ca (cream) for use as text color,
+   and --brown-mid flips to #d6b98c (tan). Any element using these as a
+   background must be explicitly set to a proper dark colour.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Footer */
+html.dark footer {
+  background: #1A0905;
+}
+
+/* Cart sidebar header bar */
+html.dark .cart-header {
+  background: #1A0905;
+}
+
+/* Cart sidebar body */
+html.dark .cart-sidebar {
+  background: #1a1a1a;
+}
+
+/* Cart item rows */
+html.dark .cart-item {
+  background: #221108;
+  border-color: rgba(212,175,55,0.12);
+}
+
+/* Qty button hover */
+html.dark .qty-btn:hover {
+  background: #3d1f10;
+  border-color: #3d1f10;
+  color: var(--gold-light);
+}
+
+/* Toast notification */
+html.dark .toast {
+  background: #1A0905;
+}
+
+/* Values strip (brown-mid background) */
+html.dark .values-strip {
+  background: #2a1208;
+}
+
+/* Mobile menu (hardcoded white background) */
+html.dark .mobile-menu {
+  background: #1a1a1a;
+}
+
+html.dark .mobile-menu a {
+  color: var(--gold-light);
+  border-bottom-color: rgba(212,175,55,0.15);
+}
+
+/* Announcement bar — last two definitions use --brown-dark which flips light in dark mode */
+html.dark .announcement {
+  background: #1A0905;
+  color: var(--gold-light);
+}
