@@ -10919,3 +10919,20 @@ html.dark .legal-card p,
 html.dark .legal-hero p {
   color: var(--text-mid);
 }
+
+#backToTopBtn {
+  position: fixed !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  z-index: 99999 !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: #7b3f00 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+  display: none;
+}

@@ -21,6 +21,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="track.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -390,6 +391,19 @@
         </div>
 
     </footer>
+    <button id="backToTopBtn">↑</button>
+    <script>
+      window.addEventListener('load', function () {
+        var btn = document.getElementById('backToTopBtn');
+        if (!btn) return;
+        window.addEventListener('scroll', function () {
+          btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
+        btn.addEventListener('click', function () {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    </script>
 
     <!-- SCRIPT -->
     <script>

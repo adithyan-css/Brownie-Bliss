@@ -74,14 +74,15 @@
                 <div class="legal-card">
                     <h2>Cancellation Policy</h2>
                     <p>
-                        Orders may be cancelled within a limited time after confirmation. Once preparation of the order has 
+                        Orders may be cancelled within a limited time after confirmation. Once preparation of the order
+                        has
                         started, cancellations may no longer be possible.
                     </p>
                 </div>
                 <div class="legal-card">
                     <h2>Refund Eligibility</h2>
                     <p>
-                        Refunds are considered only for valid issues such as incorrect orders, damaged products, or 
+                        Refunds are considered only for valid issues such as incorrect orders, damaged products, or
                         failed deliveries caused by our side.
                     </p>
                 </div>
@@ -89,7 +90,7 @@
                 <div class="legal-card">
                     <h2>Damaged Orders</h2>
                     <p>
-                        If your order arrives damaged, please contact us immediately with clear photos of the product so 
+                        If your order arrives damaged, please contact us immediately with clear photos of the product so
                         we can review the issue and provide an appropriate resolution.
                     </p>
                 </div>
@@ -97,7 +98,7 @@
                 <div class="legal-card">
                     <h2>Late Deliveries</h2>
                     <p>
-                        While we try our best to deliver on time, occasional delays may happen due to traffic, 
+                        While we try our best to deliver on time, occasional delays may happen due to traffic,
                         weather conditions, or high order volumes. Refunds are not guaranteed for minor delays.
                     </p>
                 </div>
@@ -106,7 +107,8 @@
                     <h2>
                         Non-refundable Items</h2>
                     <p>
-                        Customized cakes, personalized desserts, and partially consumed items are generally non-refundable 
+                        Customized cakes, personalized desserts, and partially consumed items are generally
+                        non-refundable
                         unless there is a verified quality issue.
                     </p>
                 </div>
@@ -184,7 +186,19 @@
     </div>
 
     <div class="toast" id="toast"></div>
-    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <button id="backToTopBtn">↑</button>
+    <script>
+        window.addEventListener('load', function () {
+            var btn = document.getElementById('backToTopBtn');
+            if (!btn) return;
+            window.addEventListener('scroll', function () {
+                btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+            });
+            btn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 
