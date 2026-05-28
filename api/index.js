@@ -31,6 +31,7 @@ const ORDER_STATUSES = [
 mongoose.set("bufferCommands", false);
 
 app.set("trust proxy", 1);
+// ─── GLOBAL MIDDLEWARE ──────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
@@ -291,394 +292,37 @@ function generateOTP() {
 app.use(async (req, res, next) => {
   if (req.path === "/" || !req.path.startsWith("/api")) return next();
 
+// ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────
+app.use(async (req, res, next) => {
   try {
     await connectDB();
     next();
   } catch (err) {
-    res.status(503).json({
-      success: false,
-      message: `Database connection failed: ${err.message}`,
-    });
+    res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
   }
 });
 
-app.post("/api/admin/login", (req, res) => {
-  const { username, password } = req.body || {};
-
-  if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_JWT_SECRET) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Admin auth not configured" });
-  }
-
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Username and password are required" });
-  }
-
-  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Invalid credentials" });
-  }
-
-  const token = jwt.sign({ username: ADMIN_USERNAME }, ADMIN_JWT_SECRET, {
-    expiresIn: ADMIN_JWT_EXPIRES_IN,
-  });
-
-  return res.json({ success: true, token, expiresIn: ADMIN_JWT_EXPIRES_IN });
-});
-
-app.post("/api/send-otp", async (req, res) => {
-  try {
-    const { phone } = req.body;
-    if (!phone || phone.length < 10) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid phone number" });
-    }
-
-    await Otp.updateMany({ phone, used: false }, { used: true });
-
-    const otp = generateOTP();
-    const expires_at = new Date(Date.now() + 5 * 60 * 1000);
-
-    await Otp.create({ phone, otp, expires_at });
-
-    const apiKey = process.env.FAST2SMS_API_KEY;
-    if (apiKey && apiKey !== "your_actual_api_key_here") {
-      try {
-        await axios.get("https://www.fast2sms.com/dev/bulkV2", {
-          params: {
-            route: "otp",
-            variables_values: otp,
-            numbers: phone,
-          },
-          headers: { authorization: apiKey },
-        });
-        console.log(`SMS sent to ${phone}`);
-      } catch (smsErr) {
-        console.error(
-          "Fast2SMS Error:",
-          smsErr.response ? smsErr.response.data : smsErr.message,
-        );
-      }
-    } else {
-      console.log(`[DEMO MODE] OTP for ${phone}: ${otp}`);
-    }
-
-    res.json({ success: true, message: "OTP sent successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.post("/api/verify-otp", async (req, res) => {
-  try {
-    const { phone, otp } = req.body;
-
-    const record = await Otp.findOne({
-      phone,
-      otp,
-      used: false,
-      expires_at: { $gt: new Date() },
-    }).sort({ created_at: -1 });
-
-    if (!record) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid or expired OTP" });
-    }
-
-    record.used = true;
-    await record.save();
-
-    res.json({ success: true, message: "OTP verified" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.get("/api/products", async (req, res) => {
-  try {
-    const products = await Product.find().lean();
-    res.json({ success: true, products });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.post("/api/products", adminAuth, async (req, res) => {
-  try {
-    const { type, name, category, price, emoji, img } = req.body;
-
-    if (!type || !name || price === undefined) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing required fields" });
-    }
-
-    let id_ref;
-    if (type === "standard") {
-      const lastProduct = await Product.findOne({ type: "standard" }).sort({
-        id_ref: -1,
-      });
-      id_ref =
-        lastProduct && typeof lastProduct.id_ref === "number"
-          ? lastProduct.id_ref + 1
-          : 1;
-    } else {
-      id_ref = name;
-    }
-
-    const product = await Product.create({
-      type,
-      id_ref,
-      name,
-      category,
-      price: Number(price),
-      emoji,
-      img,
-    });
-
-    res.json({ success: true, product });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.patch("/api/products/:id", adminAuth, async (req, res) => {
-  try {
-    const { price, name, img } = req.body;
-    const updateData = {};
-
-    if (
-      price !== undefined &&
-      !Number.isNaN(Number(price)) &&
-      Number(price) >= 0
-    ) {
-      updateData.price = Number(price);
-    }
-    if (name !== undefined && name.trim() !== "") {
-      updateData.name = name.trim();
-    }
-    if (img !== undefined) {
-      updateData.img = img.trim();
-    }
-
-    if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "No valid fields provided for update",
-      });
-    }
-
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
-
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    }
-
-    res.json({ success: true, product });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.delete("/api/products/:id", adminAuth, async (req, res) => {
-  try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    }
-    res.json({ success: true, message: "Product deleted" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.post("/api/orders", async (req, res) => {
-  try {
-    const { customer_name, phone, address, city, pincode, items, total } =
-      req.body;
-
-    if (
-      !customer_name ||
-      !phone ||
-      !address ||
-      !city ||
-      !pincode ||
-      !items ||
-      !total
-    ) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing required fields" });
-    }
-
-    const order = await Order.create({
-      order_id: generateOrderId(),
-      customer_name,
-      phone,
-      address,
-      city,
-      pincode,
-      items,
-      total,
-    });
-
-    res.json({
-      success: true,
-      order_id: order.order_id,
-      message: "Order placed successfully",
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
-
-app.get("/api/orders", adminAuth, async (req, res) => {
-  try {
-    const { status } = req.query;
-    const filter = {};
-
-    if (status && status !== "all") {
-      filter.$or = [{ status }, { payment_status: status }];
-    }
-
-    const orders = await Order.find(filter).sort({ created_at: -1 }).lean();
-    res.json({ success: true, orders });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.get("/api/orders/:orderId", adminAuth, async (req, res) => {
-  try {
-    const order = await Order.findOne({ order_id: req.params.orderId }).lean();
-    if (!order)
-      return res
-        .status(404)
-        .json({ success: false, message: "Order not found" });
-    res.json({ success: true, order });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.patch(
-  "/api/orders/:orderId/confirm-payment",
-  adminAuth,
-  async (req, res) => {
-    try {
-      const { notes } = req.body;
-      const order = await Order.findOneAndUpdate(
-        { order_id: req.params.orderId },
-        {
-          payment_status: "paid",
-          status: "payment_confirmed",
-          confirmed_at: new Date(),
-          notes: notes || "Payment confirmed via WhatsApp",
-        },
-        { new: true },
-      );
-
-      if (!order)
-        return res
-          .status(404)
-          .json({ success: false, message: "Order not found" });
-      res.json({ success: true, message: "Payment confirmed" });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ success: false, message: "Server error" });
-    }
-  },
-);
-
-app.patch("/api/orders/:orderId/status", adminAuth, async (req, res) => {
-  try {
-    const { status } = req.body;
-
-    if (!ORDER_STATUSES.includes(status)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid order status" });
-    }
-
-    const order = await Order.findOneAndUpdate(
-      { order_id: req.params.orderId },
-      { status },
-      { new: true },
-    );
-
-    if (!order)
-      return res
-        .status(404)
-        .json({ success: false, message: "Order not found" });
-    res.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
-app.get("/api/stats", adminAuth, async (req, res) => {
-  try {
-    const [totalOrders, pendingOrders, paidOrders, revenueResult] =
-      await Promise.all([
-        Order.countDocuments(),
-        Order.countDocuments({ status: "pending" }),
-        Order.countDocuments({ payment_status: "paid" }),
-        Order.aggregate([
-          { $match: { payment_status: "paid" } },
-          { $group: { _id: null, total: { $sum: "$total" } } },
-        ]),
-      ]);
-
-    res.json({
-      success: true,
-      stats: {
-        total_orders: totalOrders,
-        pending_orders: pendingOrders,
-        paid_orders: paidOrders,
-        total_revenue: revenueResult[0]?.total || 0,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
-
+// ─── API ROUTES ─────────────────────────────────────────────────────────────────
+app.use('/api/admin', adminRoutes);
+app.use('/api', otpRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.get('/api/stats', adminAuth, getStats);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/complaints", complaintRoutes);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
+// ─── STATIC FALLBACK ────────────────────────────────────────────────────────────
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: "Something went wrong!" });
 });
 
-// ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
+// ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
@@ -687,7 +331,7 @@ function startServer(port) {
   server.on("error", (err) => {
     if (err.code === "EADDRINUSE" && !process.env.PORT) {
       const nextPort = Number(port) + 1;
-      console.warn(`Port ${port} is already in use. Trying ${nextPort}...`);
+      console.warn(`⚠️ Port ${port} is already in use. Trying ${nextPort}...`);
       startServer(nextPort);
       return;
     }
