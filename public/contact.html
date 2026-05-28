@@ -1,666 +1,281 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us — Brownie Bliss Patisserie</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* ── HEADER OVERRIDE (guarantee correct styling) ── */
-    .announcement {
-      background: #1A0905;
-      color: #F4E4BC;
-      text-align: center;
-      padding: 10px 20px;
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      font-family: 'DM Sans', sans-serif;
-    }
-    header {
-      background: #fff;
-      border-bottom: 1px solid #F5E8D0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 20px rgba(44,24,16,0.08);
-    }
-    .header-inner {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 0 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-    }
-    .logo {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-      text-decoration: none;
-    }
-    .logo-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 700;
-      color: #1A0905;
-      letter-spacing: 1px;
-    }
-    .logo-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: #D4AF37;
-      text-transform: uppercase;
-    }
-    header nav {
-      display: flex;
-      gap: 28px;
-      align-items: center;
-    }
-    header nav a {
-      text-decoration: none;
-      color: #4a2f1a;
-      font-size: 13px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: color 0.2s;
-    }
-    header nav a:hover { color: #1A0905; }
-    .header-actions { display: flex; gap: 16px; align-items: center; }
-    .cart-btn {
-      background: none;
-      border: 2px solid #1A0905;
-      color: #1A0905;
-      padding: 8px 20px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 4px;
-    }
-    .cart-btn:hover { background: #1A0905; color: #fff; }
-    .cart-count {
-      background: #D4AF37;
-      color: #1A0905;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us — Brownie Bliss Patisserie</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
 
-    /* ── CART SIDEBAR ── */
-    .cart-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-    }
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
-    .cart-sidebar {
-      position: fixed; top: 0; right: 0; bottom: 0; width: 400px;
-      background: #fff; z-index: 2001;
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column;
-      box-shadow: -8px 0 40px rgba(0,0,0,0.2);
-    }
-    .cart-sidebar.open { transform: translateX(0); }
-    .cart-header {
-      padding: 24px; border-bottom: 1px solid #F5E8D0;
-      display: flex; justify-content: space-between; align-items: center;
-      background: #1A0905; color: #FFF9F2;
-    }
-    .cart-title { font-family: 'Playfair Display', serif; font-size: 20px; }
-    .cart-close { background: none; border: none; color: #FFF9F2; font-size: 24px; cursor: pointer; }
-    .cart-items { flex: 1; overflow-y: auto; padding: 20px 24px; }
-    .cart-footer { padding: 20px 24px; border-top: 1px solid #F5E8D0; }
-    .cart-total { display: flex; justify-content: space-between; margin-bottom: 16px; }
-    .cart-total-label { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #4a2f1a; }
-    .cart-total-amt { font-family: 'Playfair Display', serif; font-size: 22px; color: #1A0905; font-weight: 700; }
-    .whatsapp-btn {
-      width: 100%; background: #25D366; color: #fff; border: none;
-      padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;
-      font-family: 'DM Sans', sans-serif; cursor: pointer;
-    }
-    .toast {
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: #1A0905; color: #F4E4BC;
-      padding: 14px 28px; border-radius: 50px;
-      font-family: 'DM Sans', sans-serif; font-size: 14px;
-      opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
 
-    /* ── FOOTER ── */
-    footer {
-      background: #1A0905; color: #FFF9F2;
-      padding: 60px 30px;
-    }
-    .footer-inner { max-width: 1200px; margin: 0 auto; }
-    .footer-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
-    .footer-brand p { font-size: 14px; opacity: 0.6; margin-top: 10px; max-width: 320px; line-height: 1.6; }
-    .footer-col h4 { color: #D4AF37; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
-    .footer-col a { color: rgba(255,255,255,0.7); text-decoration: none; display: block; margin-bottom: 8px; font-size: 14px; }
-    .footer-col a:hover { color: #D4AF37; }
+    <link rel="stylesheet" href="style.css" />
 
-    /* ── CONTACT PAGE STANDALONE STYLES ── */
+    <!-- Theme init -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("bb_theme") || "light";
+          if (t === "dark") document.documentElement.classList.add("dark");
+        } catch (_) {}
+      })();
+    </script>
+  </head>
 
-    .cp-hero {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      overflow: hidden;
-    }
-    .cp-hero img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 40%;
-      display: block;
-    }
-    .cp-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(26,9,5,0.35), rgba(26,9,5,0.72));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-    }
-    .cp-hero-overlay h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 5vw, 56px);
-      color: #fff;
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 14px;
-    }
-    .cp-hero-overlay h1 em {
-      color: #D4AF37;
-      font-style: italic;
-    }
-    .cp-hero-overlay p {
-      font-family: 'DM Sans', sans-serif;
-      color: rgba(255,255,255,0.80);
-      font-size: 13px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    /* ── MAIN CONTENT WRAPPER ── */
-    .cp-body {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 72px 32px 96px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: start;
-    }
-
-    /* ── LEFT COLUMN ── */
-    .cp-left {}
-
-    .cp-tagline {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #D4AF37;
-      font-weight: 600;
-      margin-bottom: 14px;
-      display: block;
-    }
-    .cp-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3vw, 40px);
-      color: #1A0905;
-      line-height: 1.2;
-      margin-bottom: 18px;
-    }
-    .cp-title em {
-      color: #5C2C1A;
-      font-style: italic;
-    }
-    .cp-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 19px;
-      line-height: 1.75;
-      color: #4a2f1a;
-      margin-bottom: 44px;
-    }
-
-    /* INFO CARDS */
-    .cp-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 36px;
-    }
-    .cp-card {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      background: #fff;
-      border: 1px solid rgba(212,175,55,0.20);
-      border-radius: 16px;
-      padding: 20px 24px;
-      box-shadow: 0 4px 16px rgba(26,9,5,0.06);
-      transition: transform 0.25s, box-shadow 0.25s;
-      text-decoration: none;
-      color: inherit;
-    }
-    .cp-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(26,9,5,0.12);
-    }
-    .cp-card-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: #1A0905;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-    .cp-card-text h4 {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      color: #1A0905;
-      margin-bottom: 4px;
-    }
-    .cp-card-text p,
-    .cp-card-text a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      color: #4a2f1a;
-      text-decoration: none;
-      line-height: 1.5;
-    }
-
-    /* HOURS */
-    .cp-hours {
-      background: linear-gradient(135deg, #1A0905, #2f140d);
-      border-radius: 20px;
-      padding: 30px 32px;
-      margin-bottom: 28px;
-    }
-    .cp-hours h3 {
-      font-family: 'Playfair Display', serif;
-      color: #D4AF37;
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-    .cp-hour-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      color: rgba(255,255,255,0.78);
-    }
-    .cp-hour-row:last-child { border-bottom: none; }
-    .cp-hour-row strong { color: #F4E4BC; font-weight: 600; }
-
-    /* INSTAGRAM */
-    .cp-insta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-      border-radius: 16px;
-      padding: 20px 24px;
-      text-decoration: none;
-      color: #fff;
-      margin-bottom: 28px;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    .cp-insta:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(131,58,180,0.30); }
-    .cp-insta-icon {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.18);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
-    }
-    .cp-insta span { font-family: 'DM Sans', sans-serif; font-size: 12px; opacity: 0.85; display: block; margin-bottom: 3px; }
-    .cp-insta h4 { font-family: 'Playfair Display', serif; font-size: 20px; }
-
-    /* IMAGE STRIP */
-    .cp-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .cp-strip img {
-      width: 100%;
-      height: 90px;
-      object-fit: cover;
-      border-radius: 12px;
-      transition: transform 0.3s;
-    }
-    .cp-strip img:hover { transform: scale(1.05); }
-
-    /* ── RIGHT COLUMN — FORM ── */
-    .cp-form-box {
-      background: linear-gradient(160deg, #1A0905 0%, #2f140d 100%);
-      border-radius: 28px;
-      padding: 52px 48px;
-      box-shadow: 0 24px 60px rgba(26,9,5,0.22);
-      position: sticky;
-      top: 100px;
-    }
-    .cp-form-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-    .cp-form-header span { font-size: 30px; }
-    .cp-form-header h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px;
-      color: #F4E4BC;
-    }
-    .cp-form-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      color: rgba(255,255,255,0.60);
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
-    .cp-form-box form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .cp-form-box input,
-    .cp-form-box textarea {
-      width: 100%;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.10);
-      color: #fff;
-      padding: 16px 20px;
-      border-radius: 14px;
-      outline: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      transition: border-color 0.2s;
-    }
-    .cp-form-box input::placeholder,
-    .cp-form-box textarea::placeholder { color: rgba(255,255,255,0.38); }
-    .cp-form-box input:focus,
-    .cp-form-box textarea:focus { border-color: #D4AF37; }
-    .cp-form-box textarea { height: 130px; resize: vertical; }
-    .cp-submit {
-      background: #D4AF37;
-      color: #1A0905;
-      border: none;
-      padding: 16px 28px;
-      border-radius: 50px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      margin-top: 6px;
-    }
-    .cp-submit:hover { background: #c49b28; transform: translateY(-2px); }
-
-    /* RESPONSIVE */
-    @media (max-width: 960px) {
-      .cp-body {
-        grid-template-columns: 1fr;
-        padding: 48px 24px 72px;
-        gap: 48px;
-      }
-      .cp-form-box {
-        padding: 40px 32px;
-        position: static;
-      }
-      .cp-hero { height: 260px; }
-    }
-    @media (max-width: 540px) {
-      .cp-hero { height: 210px; }
-      .cp-strip img { height: 72px; }
-      .cp-body { padding: 36px 16px 60px; }
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
-
-  <!-- HEADER -->
-  <header>
-    <div class="header-inner">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      <a href="index.html" class="logo">
-        <span class="logo-name">Brownie Bliss</span>
-        <span class="logo-sub">Homemade Treats</span>
-      </a>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="products.html">Products</a>
-        <a href="birthday.html">Birthday Cakes</a>
-        <a href="favourites.html">Favourites</a>
-        <a href="contact.html">Contact</a>
-        <a href="track.html">Track Order</a>
-      </nav>
-      <div class="header-actions">
-        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-          aria-label="Toggle dark mode" title="Toggle dark mode">
-          <span id="themeIcon">🌙</span>
-        </button>
-        <button class="cart-btn" onclick="openCart()">
-          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
-        </button>
-      </div>
+  <body>
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">
+      ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
+      HAPPINESS IN EVERY BITE &nbsp; ✨
     </div>
-  </header>
 
-  <!-- HERO BANNER -->
-  <div class="cp-hero">
-    <img src="https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg"
-         alt="Brownie Bliss baked treats"
-         onerror="this.style.display='none'">
-    <div class="cp-hero-overlay">
-      <h1>We'd Love to Hear <em>From You</em></h1>
-      <p>Custom cakes &nbsp;·&nbsp; Bulk orders &nbsp;·&nbsp; Sweet surprises</p>
-    </div>
-  </div>
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
-  <!-- MAIN CONTENT -->
-  <div class="cp-body">
-
-    <!-- LEFT -->
-    <div class="cp-left">
-
-      <span class="cp-tagline">Get In Touch</span>
-      <h2 class="cp-title">Let's Make Life <em>Sweeter Together</em></h2>
-      <p class="cp-subtitle">
-        Planning a birthday? Craving rich homemade brownies?
-        Or just want to surprise someone special —
-        we'd love to bake happiness for you.
-      </p>
-
-      <!-- CONTACT CARDS -->
-      <div class="cp-cards">
-        <div class="cp-card">
-          <div class="cp-card-icon">📍</div>
-          <div class="cp-card-text">
-            <h4>Our Location</h4>
-            <p>Krishnagiri, Tamil Nadu</p>
-          </div>
-        </div>
-        <a class="cp-card" href="tel:08072596340">
-          <div class="cp-card-icon">📞</div>
-          <div class="cp-card-text">
-            <h4>Call Us</h4>
-            <p>+91 8072596340</p>
-          </div>
+        <a href="index.html" class="logo">
+          <span class="logo-name">Brownie Bliss</span>
+          <span class="logo-sub">Homemade Treats</span>
         </a>
-        <a class="cp-card" href="mailto:gpriya26185@gmail.com">
-          <div class="cp-card-icon">✉️</div>
-          <div class="cp-card-text">
-            <h4>Email</h4>
-            <p>gpriya26185@gmail.com</p>
-          </div>
-        </a>
-      </div>
 
-      <!-- HOURS -->
-      <div class="cp-hours">
-        <h3>⏰ Baking Hours</h3>
-        <div class="cp-hour-row">
-          <span>Monday – Saturday</span>
-          <strong>9:00 AM – 9:00 PM</strong>
+        <nav>
+          <a href="index.html#home">Home</a>
+          <a href="index.html#products">Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html"
+            >Favourites
+            <span class="nav-count" data-favourites-count style="display: none"
+              >0</span
+            ></a
+          >
+          <a href="index.html#contact">Contact</a>
+          <a href="track.html">Track Order</a>
+        </nav>
+
+        <div class="header-actions">
+          <button
+            id="themeToggleBtn"
+            class="theme-toggle-btn"
+            onclick="toggleTheme()"
+          >
+            <span id="themeIcon">🌙</span>
+          </button>
+
+          <button class="cart-btn" onclick="openCart()">
+            🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+          </button>
         </div>
-        <div class="cp-hour-row">
-          <span>Sunday</span>
-          <strong>10:00 AM – 7:00 PM</strong>
-        </div>
       </div>
+    </header>
 
-      <!-- INSTAGRAM -->
-      <a href="https://instagram.com/brownie_bliss_" target="_blank" class="cp-insta">
-        <div class="cp-insta-icon">📸</div>
-        <div>
-          <span>Follow our baking journey</span>
-          <h4>@brownie_bliss_</h4>
-        </div>
-      </a>
-
-      <!-- IMAGE STRIP -->
-      <div class="cp-strip">
-        <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
-             alt="Brownie" onerror="this.style.display='none'">
-        <img src="https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg"
-             alt="Black Forest Cake" onerror="this.style.display='none'">
-        <img src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
-             alt="Cookies" onerror="this.style.display='none'">
-      </div>
-
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#products">Products</a>
+      <a href="index.html#birthday">Birthday Cakes</a>
+      <a href="favourites.html">Favourites</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="track.html">Track Order</a>
     </div>
 
-    <!-- RIGHT — FORM -->
-    <div class="cp-form-box">
-      <div class="cp-form-header">
-        <span>✨</span>
-        <h3>Send a Message</h3>
-      </div>
-      <p class="cp-form-desc">
-        Have a custom order, celebration idea, or dessert request?
-        Drop us a message and we'll get back to you soon.
-      </p>
+    <!-- CONTACT SECTION -->
+    <section class="contact-page">
+      <div class="contact-bg"></div>
 
-      <!-- BUGFIX: Added onsubmit handler to prevent reload, show a toast success message, and clear fields -->
-      <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
+      <div class="contact-inner">
+        <!-- LEFT SIDE -->
+        <div class="contact-left">
+          <!-- HEADER WRAP (fix spacing + hierarchy) -->
+          <header class="contact-header">
+            <span class="section-label">Get In Touch</span>
 
-        <input
-          type="text"
-          placeholder="Your Name"
-          required
-        >
+            <h2 class="section-title">
+              Let’s Make Life <em>Sweeter Together</em>
+            </h2>
 
-        <input
-          type="email"
-          placeholder="Your Email"
-          required
-        >
+            <p class="contact-desc">
+              Whether you're planning a birthday celebration, craving rich
+              homemade brownies, or simply want to surprise someone special —
+              we’d love to bake happiness for you.
+            </p>
+          </header>
 
-        <textarea
-          placeholder="Tell us about your order..."
-          required
-        ></textarea>
+          <!-- CONTACT INFO -->
+          <section class="contact-info-grid">
+            <div class="contact-info-card">
+              <div class="contact-icon">📍</div>
+              <div>
+                <h4>Visit Us</h4>
+                <p>Krishnagiri,<br />Tamil Nadu</p>
+              </div>
+            </div>
 
-        <button type="submit" class="hero-cta">
-          Send Message →
-        </button>
+            <div class="contact-info-card">
+              <div class="contact-icon">📞</div>
+              <div>
+                <h4>Call Us</h4>
+                <a href="tel:08072596340">+91 8072596340</a>
+              </div>
+            </div>
 
-      </form>
+            <div class="contact-info-card">
+              <div class="contact-icon">✉️</div>
+              <div>
+                <h4>Email</h4>
+                <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+              </div>
+            </div>
+          </section>
 
-          <div class="map-box">
+          <!-- HOURS -->
+          <section class="hours-card">
+            <h3>⏰ Baking Hours</h3>
 
+            <div class="hour-row">
+              <span>Monday – Saturday</span>
+              <strong>9 AM – 9 PM</strong>
+            </div>
+
+            <div class="hour-row">
+              <span>Sunday</span>
+              <strong>10 AM – 7 PM</strong>
+            </div>
+          </section>
+
+          <!-- INSTAGRAM -->
+          <a
+            href="https://instagram.com/brownie_bliss_"
+            target="_blank"
+            class="insta-box contact-social"
+          >
+            <div class="insta-icon">📸</div>
+            <div>
+              <span>Follow our baking journey</span>
+              <h4>@brownie_bliss_</h4>
+            </div>
+          </a>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="contact-form-box">
+          <header class="form-top">
+            <span>✨</span>
+            <h3>Send us a Message</h3>
+          </header>
+
+          <p class="form-desc">
+            Have a custom order, celebration idea or dessert request? We'd love
+            to hear from you.
+          </p>
+
+          <!-- FORM -->
+          <form
+            class="contact-form"
+            onsubmit="
+              event.preventDefault();
+              showToast('Thanks! We\'ll get back to you soon 🍫');
+              this.reset();
+            "
+          >
+            <div class="form-group">
+              <input type="text" placeholder="Your Name" required />
+            </div>
+
+            <div class="form-group">
+              <input type="email" placeholder="Your Email" required />
+            </div>
+
+            <div class="form-group">
+              <textarea
+                placeholder="Tell us about your order..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="hero-cta">Send Message →</button>
+            </div>
+          </form>
+
+          <!-- MAP -->
+          <section class="map-box contact-map">
             <iframe
               src="https://www.google.com/maps?q=Krishnagiri,Tamil%20Nadu&output=embed"
               loading="lazy"
-              allowfullscreen>
+              allowfullscreen
+            >
             </iframe>
-
-          </div>
-
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <footer id="contact">
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="logo">
-            <span class="logo-name">Brownie Bliss</span>
-            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
-          </div>
-          <p>Every brownie, cake, and cookie at Brownie Bliss is handcrafted in small batches using homemade recipes, premium ingredients, and lots of love.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Navigate</h4>
-          <a href="index.html">Home</a>
-          <a href="products.html">Our Products</a>
-          <a href="birthday.html">Birthday Cakes</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="contact.html">Contact Us</a>
-        </div>
-        <div class="footer-col">
-          <h4>Information</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-          <a href="refund-policy.html">Refund Policy</a>
+          </section>
         </div>
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <!-- CART -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none">
-      <div class="cart-total">
-        <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">₹0</span>
+    <!-- FOOTER -->
+    <footer id="contact">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-name">Brownie Bliss</span>
+              <span class="logo-sub"
+                >Homemade Treats · Happiness in every bite</span
+              >
+            </div>
+            <p>
+              Every brownie, cake, and cookie at Brownie Bliss is handcrafted in
+              small batches using homemade recipes, premium ingredients, and
+              lots of love.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Navigate</h4>
+            <a href="index.html">Home</a>
+            <a href="products.html">Our Products</a>
+            <a href="birthday.html">Birthday Cakes</a>
+            <a href="favourites.html">Favourites</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Information</h4>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms-of-service.html">Terms of Service</a>
+            <a href="refund-policy.html">Refund Policy</a>
+          </div>
+        </div>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
-    </div>
-  </div>
+    </footer>
 
-  <div class="toast" id="toast"></div>
-  <script src="script.js"></script>
-</body>
+    <!-- CART -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <span class="cart-title">Your Cart 🛒</span>
+        <button class="cart-close" onclick="closeCart()">✕</button>
+      </div>
+
+      <div class="cart-items" id="cartItems"></div>
+
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span class="cart-total-label">Total Amount</span>
+          <span class="cart-total-amt" id="cartTotal">₹0</span>
+        </div>
+
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+          Order via WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -89,16 +89,19 @@ function useFallbackProducts() {
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 const BROWNIE_BLISS_BAKERY = {
-    id: 'brownie-bliss',
-    name: 'Brownie Bliss',
-    category: 'Homemade Bakery',
-    location: 'Krishnagiri',
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338'
+  id: 'brownie-bliss',
+  name: 'Brownie Bliss',
+  category: 'Homemade Bakery',
+  location: 'Krishnagiri',
+  img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
 };
 
 let favouriteItems = { bakeries: [], dishes: [] };
 try {
-  favouriteItems = JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
+  favouriteItems = JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || {
+    bakeries: [],
+    dishes: [],
+  };
   if (!favouriteItems.bakeries) favouriteItems.bakeries = [];
   if (!favouriteItems.dishes) favouriteItems.dishes = [];
 } catch (e) {
@@ -114,17 +117,21 @@ function saveFavourites() {
 }
 
 function isFavourite(type, id) {
-  return favouriteItems[type]?.some(item => item.id === id) || false;
+  return favouriteItems[type]?.some((item) => item.id === id) || false;
 }
 
 function toggleFavourite(type, item) {
   if (!favouriteItems[type]) favouriteItems[type] = [];
-  const idx = favouriteItems[type].findIndex(f => f.id === item.id);
+  const idx = favouriteItems[type].findIndex((f) => f.id === item.id);
   if (idx >= 0) {
     favouriteItems[type].splice(idx, 1);
     showToast('Removed from favourites 💔');
   } else {
-    favouriteItems[type].push(item);
+    const exists = favouriteItems[type].some((f) => f.id === item.id);
+
+    if (!exists) {
+      favouriteItems[type].push(item);
+    }
     showToast('Added to favourites ❤️');
   }
   saveFavourites();
@@ -134,20 +141,28 @@ function toggleFavourite(type, item) {
 }
 
 function updateFavouriteButtons(type, id) {
-  document.querySelectorAll(`.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`).forEach(btn => {
-    const active = isFavourite(type, id);
-    btn.classList.toggle('active', active);
-    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    btn.innerHTML = active ? '&hearts;' : '&#9825;';
-  });
+  document
+    .querySelectorAll(
+      `.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`
+    )
+    .forEach((btn) => {
+      const active = isFavourite(type, id);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      btn.innerHTML = active ? '&hearts;' : '&#9825;';
+    });
 }
 
 function updateFavouritesCount() {
-  const total = (favouriteItems.bakeries?.length || 0) + (favouriteItems.dishes?.length || 0);
-  document.querySelectorAll('.fav-count, [data-favourites-count]').forEach(el => {
-    el.textContent = total;
-    el.style.display = total ? 'inline-block' : 'none';
-  });
+  const total =
+    (favouriteItems.bakeries?.length || 0) +
+    (favouriteItems.dishes?.length || 0);
+  document
+    .querySelectorAll('.fav-count, [data-favourites-count]')
+    .forEach((el) => {
+      el.textContent = total;
+      el.style.display = total ? 'inline-block' : 'none';
+    });
 }
 
 function toggleBakeryFavourite() {
@@ -161,10 +176,23 @@ function toggleBirthdayFavourite() {
 function renderFavouritesPage() {
   const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
   const dishesGrid = document.getElementById('favouriteDishesGrid');
+  const emptyState = document.getElementById('favouritesEmpty');
+
+  const hasBakeries = favouriteItems.bakeries?.length > 0;
+  const hasDishes = favouriteItems.dishes?.length > 0;
+
+  const hasAnyFavourites = hasBakeries || hasDishes;
+
+  if (emptyState) {
+    emptyState.style.display = hasAnyFavourites ? 'none' : 'block';
+  }
   if (!bakeryGrid && !dishesGrid) return;
 
   if (bakeryGrid) {
-    bakeryGrid.innerHTML = favouriteItems.bakeries.map(bakery => `
+    bakeryGrid.innerHTML =
+      favouriteItems.bakeries
+        .map(
+          (bakery) => `
       <article class="favourite-bakery-card">
         <img src="${bakery.img}" alt="${bakery.name}">
         <div class="favourite-bakery-info">
@@ -177,11 +205,16 @@ function renderFavouritesPage() {
           </button>
         </div>
       </article>
-    `).join('') || '<p>No favourite bakeries yet.</p>';
+    `
+        )
+        .join('') || '<p>No favourite bakeries yet.</p>';
   }
 
   if (dishesGrid) {
-    dishesGrid.innerHTML = favouriteItems.dishes.map(dish => `
+    dishesGrid.innerHTML =
+      favouriteItems.dishes
+        .map(
+          (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
@@ -202,7 +235,9 @@ function renderFavouritesPage() {
           </button>
         </div>
       </div>
-    `).join('') || '<p>No favourite dishes yet.</p>';
+    `
+        )
+        .join('') || '<p>No favourite dishes yet.</p>';
   }
 }
 function buildCatalogFromList(list) {
@@ -272,8 +307,11 @@ async function loadProducts() {
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
-  }
 
+    updateFavouritesCount();
+
+    renderFavouritesPage();
+  }
   if (document.getElementById('cakePrice')) {
     calculateBdayPrice();
   }
@@ -387,14 +425,17 @@ function addToCart(product) {
     showToast('This item is sold out 😞');
     return;
   }
-  
-  const existing = cart.find(i => {
+
+  const existing = cart.find((i) => {
     if (i.name !== product.name || i.message !== product.message) return false;
     const hasCustom1 = !!i.customizations;
     const hasCustom2 = !!product.customizations;
     if (hasCustom1 !== hasCustom2) return false;
     if (hasCustom1 && hasCustom2) {
-      return JSON.stringify(i.customizations) === JSON.stringify(product.customizations);
+      return (
+        JSON.stringify(i.customizations) ===
+        JSON.stringify(product.customizations)
+      );
     }
     return true;
   });
@@ -663,46 +704,55 @@ function filterProducts(category = 'all', btn = null) {
   grid.innerHTML = filtered
     .map(
       (p) => `
-      <div class="product-card">
+  <div class="product-card">
 
-        <div class="product-img-wrap">
+    <div class="product-img-wrap">
 
-          <img
-            src="${p.img}"
-            alt="${p.name}"
-          />
+      <img src="${p.img}" alt="${p.name}">
 
-        </div>
+      <button
+        class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+        type="button"
+        data-fav-type="dishes"
+        data-fav-id="${p.id}"
+        aria-label="Toggle favourite"
+        aria-pressed="${isFavourite('dishes', p.id)}"
+        onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'
+      >
+        ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+      </button>
 
-        <div class="product-info">
+    </div>
 
-          <div class="product-category">
-            ${p.category}
-          </div>
+    <div class="product-info">
 
-          <div class="product-name">
-            ${p.name}
-          </div>
-
-          <div class="product-desc">
-            ${p.description || ''}
-          </div>
-
-          <div class="product-price">
-            ₹${p.price}
-          </div>
-
-          <button
-            class="add-to-cart"
-            onclick='addToCart(${JSON.stringify(p)})'
-          >
-            Add To Cart
-          </button>
-
-        </div>
-
+      <div class="product-category">
+        ${p.category}
       </div>
-    `
+
+      <div class="product-name">
+        ${p.name}
+      </div>
+
+      <div class="product-desc">
+        ${p.description || ''}
+      </div>
+
+      <div class="product-price">
+        ₹${p.price}
+      </div>
+
+      <button
+        class="add-to-cart"
+        onclick='addToCart(${JSON.stringify(p)})'
+      >
+        Add To Cart
+      </button>
+
+    </div>
+
+  </div>
+`
     )
     .join('');
 }
@@ -873,15 +923,16 @@ const BIRTHDAY_FALLBACKS = DEFAULT_BDAY_CAKES;
 function showToast(msg) {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.innerHTML = msg;          // innerHTML to allow the track-order anchor
+  t.innerHTML = msg; // innerHTML to allow the track-order anchor
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 5000);
 }
 
 function addBirthdayToCart() {
-  const cakeInfo = bdayCakes[selectedFlavor]
-    || BIRTHDAY_FALLBACKS[selectedFlavor]
-    || BIRTHDAY_FALLBACKS['Red Velvet'];
+  const cakeInfo =
+    bdayCakes[selectedFlavor] ||
+    BIRTHDAY_FALLBACKS[selectedFlavor] ||
+    BIRTHDAY_FALLBACKS['Red Velvet'];
 
   const msgInput = document.getElementById('cakeMessage');
   const message = msgInput ? msgInput.value.trim() : '';
@@ -894,7 +945,7 @@ function addBirthdayToCart() {
     emoji: cakeInfo.emoji || '🎂',
     category: 'cakes',
     message,
-    qty: 1
+    qty: 1,
   });
 
   showToast('🎂 Birthday cake added to cart!');
@@ -904,13 +955,13 @@ function addBirthdayToCart() {
 
 function addDessertToCart() {
   const item = {
-    id: "dessert-macarons",
-    name: "Assorted Macarons (Box of 4)",
+    id: 'dessert-macarons',
+    name: 'Assorted Macarons (Box of 4)',
     price: 350,
-    img: "https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427",
-    emoji: "🍮",
-    category: "desserts",
-    qty: 1
+    img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    emoji: '🍮',
+    category: 'desserts',
+    qty: 1,
   };
   addToCart(item);
   openCart();
@@ -918,13 +969,13 @@ function addDessertToCart() {
 
 function addBrownieToCart() {
   const item = {
-    id: "brownie-overload",
-    name: "Overload Brownie (Pack of 4)",
+    id: 'brownie-overload',
+    name: 'Overload Brownie (Pack of 4)',
     price: 250,
-    img: "https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338",
-    emoji: "🍫",
-    category: "brownies",
-    qty: 1
+    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+    emoji: '🍫',
+    category: 'brownies',
+    qty: 1,
   };
   addToCart(item);
   openCart();
@@ -932,13 +983,13 @@ function addBrownieToCart() {
 
 function addCookieToCart() {
   const item = {
-    id: "cookie-choco-chip",
-    name: "Choco Chip Cookies (Box of 6)",
+    id: 'cookie-choco-chip',
+    name: 'Choco Chip Cookies (Box of 6)',
     price: 250,
-    img: "https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg",
-    emoji: "🍪",
-    category: "cookies",
-    qty: 1
+    img: 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
+    emoji: '🍪',
+    category: 'cookies',
+    qty: 1,
   };
   addToCart(item);
   openCart();
@@ -1058,10 +1109,21 @@ function injectCheckoutModal() {
 }
 
 function openCheckout() {
-  if (cart.length === 0) { showToast('Your cart is empty! 🍫'); return; }
+  if (cart.length === 0) {
+    showToast('Your cart is empty! 🍫');
+    return;
+  }
   injectCheckoutModal();
   closeCart();
-  checkoutState = { name: '', phone: '', address: '', city: '', pincode: '', verified: false, currentStep: 1 };
+  checkoutState = {
+    name: '',
+    phone: '',
+    address: '',
+    city: '',
+    pincode: '',
+    verified: false,
+    currentStep: 1,
+  };
   showCheckoutStep(1);
   document.getElementById('checkoutOverlay').classList.add('open');
 }
@@ -1072,7 +1134,7 @@ function closeCheckout() {
 
 function showCheckoutStep(n) {
   checkoutState.currentStep = n;
-  [1, 2, 3, 4].forEach(i => {
+  [1, 2, 3, 4].forEach((i) => {
     const step = document.getElementById(`checkStep${i}`);
     const ind = document.getElementById(`step${i}ind`);
     if (step) step.classList.toggle('hidden', i !== n);
@@ -1088,20 +1150,29 @@ async function sendOTP() {
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
 
-  if (!name) { showToast('Please enter your name'); return; }
-  if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) { showToast('Enter a valid 10-digit phone number'); return; }
+  if (!name) {
+    showToast('Please enter your name');
+    return;
+  }
+  if (!phone || phone.length !== 10 || !/^\d+$/.test(phone)) {
+    showToast('Enter a valid 10-digit phone number');
+    return;
+  }
 
   checkoutState.name = name;
   checkoutState.phone = phone;
 
   const btn = document.querySelector('#checkStep1 .hero-cta');
-  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+  }
 
   try {
     const res = await fetch(`${API_BASE}/send-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
+      body: JSON.stringify({ phone }),
     });
     const data = await res.json();
     if (data.success) {
@@ -1114,7 +1185,10 @@ async function sendOTP() {
   } catch {
     showToast('Server error. Please try again.');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Send Verification OTP →'; }
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Send Verification OTP →';
+    }
   }
 }
 
@@ -1126,14 +1200,19 @@ function otpNext(input, idx) {
 }
 
 async function verifyOTP() {
-  const otp = [...document.querySelectorAll('.otp-box')].map(b => b.value).join('');
-  if (otp.length !== 6) { showToast('Enter all 6 digits'); return; }
+  const otp = [...document.querySelectorAll('.otp-box')]
+    .map((b) => b.value)
+    .join('');
+  if (otp.length !== 6) {
+    showToast('Enter all 6 digits');
+    return;
+  }
 
   try {
     const res = await fetch(`${API_BASE}/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: checkoutState.phone, otp })
+      body: JSON.stringify({ phone: checkoutState.phone, otp }),
     });
     const data = await res.json();
     if (data.success) {
@@ -1153,9 +1232,18 @@ function goToConfirm() {
   const city = document.getElementById('custCity').value.trim();
   const pin = document.getElementById('custPin').value.trim();
 
-  if (!addr) { showToast('Enter your street address'); return; }
-  if (!city) { showToast('Enter your city'); return; }
-  if (!pin || pin.length !== 6) { showToast('Enter valid 6-digit pincode'); return; }
+  if (!addr) {
+    showToast('Enter your street address');
+    return;
+  }
+  if (!city) {
+    showToast('Enter your city');
+    return;
+  }
+  if (!pin || pin.length !== 6) {
+    showToast('Enter valid 6-digit pincode');
+    return;
+  }
 
   checkoutState.address = addr;
   checkoutState.city = city;
@@ -1167,20 +1255,25 @@ function goToConfirm() {
     <div style="font-size:13px;color:var(--text-mid);line-height:1.4">${addr}, ${city} - ${pin}</div>
   `;
 
-  document.getElementById('confirmItems').innerHTML = cart.map(i => `
+  document.getElementById('confirmItems').innerHTML = cart
+    .map(
+      (i) => `
     <div class="confirm-row">
       <span>${i.name} × ${i.qty}</span>
       <strong style="color:var(--brown-warm)">₹${(i.price * i.qty).toLocaleString('en-IN')}</strong>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  document.getElementById('confirmTotal').textContent = `₹${total.toLocaleString('en-IN')}`;
+  document.getElementById('confirmTotal').textContent =
+    `₹${total.toLocaleString('en-IN')}`;
   showCheckoutStep(4);
 }
 
 async function placeOrder() {
-  const itemsSnap = cart.map(i => ({ ...i }));        // snapshot before clearing
+  const itemsSnap = cart.map((i) => ({ ...i })); // snapshot before clearing
   const orderTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
   const orderData = {
@@ -1189,23 +1282,23 @@ async function placeOrder() {
     address: checkoutState.address,
     city: checkoutState.city,
     pincode: checkoutState.pincode,
-    items: itemsSnap.map(i => ({
+    items: itemsSnap.map((i) => ({
       id: typeof i.id === 'number' ? i.id : 0,
       name: i.name,
       price: i.price,
       qty: i.qty,
       emoji: i.emoji || '🍫',
       category: i.category || 'general',
-      customizations: i.customizations || null
+      customizations: i.customizations || null,
     })),
-    total: orderTotal
+    total: orderTotal,
   };
 
   try {
     const res = await fetch(`${API_BASE}/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
+      body: JSON.stringify(orderData),
     });
     const data = await res.json();
     if (data.success) {
@@ -1216,7 +1309,9 @@ async function placeOrder() {
       saveCart();
       updateCartUI();
       closeCheckout();
-      showToast(`🎉 Order ${orderId} placed! <a href="track.html?id=${orderId}" class="toast-track-link">Track Order</a>`);
+      showToast(
+        `🎉 Order ${orderId} placed! <a href="track.html?id=${orderId}" class="toast-track-link">Track Order</a>`
+      );
     } else {
       showToast('Failed to save order. Please try again.');
     }
@@ -1229,95 +1324,113 @@ async function placeOrder() {
 // ORDER TRACKING
 // ============================================================
 async function trackOrder(id) {
-    const orderIdInput = document.getElementById('orderIdInput');
-    const trackError   = document.getElementById('trackError');
-    const result       = document.getElementById('result');
+  const orderIdInput = document.getElementById('orderIdInput');
+  const trackError = document.getElementById('trackError');
+  const result = document.getElementById('result');
 
-    if (!orderIdInput) return;
+  if (!orderIdInput) return;
 
-    if (trackError) { trackError.classList.remove('show'); trackError.textContent = ''; }
-    if (result)       result.style.display = 'none';
+  if (trackError) {
+    trackError.classList.remove('show');
+    trackError.textContent = '';
+  }
+  if (result) result.style.display = 'none';
 
-    const orderId = id || orderIdInput.value.trim();
-    if (!orderId) {
-        if (trackError) { trackError.textContent = 'Please enter an Order ID'; trackError.classList.add('show'); }
-        return;
+  const orderId = id || orderIdInput.value.trim();
+  if (!orderId) {
+    if (trackError) {
+      trackError.textContent = 'Please enter an Order ID';
+      trackError.classList.add('show');
     }
+    return;
+  }
 
-    try {
-        const res  = await fetch(`${API_BASE}/orders/${orderId}`);
-        const data = await res.json();
-        if (data.success || data.order) {
-            renderOrderDetails(data.order || data);
-            if (result) result.style.display = 'block';
-        } else {
-            if (trackError) { trackError.textContent = data.error || 'Order not found'; trackError.classList.add('show'); }
-        }
-    } catch (e) {
-        console.error(e);
-        if (trackError) { trackError.textContent = 'Error fetching order. Make sure server is running!'; trackError.classList.add('show'); }
+  try {
+    const res = await fetch(`${API_BASE}/orders/${orderId}`);
+    const data = await res.json();
+    if (data.success || data.order) {
+      renderOrderDetails(data.order || data);
+      if (result) result.style.display = 'block';
+    } else {
+      if (trackError) {
+        trackError.textContent = data.error || 'Order not found';
+        trackError.classList.add('show');
+      }
     }
+  } catch (e) {
+    console.error(e);
+    if (trackError) {
+      trackError.textContent =
+        'Error fetching order. Make sure server is running!';
+      trackError.classList.add('show');
+    }
+  }
 }
 
 function renderOrderDetails(order) {
-    const resOrderId = document.getElementById('resOrderId');
-    if (!resOrderId) return;
+  const resOrderId = document.getElementById('resOrderId');
+  if (!resOrderId) return;
 
-    resOrderId.textContent = order.id || order.order_id;
+  resOrderId.textContent = order.id || order.order_id;
 
-    const resTotalTop = document.getElementById('resTotalTop');
-    if (resTotalTop) resTotalTop.textContent = order.total;
+  const resTotalTop = document.getElementById('resTotalTop');
+  if (resTotalTop) resTotalTop.textContent = order.total;
 
-    const resDate = document.getElementById('resDate');
-    if (resDate && order.created_at) {
-        resDate.textContent = new Date(order.created_at).toLocaleString();
-    }
+  const resDate = document.getElementById('resDate');
+  if (resDate && order.created_at) {
+    resDate.textContent = new Date(order.created_at).toLocaleString();
+  }
 
-    let itemsHtml = '';
-    try {
-        const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
-        itemsHtml = items.map(i => {
-            const itemTotal = (i.price && i.qty) ? i.price * i.qty : i.price || 0;
-            const priceHtml = itemTotal ? `₹${itemTotal.toLocaleString('en-IN')}` : '';
-            return `<tr>
+  let itemsHtml = '';
+  try {
+    const items =
+      typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+    itemsHtml = items
+      .map((i) => {
+        const itemTotal = i.price && i.qty ? i.price * i.qty : i.price || 0;
+        const priceHtml = itemTotal
+          ? `₹${itemTotal.toLocaleString('en-IN')}`
+          : '';
+        return `<tr>
                         <td>${i.emoji || ''} ${i.name} × ${i.qty}</td>
                         <td class="text-right track-item-price">${priceHtml}</td>
                     </tr>`;
-        }).join('');
-    } catch (e) {
-        itemsHtml = `<tr><td colspan="2">${order.items}</td></tr>`;
+      })
+      .join('');
+  } catch (e) {
+    itemsHtml = `<tr><td colspan="2">${order.items}</td></tr>`;
+  }
+
+  const resItems = document.getElementById('resItems');
+  if (resItems) resItems.innerHTML = itemsHtml;
+
+  const resTotal = document.getElementById('resTotal');
+  if (resTotal) resTotal.textContent = order.total;
+
+  const statusLower = (order.status || 'pending').toLowerCase();
+  const timeline = document.getElementById('trackingTimeline');
+  const cancelledAlert = document.getElementById('cancelledAlert');
+
+  if (timeline && cancelledAlert) {
+    if (statusLower === 'cancelled') {
+      timeline.style.display = 'none';
+      cancelledAlert.style.display = 'block';
+    } else {
+      timeline.style.display = 'block';
+      cancelledAlert.style.display = 'none';
+
+      const steps = ['pending', 'confirmed', 'preparing', 'delivered'];
+      const currentIndex = Math.max(steps.indexOf(statusLower), 0);
+
+      steps.forEach((s, i) => {
+        const el = document.getElementById(`step-${s}`);
+        if (!el) return;
+        el.classList.remove('active', 'completed');
+        if (i < currentIndex) el.classList.add('completed');
+        else if (i === currentIndex) el.classList.add('active');
+      });
     }
-
-    const resItems = document.getElementById('resItems');
-    if (resItems) resItems.innerHTML = itemsHtml;
-
-    const resTotal = document.getElementById('resTotal');
-    if (resTotal) resTotal.textContent = order.total;
-
-    const statusLower    = (order.status || 'pending').toLowerCase();
-    const timeline       = document.getElementById('trackingTimeline');
-    const cancelledAlert = document.getElementById('cancelledAlert');
-
-    if (timeline && cancelledAlert) {
-        if (statusLower === 'cancelled') {
-            timeline.style.display       = 'none';
-            cancelledAlert.style.display = 'block';
-        } else {
-            timeline.style.display       = 'block';
-            cancelledAlert.style.display = 'none';
-
-            const steps        = ['pending', 'confirmed', 'preparing', 'delivered'];
-            const currentIndex = Math.max(steps.indexOf(statusLower), 0);
-
-            steps.forEach((s, i) => {
-                const el = document.getElementById(`step-${s}`);
-                if (!el) return;
-                el.classList.remove('active', 'completed');
-                if (i < currentIndex) el.classList.add('completed');
-                else if (i === currentIndex) el.classList.add('active');
-            });
-        }
-    }
+  }
 }
 
 // --- INIT & SCROLL EVENT ---
@@ -1398,12 +1511,16 @@ window.setCakeWeight = setCakeWeight;
 window.toggleMenu = toggleMenu;
 
 function initStarRatings() {
-  document.querySelectorAll('.star-rating').forEach(container => {
+  document.querySelectorAll('.star-rating').forEach((container) => {
     const stars = container.querySelectorAll('span');
-    const inactiveColor = container.getAttribute('data-inactive-color') || '#ccc';
-    
+    const inactiveColor =
+      container.getAttribute('data-inactive-color') || '#ccc';
+
     // Set explicit colors initially based on current rating attribute
-    const initialRating = parseInt(container.getAttribute('data-rating') || '4', 10);
+    const initialRating = parseInt(
+      container.getAttribute('data-rating') || '4',
+      10
+    );
     stars.forEach((star, index) => {
       star.style.color = index < initialRating ? 'var(--gold)' : inactiveColor;
     });
@@ -1415,10 +1532,13 @@ function initStarRatings() {
           s.style.color = idx <= index ? 'var(--gold)' : inactiveColor;
         });
       });
-      
+
       // Mouse out restores current rating
       star.addEventListener('mouseout', () => {
-        const rating = parseInt(container.getAttribute('data-rating') || '0', 10);
+        const rating = parseInt(
+          container.getAttribute('data-rating') || '0',
+          10
+        );
         stars.forEach((s, idx) => {
           s.style.color = idx < rating ? 'var(--gold)' : inactiveColor;
         });
@@ -1448,3 +1568,11 @@ function initStarRatings() {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateFavouritesCount();
+
+  renderFavouritesPage();
+
+  updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+});
