@@ -1,3 +1,10 @@
+// APPLY THEME ON PAGE LOAD (FIX)
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("bb_theme") || "light";
+  applyTheme(savedTheme);
+});
+
+
 // --- CONFIG ---
 const API_BASE = '/api';
 
