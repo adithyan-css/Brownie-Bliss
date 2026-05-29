@@ -1061,6 +1061,7 @@
 
   <!-- ══════════════════════════════════════════════════
        HERO
+<<<<<<< HEAD
   ══════════════════════════════════════════════════ -->
   <section class="about-hero">
     <div class="about-hero-bg"></div>
@@ -1076,6 +1077,1007 @@
         <h1 class="about-hero-title reveal reveal-delay-1">
           More Than<br>Desserts —
           <em>Moments Made Sweet</em>
+=======
+    ========================= */
+
+    .hero{
+
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+
+      padding:170px 8% 120px;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.88),
+      rgba(45,18,13,0.92)
+      ),
+
+      url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      width:100%;
+
+      display:grid;
+
+      grid-template-columns:1.1fr 1fr;
+
+      gap:90px;
+
+      align-items:center;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-tag{
+
+      display:inline-block;
+
+      border:
+      1px solid rgba(212,165,55,0.5);
+
+      color:var(--gold);
+
+      padding:14px 22px;
+
+      letter-spacing:4px;
+
+      font-size:11px;
+
+      margin-bottom:35px;
+    }
+
+    .hero-title{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:70px;
+
+      line-height:1.05;
+      
+       max-width:600px;
+
+      color:var(--cream);
+
+      margin-bottom:35px;
+    }
+
+    .hero-title span{
+      color:var(--gold);
+      font-style:italic;
+    }
+
+    .hero-subtitle{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      max-width:650px;
+
+      margin-bottom:45px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:20px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+
+      text-decoration:none;
+
+      display:inline-flex;
+
+      align-items:center;
+
+      justify-content:center;
+    }
+
+    .primary-btn{
+
+      padding:20px 42px;
+
+      background:var(--gold);
+
+      color:#2d120d;
+
+      border:none;
+
+      font-weight:600;
+
+      letter-spacing:2px;
+
+      transition:0.4s ease;
+    }
+
+    .primary-btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 35px rgba(212,165,55,0.3);
+    }
+
+    .secondary-btn{
+
+      padding:20px 42px;
+
+      background:transparent;
+
+      border:
+      1px solid rgba(212,165,55,0.4);
+
+      color:var(--cream);
+
+      transition:0.4s ease;
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.08);
+    }
+
+    /* HERO IMAGES */
+
+    .hero-images{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .large-card{
+      grid-column:span 2;
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.35);
+
+      transition:0.6s ease;
+    }
+
+    .large-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .large-card img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+    }
+
+    .card-label{
+      padding:20px;
+
+      background:
+      linear-gradient(
+      90deg,
+      rgba(74,31,20,0.95),
+      rgba(91,36,23,0.85)
+      );
+
+      color:var(--cream);
+
+      font-weight:600;
+    }
+
+    .small-card{
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.25);
+
+      transition:0.6s ease;
+    }
+
+    .small-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .small-card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    /* =========================
+       PREMIUM FEATURES
+    ========================= */
+
+    .premium-features{
+
+      padding:110px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #fff7f0 0%,
+      #f8ede2 100%
+      );
+
+      position:relative;
+
+      overflow:hidden;
+    }
+
+    .premium-features::before{
+
+      content:'';
+
+      position:absolute;
+
+      width:700px;
+      height:700px;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.08),
+      transparent 70%
+      );
+
+      top:-300px;
+      right:-250px;
+    }
+
+    .premium-features-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(4,1fr);
+
+      gap:35px;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .premium-feature-card{
+
+      background:white;
+
+      border-radius:30px;
+
+      padding:45px 35px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:
+      transform 0.6s ease,
+      box-shadow 0.6s ease;
+
+      border:
+      1px solid rgba(212,165,55,0.08);
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.06);
+    }
+
+    .premium-feature-card:hover{
+
+      transform:
+      translateY(-15px);
+
+      box-shadow:
+      0 35px 70px rgba(0,0,0,0.12);
+    }
+
+    .feature-glow{
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.14),
+      transparent 70%
+      );
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .premium-icon{
+
+      width:75px;
+      height:75px;
+
+      border-radius:22px;
+
+      background:
+      linear-gradient(
+      135deg,
+      #d4a537,
+      #f1c96b
+      );
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:32px;
+
+      margin-bottom:28px;
+
+      box-shadow:
+      0 15px 30px rgba(212,165,55,0.25);
+    }
+
+    .premium-feature-card h3{
+
+      font-size:30px;
+
+      color:#2d120d;
+
+      margin-bottom:18px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .premium-feature-card p{
+
+      color:#6e4c42;
+
+      line-height:2;
+
+      font-size:15px;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story{
+
+      padding:160px 8%;
+
+      background:var(--light);
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:90px;
+    }
+
+    .section-title span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:12px;
+    }
+
+    .section-title h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:82px;
+
+      margin-top:20px;
+
+      color:var(--dark);
+    }
+
+    .section-title h2 em{
+      color:var(--brown2);
+      font-style:italic;
+    }
+
+    .story-grid{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(3,1fr);
+
+      gap:35px;
+    }
+
+    .story-card{
+
+      background:white;
+
+      border-radius:28px;
+
+      padding:55px 45px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.6s ease;
+
+      box-shadow:
+      0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    .story-card::before{
+      content:'';
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      rgba(212,165,55,0.08);
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .story-card:hover{
+      transform:translateY(-14px);
+
+      box-shadow:
+      0 30px 60px rgba(0,0,0,0.12);
+    }
+
+    .story-number{
+
+      font-size:60px;
+
+      color:rgba(212,165,55,0.25);
+
+      font-family:'Cormorant Garamond',serif;
+
+      margin-bottom:25px;
+    }
+
+    .story-card h3{
+
+      font-size:40px;
+
+      color:var(--dark);
+
+      margin-bottom:22px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .story-card p{
+
+      color:#6d4b42;
+
+      line-height:2;
+
+      font-size:16px;
+    }
+
+    /* =========================
+       EXPERIENCE
+    ========================= */
+
+    .experience{
+
+      padding:170px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #4a1f14,
+      #2d120d
+      );
+    }
+
+    .experience-box{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:1fr 1fr;
+
+      border-radius:35px;
+
+      overflow:hidden;
+
+      background:
+      rgba(255,255,255,0.04);
+
+      backdrop-filter:blur(14px);
+
+      box-shadow:
+      0 25px 60px rgba(0,0,0,0.3);
+    }
+
+    .experience-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .experience-content{
+
+      padding:90px 70px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .experience-content h3{
+
+      font-size:72px;
+
+      color:var(--cream);
+
+      line-height:1.1;
+
+      margin-bottom:30px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .experience-content p{
+
+      color:#f2dfcf;
+
+      line-height:2;
+
+      font-size:17px;
+
+      margin-bottom:40px;
+    }
+
+    .stats{
+      max-width:1450px;
+      margin:70px auto 0;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:36px 32px;
+      padding:0 20px;
+      align-items:start;
+    }
+
+    .stat-item{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:left;
+      padding-left:10px;
+    }
+
+    .stat-number{
+      color:#fff4e6;
+      font-size:3.1rem;
+      line-height:1.05;
+      letter-spacing:0.02em;
+      margin:0;
+    }
+
+    .stat-number span{
+      font-size:0.45em;
+      vertical-align:text-top;
+      margin-left:4px;
+    }
+
+    .stat-label{
+      color:rgba(255,244,230,0.75);
+      font-size:16px;
+      line-height:1.9;
+      letter-spacing:0.01em;
+      max-width:280px;
+      margin:0;
+    }
+
+    .values{
+      padding:140px 8% 120px;
+    }
+
+    .values .section-title{
+      color:#fff4e6;
+      font-weight:600;
+      margin-bottom:18px;
+    }
+
+    .values .section-title em{
+      color:var(--gold);
+    }
+
+    .values-grid{
+      max-width:1450px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:38px;
+    }
+
+    .value-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .value-icon{
+      font-size:32px;
+      display:inline-flex;
+      margin-bottom:10px;
+    }
+
+    .value-title{
+      color:#fff4e6;
+      font-weight:600;
+      font-size:30px;
+      line-height:1.2;
+      margin:0;
+    }
+
+    .value-desc{
+      color:rgba(255,244,230,0.88);
+      line-height:2.1;
+      font-size:16px;
+      margin:0;
+    }
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .values-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:700px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .values-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* =========================
+       LUXURY BANNER
+    ========================= */
+
+    .luxury-banner{
+
+      position:relative;
+
+      height:85vh;
+
+      background:
+      url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+    }
+
+    .luxury-overlay{
+
+      position:absolute;
+      inset:0;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.72),
+      rgba(45,18,13,0.72)
+      );
+
+      backdrop-filter:blur(2px);
+    }
+
+    .luxury-content{
+
+      position:relative;
+      z-index:2;
+
+      text-align:center;
+
+      max-width:1000px;
+
+      padding:0 20px;
+    }
+
+    .luxury-content span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:13px;
+
+      text-transform:uppercase;
+    }
+
+    .luxury-content h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:90px;
+
+      color:white;
+
+      line-height:1.1;
+
+      margin:30px 0;
+    }
+
+    .luxury-content p{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      margin-bottom:45px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer{
+
+      background:#2d120d;
+
+      padding:120px 8% 50px;
+    }
+
+    .footer-grid{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:2fr 1fr 1fr;
+
+      gap:100px;
+    }
+
+    .footer-brand h2{
+
+      color:white;
+
+      font-size:58px;
+
+      margin-bottom:24px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .footer-brand p{
+
+      color:#f2dfcf;
+
+      line-height:2.1;
+
+      font-size:17px;
+
+      max-width:500px;
+    }
+
+    .footer-links h4{
+
+      color:var(--gold);
+
+      margin-bottom:30px;
+
+      letter-spacing:4px;
+
+      font-size:13px;
+    }
+
+    .footer-links a{
+
+      display:block;
+
+      text-decoration:none;
+
+      color:#f7ead8;
+
+      margin-bottom:20px;
+
+      font-size:16px;
+
+      transition:0.4s ease;
+    }
+
+    .footer-links a:hover{
+      color:var(--gold);
+      transform:translateX(8px);
+    }
+
+    .footer-bottom{
+
+      border-top:
+      1px solid rgba(255,255,255,0.08);
+
+      margin-top:80px;
+
+      padding-top:35px;
+
+      text-align:center;
+
+      color:#d5c2af;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width:1200px){
+
+      .hero-title{
+        font-size:74px;
+      }
+
+      .story-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .experience-box{
+        grid-template-columns:1fr;
+      }
+
+      .luxury-content h2{
+        font-size:58px;
+      }
+
+    }
+
+    @media(max-width:1100px){
+
+      .premium-features-wrapper{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:900px){
+
+      nav{
+        display:none;
+      }
+
+      .hero-wrapper,
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .story-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-images{
+        margin-top:40px;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .premium-features-wrapper{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .navbar{
+        padding:20px;
+      }
+
+      .hero,
+      .story,
+      .experience,
+      .luxury-banner,
+      footer{
+        padding-left:20px;
+        padding-right:20px;
+      }
+
+      .hero-title,
+      .section-title h2,
+      .experience-content h3,
+      .luxury-content h2{
+        font-size:48px;
+      }
+
+      .hero-subtitle,
+      .luxury-content p{
+        font-size:17px;
+      }
+
+      .hero-buttons{
+        flex-direction:column;
+      }
+
+    }
+
+    /* =========================
+       DARK THEME SUPPORT
+    ========================= */
+
+    html.dark{
+      --dark:#f0e4d0;
+      --brown:#2a140b;
+      --brown2:#caa14a;
+      --light:#140d08;
+      --cream:#f5ede3;
+    }
+
+    html.dark body,
+    html.dark .about-section{
+      background:var(--light);
+      color:var(--text-dark);
+    }
+
+    html.dark body::before{
+      opacity:0.03;
+    }
+
+
+
+  <section class="hero">
+    <div class="hero-wrapper">
+      <div>
+        <div class="hero-tag">
+          OUR STORY
+        </div>
+
+        <h1 class="hero-title">
+          More Than
+          <span>Desserts</span> —
+          Moments Made Sweet
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
         </h1>
 
         <div class="about-hero-pills reveal reveal-delay-2">
@@ -1292,12 +2294,92 @@
           <p class="timeline-desc">We launched our online platform to bring homemade treats to more doorsteps. WhatsApp-based ordering made it easier than ever to enjoy our desserts.</p>
         </div>
 
+<<<<<<< HEAD
         <div class="timeline-item reveal reveal-delay-3">
           <div class="timeline-dot"></div>
           <div class="timeline-year">2025 — Today &amp; Beyond</div>
           <div class="timeline-title">Still Homemade. Always.</div>
           <p class="timeline-desc">Despite our growth, every brownie is still made by hand, in small batches, with the same love and premium ingredients as day one. That will never change.</p>
         </div>
+=======
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-item reveal">
+      <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+      <div class="stat-label">Homemade Recipes</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-number" style="font-size:40px">Fresh</div>
+      <div class="stat-label">Baked Every Day</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.2s">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Sweet Memories</div>
+    </div>
+  
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+        <div class="stat-label">Homemade Recipes</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.1s">
+        <div class="stat-number" style="font-size:40px">Fresh</div>
+        <div class="stat-label">Baked Every Day</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.2s">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Sweet Memories</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.3s">
+        <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+        <div class="stat-label">Always Fresh, Never Factory</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="story story-split">
+    <div class="story-img-wrap reveal">
+      <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
+      <div class="story-img-accent"></div>
+      <div class="story-quote">✦ Passion in Every Bite</div>
+    </div>
+    <div class="story-text reveal" style="transition-delay:0.15s">
+      <p class="section-eyebrow">How it all began</p>
+      <h2 class="section-title">Every Dessert Has a <em>Story to Tell</em></h2>
+      <p class="story-para">What started as passion-filled baking sessions in a home kitchen slowly turned into something much more meaningful — handcrafted brownies, rich cakes, delicate pastries and comforting desserts made not in factories, but with genuine love and care.</p>
+      <p class="story-para">Every recipe carries a homemade touch. Every brownie is baked in small batches. Every cake is thoughtfully crafted to make someone's day special.</p>
+      <p class="story-para">At Brownie Bliss, we believe desserts are not just food — they are emotions, memories and happiness shared with people you love.</p>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values">
+    <p class="section-eyebrow reveal">What we stand for</p>
+    <h2 class="section-title reveal">Baked into <em style="color:var(--gold-light)">Everything We Do</em></h2>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <span class="value-icon">🍫</span>
+        <h3 class="value-title">Handcrafted Daily</h3>
+        <p class="value-desc">Freshly baked in small batches to ensure warmth, softness and authentic homemade flavour — every single day.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:0.1s">
+        <span class="value-icon">✨</span>
+        <h3 class="value-title">Premium Ingredients</h3>
+        <p class="value-desc">Only carefully selected ingredients go into our desserts, because quality creates unforgettable taste and real smiles.</p>
+      </div>
+      <div class="value-card reveal" style="transition-delay:0.2s">
+        <span class="value-icon">❤️</span>
+        <h3 class="value-title">Baked with Love</h3>
+        <p class="value-desc">Every dessert is thoughtfully prepared with passion, creativity and attention to detail — from batter to box.</p>
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
       </div>
     </div>
   </section>
@@ -1423,6 +2505,32 @@
     </div>
   </section>
 
+  <!-- Quote -->
+  <div class="quote-banner reveal">
+    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
+  </div>
+
+  <!-- Founder -->
+  <section class="founder reveal">
+    <div class="founder-img-placeholder">👩‍🍳</div>
+    <div>
+      <h3 class="founder-name">A.R. Shanmugapriya</h3>
+      <p class="founder-role">Founder & Head Baker</p>
+      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta reveal">
+    <h2 class="cta-title">Ready to Taste the Difference?</h2>
+    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
+    <div class="cta-buttons">
+      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
+      <a href="contact.html" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer id="contact">
     <div class="footer-inner">
@@ -1519,5 +2627,9 @@
     document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
   </script>
 </body>
+<<<<<<< HEAD
 
 </html>
+=======
+</html>
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
