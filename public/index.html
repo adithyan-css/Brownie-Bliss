@@ -599,26 +599,29 @@
           style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a
             Review</h3>
-          <form
-            onsubmit="event.preventDefault(); const rating = this.querySelector('.star-rating')?.getAttribute('data-rating') || '4'; showToast('Thank you for your ' + rating + '-star feedback! ⭐'); this.reset();">
+          <form id="mainReviewForm">
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
-              <div class="star-rating" data-rating="4" data-inactive-color="var(--cream-dark)"
+              <div class="star-rating" id="reviewStars" data-rating="4" data-inactive-color="var(--cream-dark)"
                 style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream-dark);">★</span>
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5" style="color: var(--cream-dark);">★</span>
               </div>
             </div>
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Name</label>
-              <input type="text" placeholder="Your Name" required
+              <input type="text" id="reviewName" placeholder="Your Name" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Message</label>
-              <textarea placeholder="Tell us about your experience..." rows="4" required
+              <textarea id="reviewMessage" placeholder="Tell us about your experience..." rows="4" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif; resize: none;"></textarea>
             </div>
             <button class="hero-cta" type="submit" style="width: 100%; padding: 16px;">Submit Review</button>
@@ -630,12 +633,11 @@
           style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an
             Issue</h3>
-          <form
-            onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
+          <form id="complaintForm">
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Subject</label>
-              <select required
+              <select id="complaintSubject" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
                 <option value="">Select an issue</option>
                 <option value="delivery">Delivery Delay</option>
@@ -648,13 +650,13 @@
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Order
                 ID (Optional)</label>
-              <input type="text" placeholder="e.g. ORD-1234"
+              <input type="text" id="complaintOrderId" placeholder="e.g. ORD-1234"
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Description</label>
-              <textarea placeholder="Describe the problem in detail..." rows="4" required
+              <textarea id="complaintMessage" placeholder="Describe the problem in detail..." rows="4" required
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif; resize: none;"></textarea>
             </div>
             <button class="hero-cta" type="submit"
@@ -671,7 +673,7 @@
     <p class="eyebrow">Loved by our customers</p>
     <h2>Sweet Words from <em>Happy Customers</em></h2>
 
-    <div class="reviews-grid">
+    <div class="reviews-grid" id="reviewsGrid">
 
 
 

@@ -35,6 +35,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', otpRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/feedback', require('./routes/feedbackRoutes'));
 app.get('/api/stats', adminAuth, getStats);
 
 // ─── STATIC FALLBACK ────────────────────────────────────────────────────────────
