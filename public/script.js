@@ -3,6 +3,10 @@ const API_BASE = '/api';
 
 // --- SCROLL TO TOP (NEW FEATURE) ---
 document.addEventListener('keydown', (e) => {
+  const tagName = e.target.tagName.toLowerCase();
+  if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
+    return;
+  }
   if (e.key.toLowerCase() === 't') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -338,6 +342,10 @@ async function loadProducts() {
   }
   if (document.getElementById('cakePrice')) {
     calculateBdayPrice();
+  }
+  } catch (error) {
+    console.error('Error loading products:', error);
+    useFallbackProducts();
   }
 }
 
@@ -1631,8 +1639,146 @@ function initStarRatings() {
   });
 }
 
+async function loadReviews() {
+  try {
+    const res = await fetch(`${API_BASE}/feedback/reviews`);
+    const data = await res.json();
+    if (data.success && data.reviews.length > 0) {
+      const reviewsGrid = document.getElementById('reviewsGrid');
+      if (reviewsGrid) {
+        reviewsGrid.innerHTML = data.reviews.map(review => {
+          const starsHtml = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+          const nameInitials = review.name ? review.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'A';
+          return `
+            <div class="review-card">
+              <span class="quote-mark">"</span>
+              <div class="stars" style="color: var(--gold);">${starsHtml}</div>
+              <p class="review-text">${review.message}</p>
+              <div class="reviewer">
+                <div class="reviewer-avatar">${nameInitials}</div>
+                <div>
+                  <p class="reviewer-name">${review.name}</p>
+                  <p class="reviewer-location">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+  } catch (error) {
+    console.error('Error loading reviews:', error);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateFavouritesCount();
   renderFavouritesPage();
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+  loadReviews();
+
+  // Feedback form handler
+  const mainReviewForm = document.getElementById('mainReviewForm');
+  if (mainReviewForm) {
+    mainReviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const rating = document.getElementById('reviewStars')?.getAttribute('data-rating') || '4';
+      const name = document.getElementById('reviewName')?.value;
+      const message = document.getElementById('reviewMessage')?.value;
+      
+      try {
+        const res = await fetch(`${API_BASE}/feedback/review`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, rating: parseInt(rating, 10), message })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Thank you for your ' + rating + '-star feedback! ⭐');
+          mainReviewForm.reset();
+          loadReviews();
+        } else {
+          showToast('Error: ' + (data.message || 'Failed to submit'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('An error occurred while submitting your review.');
+      }
+    });
+  }
+
+  // Complaint form handler
+  const complaintForm = document.getElementById('complaintForm');
+  if (complaintForm) {
+    complaintForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const subject = document.getElementById('complaintSubject')?.value;
+      const orderId = document.getElementById('complaintOrderId')?.value;
+      const message = document.getElementById('complaintMessage')?.value;
+      
+      try {
+        const res = await fetch(`${API_BASE}/feedback/complaint`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, orderId, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Complaint received. We will look into it. 🛠️');
+          complaintForm.reset();
+        } else {
+          showToast('Error: ' + (data.message || 'Failed to submit'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('An error occurred while submitting your complaint.');
+      }
+    });
+  }
+
+  // Modal review form handler
+  const reviewFormModal = document.getElementById('reviewForm');
+  if (reviewFormModal) {
+    reviewFormModal.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = document.getElementById('reviewText')?.value;
+      
+      try {
+        const res = await fetch(`${API_BASE}/feedback/review`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: 'Anonymous', rating: 5, message })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Thank you for your feedback! ⭐');
+          reviewFormModal.reset();
+          closeReviewModal();
+          loadReviews();
+        } else {
+          showToast('Error: ' + (data.message || 'Failed to submit'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('An error occurred while submitting your review.');
+      }
+    });
+  }
 });
+
+function openReviewModal() {
+  const modal = document.getElementById('reviewModal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function closeReviewModal() {
+  const modal = document.getElementById('reviewModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+window.openReviewModal = openReviewModal;
+window.closeReviewModal = closeReviewModal;
