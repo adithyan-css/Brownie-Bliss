@@ -69,9 +69,31 @@ const DEFAULT_BDAY_CAKES = {
     price: 850,
     img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
   },
+
   'Dutch Truffle': {
     price: 950,
     img: 'assets/dutch_truffle.png',
+  },
+
+  'Pineapple': {
+    price: 675,
+    img:  'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+  },
+
+  'Chocoholic': {
+    price: 990,
+    img: 'https://theobroma.in/cdn/shop/files/ChocoholicCakehalfkg_400x400.jpg?v=1711125918',
+  },
+  
+
+  'Black Forest': {
+    price: 875,
+    img: 'https://theobroma.in/cdn/shop/files/BlackForestCake.jpg?v=1750341419',
+  },
+
+  'Cheesecake': {
+    price: 1100,
+    img: 'https://theobroma.in/cdn/shop/files/FG0807_LotusBiscoffBentoCheesecake_300g_400x400.jpg?v=1770718506',
   },
 };
 
@@ -821,13 +843,13 @@ function updateBirthdayCake(flavor) {
   }
 
   // Update active flavor button
-  document.querySelectorAll('.filter-pill').forEach((btn) => {
-    if (btn.textContent.trim() === flavor) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
+  document.querySelectorAll('.flavor-btn').forEach((btn) => {
+  if (btn.textContent.trim() === flavor) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+});
 
   calculateBdayPrice();
 }
