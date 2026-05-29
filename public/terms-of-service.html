@@ -74,14 +74,16 @@
                 <div class="legal-card">
                     <h2>Acceptance of Terms</h2>
                     <p>
-                        By accessing or using Brownie Bliss, you agree to comply with these Terms of Service. These terms apply 
+                        By accessing or using Brownie Bliss, you agree to comply with these Terms of Service. These
+                        terms apply
                         to all users placing orders through our website or WhatsApp ordering system.
                     </p>
                 </div>
                 <div class="legal-card">
                     <h2>Product Availability</h2>
                     <p>
-                        All products are subject to availability. Since our desserts are freshly prepared, certain items may 
+                        All products are subject to availability. Since our desserts are freshly prepared, certain items
+                        may
                         occasionally be unavailable or limited in quantity.
                     </p>
                 </div>
@@ -89,7 +91,7 @@
                 <div class="legal-card">
                     <h2>Order Confirmation</h2>
                     <p>
-                        Orders are confirmed only after successful OTP verification and confirmation through WhatsApp 
+                        Orders are confirmed only after successful OTP verification and confirmation through WhatsApp
                         communication. Brownie Bliss reserves the right to decline suspicious or incomplete orders.
                     </p>
                 </div>
@@ -97,7 +99,8 @@
                 <div class="legal-card">
                     <h2>Pricing Policy</h2>
                     <p>
-                        Product prices are displayed in Indian Rupees (INR) and may change without prior notice. Delivery 
+                        Product prices are displayed in Indian Rupees (INR) and may change without prior notice.
+                        Delivery
                         charges, if applicable, will be communicated during the ordering process.
                     </p>
                 </div>
@@ -106,7 +109,8 @@
                     <h2>
                         Delivery Terms</h2>
                     <p>
-                        We aim to deliver orders within the estimated timeframe. However, delays caused by weather, traffic, 
+                        We aim to deliver orders within the estimated timeframe. However, delays caused by weather,
+                        traffic,
                         or unforeseen circumstances may occasionally occur.
                     </p>
                 </div>
@@ -115,7 +119,7 @@
                     <h2>
                         Customer Responsibilities</h2>
                     <p>
-                        Customers are responsible for providing accurate contact details, delivery addresses, and 
+                        Customers are responsible for providing accurate contact details, delivery addresses, and
                         availability during delivery. Incorrect information may result in delays or failed deliveries.
                     </p>
                 </div>
@@ -124,7 +128,8 @@
                     <h2>
                         Intellectual Property</h2>
                     <p>
-                        All website content including images, branding, logos, and product descriptions belong to Brownie 
+                        All website content including images, branding, logos, and product descriptions belong to
+                        Brownie
                         Bliss and may not be copied or reused without permission.
                     </p>
                 </div>
@@ -133,7 +138,8 @@
                     <h2>
                         Limitation of Liability</h2>
                     <p>
-                        Brownie Bliss shall not be held responsible for indirect damages, delivery delays, or issues arising 
+                        Brownie Bliss shall not be held responsible for indirect damages, delivery delays, or issues
+                        arising
                         from incorrect customer information or circumstances beyond our control.
                     </p>
                 </div>
@@ -141,7 +147,9 @@
                 <div class="legal-card">
                     <h2>Changes to Terms</h2>
                     <p>
-                        Brownie Bliss reserves the right to update or modify these Terms of Service at any time. Continued use of the website after changes are posted constitutes acceptance of the updated terms.
+                        Brownie Bliss reserves the right to update or modify these Terms of Service at any time.
+                        Continued use of the website after changes are posted constitutes acceptance of the updated
+                        terms.
                     </p>
                 </div>
             </div>
@@ -203,7 +211,19 @@
     </div>
 
     <div class="toast" id="toast"></div>
-    <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+    <button id="backToTopBtn">↑</button>
+    <script>
+        window.addEventListener('load', function () {
+            var btn = document.getElementById('backToTopBtn');
+            if (!btn) return;
+            window.addEventListener('scroll', function () {
+                btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+            });
+            btn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 
