@@ -48,7 +48,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
-// ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
+// ─── STARTUP FUNCTION ──────────────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
@@ -66,6 +66,7 @@ function startServer(port) {
   });
 }
 
+// ─── LOCAL PORT BINDING ─────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
   startServer(PORT);
 }
