@@ -26,7 +26,12 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (err) {
-    res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
+    console.error('Database connection error:', err);
+
+    res.status(500).json({
+      success: false,
+      message: 'Unable to process your request right now. Please try again later.',
+    });
   }
 });
 
