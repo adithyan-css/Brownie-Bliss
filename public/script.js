@@ -23,6 +23,9 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
+const savedTheme = localStorage.getItem('bb_theme') || 'light';
+applyTheme(savedTheme);
+
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
@@ -337,9 +340,15 @@ async function loadProducts() {
     renderFavouritesPage();
   }
   if (document.getElementById('cakePrice')) {
-    calculateBdayPrice();
-  }
+  calculateBdayPrice();
 }
+
+} catch (e) {
+  console.error('Error loading products:', e);
+  useFallbackProducts();
+}
+}
+
 
 // --- CART STATE ---
 let cart = [];
@@ -1635,4 +1644,5 @@ document.addEventListener('DOMContentLoaded', () => {
   updateFavouritesCount();
   renderFavouritesPage();
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
-});
+}
+);
