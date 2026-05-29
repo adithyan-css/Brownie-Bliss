@@ -16,111 +16,232 @@
     })();
   </script>
   <style>
+    /* ═══════════════════════════════════════════════
+       SCROLL REVEAL ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.from-left  { transform: translateX(-40px); }
+    .reveal.from-right { transform: translateX(40px); }
+    .reveal.scale-in   { transform: scale(0.92) translateY(20px); }
+    .reveal.visible    { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    .products-hero {
+      position: relative;
+      padding: var(--space-16) var(--space-8);
+      background: var(--brown-900);
+      overflow: hidden;
+      text-align: center;
+    }
+    .products-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
+        linear-gradient(135deg, #1a0905 0%, #2c1208 100%);
+    }
+    .products-hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbFloat 7s ease-in-out infinite;
+    }
+    .products-hero-orb-1 {
+      width: 300px; height: 300px;
+      background: rgba(212, 175, 55, 0.12);
+      top: -40px; left: -40px;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(15px, -15px); }
+    }
+    .products-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .products-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--cream-100);
+      margin-block-end: var(--space-3);
+    }
+    .products-hero-title em {
+      font-style: italic;
+      color: var(--color-gold);
+    }
+    .products-hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: rgba(245, 232, 208, 0.72);
+    }
+
+    /* ═══════════════════════════════════════════════
+       PRODUCTS CONTENT
+    ═══════════════════════════════════════════════ */
+    .products-page {
+      background: var(--color-surface-2);
+      padding-bottom: var(--space-20);
+    }
+    .products-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-12) var(--space-8);
+    }
+
+    /* Filter Bar */
+    .price-filter-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-10);
+    }
+    .price-filter {
+      background: var(--color-card);
+      padding: 12px 24px;
+      border-radius: 99px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .price-filter label {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--color-text-2);
+      font-size: 0.95rem;
+    }
+    .custom-price-filter {
+      padding: 8px 16px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      background: var(--color-surface);
+      color: var(--color-text-1);
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .custom-price-filter:focus,
+    .custom-price-filter:hover {
+      border-color: var(--color-gold);
+    }
+
+    /* Grid */
     .all-products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 40px;
-      margin: 60px 0 80px;
+      gap: var(--space-8);
     }
+
+    /* Product Cards Enhanced */
     .product-card {
-      background: var(--white);
-      border-radius: 4px;
+      background: var(--color-card);
+      border-radius: var(--radius-md);
       overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
       display: flex;
       flex-direction: column;
       height: 100%;
+      position: relative;
+    }
+    .product-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--color-gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
     }
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    .product-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .img-wrap {
+      overflow: hidden;
     }
     .product-img {
       width: 100%;
       height: 260px;
       object-fit: cover;
       display: block;
+      transition: transform 0.6s ease;
     }
+    .product-card:hover .product-img {
+      transform: scale(1.06);
+    }
+
     .product-info {
-      padding: 20px;
+      padding: var(--space-6);
       flex: 1;
       display: flex;
       flex-direction: column;
-    }
-    .product-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--brown-dark);
     }
     .product-category {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--gold);
+      color: var(--color-gold);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
       margin-bottom: 12px;
+      color: var(--color-text-1);
     }
     .product-desc {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      margin-bottom: 16px;
-      line-height: 1.4;
+      font-size: 0.875rem;
+      color: var(--color-text-2);
+      margin-bottom: 20px;
+      line-height: 1.5;
       flex-grow: 1;
     }
     .product-price {
+      font-family: 'Playfair Display', serif;
       font-size: 1.3rem;
       font-weight: 700;
-      color: var(--brown-dark);
+      color: var(--color-gold);
       margin-bottom: 16px;
     }
     .add-to-cart-btn {
-      background: var(--gold);
-      border: none;
-      padding: 10px 16px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.2s;
       width: 100%;
       margin-top: auto;
     }
-    .add-to-cart-btn:hover {
-      background: #c9a03d;
-    }
-    .page-header {
-      text-align: center;
-      padding: 60px 20px 20px;
-      background: var(--cream);
-    }
-    .page-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      color: var(--brown-dark);
-    }
-    .page-header p {
-      color: var(--text-mid);
-      max-width: 600px;
-      margin: 10px auto;
-    }
-    .dark .product-card {
-      background: var(--brown-dark);
-    }
-    .dark .product-title,
-    .dark .product-price {
-      color: var(--white);
-    }
-    .dark .product-desc {
-      color: rgba(255,255,255,0.8);
+
+    /* Dark Mode Overrides for cards (if needed) */
+    html.dark .product-card {
+      background: var(--color-card);
     }
   </style>
 </head>
 <body>
 
+  <!-- ANNOUNCEMENT -->
   <div class="announcement" role="status">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
 
   <header>
@@ -153,6 +274,7 @@
       </div>
     </div>
   </header>
+
   <!-- MOBILE NAVIGATION MENU -->
   <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <a href="index.html" onclick="toggleMenu()">Home</a>
@@ -165,28 +287,34 @@
     <a href="track.html" onclick="toggleMenu()">Track Order</a>
   </div>
 
-  <div class="page-header">
-    <h1>Our <em>Full Range</em></h1>
-    <p>Hand-crafted with love & the finest ingredients — every bite tells a story.</p>
-  </div>
-
-  <div class="products-inner" style="padding: 0 30px 80px;">
-    <!-- Price Filter from main branch -->
-    <div class="price-filter-wrapper">
-      <div class="price-filter">
-        <label for="priceFilter">Filter by Price</label>
-        <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
-          <option value="all">All Prices</option>
-          <option value="under200">Under ₹200</option>
-          <option value="200to500">₹200 - ₹500</option>
-          <option value="above500">Above ₹500</option>
-        </select>
+  <main class="products-page">
+    <section class="products-hero">
+      <div class="products-hero-bg"></div>
+      <div class="products-hero-orb products-hero-orb-1"></div>
+      <div class="products-hero-content">
+        <h1 class="products-hero-title reveal">Our Full Range<br><em>Hand-picked for You</em></h1>
+        <p class="products-hero-desc reveal reveal-delay-1">Freshly baked with the finest ingredients — every bite tells a story.</p>
       </div>
-    </div>
+    </section>
 
-    <!-- Product grid from feature branch -->
-    <div class="all-products-grid" id="allProductsGrid"></div>
-  </div>
+    <div class="products-inner">
+      <!-- Price Filter -->
+      <div class="price-filter-wrapper reveal scale-in reveal-delay-2">
+        <div class="price-filter">
+          <label for="priceFilter">Filter by Price</label>
+          <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
+            <option value="all">All Prices</option>
+            <option value="under200">Under ₹200</option>
+            <option value="200to500">₹200 - ₹500</option>
+            <option value="above500">Above ₹500</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product grid -->
+      <div class="all-products-grid reveal reveal-delay-3" id="allProductsGrid"></div>
+    </div>
+  </main>
 
   <footer id="contact">
     <div class="footer-inner">
@@ -259,7 +387,9 @@
       if (!container) return;
       container.innerHTML = productsList.map(p => `
         <div class="product-card">
-          <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x260?text=Brownie+Bliss'">
+          <div class="img-wrap">
+            <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x260?text=Brownie+Bliss'">
+          </div>
           <div class="product-info">
             <div class="product-title">${p.name}</div>
             <div class="product-category">${p.category}</div>
@@ -286,6 +416,29 @@
       if (typeof updateCartBadge === 'function') updateCartBadge();
       if (typeof updateThemeIcon === 'function') updateThemeIcon();
     });
+  </script>
+  <button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll back to top of the page">↑</button>
+  <script>
+    /* ── Scroll Reveal ── */
+    const ro = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          ro.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    // Add reveal class to cards once they are rendered
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.product-card:not(.observed)').forEach(card => {
+        card.classList.add('reveal', 'scale-in', 'observed');
+        ro.observe(card);
+      });
+    });
+    observer.observe(document.getElementById('allProductsGrid'), { childList: true });
+
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
   </script>
 </body>
 </html>
