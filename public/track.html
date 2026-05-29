@@ -2,6 +2,345 @@
 <html lang="en">
 
 <head>
+<<<<<<< HEAD
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order - Brownie Bliss</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══════════════════════════════════════════════
+       SCROLL REVEAL ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.from-left  { transform: translateX(-40px); }
+    .reveal.from-right { transform: translateX(40px); }
+    .reveal.scale-in   { transform: scale(0.92) translateY(20px); }
+    .reveal.visible    { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    .track-hero {
+      position: relative;
+      padding: var(--space-16) var(--space-8);
+      background: var(--brown-900);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .track-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
+        linear-gradient(135deg, #1a0905 0%, #2c1208 100%);
+    }
+
+    .track-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .track-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--cream-100);
+      margin-block-end: var(--space-3);
+    }
+
+    .track-hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: rgba(245, 232, 208, 0.72);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════
+       TRACK CONTAINER
+    ═══════════════════════════════════════════════ */
+    .track-main {
+      padding: var(--space-12) var(--space-8) var(--space-20);
+      background: var(--color-surface-2);
+    }
+
+    .track-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-10);
+      box-shadow: var(--shadow-xl);
+      border-top: 4px solid var(--color-gold);
+    }
+
+    .track-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    #orderIdInput {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      color: var(--color-text-1);
+      background: var(--color-surface);
+      transition: all 0.3s ease;
+    }
+    #orderIdInput:focus {
+      outline: none;
+      border-color: var(--color-gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+    }
+
+    #trackError {
+      display: none;
+      background: #ffebee;
+      color: #c62828;
+      padding: 12px 20px;
+      border-radius: 99px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: var(--space-6);
+      text-align: center;
+      border: 1px solid #ffcdd2;
+    }
+    html.dark #trackError {
+      background: rgba(198, 40, 40, 0.15);
+      border-color: rgba(198, 40, 40, 0.3);
+      color: #ff8a80;
+    }
+
+    /* ═══════════════════════════════════════════════
+       TRACKING RESULT
+    ═══════════════════════════════════════════════ */
+    #result {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    #result h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--color-text-1);
+      margin-bottom: var(--space-6);
+      text-align: center;
+    }
+
+    .order-meta {
+      display: flex;
+      justify-content: space-around;
+      background: var(--color-surface);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-8);
+      border: 1px solid var(--color-border);
+    }
+
+    .meta-item {
+      text-align: center;
+    }
+    .meta-label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-2);
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-text-1);
+    }
+
+    /* Horizontal Timeline */
+    .tracking-timeline {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-10);
+      position: relative;
+    }
+    .tracking-timeline::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: var(--color-border);
+      z-index: 0;
+    }
+
+    .timeline-step {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+    }
+
+    .step-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+      background-color: var(--color-card);
+    }
+
+    .timeline-step.completed .step-icon {
+      background: var(--color-gold);
+      border-color: var(--color-gold);
+      color: var(--brown-900);
+    }
+
+    .timeline-step.active .step-icon {
+      background: linear-gradient(135deg, var(--color-gold), #e6c55c);
+      border-color: var(--color-gold);
+      color: var(--brown-900);
+      box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.2);
+      animation: pulseActive 2s infinite;
+    }
+    @keyframes pulseActive {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: var(--color-text-1);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--color-text-2);
+      max-width: 120px;
+    }
+
+    /* Cancelled Alert */
+    #cancelledAlert {
+      background: #fff3e0;
+      color: #e65100;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: var(--space-8);
+      border: 1px solid #ffe0b2;
+    }
+    html.dark #cancelledAlert {
+      background: rgba(230, 81, 0, 0.15);
+      border-color: rgba(230, 81, 0, 0.3);
+      color: #ffb74d;
+    }
+
+    /* Receipt Table */
+    #result h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--color-text-1);
+      margin-bottom: var(--space-4);
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: 8px;
+    }
+
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .receipt-table td {
+      padding: 12px 8px;
+      color: var(--color-text-2);
+      border-bottom: 1px dashed var(--color-border);
+    }
+    .receipt-table tr:last-child td {
+      border-bottom: none;
+    }
+    .receipt-table .text-right {
+      text-align: right;
+    }
+    .receipt-table tfoot {
+      border-top: 2px solid var(--color-border);
+    }
+    .receipt-table tfoot td {
+      padding-top: 16px;
+      font-weight: 700;
+      color: var(--color-text-1);
+      font-size: 1.1rem;
+    }
+    .receipt-table tfoot .text-right {
+      color: var(--color-gold);
+    }
+
+    @media (max-width: 600px) {
+      .tracking-timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding-left: 30px;
+      }
+      .tracking-timeline::before {
+        top: 0;
+        bottom: 0;
+        left: 58px;
+        width: 2px;
+        height: auto;
+      }
+      .timeline-step {
+        flex-direction: row;
+        text-align: left;
+        gap: 20px;
+      }
+      .step-icon {
+        margin-bottom: 0;
+      }
+      .step-desc {
+        max-width: none;
+      }
+    }
+  </style>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) { }
+    })();
+  </script>
+=======
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +361,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="track.css">
 
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
 </head>
 
 <body>
@@ -45,6 +385,73 @@
 
             <a href="products.html">Products</a>
 
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html" class="active">Track Order</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()" aria-label="Open Cart">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Mobile Menu" aria-expanded="false">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION MENU -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="index.html" onclick="toggleMenu()">Home</a>
+    <a href="about.html" onclick="toggleMenu()">About</a>
+    <a href="products.html" onclick="toggleMenu()">Products</a>
+    <a href="index.html#birthday" onclick="toggleMenu()">Birthday Cakes</a>
+    <a href="index.html#feedback" onclick="toggleMenu()">Feedback</a>
+    <a href="favourites.html" onclick="toggleMenu()">Favourites</a>
+    <a href="contact.html" onclick="toggleMenu()">Contact Us</a>
+    <a href="track.html" class="active" onclick="toggleMenu()">Track Order</a>
+  </div>
+
+<<<<<<< HEAD
+  <main>
+    <!-- HERO -->
+    <section class="track-hero">
+      <div class="track-hero-bg"></div>
+      <div class="track-hero-content">
+        <h1 class="track-hero-title reveal">Track Your Order</h1>
+        <p class="track-hero-desc reveal reveal-delay-1">Enter your Order ID below to check the real-time status.</p>
+      </div>
+    </section>
+
+    <!-- TRACK CONTENT -->
+    <section class="track-main">
+      <div class="track-container reveal scale-in reveal-delay-2">
+        <div class="track-input-group">
+          <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
+          <button class="btn btn-primary btn-block" onclick="trackOrder()">Track Order →</button>
+        </div>
+=======
+            <div class="track-input-group">
+                <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
+                <button class="btn btn-primary btn-block" onclick="trackOrder()">Track Order</button>
+            </div>
             <a href="birthday.html">Birthday Cakes</a>
 
            
@@ -333,8 +740,164 @@
         </div>
 
     </section>
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
 
-    <!-- FOOTER -->
+        <div id="trackError"></div>
+
+        <div id="result">
+          <h3>Order <span id="resOrderId"></span></h3>
+
+          <div class="order-meta">
+            <div class="meta-item">
+              <span class="meta-label">Date Placed</span>
+              <div id="resDate" class="meta-value"></div>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Total Amount</span>
+              <div class="meta-value">₹<span id="resTotalTop"></span></div>
+            </div>
+          </div>
+
+          <div class="tracking-timeline" id="trackingTimeline">
+            <div class="timeline-step" id="step-pending">
+              <div class="step-icon">⏳</div>
+              <div class="step-content">
+                <div class="step-title">Order Placed</div>
+                <div class="step-desc">We have received your order</div>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-confirmed">
+              <div class="step-icon">✅</div>
+              <div class="step-content">
+                <div class="step-title">Confirmed</div>
+                <div class="step-desc">Your order is confirmed</div>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-preparing">
+              <div class="step-icon">🧑‍🍳</div>
+              <div class="step-content">
+                <div class="step-title">Preparing</div>
+                <div class="step-desc">Baking your treats</div>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-delivered">
+              <div class="step-icon">🚚</div>
+              <div class="step-content">
+                <div class="step-title">Delivered</div>
+                <div class="step-desc">Enjoy your Bliss!</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="cancelledAlert" style="display: none;">
+            ❌ This order has been cancelled. Please contact support.
+          </div>
+
+          <h4>Order Summary</h4>
+          <table class="receipt-table">
+            <tbody id="resItems"></tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td class="text-right">₹<span id="resTotal"></span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+<<<<<<< HEAD
+  <!-- SHARED COMPONENTS -->
+  <button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll back to top of the page">↑</button>
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+        Order via WhatsApp
+      </button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── Scroll Reveal ── */
+    const ro = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          ro.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  </script>
+=======
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">
+                Order via WhatsApp
+            </button>
+            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
     <footer class="premium-footer">
 
         <div class="footer-grid">
@@ -576,6 +1139,7 @@ function goToProducts(){
 }
 
 </script>
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
 </body>
 
 </html>

@@ -10,6 +10,181 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══════════════════════════════════════════════
+       SCROLL REVEAL ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.from-left  { transform: translateX(-40px); }
+    .reveal.from-right { transform: translateX(40px); }
+    .reveal.scale-in   { transform: scale(0.92) translateY(20px); }
+    .reveal.visible    { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    .fav-hero {
+      position: relative;
+      padding: var(--space-16) var(--space-8);
+      background: var(--brown-900);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .fav-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
+        linear-gradient(135deg, #1a0905 0%, #2c1208 100%);
+    }
+
+    .fav-hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbFloat 7s ease-in-out infinite;
+    }
+    .fav-hero-orb-1 {
+      width: 300px; height: 300px;
+      background: rgba(212, 175, 55, 0.12);
+      top: -40px; left: -40px;
+    }
+    
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(15px, -15px); }
+    }
+
+    .fav-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .fav-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--cream-100);
+      margin-block-end: var(--space-3);
+    }
+    .fav-hero-title em {
+      font-style: italic;
+      color: var(--color-gold);
+    }
+
+    .fav-hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: rgba(245, 232, 208, 0.72);
+    }
+
+    .fav-floating-heart {
+      position: absolute;
+      font-size: 48px;
+      color: rgba(212, 175, 55, 0.15);
+      top: 20%;
+      right: 15%;
+      animation: heartFloat 6s ease-in-out infinite reverse;
+    }
+
+    @keyframes heartFloat {
+      0%, 100% { transform: translateY(0) rotate(-10deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       FAVOURITES CONTENT
+    ═══════════════════════════════════════════════ */
+    .favourites-page {
+      background: var(--color-surface-2);
+      min-height: 50vh;
+      padding-bottom: var(--space-20);
+    }
+
+    .products-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-12) var(--space-8);
+    }
+
+    /* Empty State */
+    .favourites-empty {
+      background: var(--color-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-16) var(--space-8);
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .favourites-empty::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
+    }
+
+    .cart-empty-icon {
+      font-size: 64px;
+      color: var(--color-gold);
+      display: inline-block;
+      margin-bottom: var(--space-4);
+      animation: heartPulse 2s infinite;
+    }
+
+    @keyframes heartPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .favourites-empty h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--color-text-1);
+      margin-bottom: var(--space-3);
+    }
+    .favourites-empty p {
+      color: var(--color-text-2);
+      margin-bottom: var(--space-8);
+      font-size: 1.1rem;
+    }
+
+    .empty-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    /* Group Styling */
+    .favourites-group {
+      margin-bottom: var(--space-16);
+    }
+
+    .favourite-bakeries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-8);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-8);
+    }
+  </style>
   <script>
     (function () {
       try {
@@ -21,76 +196,90 @@
 </head>
 
 <body>
-  <div class="announcement">DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;|&nbsp; HAPPINESS IN EVERY BITE</div>
+  <!-- ANNOUNCEMENT -->
+  <div class="announcement" role="status">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
 
   <header>
     <div class="header-inner">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
       <a href="index.html" class="logo">
         <span class="logo-name">Brownie Bliss</span>
         <span class="logo-sub">Homemade Treats</span>
       </a>
-      <nav>
-        <a href="index.html#home">Home</a>
-        <a href="index.html#products">Products</a>
+      <nav aria-label="Main Navigation">
+        <a href="index.html" >Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
-        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
-        <a href="index.html#contact">Contact</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html" class="active">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html">Contact Us</a>
         <a href="track.html">Track Order</a>
       </nav>
+      
       <div class="header-actions">
-        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-          aria-label="Toggle dark mode" title="Toggle dark mode">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
           <span id="themeIcon">🌙</span>
         </button>
-        <button class="cart-btn" onclick="openCart()">
-          Cart
-          <span class="cart-count" id="cartBadge">0</span>
+        <button class="cart-btn" onclick="openCart()" aria-label="Open Cart">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Mobile Menu" aria-expanded="false">
+          ☰
         </button>
       </div>
     </div>
   </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
+
+  <!-- MOBILE NAVIGATION MENU -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="index.html" onclick="toggleMenu()">Home</a>
+    <a href="about.html" onclick="toggleMenu()">About</a>
+    <a href="products.html" onclick="toggleMenu()">Products</a>
+    <a href="index.html#birthday" onclick="toggleMenu()">Birthday Cakes</a>
+    <a href="index.html#feedback" onclick="toggleMenu()">Feedback</a>
+    <a href="favourites.html" class="active" onclick="toggleMenu()">Favourites</a>
+    <a href="contact.html" onclick="toggleMenu()">Contact Us</a>
+    <a href="track.html" onclick="toggleMenu()">Track Order</a>
+  </div>
+
   <main class="favourites-page">
-    <section class="favourites-hero">
-      <div class="products-inner">
-        <span class="section-label">Saved for later</span>
-        <h1 class="section-title">Your <em>Favourites</em></h1>
-        <p class="favourites-intro">Find your saved bakery and dishes here without searching through the menu again.</p>
+    <section class="fav-hero">
+      <div class="fav-hero-bg"></div>
+      <div class="fav-hero-orb fav-hero-orb-1"></div>
+      <div class="fav-floating-heart">❤️</div>
+      <div class="fav-hero-content">
+        <h1 class="fav-hero-title reveal">Your <em>Saved Treats</em></h1>
+        <p class="fav-hero-desc reveal reveal-delay-1">All your saved bakery and dishes in one place</p>
       </div>
     </section>
 
     <section class="favourites-section">
       <div class="products-inner">
-        <div id="favouritesEmpty" class="favourites-empty">
+        <!-- Empty State (shown if no favourites) -->
+        <div id="favouritesEmpty" class="favourites-empty reveal scale-in">
           <span class="cart-empty-icon">&hearts;</span>
           <h2>No favourites yet</h2>
           <p>Tap the heart on Brownie Bliss or any dish to save it here.</p>
-          <a href="index.html#products" class="hero-cta">Browse Menu &rarr;</a>
+          <div class="empty-actions">
+            <a href="products.html" class="btn btn-primary">Browse Menu &rarr;</a>
+            <a href="index.html" class="btn btn-outline">Go Home</a>
+          </div>
         </div>
 
-        <div class="favourites-group" id="favouriteBakeriesGroup">
-          <div class="section-header">
+        <div class="favourites-group" id="favouriteBakeriesGroup" style="display:none;">
+          <div class="section-header reveal">
             <span class="section-label">Bakery</span>
             <h2 class="section-title">Saved <em>Bakeries</em></h2>
           </div>
-          <div class="favourite-bakeries-grid" id="favouriteBakeriesGrid"></div>
+          <div class="favourite-bakeries-grid reveal reveal-delay-1" id="favouriteBakeriesGrid"></div>
         </div>
 
-        <div class="favourites-group" id="favouriteDishesGroup">
-          <div class="section-header">
+        <div class="favourites-group" id="favouriteDishesGroup" style="display:none;">
+          <div class="section-header reveal">
             <span class="section-label">Dishes</span>
             <h2 class="section-title">Saved <em>Treats</em></h2>
           </div>
-          <div class="products-grid" id="favouriteDishesGrid"></div>
+          <div class="products-grid reveal reveal-delay-1" id="favouriteDishesGrid"></div>
         </div>
       </div>
     </section>
@@ -102,19 +291,18 @@
         <div class="footer-brand">
           <div class="logo">
             <span class="logo-name">Brownie Bliss</span>
-            <span class="logo-sub">Homemade Treats | Happiness in every bite</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
           </div>
-          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-            and cookies in Krishnagiri.</p>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
         </div>
         <div class="footer-col">
           <h4>Navigate</h4>
-          <a href="index.html#home">Home</a>
-          <a href="index.html#products">Our Products</a>
+          <a href="index.html">Home</a>
+          <a href="products.html">Our Products</a>
           <a href="index.html#birthday">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
           <a href="track.html">Track Order</a>
-          <a href="index.html#contact">Contact Us</a>
+          <a href="contact.html">Contact Us</a>
         </div>
         <div class="footer-col">
           <h4>Information</h4>
@@ -126,29 +314,31 @@
           <h4>Get In Touch</h4>
           <a href="tel:08072596340">+91 8072596340</a>
           <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-          <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 Brownie Bliss. All Rights Reserved.</span>
-        <span>Made with love in Krishnagiri</span>
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
       </div>
     </div>
   </footer>
 
+  <button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll back to top of the page">↑</button>
+
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
-      <span class="cart-title">Your Cart</span>
-      <button class="cart-close" onclick="closeCart()">x</button>
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
     </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-footer" id="cartFooter" style="display:none">
       <div class="cart-total">
         <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">Rs. 0</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+      <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">Order via WhatsApp</button>
       <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
     </div>
   </div>
@@ -156,6 +346,18 @@
   <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
+  <script>
+    /* ── Scroll Reveal ── */
+    const ro = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          ro.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  </script>
 </body>
 
 </html>

@@ -12,61 +12,7 @@
   padding: 60px 20px;
 }
 
-/* Background — rich chocolate cake image feel */
-.login-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    url('https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860') center/cover no-repeat,
-    linear-gradient(135deg, #1a0905 0%, #3d1f10 50%, #1a0c06 100%);
-  filter: brightness(0.35) saturate(0.8);
-  z-index: 0;
-}
 
-.login-bg-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 30%, rgba(92, 44, 26, 0.5) 0%, transparent 55%),
-    linear-gradient(to bottom, rgba(26, 9, 5, 0.55), rgba(26, 9, 5, 0.75));
-  z-index: 1;
-}
-
-/* Floating dessert emojis */
-.floats {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.fi {
-  position: absolute;
-  font-size: 32px;
-  opacity: 0.18;
-  animation: floatUp 12s ease-in-out infinite;
-  user-select: none;
-}
-
-.fi-1  { left: 5%;  animation-delay: 0s;    animation-duration: 14s; font-size: 28px; }
-.fi-2  { left: 12%; animation-delay: 2s;    animation-duration: 11s; font-size: 36px; }
-.fi-3  { left: 22%; animation-delay: 5s;    animation-duration: 13s; font-size: 24px; }
-.fi-4  { left: 35%; animation-delay: 1s;    animation-duration: 16s; font-size: 30px; }
-.fi-5  { left: 50%; animation-delay: 3.5s;  animation-duration: 12s; font-size: 26px; }
-.fi-6  { left: 62%; animation-delay: 0.5s;  animation-duration: 15s; font-size: 34px; }
-.fi-7  { left: 72%; animation-delay: 4s;    animation-duration: 10s; font-size: 28px; }
-.fi-8  { left: 82%; animation-delay: 2.5s;  animation-duration: 14s; font-size: 22px; }
-.fi-9  { left: 90%; animation-delay: 6s;    animation-duration: 11s; font-size: 32px; }
-.fi-10 { left: 96%; animation-delay: 1.5s;  animation-duration: 13s; font-size: 26px; }
-
-@keyframes floatUp {
-  0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
-  10%  { opacity: 0.18; }
-  90%  { opacity: 0.18; }
-  100% { transform: translateY(-10vh) rotate(20deg);  opacity: 0; }
-}
 
 /* CENTER */
 .login-center {
@@ -206,7 +152,7 @@
   border: 1px solid var(--cream-dark);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: pink;
+  color: var(--text-dark);
   outline: none;
   border-radius: 2px;
   background: #fdfaf6;
@@ -215,7 +161,7 @@
 
 .field input:focus {
   border-color: var(--gold);
-  background: black;
+  background: var(--white);
 }
 
 .phone-wrap {
@@ -230,8 +176,8 @@
 
 .pcode {
   padding: 13px 14px;
-  background: rgb(154, 154, 153);
-  color: var(--brown-mid);
+  background: var(--cream-dark);
+  color: var(--brown-dark);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -242,37 +188,6 @@
   border: none;
   flex: 1;
   border-radius: 0;
-}
-
-/* GOLD BUTTON */
-.gbtn {
-  width: 100%;
-  padding: 14px;
-  background: var(--gold);
-  color: var(--brown-dark);
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.25s;
-  margin-top: 8px;
-  border-radius: 2px;
-}
-
-.gbtn:hover {
-  background: var(--brown-dark);
-  color: var(--cream);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(26, 9, 5, 0.25);
-}
-
-.gbtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
 }
 
 /* OTP */
@@ -392,33 +307,12 @@
   .card-head h2 { font-size: 24px; }
   .ob { font-size: 18px; }
 }
-html.dark .login-card,
-html.dark .card-body {
-  background: var(--white) !important;
-  color: var(--text-dark) !important;
-}
 
-html.dark .step h3 {
-  color: var(--text-dark) !important;
-}
-
-html.dark .ssub,
-html.dark .field label {
-  color: var(--text-mid) !important;
-}
-
-html.dark .field input {
-  background: var(--cream-dark) !important;
-  color: var(--text-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-html.dark .field input:focus {
-  background: #1a1008 !important;
-  border-color: var(--gold) !important;
-}
-
-html.dark .pcode {
-  background: #2b1a0c !important;
-  color: var(--gold) !important;
+@media (max-width: 400px) {
+  .login-page { padding: 20px 10px; }
+  .card-head { padding: 20px 16px 16px; }
+  .card-body { padding: 16px 16px 20px; }
+  .card-head h2 { font-size: 20px; }
+  .ob { font-size: 16px; height: 40px; }
+  .otp-wrap { gap: 4px; }
 }

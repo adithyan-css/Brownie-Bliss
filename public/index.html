@@ -6,11 +6,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <title>Brownie Bliss — Happiness in Every Bite</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ═══ HOMEPAGE ENHANCEMENT STYLES ═══ */
 
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.from-left  { transform: translateX(-40px); }
+    .reveal.from-right { transform: translateX(40px); }
+    .reveal.scale-in   { transform: scale(0.92) translateY(20px); }
+    .reveal.visible    { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.32s; }
+    .reveal-delay-4 { transition-delay: 0.42s; }
+
+    /* Animated orbs in hero */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      animation: heroOrbFloat 9s ease-in-out infinite;
+    }
+    .hero-orb-1 {
+      width: 380px; height: 380px;
+      background: rgba(212, 175, 55, 0.10);
+      top: -60px; left: -80px;
+    }
+    .hero-orb-2 {
+      width: 280px; height: 280px;
+      background: rgba(92, 44, 26, 0.22);
+      bottom: -40px; right: -40px;
+      animation-delay: -4s;
+    }
+    @keyframes heroOrbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(18px, -18px); }
+    }
+
+    /* Hero badge pill enhancement */
+    .hero-badge {
+      animation: badgeFadeIn 0.8s 0.3s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes badgeFadeIn {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Hero title stagger */
+    .hero-title { animation: heroTitleIn 0.9s 0.45s cubic-bezier(0.16,1,0.3,1) both; }
+    .hero-desc  { animation: heroTitleIn 0.9s 0.6s  cubic-bezier(0.16,1,0.3,1) both; }
+    @keyframes heroTitleIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Values strip items stagger */
+    .value-item {
+      transition: transform 0.3s ease;
+    }
+    .value-item:hover { transform: translateY(-4px); }
+
+    /* Product cards enhanced hover */
+    .product-card {
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.3s ease !important;
+    }
+    .product-card:hover {
+      transform: translateY(-10px) !important;
+      box-shadow: var(--shadow-xl) !important;
+    }
+
+    /* Review cards stagger */
+    .review-card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .review-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Filter tabs pill animation */
+    .filter-tab {
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease !important;
+    }
+    .filter-tab:hover { transform: translateY(-2px); }
+    .filter-tab.active { transform: none; }
+
+    /* Btn enhanced */
+    .btn {
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease !important;
+    }
+    .btn:active { transform: scale(0.97) !important; }
+  </style>
+  
   <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
   <script>
     (function () {
@@ -25,8 +119,7 @@
 <body id="home">
 
   <!-- ANNOUNCEMENT -->
-  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+  <div class="announcement" role="status">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
 
   <!-- HEADER -->
   <header>
@@ -35,40 +128,43 @@
         <span class="logo-name">Brownie Bliss</span>
         <span class="logo-sub">Homemade Treats</span>
       </a>
-      <nav>
-        <a href="index.html#home">Home</a>
+      <nav aria-label="Main Navigation">
+        <a href="index.html" class="active">Home</a>
         <a href="about.html">About</a>
         <a href="products.html">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
-        <a href="#feedback">Feedback</a>
-        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count
-            style="display:none">0</span></a>
-        <a href="index.html#contact">Contact</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
         <a href="contact.html">Contact Us</a>
         <a href="track.html">Track Order</a>
       </nav>
-      <button class="menu-toggle" onclick="toggleMenu()">
-        ☰
-      </button>
+      
       <div class="header-actions">
-        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode"
-          title="Toggle dark mode">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
           <span id="themeIcon">🌙</span>
         </button>
-        <button class="cart-btn" onclick="openCart()">
-          🛒 Cart
-          <span class="cart-count" id="cartBadge">0</span>
+        <button class="cart-btn" onclick="openCart()" aria-label="Open Cart">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Mobile Menu" aria-expanded="false">
+          ☰
         </button>
       </div>
     </div>
   </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html#home">Home</a>
-    <a href="products.html">Products</a>
-    <a href="index.html#birthday">Birthday Cakes</a>
-    <a href="index.html#contact">Contact</a>
-    <a href="track.html">Track Order</a>
+
+  <!-- MOBILE NAVIGATION MENU -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="index.html" class="active" onclick="toggleMenu()">Home</a>
+    <a href="about.html" onclick="toggleMenu()">About</a>
+    <a href="products.html" onclick="toggleMenu()">Products</a>
+    <a href="index.html#birthday" onclick="toggleMenu()">Birthday Cakes</a>
+    <a href="index.html#feedback" onclick="toggleMenu()">Feedback</a>
+    <a href="favourites.html" onclick="toggleMenu()">Favourites</a>
+    <a href="contact.html" onclick="toggleMenu()">Contact Us</a>
+    <a href="track.html" onclick="toggleMenu()">Track Order</a>
   </div>
+
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
@@ -86,55 +182,32 @@
           Freshly Baked <em>Delights</em><br>
           Delivered to You
         </h1>
-
-        <p class="hero-desc">
-          Authentic recipes, traditional methods, the finest ingredients —
-          baked with love and served with care, every single day.
-        </p>
-
-        <a href="#products" class="hero-cta" style="text-decoration: none;">
-          Explore Our Menu &rarr;
-        </a>
-
-        <button class="hero-favourite-btn" type="button" data-fav-type="bakeries" data-fav-id="brownie-bliss"
-          aria-pressed="false" onclick="toggleBakeryFavourite()">
-
-          &#9825; Favourite Bakery
-
-        </button>
-
+        <p class="hero-desc">Authentic recipes, traditional methods, the finest ingredients — baked with love and served with care, every single day.</p>
+        
+        <div class="hero-actions-wrapper" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+          <a href="products.html" class="btn btn-primary" style="text-decoration: none;">
+            Explore Our Menu &rarr;
+          </a>
+          <button class="btn btn-outline" type="button" data-fav-type="bakeries" data-fav-id="brownie-bliss" aria-pressed="false" onclick="toggleBakeryFavourite(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 6px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Favourite Bakery
+          </button>
+        </div>
       </div>
-
-      <div class="hero-visual" data-aos="fade-left">
-
+      
+      <div class="hero-visual">
         <div class="hero-card">
-
-          <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Cake">
-
-          <div class="hero-card-label">
-            🎂 Signature Cakes
-          </div>
-
+          <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Signature Cake styling presentation">
+          <div class="hero-card-label">🎂 Signature Cakes</div>
         </div>
 
         <div class="hero-card">
-
-          <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownies">
-
-          <div class="hero-card-label">
-            🍫 Brownies
-          </div>
-
+          <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Gourmet Chocolate Fudgy Brownies">
+          <div class="hero-card-label">🍫 Brownies</div>
         </div>
 
         <div class="hero-card">
-
-          <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
-
-          <div class="hero-card-label">
-            🍮 Desserts
-          </div>
-
+          <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Assorted Luxury French Patisserie Desserts">
+          <div class="hero-card-label">🍮 Desserts</div>
         </div>
 
       </div>
@@ -147,8 +220,9 @@
     <div class="values-inner" data-aos="fade-up">
 
       <div class="value-item">
-        <span class="value-icon">📖</span>
-
+        <span class="value-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </span>
         <div class="value-text">
           <strong>Authentic Recipes</strong>
           <span>Traditional home-style methods</span>
@@ -156,8 +230,9 @@
       </div>
 
       <div class="value-item">
-        <span class="value-icon">❤️</span>
-
+        <span class="value-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </span>
         <div class="value-text">
           <strong>Baked with Love</strong>
           <span>Every product crafted with passion</span>
@@ -165,8 +240,9 @@
       </div>
 
       <div class="value-item">
-        <span class="value-icon">✅</span>
-
+        <span class="value-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        </span>
         <div class="value-text">
           <strong>Committed to Quality</strong>
           <span>Premium ingredients, always</span>
@@ -174,8 +250,9 @@
       </div>
 
       <div class="value-item">
-        <span class="value-icon">💛</span>
-
+        <span class="value-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </span>
         <div class="value-text">
           <strong>Honestly Priced</strong>
           <span>Best products at fair prices</span>
@@ -184,8 +261,9 @@
 
     </div>
   </div>
+
   <!-- PRODUCTS SECTION -->
-  <section class="products-section" id="products" style="padding: 100px 30px; background: var(--cream);">
+  <section class="products-section" id="products" style="padding: 100px 30px; background: var(--color-surface-2);">
     <div class="products-inner">
       <div class="section-header" data-aos="fade-up">
 
@@ -212,366 +290,256 @@
   </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" data-aos="fade-up"
-  style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
+  <section class="birthday-section" id="birthday" style="padding: 100px 0; background: var(--color-surface-3); min-height: 80vh; overflow: hidden;">
+    <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--color-gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
+      Swipe to see Desserts &nbsp; ⟷
+    </div>
 
-  <!-- Slider Hint -->
-  <div
-    style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
-    Swipe to see Desserts &nbsp; ⟷
-  </div>
-
-  <div class="birthday-slider"
-    style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
-
-    <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div class="birthday-grid">
-        <div class="birthday-visual">
-          <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-            alt="Birthday Cake"
-            style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: clamp(20px, 4vw, 50px); border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Celebrate with Us</span>
-          <div class="birthday-title-row">
-            <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
-            <button id="birthdayFavoriteBtn" class="favorite-btn favorite-btn-inline" type="button"
-              aria-label="Toggle birthday cake favourite" aria-pressed="false"
-              onclick="toggleBirthdayFavourite()">&#9825;</button>
+    <!-- Added an ID hook here for your script to scroll to slides programmatically -->
+    <div class="birthday-slider" id="bdaySliderContainer" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+      
+      <!-- SLIDE 1: BIRTHDAY CAKES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-slide-inner" >
+          <div class="birthday-visual">
+            <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Artesanal layered Birthday Cake decoration" class="featured-img">
           </div>
-          <p
-            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
-            Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and
-            size to get
-            started.
-          </p>
-
-          <div style="margin-bottom: 24px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-              Flavor</label>
-            <div style="display: grid; gap: 10px;" class="responsive-grid">
-              <button class="filter-tab flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">
-                Red Velvet
-              </button>
-
-              <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">
-                Dutch Truffle
-              </button>
-
-              <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Pineapple')">
-                Pineapple
-              </button>
-
-              <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Chocoholic')">
-                Chocoholic
-              </button>
-
-              <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Black Forest')">
-                Black Forest
-              </button>
-
-              <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Cheesecake')">
-                Cheesecake
-              </button>
+          <div class="birthday-card" style="background: var(--color-card); padding: 50px; border-radius: 4px; box-shadow: var(--shadow-md); border-top: 5px solid var(--color-gold);">
+            <span class="section-label">Celebrate with Us</span>
+            <div class="birthday-title-row" style="display: flex; justify-content: space-between; align-items: center;">
+              <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
             </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
-              (kg)</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
-              <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-              <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
-              <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
-              on Cake</label>
-            <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
-              style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
-          </div>
-
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
-                  starts
-                  from</span>
-                <span id="cakePrice"
-                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
-                  850</span>
+            <p style="margin-bottom: 30px; color: var(--color-text-2); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+              Make your special moments unforgettable with our artisanal cakes. Choose your favorite flavor and size to get started.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Select Flavor</label>
+              <div class="filter-options-grid">
+                <button class="filter-tab flavor-btn active" onclick="updateBirthdayCake('Red Velvet', this)">Red Velvet</button>
+                <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Dutch Truffle', this)">Dutch Truffle</button>
+                <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Pineapple', this)">Pineapple</button>
+                <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Chocoholic', this)">Chocoholic</button>
+                <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Black Forest', this)">Black Forest</button>
+                <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Cheesecake', this)">Cheesecake</button>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBirthdayToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Weight (kg)</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-tab" onclick="setCakeWeight('0.5', this)">0.5 kg</button>
+                <button class="filter-tab active" onclick="setCakeWeight('1.0', this)">1.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('1.5', this)">1.5 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('2.0', this)">2.0 kg</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label for="cakeMessage" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Message on Cake</label>
+              <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!" style="width: 100%; padding: 14px; border: 1px solid var(--color-surface-3); outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--color-surface-3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--color-text-2); opacity: 0.7;">Pricing starts from</span>
+                  <span id="cakePrice" style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-900);">₹ 850</span>
+                </div>
+              </div>
+              <div class="action-buttons-grid">
+                <button class="btn btn-outline" onclick="addBirthdayToCart()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Add to Cart
+                </button>
+                <button class="btn btn-primary" onclick="openCheckout()">Order Now &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div class="birthday-grid">
-        <div class="birthday-visual">
-          <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
-            style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Sweet Treats</span>
-          <h2 class="section-title" style="margin-bottom: 20px;">Exquisite <em>Desserts</em></h2>
-          <p
-            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
-            Indulge in our curated collection of fine desserts. From macarons to cheesecakes, every bite is a
-            celebration of flavor and craftsmanship.
-          </p>
-
-          <div style="margin-bottom: 24px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-              Variety</label>
-            <div class="responsive-grid" style="display: grid; gap: 10px;">
-              <button class="filter-tab active">Macarons</button>
-              <button class="filter-tab">Tarts</button>
-              <button class="filter-tab">Pastries</button>
-              <button class="filter-tab">Cupcakes</button>
-              <button class="filter-tab">Mousse</button>
-              <button class="filter-tab">Donuts</button>
-            </div>
+      <!-- SLIDE 2: DESSERTS -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-slide-inner" >
+          <div class="birthday-visual">
+            <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Fine dynamic luxury visual patisserie selection" class="featured-img">
           </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
-              Size</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Box of 2</button>
-              <button class="filter-tab active">Box of 4</button>
-              <button class="filter-tab">Box of 6</button>
-              <button class="filter-tab">Box of 12</button>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special
-              Request</label>
-            <input type="text" placeholder="e.g. Less sugar, Eggless"
-              style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
-          </div>
-
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
-                  starts
-                  from</span>
-                <span
-                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
-                  350</span>
+          <div class="birthday-card" style="background: var(--color-card); padding: 50px; border-radius: 4px; box-shadow: var(--shadow-md); border-top: 5px solid var(--color-gold);">
+            <span class="section-label">Sweet Treats</span>
+            <h2 class="section-title" style="margin-bottom: 20px;">Exquisite <em>Desserts</em></h2>
+            <p style="margin-bottom: 30px; color: var(--color-text-2); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+              Indulge in our curated collection of fine desserts. From macarons to cheesecakes, every bite is a celebration of flavor and craftsmanship.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
+              <div class="filter-options-grid">
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Macarons</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Tarts</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Pastries</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Cupcakes</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Mousse</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Donuts</button>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Box Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-tab" onclick="selectTabStyle(this)">Box of 2</button>
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Box of 4</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Box of 6</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Box of 12</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label aria-label="Special Prep Requests input" style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Special Request</label>
+              <input type="text" placeholder="e.g. Less sugar, Eggless" style="width: 100%; padding: 14px; border: 1px solid var(--color-surface-3); outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--color-surface-3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--color-text-2); opacity: 0.7;">Pricing starts from</span>
+                  <span style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-900);">₹ 350</span>
+                </div>
+              </div>
+              <div class="action-buttons-grid">
+                <button class="btn btn-outline" onclick="addDessertToCart()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Add to Cart
+                </button>
+                <button class="btn btn-primary" onclick="openCheckout()">Order Now &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div class="birthday-grid">
-        <div class="birthday-visual">
-          <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
-            alt="Brownies"
-            style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Fudgy Delights</span>
-          <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Brownies</em></h2>
-          <p
-            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
-            Our brownies are legendary. Fudgy, decadent, and made with the finest Belgian chocolate for an unparalleled
-            cocoa experience.
-          </p>
-
-          <div style="margin-bottom: 24px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-              Flavor</label>
-            <div class="responsive-grid" style="display: grid; gap: 10px;">
-              <button class="filter-tab active">Walnut</button>
-              <button class="filter-tab">Overload</button>
-              <button class="filter-tab">Nutella</button>
-              <button class="filter-tab">Red Velvet</button>
-              <button class="filter-tab">Cookie</button>
-              <button class="filter-tab">Assorted</button>
-            </div>
+      <!-- SLIDE 3: BROWNIES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-slide-inner" >
+          <div class="birthday-visual">
+            <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Belgian Fudge Brownie presentation stacks" class="featured-img">
           </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
-              Size</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Pack of 1</button>
-              <button class="filter-tab active">Pack of 4</button>
-              <button class="filter-tab">Pack of 6</button>
-              <button class="filter-tab">Pack of 12</button>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift
-              Wrap</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab active">Standard</button>
-              <button class="filter-tab">Premium Gold</button>
-            </div>
-          </div>
-
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
-                  starts
-                  from</span>
-                <span
-                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
-                  250</span>
+          <div class="birthday-card" style="background: var(--color-card); padding: 50px; border-radius: 4px; box-shadow: var(--shadow-md); border-top: 5px solid var(--color-gold);">
+            <span class="section-label">Fudgy Delights</span>
+            <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Brownies</em></h2>
+            <p style="margin-bottom: 30px; color: var(--color-text-2); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+              Our brownies are legendary. Fudgy, decadent, and made with the finest Belgian chocolate for an unparalleled cocoa experience.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Select Flavor</label>
+              <div class="filter-options-grid">
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Walnut</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Overload</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Nutella</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Red Velvet</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Cookie</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Assorted</button>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBrownieToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-tab" onclick="selectTabStyle(this)">Pack of 1</button>
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Pack of 4</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Pack of 6</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Pack of 12</button>
+              </div>
+            </div>
+    
+            <div style="margin-bottom: 30px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Gift Wrap</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Standard</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Premium Gold</button>
+              </div>
+            </div>
+    
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--color-surface-3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--color-text-2); opacity: 0.7;">Pricing starts from</span>
+                  <span style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-900);">₹ 250</span>
+                </div>
+              </div>
+              <div class="action-buttons-grid">
+                <button class="btn btn-outline" onclick="addBrownieToCart()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Add to Cart
+                </button>
+                <button class="btn btn-primary" onclick="openCheckout()">Order Now &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 4: COOKIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div
-        style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
-        <div class="birthday-visual">
-          <img id="cookieImg"
-            src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
-            alt="Cookies"
-            style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Freshly Baked</span>
-          <h2 class="section-title" style="margin-bottom: 20px;">Gourmet <em>Cookies</em></h2>
-          <p
-            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
-            Golden, crispy on the edges, and chewy in the middle. Our cookies are packed with premium chocolate chips
-            and baked to perfection.
-          </p>
-
-          <div style="margin-bottom: 24px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-              Variety</label>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
-              <button class="filter-tab active">Choco Chip</button>
-              <button class="filter-tab">Double Choco</button>
-              <button class="filter-tab">Oatmeal Raisin</button>
-              <button class="filter-tab">Almond Biscotti</button>
-              <button class="filter-tab">Red Velvet</button>
-              <button class="filter-tab">Assorted</button>
-            </div>
+      <!-- SLIDE 4: COOKIES -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div class="birthday-slide-inner" >
+          <div class="birthday-visual">
+            <img id="cookieImg" src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg" alt="Thick gourmet chocolate chip bakery cookies close up" class="featured-img">
           </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
-              Size</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Box of 2</button>
-              <button class="filter-tab active">Box of 6</button>
-              <button class="filter-tab">Box of 12</button>
-              <button class="filter-tab">Gift Tin</button>
-            </div>
-          </div>
-
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing starts
-                  from</span>
-                <span
-                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
-                  250</span>
+          <div class="birthday-card" style="background: var(--color-card); padding: 50px; border-radius: 4px; box-shadow: var(--shadow-md); border-top: 5px solid var(--color-gold);">
+            <span class="section-label">Freshly Baked</span>
+            <h2 class="section-title" style="margin-bottom: 20px;">Gourmet <em>Cookies</em></h2>
+            <p style="margin-bottom: 30px; color: var(--color-text-2); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+              Golden, crispy on the edges, and chewy in the middle. Our cookies are packed with premium chocolate chips and baked to perfection.
+            </p>
+    
+            <div style="margin-bottom: 24px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
+              <div class="filter-options-grid">
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Choco Chip</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Double Choco</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Oatmeal Raisin</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Almond Biscotti</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Red Velvet</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Assorted</button>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
+              <div style="display: flex; gap: 15px;">
+                <button class="filter-tab" onclick="selectTabStyle(this)">Box of 2</button>
+                <button class="filter-tab active" onclick="selectTabStyle(this)">Box of 6</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Box of 12</button>
+                <button class="filter-tab" onclick="selectTabStyle(this)">Gift Tin</button>
+              </div>
+            </div>
+    
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--color-surface-3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--color-text-2); opacity: 0.7;">Pricing starts from</span>
+                  <span style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-900);">₹ 250</span>
+                </div>
+              </div>
+              <div class="action-buttons-grid">
+                <button class="btn btn-outline" onclick="addCookieToCart()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Add to Cart
+                </button>
+                <button class="btn btn-primary" onclick="openCheckout()">Order Now &rarr;</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-  </div>
-  </section>
-
-  <!-- Slider Navigation Dots -->
-  <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
-    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
+    <!-- Slider Navigation Dots (Equipped with interactive index event properties) -->
+    <div class="slider-dots" style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+      <button onclick="scrollToSlide(0)" aria-label="Go to Birthday Cake menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-gold); border: none; cursor: pointer;"></button>
+      <button onclick="scrollToSlide(1)" aria-label="Go to Desserts menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-surface-3); border: 1px solid var(--color-gold); cursor: pointer;"></button>
+      <button onclick="scrollToSlide(2)" aria-label="Go to Brownies menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-surface-3); border: 1px solid var(--color-gold); cursor: pointer;"></button>
+      <button onclick="scrollToSlide(3)" aria-label="Go to Cookies menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-surface-3); border: 1px solid var(--color-gold); cursor: pointer;"></button>
     </div>
     <div
       style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
@@ -581,62 +549,51 @@
   </section>
 
   <!-- FEEDBACK & COMPLAINTS SECTION -->
-  <section id="feedback" style="padding: 100px 24px; background: var(--cream);">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="text-align: center; margin-bottom: 60px;">
+  <section id="feedback" class="feedback-section">
+    <div class="feedback-inner">
+      <div class="section-header">
         <span class="section-label">Your Voice Matters</span>
         <h2 class="section-title">Feedback & <em>Complaints</em></h2>
-        <p
-          style="max-width: 600px; margin: 20px auto; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+        <p class="section-desc">
           We strive for perfection in every bite. Share your experience or let us know if something wasn't right.
-
         </p>
       </div>
 
       <div class="feedback-grid">
-        <!-- Feedback Area -->
-        <div
-          style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
-          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a
-            Review</h3>
-          <form
-            onsubmit="event.preventDefault(); const rating = this.querySelector('.star-rating')?.getAttribute('data-rating') || '4'; showToast('Thank you for your ' + rating + '-star feedback! ⭐'); this.reset();">
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
-              <div class="star-rating" data-rating="4" data-inactive-color="var(--cream-dark)"
-                style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream-dark);">★</span>
+        
+        <!-- Feedback Form -->
+        <div class="feedback-card review-card">
+          <h3 class="feedback-card-title">Leave a Review</h3>
+          <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
+            <div class="form-group">
+              <span class="form-label">Rating</span>
+              <div class="star-rating-wrapper">
+                <input type="radio" id="star5" name="review_rating" value="5"><label for="star5">★</label>
+                <input type="radio" id="star4" name="review_rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="review_rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="review_rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="review_rating" value="1" required><label for="star1">★</label>
               </div>
             </div>
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Name</label>
-              <input type="text" placeholder="Your Name" required
-                style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+            <div class="form-group">
+              <label for="feedbackName" class="form-label">Name</label>
+              <input type="text" id="feedbackName" class="form-input" placeholder="Your Name" required>
             </div>
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Message</label>
-              <textarea placeholder="Tell us about your experience..." rows="4" required
-                style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif; resize: none;"></textarea>
+            <div class="form-group">
+              <label for="feedbackMsg" class="form-label">Message</label>
+              <textarea id="feedbackMsg" class="form-input form-textarea" placeholder="Tell us about your experience..." rows="4" required></textarea>
             </div>
-            <button class="hero-cta" type="submit" style="width: 100%; padding: 16px;">Submit Review</button>
+            <button class="btn btn-primary btn-block" type="submit">Submit Review</button>
           </form>
         </div>
 
         <!-- Complaint Area -->
-        <div
-          style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
-          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an
-            Issue</h3>
-          <form
-            onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Subject</label>
-              <select required
-                style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+        <div class="feedback-card complaint-card">
+          <h3 class="feedback-card-title">Report an Issue</h3>
+          <form onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
+            <div class="form-group">
+              <label for="complaintSubject" class="form-label">Subject</label>
+              <select id="complaintSubject" class="form-input" required>
                 <option value="">Select an issue</option>
                 <option value="delivery">Delivery Delay</option>
                 <option value="quality">Food Quality</option>
@@ -644,22 +601,15 @@
                 <option value="other">Other</option>
               </select>
             </div>
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Order
-                ID (Optional)</label>
-              <input type="text" placeholder="e.g. ORD-1234"
-                style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+            <div class="form-group">
+              <label for="complaintOrder" class="form-label">Order ID (Optional)</label>
+              <input type="text" id="complaintOrder" class="form-input" placeholder="e.g. ORD-12345">
             </div>
-            <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Description</label>
-              <textarea placeholder="Describe the problem in detail..." rows="4" required
-                style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif; resize: none;"></textarea>
+            <div class="form-group">
+              <label for="complaintDesc" class="form-label">Description</label>
+              <textarea id="complaintDesc" class="form-input form-textarea" placeholder="Please provide details..." rows="3" required></textarea>
             </div>
-            <button class="hero-cta" type="submit"
-              style="width: 100%; padding: 16px; background: var(--brown-dark); color: var(--white);">Submit
-              Complaint</button>
+            <button class="btn btn-outline btn-block" type="submit">Submit Complaint</button>
           </form>
         </div>
 
@@ -667,22 +617,30 @@
     </div>
   </section>
 
+  <!-- REVIEWS CONTAINER -->
   <section class="bb-reviews">
     <p class="eyebrow">Loved by our customers</p>
     <h2>Sweet Words from <em>Happy Customers</em></h2>
 
     <div class="reviews-grid">
-
-
+      <div class="review-card featured">
+        <span class="featured-badge">Top review</span>
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <div class="stars" aria-label="5 star review rating">★★★★★</div>
+        <p class="review-text">The brownies were unbelievably rich and fresh. You can genuinely feel the homemade touch in every bite. This isn't just food — it's comfort wrapped in chocolate.</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">KS</div>
+          <div>
+            <p class="reviewer-name">Keerthana S.</p>
+            <p class="reviewer-location">Krishnagiri</p>
+          </div>
+        </div>
+      </div>
 
       <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          Ordered a birthday cake and everyone loved it.
-          Beautiful presentation and amazing taste!
-        </p>
-
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <div class="stars" aria-label="5 star review rating">★★★★★</div>
+        <p class="review-text">Ordered a birthday cake and everyone loved it. Beautiful presentation and amazing taste!</p>
         <div class="reviewer">
           <div class="reviewer-avatar">RM</div>
           <div>
@@ -691,14 +649,11 @@
           </div>
         </div>
       </div>
-      <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          One of the best homemade dessert brands here.
-          Fresh, soft, and perfectly balanced sweetness.
-        </p>
 
+      <div class="review-card">
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <div class="stars" aria-label="5 star review rating">★★★★★</div>
+        <p class="review-text">One of the best homemade dessert brands here. Fresh, soft, and perfectly balanced sweetness.</p>
         <div class="reviewer">
           <div class="reviewer-avatar">DR</div>
           <div>
@@ -709,31 +664,22 @@
       </div>
 
       <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          The cookies tasted just like homemade treats from childhood.
-          Soft, fresh and absolutely comforting.
-        </p>
-
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <div class="stars" aria-label="5 star review rating">★★★★★</div>
+        <p class="review-text">The cookies tasted just like homemade treats from childhood. Soft, fresh and absolutely comforting.</p>
         <div class="reviewer">
           <div class="reviewer-avatar">AK</div>
           <div>
             <p class="reviewer-name">Ananya K.</p>
             <p class="reviewer-location">Krishnagiri</p>
           </div>
-
         </div>
       </div>
 
       <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          Brownie Bliss never disappoints.
-          Every dessert feels thoughtfully crafted and beautifully packed.
-        </p>
-
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <div class="stars" aria-label="5 star review rating">★★★★★</div>
+        <p class="review-text">Brownie Bliss never disappoints. Every dessert feels thoughtfully crafted and beautifully packed.</p>
         <div class="reviewer">
           <div class="reviewer-avatar">SP</div>
           <div>
@@ -742,49 +688,14 @@
           </div>
         </div>
       </div>
-
-    </div>
-
-    <h3
-      style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">
-      Share Your Experience</h3>
-    <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love to hear your
-      thoughts and suggestions.</p>
-
-      <button class="hero-cta premium-write-btn" type="submit" onClick="openReviewModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          style="margin-right: 4px;">
-          <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        Write a Review
-      </button>
-
-    <div id="reviewModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onClick="closeReviewModal()">&times;</span>
-
-        <h2>Write a review</h2>
-
-        <form id="reviewForm">
-          <textarea id="reviewText"
-          placeholder="Write your review here..."
-          required></textarea>
-
-          <button type="submit" class="submit-btn">Submit Review</button>
-        </form>
-      </div>
     </div>
     </div>
 
+    <div class="bb-overall">
+      <span class="stars-big">★★★★★</span>
+      <p class="rating-text"><strong>5.0</strong> · 5 reviews · All homemade, all heart</p>
     </div>
   </section>
-
-  <div class="bb-overall">
-    <span class="stars-big">★★★★★</span>
-    <p class="rating-text"><strong>5.0</strong> · 5 reviews · All homemade, all heart</p>
-  </div>
-
 
   <!-- FOOTER -->
   <footer id="contact">
@@ -795,23 +706,16 @@
             <span class="logo-name">Brownie Bliss</span>
             <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
           </div>
-          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-            and cookies in Krishnagiri.</p>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
         </div>
         <div class="footer-col">
           <h4>Navigate</h4>
-          <a href="#home">Home</a>
+          <a href="index.html">Home</a>
           <a href="products.html">Our Products</a>
-          <a href="#birthday">Birthday Cakes</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
-        </div>
-        <div class="footer-col">
-          <h4>Information</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-          <a href="refund-policy.html">Refund Policy</a>
         </div>
         <div class="footer-col">
           <h4>Get In Touch</h4>
@@ -826,15 +730,14 @@
         <span>Made with ❤️ in Krishnagiri</span>
       </div>
     </div>
-
   </footer>
 
-  <!-- SHARED COMPONENTS -->
+  <!-- SHARED COMPONENTS OVERLAYS -->
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-sidebar" id="cartSidebar" role="dialog" aria-modal="true" aria-label="Shopping Cart">
     <div class="cart-header">
       <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
+      <button class="cart-close" onclick="closeCart()" aria-label="Close Shopping Cart">✕</button>
     </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-footer" id="cartFooter" style="display:none">
@@ -842,18 +745,67 @@
         <span class="cart-total-label">Total Amount</span>
         <span class="cart-total-amt" id="cartTotal">₹0</span>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-        Order via WhatsApp
-      </button>
+      <button class="btn btn-whatsapp" onclick="sendToWhatsApp()">Order via WhatsApp</button>
       <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
-  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+  <button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Scroll back to top of the page">↑</button>
+  
+  <!-- SCRIPT INTEGRATION INTERACTIVE COMPLEMENTS -->
+  <script>
+    // Slider pagination dot functionality handler
+    function scrollToSlide(slideIndex) {
+      const container = document.getElementById('bdaySliderContainer');
+      if(container) {
+        const width = container.offsetWidth;
+        container.scrollTo({ left: width * slideIndex, behavior: 'smooth' });
+        
+        // Visual indicator updating hook 
+        const dots = document.querySelectorAll('.slider-dots button');
+        dots.forEach((dot, idx) => {
+          dot.style.background = (idx === slideIndex) ? 'var(--color-gold)' : 'var(--color-surface-3)';
+        });
+      }
+    }
+
+    // Helper functions mapping targeting style parameters dynamically 
+    function selectTabStyle(btnElement) {
+      const siblings = btnElement.parentElement.querySelectorAll('.filter-tab');
+      siblings.forEach(el => el.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+
+    function updateBirthdayCake(flavor, btn) {
+      if(btn) selectTabStyle(btn);
+      // Optional: Add logic to update image or options context dynamically
+    }
+
+    function setCakeWeight(weight, btn) {
+      if(btn) selectTabStyle(btn);
+    }
+  </script>
   <script src="script.js"></script>
+<<<<<<< HEAD
+  <script>
+    /* ── Scroll Reveal ── */
+    (function() {
+      const ro = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            ro.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
+    })();
+  </script>
+=======
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+>>>>>>> f2a6a0368485a0078d8d26ab0a6ad1bef10f7fb2
 </body>
 
 </html>
