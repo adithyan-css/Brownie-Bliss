@@ -695,6 +695,116 @@
       margin-bottom:40px;
     }
 
+    .stats{
+      max-width:1450px;
+      margin:70px auto 0;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:36px 32px;
+      padding:0 20px;
+      align-items:start;
+    }
+
+    .stat-item{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:left;
+      padding-left:10px;
+    }
+
+    .stat-number{
+      color:#fff4e6;
+      font-size:3.1rem;
+      line-height:1.05;
+      letter-spacing:0.02em;
+      margin:0;
+    }
+
+    .stat-number span{
+      font-size:0.45em;
+      vertical-align:text-top;
+      margin-left:4px;
+    }
+
+    .stat-label{
+      color:rgba(255,244,230,0.75);
+      font-size:16px;
+      line-height:1.9;
+      letter-spacing:0.01em;
+      max-width:280px;
+      margin:0;
+    }
+
+    .values{
+      padding:140px 8% 120px;
+    }
+
+    .values .section-title{
+      color:#fff4e6;
+      font-weight:600;
+      margin-bottom:18px;
+    }
+
+    .values .section-title em{
+      color:var(--gold);
+    }
+
+    .values-grid{
+      max-width:1450px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:38px;
+    }
+
+    .value-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .value-icon{
+      font-size:32px;
+      display:inline-flex;
+      margin-bottom:10px;
+    }
+
+    .value-title{
+      color:#fff4e6;
+      font-weight:600;
+      font-size:30px;
+      line-height:1.2;
+      margin:0;
+    }
+
+    .value-desc{
+      color:rgba(255,244,230,0.88);
+      line-height:2.1;
+      font-size:16px;
+      margin:0;
+    }
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .values-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:700px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .values-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
     /* =========================
        LUXURY BANNER
     ========================= */
@@ -964,13 +1074,27 @@
 
     }
 
-  </style>
+    /* =========================
+       DARK THEME SUPPORT
+    ========================= */
 
-</head>
+    html.dark{
+      --dark:#f0e4d0;
+      --brown:#2a140b;
+      --brown2:#caa14a;
+      --light:#140d08;
+      --cream:#f5ede3;
+    }
 
-<body>
+    html.dark body,
+    html.dark .about-section{
+      background:var(--light);
+      color:var(--text-dark);
+    }
 
-  <!-- NAVBAR -->
+    html.dark body::before{
+      opacity:0.03;
+    }
 
 
 
@@ -1144,14 +1268,30 @@
       <div class="stat-number">∞</div>
       <div class="stat-label">Sweet Memories</div>
     </div>
-    <div class="stat-item reveal" style="transition-delay:0.3s">
-      <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
-      <div class="stat-label">Always Fresh, Never Factory</div>
+  
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+        <div class="stat-label">Homemade Recipes</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.1s">
+        <div class="stat-number" style="font-size:40px">Fresh</div>
+        <div class="stat-label">Baked Every Day</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.2s">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Sweet Memories</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.3s">
+        <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+        <div class="stat-label">Always Fresh, Never Factory</div>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- Story Section -->
-  <section class="story">
+  <section class="story story-split">
     <div class="story-img-wrap reveal">
       <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
       <div class="story-img-accent"></div>
@@ -1244,6 +1384,32 @@
     </div>
 
   </section>
+
+  <!-- Quote -->
+  <div class="quote-banner reveal">
+    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
+  </div>
+
+  <!-- Founder -->
+  <section class="founder reveal">
+    <div class="founder-img-placeholder">👩‍🍳</div>
+    <div>
+      <h3 class="founder-name">A.R. Shanmugapriya</h3>
+      <p class="founder-role">Founder & Head Baker</p>
+      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta reveal">
+    <h2 class="cta-title">Ready to Taste the Difference?</h2>
+    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
+    <div class="cta-buttons">
+      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
+      <a href="contact.html" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
 
   <!-- FOOTER -->
 

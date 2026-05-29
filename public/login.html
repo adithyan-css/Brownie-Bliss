@@ -15,6 +15,14 @@
       } catch (_) {}
     })();
   </script>
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('bb_theme') || 'light';
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    } catch (_) {}
+  })();
+</script>
 </head>
 
 <body>

@@ -15,7 +15,7 @@
       try {
         var t = localStorage.getItem('bb_theme') || 'light';
         if (t === 'dark') document.documentElement.classList.add('dark');
-      } catch (_) {}
+      } catch (_) { }
     })();
   </script>
 </head>
@@ -73,11 +73,18 @@
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-pattern"></div>
+
     <div class="hero-content">
-      <div class="hero-text">
-        <span class="hero-badge">Homemade Treats · Happiness in every bite</span>
+
+      <div class="hero-text" data-aos="fade-right">
+
+        <span class="hero-badge">
+          Homemade Treats · Happiness in every bite
+        </span>
+
         <h1 class="hero-title">
-          Freshly Baked <em>Delights</em><br>Delivered to You
+          Freshly Baked <em>Delights</em><br>
+          Delivered to You
         </h1>
         <p class="hero-desc">Authentic recipes, traditional methods, the finest ingredients — baked with love and served with care, every single day.</p>
         
@@ -96,21 +103,26 @@
           <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Signature Cake styling presentation">
           <div class="hero-card-label">🎂 Signature Cakes</div>
         </div>
+
         <div class="hero-card">
           <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Gourmet Chocolate Fudgy Brownies">
           <div class="hero-card-label">🍫 Brownies</div>
         </div>
+
         <div class="hero-card">
           <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Assorted Luxury French Patisserie Desserts">
           <div class="hero-card-label">🍮 Desserts</div>
         </div>
+
       </div>
+
     </div>
   </section>
-
   <!-- VALUES STRIP -->
   <div class="values-strip" id="about">
-    <div class="values-inner">
+
+    <div class="values-inner" data-aos="fade-up">
+
       <div class="value-item">
         <span class="value-icon" aria-hidden="true">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -120,6 +132,7 @@
           <span>Traditional home-style methods</span>
         </div>
       </div>
+
       <div class="value-item">
         <span class="value-icon" aria-hidden="true">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -129,6 +142,7 @@
           <span>Every product crafted with passion</span>
         </div>
       </div>
+
       <div class="value-item">
         <span class="value-icon" aria-hidden="true">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
@@ -138,6 +152,7 @@
           <span>Premium ingredients, always</span>
         </div>
       </div>
+
       <div class="value-item">
         <span class="value-icon" aria-hidden="true">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -147,15 +162,23 @@
           <span>Best products at fair prices</span>
         </div>
       </div>
+
     </div>
   </div>
 
   <!-- PRODUCTS SECTION -->
   <section class="products-section" id="products" style="padding: 100px 30px; background: var(--color-surface-2);">
     <div class="products-inner">
-      <div class="section-header">
-        <span class="section-label">Hand-picked for you</span>
-        <h2 class="section-title">Our <em>Full Range</em></h2>
+      <div class="section-header" data-aos="fade-up">
+
+        <span class="section-label">
+          Hand-picked for you
+        </span>
+
+        <h2 class="section-title">
+          Our <em>Full Range</em>
+        </h2>
+
       </div>
 
       <div class="filter-tabs" style="margin-bottom: 60px;">
@@ -238,6 +261,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <!-- SLIDE 2: DESSERTS -->
       <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
@@ -296,6 +320,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <!-- SLIDE 3: BROWNIES -->
       <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
@@ -357,6 +382,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <!-- SLIDE 4: COOKIES -->
       <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
@@ -410,7 +436,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Slider Navigation Dots (Equipped with interactive index event properties) -->
@@ -420,6 +445,10 @@
       <button onclick="scrollToSlide(2)" aria-label="Go to Brownies menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-surface-3); border: 1px solid var(--color-gold); cursor: pointer;"></button>
       <button onclick="scrollToSlide(3)" aria-label="Go to Cookies menu slide" style="width: 10px; height: 10px; padding:0; border-radius: 50%; background: var(--color-surface-3); border: 1px solid var(--color-gold); cursor: pointer;"></button>
     </div>
+    <div
+      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
+    </div>
+  </div>
 
   </section>
 
@@ -564,6 +593,7 @@
         </div>
       </div>
     </div>
+    </div>
 
     <div class="bb-overall">
       <span class="stars-big">★★★★★</span>
@@ -595,7 +625,8 @@
           <h4>Get In Touch</h4>
           <a href="tel:08072596340">+91 8072596340</a>
           <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram:
+            @brownie_bliss_</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -661,6 +692,7 @@
     }
   </script>
   <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 
 </html>
