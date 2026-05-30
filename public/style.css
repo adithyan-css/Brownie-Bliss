@@ -3149,6 +3149,7 @@ nav a:hover {
 .product-img-wrap {
   position: relative;
   overflow: hidden;
+  height: 220px;
 }
 
 .product-img-wrap img {
@@ -5482,6 +5483,7 @@ nav a:hover {
 .product-img-wrap {
   position: relative;
   overflow: hidden;
+  height: 220px;
 }
 
 .product-img-wrap img {

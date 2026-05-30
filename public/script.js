@@ -218,7 +218,7 @@ function updateCartUI() {
             }
             return `
             <div class="cart-item">
-                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}" width="70" height="70">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
@@ -653,7 +653,7 @@ function filterProducts(category, btn) {
     grid.innerHTML = filtered.map(p => `
         <div class="product-card" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' style="cursor:pointer">
             <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}">
+                <img src="${p.img}" alt="${p.name}" width="300" height="220" loading="lazy">
                 <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
                     type="button"
                     data-fav-type="dishes"
@@ -825,7 +825,7 @@ function renderFavouritesPage() {
     if (bakeryGrid) {
         bakeryGrid.innerHTML = favourites.bakeries.map(bakery => `
             <article class="favourite-bakery-card">
-                <img src="${bakery.img}" alt="${bakery.name}">
+                <img src="${bakery.img}" alt="${bakery.name}" width="190" height="210" loading="lazy">
                 <div class="favourite-bakery-info">
                     <div class="product-category">${bakery.category}</div>
                     <h3>${bakery.name}</h3>
@@ -844,7 +844,7 @@ function renderFavouritesPage() {
         dishesGrid.innerHTML = favourites.dishes.map(dish => `
             <div class="product-card">
                 <div class="product-img-wrap">
-                    <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+                    <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}" width="300" height="220" loading="lazy">
                     <button class="favorite-btn active"
                         type="button"
                         data-fav-type="dishes"
