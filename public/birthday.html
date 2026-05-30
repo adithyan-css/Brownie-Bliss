@@ -220,10 +220,13 @@
                 </div>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
                   Add to Cart 🛒
                 </button>
-                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+
+                <button class="btn-primary"
+                  style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);"
+                  onclick="openCheckout()">
                   Order Now &rarr;
                 </button>
               </div>
@@ -375,15 +378,152 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+  </div>        
+      <!-- SLIDE 5: TODAY'S SPECIAL -->
+      <div class="bday-slide" style="flex: 0 0 100%; scroll-snap-align: start; padding: 0 30px;">
+        <div style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: center;">
+
+          <div class="birthday-visual">
+            <img 
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
+              alt="Luxury Chocolate Celebration Cake"
+              style="width: 100%; height: 550px; object-fit: cover; border-radius: 14px; box-shadow: var(--shadow-lg);">
+          </div>
+
+          <div class="birthday-card"
+            style="background: var(--white); padding: 50px; border-radius: 14px; box-shadow: var(--shadow); border-top: 5px solid #c89b3c; position: relative; overflow: hidden;">
+
+            <div style="
+              position: absolute;
+              top: 18px;
+              right: 18px;
+              background: var(--brown);
+              color: var(--cream);
+              padding: 8px 14px;
+              border-radius: 30px;
+              font-size: 11px;
+              letter-spacing: 1px;
+              text-transform: uppercase;">
+              Limited Edition
+            </div>
+
+            <span style="
+              display:block;
+              font-size:11px;
+              letter-spacing:3px;
+              text-transform:uppercase;
+              color:var(--gold);
+              margin-bottom:12px;">
+              Chef’s Recommendation
+            </span>
+
+            <h2 style="
+              font-family:'Playfair Display', serif;
+              font-size:42px;
+              line-height:1.2;
+              color:var(--brown);
+              margin-bottom:20px;">
+              Midnight Chocolate <em>Luxury Cake</em>
+            </h2>
+
+            <p style="
+              color:var(--text2);
+              font-size:18px;
+              line-height:1.8;
+              margin-bottom:28px;
+              font-family:'Cormorant Garamond', serif;">
+              Crafted with Belgian dark chocolate, silky ganache layers, and edible gold-flake decoration for unforgettable celebrations.
+            </p>
+
+            <div style="
+              display:flex;
+              align-items:center;
+              gap:14px;
+              margin-bottom:30px;
+              padding:16px;
+              background:var(--cream2);
+              border-radius:10px;">
+
+              <div style="
+                width:50px;
+                height:50px;
+                border-radius:50%;
+                background:var(--brown);
+                color:white;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:20px;">
+                ⏰
+              </div>
+
+              <div>
+                <div style="font-size:13px; color:var(--gold); letter-spacing:1px;">
+                  AVAILABLE TODAY ONLY
+                </div>
+
+                <strong style="font-size:18px; color:var(--brown);">
+                  Few Slots Remaining
+                </strong>
+              </div>
+            </div>
+
+            <div style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              margin-bottom:25px;">
+
+              <div>
+                <span style="
+                  display:block;
+                  font-size:12px;
+                  color:var(--text2);
+                  opacity:0.7;">
+                  Starting From
+                </span>
+
+                <span style="
+                  font-family:'Playfair Display', serif;
+                  font-size:34px;
+                  font-weight:700;
+                  color:var(--brown);">
+                  ₹ 1499
+                </span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+
+              <button class="btn-primary"
+                style="padding:16px; font-size:13px;"
+                onclick="addBirthdayToCart()">
+                Add to Cart 🛒
+              </button>
+
+              <button class="btn-primary"
+                style="padding:16px; font-size:13px; background:var(--brown); color:white;"
+                onclick="openCheckout()">
+                Order Now ✨
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
 
     </div>
 
     <!-- Slider Navigation Dots -->
-    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
-      <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
+   <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+     <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
+     <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
+     <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
+     <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
+     <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream3); border: 1px solid var(--gold); cursor: pointer;"></div>
     </div>
 
   </section>
