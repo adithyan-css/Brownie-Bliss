@@ -11,6 +11,7 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminAuth = require('../middlewares/adminAuth');
 const { getStats } = require('./controllers/orderController');
+const nosqlSanitizer = require('./middlewares/sanitize');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 // ─── GLOBAL MIDDLEWARE ──────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
+app.use(nosqlSanitizer);
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────
