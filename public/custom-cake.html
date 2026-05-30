@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Cake Builder - Brownie Bliss</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Add this line if your repo uses a different CSS filename -->
+</head>
+<body>
+    <!-- Copy your repo's existing navigation header here -->
+    
+    <div class="custom-cake-builder">
+        <h1>Custom Cake Builder</h1>
+        
+        <div class="builder-container">
+            <!-- Left Side: Customization Form -->
+            <div class="customization-form">
+                <h2>Design Your Cake</h2>
+                
+                <div class="form-group">
+                    <label for="flavor-select">Base Flavor:</label>
+                    <select id="flavor-select" class="form-control">
+                        <option value="chocolate" data-price="25">Chocolate - $25</option>
+                        <option value="vanilla" data-price="22">Vanilla - $22</option>
+                        <option value="red-velvet" data-price="28">Red Velvet - $28</option>
+                        <option value="blueberry" data-price="30">Blueberry - $30</option>
+                        <option value="vegan-chocolate" data-price="32" class="vegan-option">Vegan Chocolate - $32</option>
+                        <option value="nut-free-chocolate" data-price="27" class="nut-free-option">Nut-Free Chocolate - $27</option>
+                        <option value="seasonal-pumpkin" data-price="35" class="seasonal-option">Seasonal Pumpkin - $35</option>
+                        <option value="premium-truffle" data-price="45" class="premium-option">Premium Truffle - $45</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="filling-select">Filling:</label>
+                    <select id="filling-select" class="form-control">
+                        <option value="none">No Filling</option>
+                        <option value="chocolate-ganache" data-price="5">Chocolate Ganache - +$5</option>
+                        <option value="caramel" data-price="5">Caramel - +$5</option>
+                        <option value="berry-compote" data-price="6">Berry Compote - +$6</option>
+                        <option value="creme-brulee" data-price="7">Crème Brûlée - +$7</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="size-select">Size:</label>
+                    <select id="size-select" class="form-control">
+                        <option value="6-inch" data-price="0">6 Inch (6-8 people)</option>
+                        <option value="8-inch" data-price="10">8 Inch (10-12 people) - +$10</option>
+                        <option value="10-inch" data-price="20">10 Inch (15-20 people) - +$20</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="custom-message">Custom Message (for topper/icing):</label>
+                    <textarea id="custom-message" class="form-control" 
+                              placeholder="Enter your personalized message (max 50 characters)" 
+                              maxlength="50" rows="3"></textarea>
+                    <small id="message-count">0/50 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-filter">Filter by Category:</label>
+                    <select id="category-filter" class="form-control">
+                        <option value="all">All Flavors</option>
+                        <option value="seasonal">Seasonal</option>
+                        <option value="nut-free">Nut-Free</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+                
+                <div class="price-display">
+                    <h3>Total Price: <span id="total-price">$25</span></h3>
+                </div>
+                
+                <button id="add-to-cart-btn" class="btn btn-primary">Add to Cart</button>
+            </div>
+            
+            <!-- Right Side: Dynamic Preview -->
+            <div class="cake-preview">
+                <h2>Preview</h2>
+                <div id="preview-image-container">
+                    <!-- This will update based on selection -->
+                    <img id="cake-preview-image" src="images/chocolate-cake.jpg" alt="Cake Preview">
+                </div>
+                <div id="preview-details">
+                    <p><strong>Flavor:</strong> <span id="preview-flavor">Chocolate</span></p>
+                    <p><strong>Filling:</strong> <span id="preview-filling">None</span></p>
+                    <p><strong>Size:</strong> <span id="preview-size">6 Inch</span></p>
+                    <p><strong>Message:</strong> <span id="preview-message">None</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Copy your repo's existing footer here -->
+    
+    <script src="main.js"></script>
+    <!-- Or whatever your JS filename is -->
+    <script src="custom-cake.js"></script>
+</body>
+</html>

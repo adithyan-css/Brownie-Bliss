@@ -10908,7 +10908,7 @@ html.dark .legal-hero {
 html.dark .legal-card {
   background: var(--white);
   color: var(--text-dark);
-  border-color: #3a2010;
+  border-color: #3a2010; 
 }
 
 html.dark .legal-card h2 {
@@ -10918,4 +10918,168 @@ html.dark .legal-card h2 {
 html.dark .legal-card p,
 html.dark .legal-hero p {
   color: var(--text-mid);
+}
+
+/* === CUSTOM CAKE BUILDER STYLES === */
+.custom-cake-builder {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.custom-cake-builder h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #4a3728;
+}
+
+.builder-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+@media (max-width: 768px) {
+    .builder-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.customization-form {
+    background: #f9f5f0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.customization-form h2 {
+    color: #4a3728;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8b4513;
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+#message-count {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.price-display {
+    background: #4a3728;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+    text-align: center;
+}
+
+.price-display h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#total-price {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #8b4513;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #6b3410;
+}
+
+.cake-preview {
+    background: #f9f5f0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cake-preview h2 {
+    color: #4a3728;
+    margin-bottom: 20px;
+}
+
+#preview-image-container {
+    width: 100%;
+    height: 300px;
+    background: #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#cake-preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+#preview-details p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+#preview-details strong {
+    color: #4a3728;
+}
+
+/* Category badges */
+.vegan-option::after {
+    content: " 🌱 Vegan";
+}
+
+.nut-free-option::after {
+    content: " 🌰 Nut-Free";
+}
+
+.seasonal-option::after {
+    content: " 🍂 Seasonal";
+}
+
+.premium-option::after {
+    content: " ⭐ Premium";
 }
