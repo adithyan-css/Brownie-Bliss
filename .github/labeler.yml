@@ -1,0 +1,24 @@
+# Mappings of label names to glob patterns matching changed files
+
+backend:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'api/**/*'
+        - 'middlewares/**/*'
+
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'public/**/*'
+
+devops:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.github/**/*'
+        - 'vercel.json'
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '*.md'
+        - 'docs/**/*'
