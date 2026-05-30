@@ -5,7 +5,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Brownie Bliss</title>
-  <meta name="description" content="Learn the story behind Brownie Bliss — handcrafted brownies, cakes, and desserts baked with love in Krishnagiri.">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
+  </script>
+</head>
+<body>
+<!-- ANNOUNCEMENT -->
+<div class="announcement">
+  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES
+  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <a href="index.html" class="logo">
+      <span class="logo-name">Brownie Bliss</span>
+      <span class="logo-sub">Homemade Treats</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="products.html">Products</a>
+      <a href="birthday.html">Birthday Cakes</a>
+      <a href="favourites.html">Favourites</a>
+      <a href="contact.html">Contact</a>
+      <a href="track.html">Track Order</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+        aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Cart
+        <span class="cart-count" id="cartBadge">0</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="index.html#products">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="favourites.html">Favourites</a>
+  <a href="index.html#contact">Contact</a>
+  <a href="track.html">Track Order</a>
+</div>
+<!-- ABOUT SECTION -->
+ <link rel="stylesheet" href="style.css">
+<section class="about-section">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -14,113 +69,906 @@
     (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
   </script>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    /* =============================================
-       ABOUT PAGE — scoped styles
-    ============================================= */
 
-    /* HERO */
-    .about-hero {
-      min-height: 88vh;
-      display: flex;
-      align-items: center;
-      padding: 100px 8% 80px;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --dark:#2d120d;
+      --brown:#4a1f14;
+      --brown2:#5b2417;
+      --gold:#d4a537;
+      --cream:#f5ede3;
+      --light:#fffaf4;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:var(--light);
+      overflow-x:hidden;
+      color:#2d120d;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity:0.04;
+      pointer-events:none;
+      z-index:9999;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    header{
+      position:fixed;
+      width:100%;
+      top:0;
+      z-index:1000;
+
+      backdrop-filter:blur(18px);
+
       background:
-        linear-gradient(rgba(45,18,13,0.88), rgba(45,18,13,0.92)),
-        url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      overflow: hidden;
+      rgba(255,250,244,0.92);
+
+      border-bottom:
+      1px solid rgba(0,0,0,0.05);
     }
 
-    .about-hero-wrapper {
-      max-width: 1300px;
-      margin: auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 80px;
-      align-items: center;
+    .navbar{
+      max-width:1450px;
+      margin:auto;
+
+      padding:10px 60px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    .about-hero-tag {
-      display: inline-block;
-      border: 1px solid rgba(212,175,55,0.5);
-      color: var(--gold);
-      padding: 10px 20px;
-      letter-spacing: 4px;
-      font-size: 10px;
-      font-family: 'DM Sans', sans-serif;
-      text-transform: uppercase;
-      margin-bottom: 28px;
+    .logo{
+      text-decoration:none;
     }
 
-    .about-hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(44px, 6vw, 68px);
-      line-height: 1.08;
-      color: var(--cream);
-      margin-bottom: 28px;
+    .logo h1{
+      font-size:34px;
+      color:var(--dark);
+      font-family:'Cormorant Garamond',serif;
+      line-height:1;
     }
 
-    .about-hero-title span {
-      color: var(--gold);
-      font-style: italic;
+    .logo span{
+      color:var(--gold);
+      font-size:9px;
+      letter-spacing:5px;
     }
 
-    .about-hero-subtitle {
-      color: rgba(243,228,210,0.85);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 17px;
-      line-height: 1.9;
-      max-width: 560px;
-      margin-bottom: 40px;
+    nav{
+      display:flex;
+      gap:38px;
     }
 
-    .about-hero-btns {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
+    nav a{
+      text-decoration:none;
+      color:var(--dark);
+      font-size:14px;
+      font-weight:500;
+      letter-spacing:1px;
+      position:relative;
+      transition:0.4s ease;
     }
 
-    .about-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      padding: 14px 34px;
-      background: var(--gold);
-      color: #2d120d;
-      text-decoration: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
+    nav a::after{
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:-8px;
+      width:0%;
+      height:2px;
+      background:var(--gold);
+      transition:0.4s ease;
     }
 
-    .about-btn-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(212,175,55,0.35);
+    nav a:hover{
+      color:var(--gold);
     }
 
-    .about-btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      padding: 14px 34px;
-      background: transparent;
-      border: 1px solid rgba(212,175,55,0.4);
-      color: var(--cream);
-      text-decoration: none;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
+    nav a:hover::after{
+      width:100%;
     }
 
-    .about-btn-secondary:hover {
-      background: rgba(255,255,255,0.07);
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero{
+
+      min-height:100vh;
+
+      display:flex;
+      align-items:center;
+
+      padding:170px 8% 120px;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.88),
+      rgba(45,18,13,0.92)
+      ),
+
+      url('https://images.unsplash.com/photo-1519864600265-abb23847ef2c?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      width:100%;
+
+      display:grid;
+
+      grid-template-columns:1.1fr 1fr;
+
+      gap:90px;
+
+      align-items:center;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-tag{
+
+      display:inline-block;
+
+      border:
+      1px solid rgba(212,165,55,0.5);
+
+      color:var(--gold);
+
+      padding:14px 22px;
+
+      letter-spacing:4px;
+
+      font-size:11px;
+
+      margin-bottom:35px;
+    }
+
+    .hero-title{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:70px;
+
+      line-height:1.05;
+      
+       max-width:600px;
+
+      color:var(--cream);
+
+      margin-bottom:35px;
+    }
+
+    .hero-title span{
+      color:var(--gold);
+      font-style:italic;
+    }
+
+    .hero-subtitle{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      max-width:650px;
+
+      margin-bottom:45px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:20px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+
+      text-decoration:none;
+
+      display:inline-flex;
+
+      align-items:center;
+
+      justify-content:center;
+    }
+
+    .primary-btn{
+
+      padding:20px 42px;
+
+      background:var(--gold);
+
+      color:#2d120d;
+
+      border:none;
+
+      font-weight:600;
+
+      letter-spacing:2px;
+
+      transition:0.4s ease;
+    }
+
+    .primary-btn:hover{
+      transform:translateY(-5px);
+      box-shadow:0 15px 35px rgba(212,165,55,0.3);
+    }
+
+    .secondary-btn{
+
+      padding:20px 42px;
+
+      background:transparent;
+
+      border:
+      1px solid rgba(212,165,55,0.4);
+
+      color:var(--cream);
+
+      transition:0.4s ease;
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.08);
+    }
+
+    /* HERO IMAGES */
+
+    .hero-images{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .large-card{
+      grid-column:span 2;
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.35);
+
+      transition:0.6s ease;
+    }
+
+    .large-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .large-card img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+    }
+
+    .card-label{
+      padding:20px;
+
+      background:
+      linear-gradient(
+      90deg,
+      rgba(74,31,20,0.95),
+      rgba(91,36,23,0.85)
+      );
+
+      color:var(--cream);
+
+      font-weight:600;
+    }
+
+    .small-card{
+
+      background:#fff;
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.25);
+
+      transition:0.6s ease;
+    }
+
+    .small-card:hover{
+      transform:translateY(-10px);
+    }
+
+    .small-card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    /* =========================
+       PREMIUM FEATURES
+    ========================= */
+
+    .premium-features{
+
+      padding:110px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #fff7f0 0%,
+      #f8ede2 100%
+      );
+
+      position:relative;
+
+      overflow:hidden;
+    }
+
+    .premium-features::before{
+
+      content:'';
+
+      position:absolute;
+
+      width:700px;
+      height:700px;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.08),
+      transparent 70%
+      );
+
+      top:-300px;
+      right:-250px;
+    }
+
+    .premium-features-wrapper{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(4,1fr);
+
+      gap:35px;
+
+      position:relative;
+      z-index:2;
+    }
+
+    .premium-feature-card{
+
+      background:white;
+
+      border-radius:30px;
+
+      padding:45px 35px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:
+      transform 0.6s ease,
+      box-shadow 0.6s ease;
+
+      border:
+      1px solid rgba(212,165,55,0.08);
+
+      box-shadow:
+      0 20px 45px rgba(0,0,0,0.06);
+    }
+
+    .premium-feature-card:hover{
+
+      transform:
+      translateY(-15px);
+
+      box-shadow:
+      0 35px 70px rgba(0,0,0,0.12);
+    }
+
+    .feature-glow{
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      radial-gradient(
+      circle,
+      rgba(212,165,55,0.14),
+      transparent 70%
+      );
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .premium-icon{
+
+      width:75px;
+      height:75px;
+
+      border-radius:22px;
+
+      background:
+      linear-gradient(
+      135deg,
+      #d4a537,
+      #f1c96b
+      );
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:32px;
+
+      margin-bottom:28px;
+
+      box-shadow:
+      0 15px 30px rgba(212,165,55,0.25);
+    }
+
+    .premium-feature-card h3{
+
+      font-size:30px;
+
+      color:#2d120d;
+
+      margin-bottom:18px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .premium-feature-card p{
+
+      color:#6e4c42;
+
+      line-height:2;
+
+      font-size:15px;
+    }
+
+    /* =========================
+       STORY
+    ========================= */
+
+    .story{
+
+      padding:160px 8%;
+
+      background:var(--light);
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:90px;
+    }
+
+    .section-title span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:12px;
+    }
+
+    .section-title h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:82px;
+
+      margin-top:20px;
+
+      color:var(--dark);
+    }
+
+    .section-title h2 em{
+      color:var(--brown2);
+      font-style:italic;
+    }
+
+    .story-grid{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:repeat(3,1fr);
+
+      gap:35px;
+    }
+
+    .story-card{
+
+      background:white;
+
+      border-radius:28px;
+
+      padding:55px 45px;
+
+      position:relative;
+
+      overflow:hidden;
+
+      transition:0.6s ease;
+
+      box-shadow:
+      0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    .story-card::before{
+      content:'';
+
+      position:absolute;
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:
+      rgba(212,165,55,0.08);
+
+      top:-100px;
+      right:-100px;
+    }
+
+    .story-card:hover{
+      transform:translateY(-14px);
+
+      box-shadow:
+      0 30px 60px rgba(0,0,0,0.12);
+    }
+
+    .story-number{
+
+      font-size:60px;
+
+      color:rgba(212,165,55,0.25);
+
+      font-family:'Cormorant Garamond',serif;
+
+      margin-bottom:25px;
+    }
+
+    .story-card h3{
+
+      font-size:40px;
+
+      color:var(--dark);
+
+      margin-bottom:22px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .story-card p{
+
+      color:#6d4b42;
+
+      line-height:2;
+
+      font-size:16px;
+    }
+
+    /* =========================
+       EXPERIENCE
+    ========================= */
+
+    .experience{
+
+      padding:170px 8%;
+
+      background:
+      linear-gradient(
+      135deg,
+      #4a1f14,
+      #2d120d
+      );
+    }
+
+    .experience-box{
+
+      max-width:1450px;
+
+      margin:auto;
+
+      display:grid;
+
+      grid-template-columns:1fr 1fr;
+
+      border-radius:35px;
+
+      overflow:hidden;
+
+      background:
+      rgba(255,255,255,0.04);
+
+      backdrop-filter:blur(14px);
+
+      box-shadow:
+      0 25px 60px rgba(0,0,0,0.3);
+    }
+
+    .experience-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .experience-content{
+
+      padding:90px 70px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .experience-content h3{
+
+      font-size:72px;
+
+      color:var(--cream);
+
+      line-height:1.1;
+
+      margin-bottom:30px;
+
+      font-family:'Cormorant Garamond',serif;
+    }
+
+    .experience-content p{
+
+      color:#f2dfcf;
+
+      line-height:2;
+
+      font-size:17px;
+
+      margin-bottom:40px;
+    }
+
+    .stats{
+      max-width:1450px;
+      margin:70px auto 0;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:36px 32px;
+      padding:0 20px;
+      align-items:start;
+    }
+
+    .stat-item{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:left;
+      padding-left:10px;
+    }
+
+    .stat-number{
+      color:#fff4e6;
+      font-size:3.1rem;
+      line-height:1.05;
+      letter-spacing:0.02em;
+      margin:0;
+    }
+
+    .stat-number span{
+      font-size:0.45em;
+      vertical-align:text-top;
+      margin-left:4px;
+    }
+
+    .stat-label{
+      color:rgba(255,244,230,0.75);
+      font-size:16px;
+      line-height:1.9;
+      letter-spacing:0.01em;
+      max-width:280px;
+      margin:0;
+    }
+
+    .values{
+      padding:140px 8% 120px;
+    }
+
+    .values .section-title{
+      color:#fff4e6;
+      font-weight:600;
+      margin-bottom:18px;
+    }
+
+    .values .section-title em{
+      color:var(--gold);
+    }
+
+    .values-grid{
+      max-width:1450px;
+      margin:auto;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:38px;
+    }
+
+    .value-card{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .value-icon{
+      font-size:32px;
+      display:inline-flex;
+      margin-bottom:10px;
+    }
+
+    .value-title{
+      color:#fff4e6;
+      font-weight:600;
+      font-size:30px;
+      line-height:1.2;
+      margin:0;
+    }
+
+    .value-desc{
+      color:rgba(255,244,230,0.88);
+      line-height:2.1;
+      font-size:16px;
+      margin:0;
+    }
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .values-grid{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:700px){
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .values-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* =========================
+       LUXURY BANNER
+    ========================= */
+
+    .luxury-banner{
+
+      position:relative;
+
+      height:85vh;
+
+      background:
+      url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      overflow:hidden;
+    }
+
+    .luxury-overlay{
+
+      position:absolute;
+      inset:0;
+
+      background:
+      linear-gradient(
+      rgba(45,18,13,0.72),
+      rgba(45,18,13,0.72)
+      );
+
+      backdrop-filter:blur(2px);
+    }
+
+    .luxury-content{
+
+      position:relative;
+      z-index:2;
+
+      text-align:center;
+
+      max-width:1000px;
+
+      padding:0 20px;
+    }
+
+    .luxury-content span{
+
+      color:var(--gold);
+
+      letter-spacing:5px;
+
+      font-size:13px;
+
+      text-transform:uppercase;
+    }
+
+    .luxury-content h2{
+
+      font-family:'Cormorant Garamond',serif;
+
+      font-size:90px;
+
+      color:white;
+
+      line-height:1.1;
+
+      margin:30px 0;
+    }
+
+    .luxury-content p{
+
+      color:#f3e4d2;
+
+      font-size:22px;
+
+      line-height:2;
+
+      margin-bottom:45px;
     }
 
     /* HERO IMAGES */
@@ -695,56 +1543,574 @@
       color:var(--gold);
     }
 
+    /* =========================
+       ADDITIONAL PREMIUM STYLES FOR ABOUT PAGE
+    ========================= */
+    .story-hero {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 100px 8%;
+      min-height: auto !important;
+      background: linear-gradient(rgba(45,18,13,0.92), rgba(45,18,13,0.96)) !important;
+    }
+    
+    .story-hero .hero-left {
+      text-align: left;
+    }
+    
+    .story-hero .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+    
+    .story-hero .hero-body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #f3e4d2 !important;
+      margin-bottom: 0;
+    }
+    
+    .story-hero .hero-right {
+      position: relative;
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+    }
+    
+    .story-hero .hero-right img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .story-hero .hero-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(45,18,13,0.6), transparent);
+      pointer-events: none;
+    }
+    
+    .story-hero .hero-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 8px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .story-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 120px 8%;
+    }
+    
+    .story-img-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    }
+    
+    .story-img-wrap img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .story-img-accent {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--gold);
+      margin: 15px;
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    
+    .story-quote {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      background: rgba(45, 18, 13, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--cream);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border: 1px solid rgba(212, 165, 55, 0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .story-text {
+      text-align: left;
+    }
+    
+    .story-text .section-eyebrow {
+      color: var(--gold);
+      letter-spacing: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .story-text .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      color: var(--dark);
+      margin-bottom: 24px;
+      line-height: 1.15;
+      text-align: left;
+    }
+    
+    .story-text .section-title em {
+      color: var(--brown2);
+      font-style: italic;
+    }
+    
+    .story-para {
+      color: #6d4b42;
+      line-height: 1.8;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .story-para:last-child {
+      margin-bottom: 0;
+    }
+    
+    .values {
+      background: linear-gradient(135deg, #4a1f14, #2d120d) !important;
+      padding: 120px 8% !important;
+    }
+    
+    .values .section-eyebrow {
+      color: var(--gold);
+      letter-spacing: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+      text-align: center;
+    }
+    
+    .values .section-title {
+      color: #fff4e6 !important;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .values .section-title em {
+      color: var(--gold) !important;
+      font-style: italic;
+    }
+    
+    .values-grid {
+      max-width: 1450px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    
+    .value-card {
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(212, 165, 55, 0.1) !important;
+      padding: 40px 30px !important;
+      border-radius: 24px !important;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.4s ease;
+    }
+    
+    .value-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(212, 165, 55, 0.25) !important;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .value-icon {
+      font-size: 36px;
+      display: inline-flex;
+      margin-bottom: 8px;
+    }
+    
+    .value-title {
+      color: #fff4e6 !important;
+      font-weight: 600;
+      font-size: 26px;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    
+    .value-desc {
+      color: rgba(255, 244, 230, 0.8) !important;
+      line-height: 1.8;
+      font-size: 15px;
+      margin: 0;
+    }
+    
+    .quote-banner {
+      background: var(--brown);
+      padding: 100px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 120px rgba(212, 175, 55, 0.08);
+      margin: 80px 0;
+    }
+    
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      line-height: 1.4;
+      color: var(--cream) !important;
+      font-style: italic;
+      max-width: 1000px;
+      margin: 0 auto 20px;
+    }
+    
+    .quote-attr {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--gold) !important;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    
+    .founder {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 120px auto;
+      padding: 60px;
+      background: white;
+      border-radius: 35px;
+      align-items: center;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(212, 165, 55, 0.08);
+    }
+    
+    .founder-img-placeholder {
+      width: 240px;
+      height: 240px;
+      background: var(--cream);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 15px 30px rgba(212, 165, 55, 0.15);
+    }
+    
+    .founder-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      color: var(--dark) !important;
+      margin-bottom: 8px;
+    }
+    
+    .founder-role {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--gold) !important;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    
+    .founder-bio {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #6e4c42 !important;
+    }
+    
+    .cta {
+      text-align: center;
+      padding: 100px 30px;
+      background: linear-gradient(135deg, #fff7f0 0%, #f8ede2 100%);
+      border-radius: 35px;
+      max-width: 1450px;
+      margin: 120px auto;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(212, 165, 55, 0.05);
+    }
+    
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      color: var(--dark) !important;
+      margin-bottom: 16px;
+    }
+    
+    .cta-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      color: #6e4c42 !important;
+      margin-bottom: 40px;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+    
+    .btn-dark {
+      padding: 18px 36px;
+      background: var(--brown);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: 0.3s ease;
+      box-shadow: 0 10px 20px rgba(74, 31, 20, 0.15);
+    }
+    
+    .btn-dark:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(212, 165, 55, 0.2);
+    }
+    
+    .btn-outline {
+      padding: 18px 36px;
+      background: transparent;
+      border: 1px solid var(--brown);
+      color: var(--brown);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: 0.3s ease;
+    }
+    
+    .btn-outline:hover {
+      background: rgba(74, 31, 20, 0.05);
+      transform: translateY(-3px);
+    }
+
+    /* RESPONSIVE UPDATES */
+    @media(max-width:900px){
+      .story-hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        min-height: auto !important;
+        padding: 80px 20px;
+      }
+      .story-hero .hero-right img {
+        height: 300px;
+      }
+      .story-split {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 20px;
+      }
+      .story-img-wrap img {
+        height: 350px;
+      }
+      .story-text .section-title {
+        font-size: 40px;
+      }
+      .values {
+        padding: 80px 20px !important;
+      }
+      .values .section-title {
+        font-size: 40px;
+        margin-bottom: 40px;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .founder {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 40px 20px;
+        margin: 60px 20px;
+        gap: 30px;
+      }
+      .founder-img-placeholder {
+        margin: 0 auto;
+      }
+      .founder-name {
+        font-size: 32px;
+      }
+      .cta {
+        margin: 60px 20px;
+        padding: 60px 20px;
+      }
+      .cta-title {
+        font-size: 36px;
+      }
+      .cta-sub {
+        font-size: 16px;
+      }
+      .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* DARK MODE STYLES */
+    html.dark .story-split {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+    }
+    html.dark .story-text .section-title,
+    html.dark .founder-name,
+    html.dark .cta-title,
+    html.dark .founder-bio,
+    html.dark .cta-sub {
+      color: var(--text-dark) !important;
+    }
+    html.dark .founder {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+      border-color: #3a2010 !important;
+    }
+    html.dark .founder-img-placeholder {
+      background: #2a140b !important;
+      border-color: var(--gold) !important;
+    }
+    html.dark .cta {
+      background: linear-gradient(135deg,#1a1008 0%,#221508 100%) !important;
+      border-color: #3a2010 !important;
+    }
+    html.dark .btn-dark {
+      background: var(--gold) !important;
+      color: var(--dark) !important;
+    }
+    html.dark .btn-outline {
+      border-color: var(--gold) !important;
+      color: var(--gold) !important;
+    }
+    html.dark .btn-outline:hover {
+      background: rgba(212, 165, 55, 0.08) !important;
+    }
   </style>
-</head>
 
-<body>
+  <!-- HERO -->
 
-<!-- ANNOUNCEMENT -->
-<div class="announcement">
-  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES &amp; COOKIES
-  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
-</div>
+  <section class="hero">
 
-<!-- HEADER / NAVBAR -->
-<header>
-  <div class="header-inner">
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <a href="index.html" class="logo">
-      <span class="logo-name">Brownie Bliss</span>
-      <span class="logo-sub">Homemade Treats</span>
-    </a>
+    <div class="hero-wrapper">
 
-    <nav>
-      <a href="index.html#home">Home</a>
-      <a href="about.html">About</a>
-      <a href="products.html">Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
-      <a href="favourites.html">Favourites</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="track.html">Track Order</a>
-    </nav>
+      <div>
 
-    <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
-    </div>
+        <div class="hero-tag">
+          HOMEMADE TREATS • HAPPINESS IN EVERY BITE
+        </div>
 
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="index.html#home">Home</a>
-      <a href="about.html">About</a>
-      <a href="products.html">Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
-      <a href="favourites.html">Favourites</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="track.html">Track Order</a>
+        <h1 class="hero-title">
+          Freshly Baked
+          <span>Delights</span>
+          Delivered to You
+        </h1>
+
+        <p class="hero-subtitle">
+          Authentic recipes, traditional methods,
+          the finest ingredients — baked with love
+          and served with care, every single day.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="products.html" class="primary-btn">
+            EXPLORE OUR MENU →
+          </a>
+
+          <a href="favourites.html" class="secondary-btn">
+            ♡ FAVOURITE BAKERY
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-images">
+
+        <div class="large-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
+            alt="Cake"
+          >
+
+          <div class="card-label">
+            🍰 Signature Cakes
+          </div>
+
+        </div>
+
+        <div class="small-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200&auto=format&fit=crop"
+            alt="Brownies"
+          >
+
+          <div class="card-label">
+            🍫 Brownies
+          </div>
+
+        </div>
+
+        <div class="small-card">
+
+          <img
+            src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1200&auto=format&fit=crop"
+            alt="Desserts"
+          >
+
+          <div class="card-label">
+            ☕ Desserts
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   </div>
 </header>
@@ -786,7 +2152,7 @@
     </section>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero story-hero">
     <div class="hero-left">
       <p class="hero-eyebrow">Our Story</p>
       <h1 class="hero-title">More Than Desserts —<br><em>Moments Made Sweet</em></h1>
@@ -859,36 +2225,35 @@
           DISCOVER MORE →
         </a>
       </div>
-    
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-item reveal">
-      <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
-      <div class="stat-label">Homemade Recipes</div>
     </div>
-    <div class="stat-item reveal" style="transition-delay:0.1s">
-      <div class="stat-number" style="font-size:40px">Fresh</div>
-      <div class="stat-label">Baked Every Day</div>
+  
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="count" data-target="100">0</span><span>%</span></div>
+        <div class="stat-label">Homemade Recipes</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.1s">
+        <div class="stat-number" style="font-size:40px">Fresh</div>
+        <div class="stat-label">Baked Every Day</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.2s">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Sweet Memories</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay:0.3s">
+        <div class="stat-number" style="font-size:36px">Small<br><span>Batches</span></div>
+        <div class="stat-label">Always Fresh, Never Factory</div>
+      </div>
     </div>
-    <div class="about-story-card">
-      <div class="about-story-number">02</div>
-      <h3>Handcrafted Daily</h3>
-      <p>Our cakes and brownies are baked fresh daily in small batches for authentic luxury and homemade warmth.</p>
-    </div>
-    <div class="about-story-card">
-      <div class="about-story-number">03</div>
-      <h3>Elegant Presentation</h3>
-      <p>From luxury celebration cakes to handcrafted brownies, every dessert is designed beautifully.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- STATS -->
-<section class="about-stats">
-  <div class="about-stats-grid">
-    <div class="about-stat-item">
-      <div class="about-stat-number">100%</div>
-      <div class="about-stat-label">Homemade Recipes</div>
+  <!-- Story Section -->
+  <section class="story story-split">
+    <div class="story-img-wrap reveal">
+      <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Brownie Bliss baking" />
+      <div class="story-img-accent"></div>
+      <div class="story-quote">✦ Passion in Every Bite</div>
     </div>
     <div class="about-stat-item">
       <div class="about-stat-number">Fresh</div>
@@ -898,26 +2263,65 @@
       <div class="about-stat-number">∞</div>
       <div class="about-stat-label">Sweet Memories</div>
     </div>
-    <div class="about-stat-item">
-      <div class="about-stat-number" style="font-size:34px;">Small<br><span style="font-size:24px;">Batches</span></div>
-      <div class="about-stat-label">Always Fresh, Never Factory</div>
+  </section>
+
+  <!-- LUXURY BANNER -->
+
+  <section class="luxury-banner">
+
+    <div class="luxury-overlay"></div>
+
+    <div class="luxury-content">
+
+      <span>Brownie Bliss Experience</span>
+
+      <h2>
+        Crafted With Warmth,
+        Elegance & Chocolate Dreams
+      </h2>
+
+      <p>
+        Every brownie, pastry and cake is handcrafted
+        to create moments worth remembering.
+      </p>
+
+      <a href="products.html" class="primary-btn">
+        Explore Desserts →
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section class="about-experience">
-  <div class="about-experience-box">
-    <div class="about-experience-image">
-      <img src="https://sweetsbyjess.com/wp-content/uploads/2023/05/The_Best_Sea_Salt_Caramel_Cake_Recipe_Texture_Contrast_Lux_e612df45-0742-47e9-b989-82d179987b91-1024x683.png" alt="Luxury Cake">
+  </section>
+
+  <!-- Quote -->
+  <div class="quote-banner reveal">
+    <p class="quote-text">"Some desserts are eaten. Homemade desserts are remembered."</p>
+    <p class="quote-attr">— The Brownie Bliss Philosophy</p>
+  </div>
+
+  <!-- Founder -->
+  <section class="founder reveal">
+    <div class="founder-img-placeholder">👩‍🍳</div>
+    <div>
+      <h3 class="founder-name">A.R. Shanmugapriya</h3>
+      <p class="founder-role">Founder & Head Baker</p>
+      <p class="founder-bio">Hand-crafted with love by Shanmugapriya, every brownie, cake and cookie at Brownie Bliss is made with homemade recipes, premium ingredients, and a genuine passion for bringing happiness through food. Based in Krishnagiri, Tamil Nadu, she's been turning simple ingredients into sweet memories — one batch at a time.</p>
     </div>
-    <div class="about-experience-content">
-      <h3>Crafted For Sweet<br>Luxury Moments</h3>
-      <p>Brownie Bliss combines rich flavours, elegant presentation, and authentic homemade warmth to create desserts that feel memorable, indulgent, and premium.</p>
-      <a href="products.html" class="about-btn-primary" style="align-self:flex-start;">DISCOVER MORE →</a>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta reveal">
+    <h2 class="cta-title">Ready to Taste the Difference?</h2>
+    <p class="cta-sub">Explore our full range of brownies, cakes, and desserts.</p>
+    <div class="cta-buttons">
+      <a href="index.html#products" class="btn-dark">Browse Our Menu</a>
+      <a href="contact.html" class="btn-outline">Get in Touch</a>
     </div>
   </div>
-</section>
+
+  <!-- FOOTER -->
 
 <!-- VALUES -->
 <section class="about-values">
@@ -1009,27 +2413,10 @@
     <div class="footer-bottom">
       © 2026 Brownie Bliss &nbsp;·&nbsp; Happiness In Every Bite
     </div>
-  </div>
-</footer>
 
-<button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  </footer>
 
-<!-- CART DRAWER (shared) -->
-<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <h3>Your Cart</h3>
-    <button class="cart-close" onclick="closeCart()">✕</button>
-  </div>
-  <div id="cartItems"></div>
-  <div class="cart-footer" id="cartFooter">
-    <div class="cart-total">Total: ₹<span id="cartTotal">0</span></div>
-    <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
-  </div>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script src="script.js"></script>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  <script src="script.js"></script>
 </body>
 </html>

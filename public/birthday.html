@@ -399,15 +399,15 @@
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+      <div class="feedback-grid">
         
         <!-- Feedback Area -->
         <div style="background: var(--white); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown);">Leave a Review</h3>
-          <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
+          <form onsubmit="event.preventDefault(); const rating = this.querySelector('.star-rating')?.getAttribute('data-rating') || '4'; showToast('Thank you for your ' + rating + '-star feedback! ⭐'); this.reset();">
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 700;">Rating</label>
-              <div style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
+              <div class="star-rating" data-rating="4" data-inactive-color="var(--cream3)" style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
                 <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream3);">★</span>
               </div>
             </div>
@@ -441,7 +441,7 @@
             </div>
             <div style="margin-bottom: 20px;">
               <label style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 700;">Order ID (Optional)</label>
-              <input type="text" placeholder="BB-YYYYMMDD-XXXX"
+              <input type="text" placeholder="e.g. ORD-1234"
                 style="width: 100%; padding: 12px; border: 1.5px solid var(--cream3); border-radius: 8px; outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div style="margin-bottom: 20px;">

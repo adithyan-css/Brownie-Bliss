@@ -18,7 +18,7 @@ const STATIC_CATALOG = [
     category: 'cakes',
     price: 950,
     emoji: '🍰',
-    img: 'https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -54,7 +54,7 @@ const STATIC_CATALOG = [
     category: 'brownies',
     price: 80,
     emoji: '🍫',
-    img: 'https://theobroma.in/cdn/shop/files/eggless-theo-overload-brownie-6.jpg?v=1681320427',
+    img: 'assets/classic_choco.png',
   },
   {
     type: 'standard',
@@ -72,7 +72,7 @@ const STATIC_CATALOG = [
     category: 'desserts',
     price: 180,
     emoji: '☕',
-    img: 'https://theobroma.in/cdn/shop/files/TiramisuPastry_400x400.jpg?v=1711125219',
+    img: 'assets/tiramisu_jar.png',
   },
   {
     type: 'standard',
@@ -81,7 +81,7 @@ const STATIC_CATALOG = [
     category: 'cookies',
     price: 250,
     emoji: '🍪',
-    img: 'https://theobroma.in/cdn/shop/files/Cookie-04_400x400.jpg?v=1701416744',
+    img: 'assets/choco_chip_cookies.png',
   },
   {
     type: 'standard',
@@ -90,7 +90,7 @@ const STATIC_CATALOG = [
     category: 'cookies',
     price: 300,
     emoji: '🥖',
-    img: 'https://theobroma.in/cdn/shop/files/Cookie-01_400x400.jpg?v=1681320427',
+    img: 'assets/almond_biscotti.png',
   },
   {
     type: 'birthday',
@@ -106,7 +106,7 @@ const STATIC_CATALOG = [
     name: 'Dutch Truffle',
     price: 950,
     emoji: '🍰',
-    img: 'https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -158,14 +158,23 @@ async function getAllProducts(req, res) {
 async function createProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
+
     const { type, name, category, price, emoji, img, description } = req.body;
+
+    const sanitizedName = name.trim();
+
+    const sanitizedCategory = category?.trim();
+
+    const sanitizedEmoji = emoji?.trim();
+
+    const sanitizedImg = img?.trim();
+
+    const sanitizedDescription = description?.trim();
 
     if (!type || !name || price === undefined) {
       return res
@@ -189,13 +198,14 @@ async function createProduct(req, res) {
     const product = await Product.create({
       type,
       id_ref,
-      name,
-      category,
+      name: sanitizedName,
+      category: sanitizedCategory,
       price: Number(price),
-      emoji,
-      img,
-      description,
+      emoji: sanitizedEmoji,
+      img: sanitizedImg,
+      description: sanitizedDescription,
     });
+
     res.json({ success: true, product });
   } catch (err) {
     console.error(err);
@@ -206,33 +216,54 @@ async function createProduct(req, res) {
 async function updateProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
-    const { price, name, img } = req.body;
+
+    const { price, name, img, description, category } = req.body;
+
     const updateData = {};
 
-    if (price !== undefined && !isNaN(price) && price >= 0)
+    if (price !== undefined && !isNaN(price) && Number(price) > 0) {
       updateData.price = Number(price);
-    if (name !== undefined && name.trim() !== '') updateData.name = name.trim();
-    if (img !== undefined) updateData.img = img.trim();
-
-    if (Object.keys(updateData).length === 0) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: 'No valid fields provided for update',
-        });
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
+    if (typeof name === 'string' && name.trim() !== '') {
+      updateData.name = name.trim();
+    }
+
+    if (typeof img === 'string' && img.trim() !== '') {
+      updateData.img = img.trim();
+    }
+
+    if (typeof description === 'string') {
+      updateData.description = description.trim();
+    }
+
+    if (typeof category === 'string') {
+      updateData.category = category.trim();
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No valid fields provided for update',
+      });
+    }
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: updateData,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     if (!product)
       return res
         .status(404)
@@ -248,12 +279,10 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product)
