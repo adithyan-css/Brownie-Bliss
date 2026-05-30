@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Brownie Bliss</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">
+        ✨ DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES ✨
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+
+            <a href="index.html" class="logo">
+                <span class="logo-name">Brownie Bliss</span>
+                <span class="logo-sub">Homemade Treats</span>
+            </a>
+
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="menu.html" class="active">Menu</a>
+                <a href="#feedback">Feedback</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="track.html">Track Order</a>
+            </nav>
+        <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
+          aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+            <button class="cart-btn">
+                🛒 Cart
+                <span class="cart-count" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MENU SECTION -->
+    <section class="menu-section">
+
+        <div class="section-header">
+            <span class="section-label">Freshly Baked</span>
+            <h2 class="section-title">
+                Explore Our <em>Menu</em>
+            </h2>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="menu-filters">
+
+            <button class="filter-btn active" onclick="renderProducts('all', this)">
+                All
+            </button>
+
+            <button class="filter-btn" onclick="renderProducts('cakes', this)">
+                Cakes
+            </button>
+
+            <button class="filter-btn" onclick="renderProducts('brownies', this)">
+                Brownies
+            </button>
+
+            <button class="filter-btn" onclick="renderProducts('desserts', this)">
+                Desserts
+            </button>
+
+            <button class="filter-btn" onclick="renderProducts('cookies', this)">
+                Cookies
+            </button>
+
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="menu-grid" id="menuGrid"></div>
+
+    </section>
+
+    <!-- PRODUCT MODAL -->
+    <div class="product-modal" id="productModal">
+
+        <div class="product-modal-content">
+
+            <button class="close-modal" onclick="closeModal()">
+                ✕
+            </button>
+
+            <img id="modalImg">
+
+            <div class="modal-info">
+
+                <div class="modal-category" id="modalCategory"></div>
+
+                <h2 id="modalName"></h2>
+
+                <p class="modal-description" id="modalDescription"></p>
+
+                <div class="modal-price" id="modalPrice"></div>
+
+                <button class="menu-add-btn" id="modalAddBtn">
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
+            and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#home">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="#products">Our Products</a>
+          <a href="#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col" style="display: none;">
+          <h4>Information</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Refund Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SHARED COMPONENTS -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+        Order via WhatsApp
+      </button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+    <script src="menu.js"></script>
+
+</body>
+
+</html>

@@ -24,6 +24,16 @@ function toggleTheme() {
 window.toggleTheme = toggleTheme;
 
 // --- PRODUCTS DATA ---
+let products = {};
+let bdayCakes = {};
+let selectedFlavor = 'Red Velvet';
+let selectedWeight = '1.0';
+// ============================================================
+// CONSTANTS & STATE
+// ============================================================
+const FAVOURITES_KEY  = 'brownie_bliss_favourites';
+const CART_KEY        = 'brownie_bliss_cart';
+
 let products = [];
 let bdayCakes = {};
 let selectedFlavor = 'Red Velvet';
