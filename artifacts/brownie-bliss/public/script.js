@@ -729,6 +729,108 @@ window.addEventListener('scroll', function () {
   }
 });
 // Scroll to top function
+// --- FAVOURITES HELPERS ---
+function getFavourites() {
+  try {
+    return JSON.parse(localStorage.getItem(FAVOURITES_KEY) || '{}');
+  } catch (_) { return {}; }
+}
+function saveFavourites(data) {
+  localStorage.setItem(FAVOURITES_KEY, JSON.stringify(data));
+}
+function isFavourite(type, id) {
+  const data = getFavourites();
+  return Array.isArray(data[type]) && data[type].includes(String(id));
+}
+function toggleFavouriteItem(type, id) {
+  const data = getFavourites();
+  if (!Array.isArray(data[type])) data[type] = [];
+  const idx = data[type].indexOf(String(id));
+  if (idx === -1) data[type].push(String(id));
+  else data[type].splice(idx, 1);
+  saveFavourites(data);
+}
+
+// --- CART SIDEBAR ---
+function openCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  if (sidebar) sidebar.classList.add('open');
+  if (overlay) overlay.classList.add('open');
+}
+function closeCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  saveCart();
+  updateCartUI();
+}
+function sendToWhatsApp() {
+  if (!cart.length) { showToast('Your cart is empty!'); return; }
+  const lines = cart.map(i => `• ${i.name} x${i.qty} — ₹${i.price * i.qty}`).join('\n');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const msg = `Hello Brownie Bliss! 🍫\n\nI'd like to order:\n${lines}\n\nTotal: ₹${total}\n\nPlease confirm my order!`;
+  window.open(`https://wa.me/918072596340?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function openCheckout() {
+  sendToWhatsApp();
+}
+
+// --- FEATURED ADD-TO-CART ---
+function addBirthdayToCart() {
+  const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
+  addToCart({ name: `${selectedFlavor} Cake (${selectedWeight}kg)`, price, qty: 1, img: document.getElementById('birthdayCakeImg')?.src || '', category: 'cakes' });
+  openCart();
+}
+function addDessertToCart() {
+  addToCart({ name: 'Assorted Dessert Box (4 pcs)', price: 350, qty: 1, img: document.getElementById('dessertImg')?.src || '', category: 'desserts' });
+  openCart();
+}
+function addBrownieToCart() {
+  addToCart({ name: 'Classic Brownie Box (4 pcs)', price: 250, qty: 1, img: document.getElementById('brownieImg')?.src || '', category: 'brownies' });
+  openCart();
+}
+function addCookieToCart() {
+  addToCart({ name: 'Gourmet Cookie Box (6 pcs)', price: 250, qty: 1, img: document.getElementById('cookieImg')?.src || '', category: 'cookies' });
+  openCart();
+}
+
+// --- FAVOURITE TOGGLES ---
+function toggleBakeryFavourite() {
+  toggleFavouriteItem('bakeries', 'brownie-bliss');
+  const btn = document.getElementById('bakeryFavoriteBtn') || document.querySelector('[onclick="toggleBakeryFavourite()"]');
+  if (btn) btn.innerHTML = isFavourite('bakeries', 'brownie-bliss') ? '&hearts;' : '&#9825;';
+  showToast(isFavourite('bakeries', 'brownie-bliss') ? 'Added to favourites ❤️' : 'Removed from favourites');
+}
+function toggleBirthdayFavourite() {
+  const item = getBirthdayFavouriteItem();
+  toggleFavouriteItem('dishes', item.id);
+  updateBirthdayFavouriteButton();
+  showToast(isFavourite('dishes', item.id) ? 'Added to favourites ❤️' : 'Removed from favourites');
+}
+
+// --- WINDOW EXPORTS ---
 window.filterProducts = filterProducts;
 window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
+window.isFavourite = isFavourite;
+window.openCart = openCart;
+window.closeCart = closeCart;
+window.removeFromCart = removeFromCart;
+window.sendToWhatsApp = sendToWhatsApp;
+window.openCheckout = openCheckout;
+window.addToCart = addToCart;
+window.changeQty = changeQty;
+window.addBirthdayToCart = addBirthdayToCart;
+window.addDessertToCart = addDessertToCart;
+window.addBrownieToCart = addBrownieToCart;
+window.addCookieToCart = addCookieToCart;
+window.toggleBakeryFavourite = toggleBakeryFavourite;
+window.toggleBirthdayFavourite = toggleBirthdayFavourite;
+window.updateBirthdayCake = updateBirthdayCake;
+window.setCakeWeight = setCakeWeight;
+window.scrollToTop = scrollToTop;
