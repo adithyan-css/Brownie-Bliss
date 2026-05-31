@@ -1,0 +1,27 @@
+kind = "mobile"
+previewPath = "/brownie-bliss-mobile/"
+title = "Brownie Bliss Mobile"
+version = "1.0.0"
+id = "artifacts/brownie-bliss-mobile"
+router = "expo-domain"
+
+[[integratedSkills]]
+name = "expo"
+version = "1.0.0"
+
+[[services]]
+ensurePreviewReachable = "/status"
+name = "expo"
+paths = [ "/brownie-bliss-mobile/" ]
+localPort = 21261
+
+[services.development]
+run = "pnpm --filter @workspace/brownie-bliss-mobile run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/brownie-bliss-mobile", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/brownie-bliss-mobile", "run", "serve" ]
+
+[services.env]
+PORT = "21261"
+BASE_PATH = "/brownie-bliss-mobile/"

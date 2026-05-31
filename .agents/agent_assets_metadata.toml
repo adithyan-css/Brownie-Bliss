@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Vj53K6lf-oYO1YAMTxCuo"
+uri = "file://artifacts/brownie-bliss-mobile/assets/images/icon.png"
+type = "image"
+title = "generated_image"
