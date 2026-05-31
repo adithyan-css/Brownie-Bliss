@@ -201,9 +201,9 @@
 
       <div class="filter-tabs" style="margin-bottom: 60px;">
         <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
-        <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
-        <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
+        <button class="filter-tab" onclick="navigateToCategorySection('cakes', this)">Cakes</button>
+        <button class="filter-tab" onclick="navigateToCategorySection('brownies', this)">Brownies</button>
+        <button class="filter-tab" onclick="navigateToCategorySection('desserts', this)">Desserts</button>
         <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
       </div>
 
@@ -212,7 +212,7 @@
   </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" data-aos="fade-up"
+  <section class="birthday-section" id="birthday" data-aos="fade-up"
   style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
 
   <!-- Slider Hint -->
@@ -225,7 +225,7 @@
     style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
 
     <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+    <div class="bday-slide menu-section" id="cakes" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
       padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
@@ -328,7 +328,7 @@
     </div>
 
     <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+    <div class="bday-slide menu-section" id="desserts" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
       padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
@@ -407,7 +407,7 @@
     </div>
 
     <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+    <div class="bday-slide menu-section" id="brownies" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
       padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">

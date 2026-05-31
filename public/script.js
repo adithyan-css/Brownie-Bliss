@@ -803,6 +803,20 @@ function filterProducts(category = 'all', btn = null) {
     .join('');
 }
 
+function navigateToCategorySection(category, btn = null) {
+  filterProducts(category, btn);
+
+  const section = document.getElementById(category);
+
+  if (!section) return;
+
+  section.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+    inline: 'start',
+  });
+}
+
 // --- BIRTHDAY CAKE BUILDER ---
 // bdayCakes object is now populated dynamically via loadProducts()
 
@@ -1565,6 +1579,7 @@ window.goToConfirm = goToConfirm;
 window.placeOrder = placeOrder;
 window.sendToWhatsApp = sendToWhatsApp;
 window.filterProducts = filterProducts;
+window.navigateToCategorySection = navigateToCategorySection;
 window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
 window.toggleBakeryFavourite = toggleBakeryFavourite;

@@ -10292,6 +10292,10 @@ html.dark .topping-price {
   scrollbar-width: none;
 }
 
+.menu-section {
+  scroll-margin-top: 100px;
+}
+
 /* Price Filter */
 .price-filter-wrapper {
   display: flex;
