@@ -595,18 +595,20 @@
 
       <div class="feedback-grid">
         <!-- Feedback Area -->
-        <div
-          style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
-          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a
-            Review</h3>
-          <form
-            onsubmit="event.preventDefault(); const rating = this.querySelector('.star-rating')?.getAttribute('data-rating') || '4'; showToast('Thank you for your ' + rating + '-star feedback! ⭐'); this.reset();">
+        <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
+          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a Review</h3>
+          <form id="feedbackForm">
             <div style="margin-bottom: 20px;">
-              <label
-                style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
-              <div class="star-rating" data-rating="4" data-inactive-color="var(--cream-dark)"
-                style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
-                <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream-dark);">★</span>
+              <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
+              <div id="starRating" style="display: flex; gap: 5px; font-size: 24px; color: var(--cream-dark); cursor: pointer;">
+                <span data-value="1">★</span>
+                <span data-value="2">★</span>
+                <span data-value="3">★</span>
+                <span data-value="4">★</span>
+                <span data-value="5">★</span>
+              </div>
+            <input type="hidden" id="feedbackRating" value="0">
               </div>
             </div>
             <div style="margin-bottom: 20px;">
@@ -626,12 +628,9 @@
         </div>
 
         <!-- Complaint Area -->
-        <div
-          style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
-          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an
-            Issue</h3>
-          <form
-            onsubmit="event.preventDefault(); showToast('Complaint received. We will look into it. 🛠️'); this.reset();">
+        <div style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--brown-dark);">
+          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Report an Issue</h3>
+          <form id="complaintForm">
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Subject</label>
