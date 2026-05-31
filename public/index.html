@@ -62,17 +62,39 @@
       </div>
     </div>
   </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html#home">Home</a>
-    <a href="products.html">Products</a>
-    <a href="index.html#birthday">Birthday Cakes</a>
-    <a href="index.html#contact">Contact</a>
-    <a href="track.html">Track Order</a>
-  </div>
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-pattern"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#home">Home</a>
+  <a href="products.html">Products</a>
+  <a href="index.html#birthday">Birthday Cakes</a>
+  <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+
+  <div class="hero-content">
+
+    <div class="hero-text" data-aos="fade-right">
+
+      <span class="hero-badge">
+        Homemade Treats · Happiness in every bite
+      </span>
+
+      <h1 class="hero-title">
+        Freshly Baked <em>Delights</em><br>
+        Delivered to You
+      </h1>
+
+      <p class="hero-desc">
+        Authentic recipes, traditional methods, the finest ingredients —
+        baked with love and served with care, every single day.
+      </p>
+
+      <a href="#products" class="hero-cta" style="text-decoration: none;">
+        Explore Our Menu &rarr;
+      </a>
 
     <div class="hero-content">
 
@@ -312,15 +334,35 @@
                   850</span>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBirthdayToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Message
+                on Cake</label>
+              <input type="text" id="cakeMessage" placeholder="e.g. Happy Birthday Adithi!"
+                style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                    starts
+                    from</span>
+                  <span id="cakePrice"
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                    850</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBirthdayToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="hero-cta" style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);" onclick="orderSelectedCakeNow()">
+                  Order Now &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -391,15 +433,35 @@
                   350</span>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div style="margin-bottom: 30px;">
+              <label
+                style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special
+                Request</label>
+              <input type="text" placeholder="e.g. Less sugar, Eggless"
+                style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+            </div>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                    starts
+                    from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                    350</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="hero-cta" style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);" onclick="window.location.href='order-form.html'">
+                  Order Now &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -473,15 +535,27 @@
                   250</span>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBrownieToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                    starts
+                    from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                    250</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addBrownieToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="hero-cta" style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);" onclick="window.location.href='order-form.html'">
+                  Order Now &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -546,15 +620,24 @@
                   250</span>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
+    
+            <div
+              style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                  <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing starts from</span>
+                  <span
+                    style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹ 250</span>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
+                  Add to Cart 🛒
+                </button>
+                <button class="hero-cta" style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);" onclick="window.location.href='order-form.html'">
+                  Order Now &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -804,7 +887,7 @@
           <a href="products.html">Our Products</a>
           <a href="#birthday">Birthday Cakes</a>
           <a href="favourites.html">Favourites</a>
-          <a href="track.html">Track Order</a>
+        <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
         </div>
         <div class="footer-col">
@@ -853,7 +936,39 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    function orderSelectedCakeNow() {
+      var flavors = ['Red Velvet', 'Dutch Truffle', 'Pineapple', 'Chocoholic', 'Black Forest', 'Cheesecake'];
+      var buttons = Array.from(document.querySelectorAll('#birthday button'));
+      var flavorButton = buttons.find(function (button) {
+        return button.classList.contains('active') && flavors.includes(button.textContent.trim());
+      });
+      var weightButton = buttons.find(function (button) {
+        return button.classList.contains('active') && /kg/i.test(button.textContent);
+      });
+      var flavor = flavorButton ? flavorButton.textContent.trim() : 'Red Velvet';
+      var priceText = document.getElementById('cakePrice')?.textContent || '850';
+      var price = Number(priceText.replace(/[^\d]/g, '')) || 850;
+      var weightByPrice = { 450: '0.5', 850: '1.0', 1250: '1.5', 1600: '2.0' };
+      var activeWeight = weightButton ? weightButton.textContent.replace(/kg/i, '').trim() : '1.0';
+      var weight = weightByPrice[price] || activeWeight;
+      var message = document.getElementById('cakeMessage')?.value.trim() || '';
+      var image = document.getElementById('birthdayCakeImg')?.src || '';
+
+      localStorage.setItem('brownie_bliss_direct_order', JSON.stringify([{
+        id: 'direct-bday-' + Date.now(),
+        name: flavor + ' Cake (' + weight + 'kg)',
+        price: price,
+        qty: 1,
+        weight: weight,
+        img: image,
+        category: 'cakes',
+        message: message
+      }]));
+
+      window.location.href = 'order-form.html';
+    }
+  </script>
 </body>
 
 </html>
