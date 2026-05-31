@@ -899,6 +899,22 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
       ? orderTotal
       : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
 
+    // Empty input validation
+    if (!orderId) {
+        if (trackError) {
+            trackError.textContent = 'Please enter an Order ID';
+            trackError.classList.add('show');
+        }
+        return;
+    }
+    // Validate Order ID format
+    if (!/^ORD-\d+$/.test(orderId)) {
+        if (trackError) {
+            trackError.textContent = 'Invalid Order ID. Format should be ORD-XXXX';
+            trackError.classList.add('show');
+        }
+        return;
+    }
   const itemLines = lines
     .map((i) => {
       let line = `• ${i.name} × ${i.qty} = ₹${(
