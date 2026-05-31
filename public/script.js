@@ -196,7 +196,21 @@ function updateFavouritesCount() {
 function toggleBakeryFavourite() {
   toggleFavourite('bakeries', BROWNIE_BLISS_BAKERY);
 }
+function getBirthdayFavouriteItem() {
+  const cake = bdayCakes[selectedFlavor] || {};
 
+  return {
+    id: `bday-${selectedFlavor}-${selectedWeight}`,
+    name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+    price: BIRTHDAY_BASE_PRICES[selectedWeight],
+    img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
+    emoji: cake.emoji || '',
+    category: 'cakes',
+  };
+}
+function showToast(message){
+  console.log(message);
+}
 function toggleBirthdayFavourite() {
   toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
@@ -343,7 +357,11 @@ async function loadProducts() {
   if (document.getElementById('cakePrice')) {
     calculateBdayPrice();
   }
-}
+  }
+  catch(e){
+    console.error('Error loading products',e);
+    useFallbackProducts();
+  }
 
 // --- CART STATE ---
 let cart = [];
@@ -859,18 +877,7 @@ function calculateBdayPrice() {
   updateBirthdayFavouriteButton();
 }
 
-function getBirthdayFavouriteItem() {
-  const cake = bdayCakes[selectedFlavor] || {};
 
-  return {
-    id: `bday-${selectedFlavor}-${selectedWeight}`,
-    name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-    price: BIRTHDAY_BASE_PRICES[selectedWeight],
-    img: cake.img || document.getElementById('birthdayCakeImg')?.src || '',
-    emoji: cake.emoji || '',
-    category: 'cakes',
-  };
-}
 
 function updateBirthdayFavouriteButton() {
   const btn = document.getElementById('birthdayFavoriteBtn');
@@ -1640,3 +1647,4 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFavouritesPage();
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
 });
+}
