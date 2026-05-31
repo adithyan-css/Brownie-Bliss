@@ -672,13 +672,6 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   window.open(waUrl, '_blank');
 }
 
-    if (order.created_at) {
-        document.getElementById('resDate').textContent = new Date(order.created_at).toLocaleString();
-    } else {
-        btn.style.display = "none";
-    }
-});
-
 // Scroll to top function
 function scrollToTop() {
     window.scrollTo({
@@ -742,13 +735,6 @@ window.addEventListener('scroll', function () {
   }
 });
 // Scroll to top function
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
-}
-
 window.filterProducts = filterProducts;
 window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
