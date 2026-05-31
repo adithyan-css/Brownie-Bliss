@@ -1,9 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { Linking } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   Alert,
+  Linking,
   Platform,
   Pressable,
   ScrollView,
@@ -16,24 +17,30 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useColors } from "@/hooks/useColors";
 
-const CONTACT_INFO = [
+const INFO_CARDS = [
   {
-    icon: "map-pin",
-    label: "Visit Us",
-    value: "Krishnagiri, Tamil Nadu",
+    icon: "map-pin" as const,
+    title: "Visit Us",
+    value: "Krishnagiri,\nTamil Nadu",
+    onPress: undefined,
   },
   {
-    icon: "phone",
-    label: "Call Us",
+    icon: "phone" as const,
+    title: "Call Us",
     value: "+91 8072596340",
     onPress: () => Linking.openURL("tel:+918072596340"),
   },
   {
-    icon: "instagram",
-    label: "Instagram",
-    value: "@browniebliss.in",
-    onPress: () => Linking.openURL("https://www.instagram.com/browniebliss.in"),
+    icon: "mail" as const,
+    title: "Email",
+    value: "gpriya26185@gmail.com",
+    onPress: () => Linking.openURL("mailto:gpriya26185@gmail.com"),
   },
+];
+
+const HOURS = [
+  { day: "Monday – Saturday", time: "9 AM – 9 PM" },
+  { day: "Sunday", time: "10 AM – 7 PM" },
 ];
 
 export default function ContactScreen() {
@@ -53,7 +60,9 @@ export default function ContactScreen() {
     }
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     const waMsg = `Hello Brownie Bliss!\n\nName: ${name}\nEmail: ${email}\n\nMessage: ${message}`;
-    Linking.openURL(`https://wa.me/918072596340?text=${encodeURIComponent(waMsg)}`);
+    Linking.openURL(
+      `https://wa.me/918072596340?text=${encodeURIComponent(waMsg)}`
+    );
     setName("");
     setEmail("");
     setMessage("");
@@ -61,106 +70,250 @@ export default function ContactScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingTop: topPad + 12, backgroundColor: colors.primary }]}>
-        <Text style={[styles.headerTitle, { color: colors.accent, fontFamily: "Inter_700Bold" }]}>
-          Contact Us
+      <View
+        style={[
+          styles.header,
+          { paddingTop: topPad + 12, backgroundColor: colors.primary },
+        ]}
+      >
+        <Text
+          style={[
+            styles.headerTitle,
+            { color: colors.accent, fontFamily: "Inter_700Bold" },
+          ]}
+        >
+          Contact
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Hero text */}
-        <View style={styles.hero}>
-          <Text style={[styles.heroTitle, { color: colors.primary, fontFamily: "Inter_700Bold" }]}>
-            Let's Make Life{"\n"}
-            <Text style={{ color: colors.accent }}>Sweeter Together</Text>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Section label */}
+        <Text
+          style={[
+            styles.sectionLabel,
+            { color: colors.accent, fontFamily: "Inter_700Bold" },
+          ]}
+        >
+          GET IN TOUCH
+        </Text>
+
+        {/* Title */}
+        <Text
+          style={[
+            styles.sectionTitle,
+            { color: colors.primary, fontFamily: "Inter_700Bold" },
+          ]}
+        >
+          Let's Make Life{" "}
+          <Text style={{ color: colors.accent, fontStyle: "italic" }}>
+            Sweeter Together
           </Text>
-          <Text style={[styles.heroSub, { color: colors.mutedForeground, fontFamily: "Inter_400Regular" }]}>
-            Have a custom order, celebration idea or dessert request? We'd love to bake happiness for you.
-          </Text>
-        </View>
+        </Text>
+
+        {/* Description */}
+        <Text
+          style={[
+            styles.desc,
+            { color: colors.mutedForeground, fontFamily: "Inter_400Regular" },
+          ]}
+        >
+          Whether you're planning a birthday celebration, craving rich homemade
+          brownies, or simply want to surprise someone special — we'd love to
+          bake happiness for you.
+        </Text>
 
         {/* Contact info cards */}
-        {CONTACT_INFO.map((item) => (
+        {INFO_CARDS.map((card) => (
           <Pressable
-            key={item.label}
-            onPress={item.onPress}
-            style={[
+            key={card.title}
+            onPress={card.onPress}
+            style={({ pressed }) => [
               styles.infoCard,
-              { backgroundColor: colors.card, borderColor: colors.border },
+              {
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+                opacity: pressed && card.onPress ? 0.8 : 1,
+              },
             ]}
           >
             <View style={[styles.infoIcon, { backgroundColor: colors.primary }]}>
-              {/* @ts-ignore */}
-              <Feather name={item.icon as any} size={20} color={colors.accent} />
+              <Feather name={card.icon} size={20} color={colors.accent} />
             </View>
             <View style={styles.infoText}>
-              <Text style={[styles.infoLabel, { color: colors.mutedForeground, fontFamily: "Inter_400Regular" }]}>
-                {item.label}
+              <Text
+                style={[
+                  styles.infoTitle,
+                  { color: colors.primary, fontFamily: "Inter_600SemiBold" },
+                ]}
+              >
+                {card.title}
               </Text>
-              <Text style={[styles.infoValue, { color: colors.foreground, fontFamily: "Inter_500Medium" }]}>
-                {item.value}
+              <Text
+                style={[
+                  styles.infoValue,
+                  { color: colors.mutedForeground, fontFamily: "Inter_400Regular" },
+                ]}
+              >
+                {card.value}
               </Text>
             </View>
-            {item.onPress && (
-              <Feather name="chevron-right" size={18} color={colors.mutedForeground} />
+            {card.onPress && (
+              <Feather
+                name="chevron-right"
+                size={18}
+                color={colors.mutedForeground}
+              />
             )}
           </Pressable>
         ))}
 
-        {/* Message form */}
-        <View style={[styles.formCard, { backgroundColor: colors.primary }]}>
-          <Text style={[styles.formTitle, { color: colors.accent, fontFamily: "Inter_600SemiBold" }]}>
-            Send us a Message
+        {/* Baking hours card */}
+        <View style={styles.hoursCard}>
+          <Text
+            style={[
+              styles.hoursTitle,
+              { color: colors.accent, fontFamily: "Inter_700Bold" },
+            ]}
+          >
+            ⏰  Baking Hours
+          </Text>
+          {HOURS.map((row, i) => (
+            <View
+              key={row.day}
+              style={[
+                styles.hourRow,
+                i < HOURS.length - 1 && styles.hourRowBorder,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.hourDay,
+                  { color: "rgba(245,230,211,0.8)", fontFamily: "Inter_400Regular" },
+                ]}
+              >
+                {row.day}
+              </Text>
+              <Text
+                style={[
+                  styles.hourTime,
+                  { color: "#fff", fontFamily: "Inter_600SemiBold" },
+                ]}
+              >
+                {row.time}
+              </Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Instagram gradient box */}
+        <Pressable
+          onPress={() =>
+            Linking.openURL("https://instagram.com/brownie_bliss_")
+          }
+        >
+          <LinearGradient
+            colors={["#833ab4", "#fd1d1d", "#fcb045"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.instaBox}
+          >
+            <View style={styles.instaIcon}>
+              <Feather name="instagram" size={28} color="#fff" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[
+                  styles.instaFollow,
+                  { fontFamily: "Inter_400Regular" },
+                ]}
+              >
+                Follow our baking journey
+              </Text>
+              <Text
+                style={[
+                  styles.instaHandle,
+                  { fontFamily: "Inter_700Bold" },
+                ]}
+              >
+                @brownie_bliss_
+              </Text>
+            </View>
+            <Feather name="arrow-right" size={20} color="rgba(255,255,255,0.8)" />
+          </LinearGradient>
+        </Pressable>
+
+        {/* Contact form */}
+        <View style={styles.formBox}>
+          <View style={styles.formTop}>
+            <Text style={styles.formTopEmoji}>✨</Text>
+            <Text
+              style={[
+                styles.formTitle,
+                { color: colors.accent, fontFamily: "Inter_700Bold" },
+              ]}
+            >
+              Send us a Message
+            </Text>
+          </View>
+
+          <Text
+            style={[
+              styles.formDesc,
+              { fontFamily: "Inter_400Regular" },
+            ]}
+          >
+            Have a custom order, celebration idea or dessert request? We'd love
+            to hear from you.
           </Text>
 
           <TextInput
             placeholder="Your Name"
-            placeholderTextColor="rgba(244,228,188,0.5)"
+            placeholderTextColor="rgba(255,255,255,0.4)"
             value={name}
             onChangeText={setName}
-            style={[styles.input, { borderColor: "rgba(212,175,55,0.3)", color: "#FFF9F2", fontFamily: "Inter_400Regular" }]}
+            style={[styles.input, { fontFamily: "Inter_400Regular" }]}
           />
           <TextInput
             placeholder="Your Email"
-            placeholderTextColor="rgba(244,228,188,0.5)"
+            placeholderTextColor="rgba(255,255,255,0.4)"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
-            style={[styles.input, { borderColor: "rgba(212,175,55,0.3)", color: "#FFF9F2", fontFamily: "Inter_400Regular" }]}
+            style={[styles.input, { fontFamily: "Inter_400Regular" }]}
           />
           <TextInput
             placeholder="Tell us about your order..."
-            placeholderTextColor="rgba(244,228,188,0.5)"
+            placeholderTextColor="rgba(255,255,255,0.4)"
             value={message}
             onChangeText={setMessage}
             multiline
-            numberOfLines={4}
-            style={[styles.textarea, { borderColor: "rgba(212,175,55,0.3)", color: "#FFF9F2", fontFamily: "Inter_400Regular" }]}
+            numberOfLines={5}
+            style={[
+              styles.textarea,
+              { fontFamily: "Inter_400Regular" },
+            ]}
           />
 
           <Pressable
             onPress={handleSend}
-            style={[styles.sendBtn, { backgroundColor: colors.accent }]}
+            style={({ pressed }) => [
+              styles.sendBtn,
+              { backgroundColor: colors.accent, opacity: pressed ? 0.85 : 1 },
+            ]}
           >
-            <Feather name="send" size={16} color={colors.primary} style={{ marginRight: 8 }} />
-            <Text style={[styles.sendBtnText, { color: colors.primary, fontFamily: "Inter_600SemiBold" }]}>
-              Send via WhatsApp
+            <Text
+              style={[
+                styles.sendBtnText,
+                { color: colors.primary, fontFamily: "Inter_700Bold" },
+              ]}
+            >
+              SEND MESSAGE →
             </Text>
           </Pressable>
-        </View>
-
-        {/* Baking hours */}
-        <View style={[styles.hoursCard, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-          <Feather name="clock" size={18} color={colors.primary} style={{ marginRight: 10 }} />
-          <View>
-            <Text style={[styles.hoursTitle, { color: colors.primary, fontFamily: "Inter_600SemiBold" }]}>
-              Baking Hours
-            </Text>
-            <Text style={[styles.hoursText, { color: colors.mutedForeground, fontFamily: "Inter_400Regular" }]}>
-              Mon–Sat: 8AM – 8PM{"\n"}Sunday: 10AM – 6PM
-            </Text>
-          </View>
         </View>
 
         <View style={{ height: Platform.OS === "web" ? 100 : 120 }} />
@@ -173,68 +326,139 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { paddingHorizontal: 20, paddingBottom: 16 },
   headerTitle: { fontSize: 22 },
-  content: { padding: 16, gap: 16 },
-  hero: { paddingVertical: 8 },
-  heroTitle: { fontSize: 28, lineHeight: 36, marginBottom: 10 },
-  heroSub: { fontSize: 14, lineHeight: 22 },
+  content: { padding: 20, gap: 20 },
+
+  sectionLabel: {
+    fontSize: 11,
+    letterSpacing: 3,
+    marginBottom: -8,
+  },
+  sectionTitle: {
+    fontSize: 30,
+    lineHeight: 38,
+  },
+  desc: {
+    fontSize: 16,
+    lineHeight: 26,
+    marginTop: -4,
+  },
+
   infoCard: {
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 16,
     borderWidth: 1,
-    padding: 16,
-    gap: 14,
+    padding: 18,
+    gap: 16,
   },
   infoIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     alignItems: "center",
     justifyContent: "center",
   },
   infoText: { flex: 1 },
-  infoLabel: { fontSize: 12, marginBottom: 2 },
-  infoValue: { fontSize: 15 },
-  formCard: {
+  infoTitle: { fontSize: 15, marginBottom: 4 },
+  infoValue: { fontSize: 13, lineHeight: 20 },
+
+  hoursCard: {
+    backgroundColor: "#1a0905",
     borderRadius: 20,
     padding: 24,
-    gap: 14,
   },
-  formTitle: { fontSize: 18, marginBottom: 4 },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
+  hoursTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+  },
+  hourRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 12,
-    fontSize: 15,
-    backgroundColor: "rgba(255,249,242,0.1)",
   },
-  textarea: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 15,
-    minHeight: 100,
-    textAlignVertical: "top",
-    backgroundColor: "rgba(255,249,242,0.1)",
+  hourRowBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255,255,255,0.1)",
   },
-  sendBtn: {
+  hourDay: { fontSize: 14 },
+  hourTime: { fontSize: 14 },
+
+  instaBox: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 16,
+    padding: 20,
+    borderRadius: 18,
+  },
+  instaIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    alignItems: "center",
     justifyContent: "center",
+  },
+  instaFollow: {
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  instaHandle: {
+    color: "#fff",
+    fontSize: 18,
+  },
+
+  formBox: {
+    backgroundColor: "#2a120c",
+    borderRadius: 24,
+    padding: 28,
+    gap: 16,
+  },
+  formTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  formTopEmoji: { fontSize: 24 },
+  formTitle: { fontSize: 22 },
+  formDesc: {
+    color: "rgba(255,255,255,0.65)",
+    fontSize: 14,
+    lineHeight: 22,
+    marginTop: -4,
+  },
+  input: {
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    color: "#fff",
+    paddingHorizontal: 16,
     paddingVertical: 14,
+    borderRadius: 12,
+    fontSize: 14,
+  },
+  textarea: {
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    color: "#fff",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 12,
+    fontSize: 14,
+    minHeight: 120,
+    textAlignVertical: "top",
+  },
+  sendBtn: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 16,
     borderRadius: 12,
     marginTop: 4,
   },
-  sendBtnText: { fontSize: 16 },
-  hoursCard: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 18,
+  sendBtnText: {
+    fontSize: 13,
+    letterSpacing: 1.5,
   },
-  hoursTitle: { fontSize: 15, marginBottom: 4 },
-  hoursText: { fontSize: 13, lineHeight: 20 },
 });
