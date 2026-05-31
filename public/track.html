@@ -26,6 +26,9 @@
 
 <body>
 
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container"></div>
+
     <!-- NAVBAR -->
     <header class="premium-navbar">
 
@@ -394,164 +397,117 @@
     <!-- SCRIPT -->
     <script>
 
+// Premium Toast Notification Function
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    
+    // Smooth animate in
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 50);
+    
+    // Auto remove after 3.5s
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 400);
+    }, 3500);
+}
+
 function trackOrder(){
+    const orderId = document.getElementById("orderId").value.trim();
+    const email = document.getElementById("emailId").value.trim();
+    const phone = document.getElementById("phoneNumber").value.trim();
+    const result = document.getElementById("track-result");
 
-    const orderId =
-    document.getElementById("orderId").value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^[0-9]{10}$/;
+    const orderPattern = /^ORD[0-9]{3,6}$/;
 
-    const email =
-    document.getElementById("emailId").value.trim();
-
-    const phone =
-    document.getElementById("phoneNumber").value.trim();
-
-    const result =
-    document.getElementById("track-result");
-
-    // EMAIL REGEX
-    const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // PHONE REGEX
-    const phonePattern =
-    /^[0-9]{10}$/;
-
-    // ORDER FORMAT
-    const orderPattern =
-    /^ORD[0-9]{3,6}$/;
-
-    // EMPTY CHECK
-    if(
-        orderId === "" &&
-        email === "" &&
-        phone === ""
-    ){
-
+    // Empty validation check
+    if (orderId === "" && email === "" && phone === "") {
+        showToast("⚠ Please enter at least ONE detail to track your order.", "error");
         result.innerHTML = `
-
-        <div class="error-box">
-
-            ⚠ Please enter at least ONE detail.
-
-        </div>
-
+            <div class="error-box">
+                ⚠ Please enter at least ONE detail.
+            </div>
         `;
-
         return;
-
     }
 
-    // ORDER VALIDATION
-    if(
-        orderId !== "" &&
-        !orderPattern.test(orderId)
-    ){
-
+    // Input Validation logic
+    if (orderId !== "" && !orderPattern.test(orderId)) {
+        showToast("❌ Invalid Order ID format.", "error");
         result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Invalid Order ID
-
-            <br><br>
-
-            Example:
-            ORD123
-
-        </div>
-
+            <div class="error-box">
+                ❌ Invalid Order ID. Example: ORD123
+            </div>
         `;
-
         return;
-
     }
 
-    // EMAIL VALIDATION
-    if(
-        email !== "" &&
-        !emailPattern.test(email)
-    ){
-
+    if (email !== "" && !emailPattern.test(email)) {
+        showToast("❌ Invalid Email Address format.", "error");
         result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Invalid Email Address
-
-        </div>
-
+            <div class="error-box">
+                ❌ Invalid Email Address.
+            </div>
         `;
-
         return;
-
     }
 
-    // PHONE VALIDATION
-    if(
-        phone !== "" &&
-        !phonePattern.test(phone)
-    ){
-
+    if (phone !== "" && !phonePattern.test(phone)) {
+        showToast("❌ Phone number must contain exactly 10 digits.", "error");
         result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Phone number must contain exactly 10 digits
-
-        </div>
-
+            <div class="error-box">
+                ❌ Phone number must contain exactly 10 digits.
+            </div>
         `;
-
         return;
-
     }
 
-    // SAMPLE VALID DATA
-    const validOrder = "ORD123";
-    const validEmail = "brownie@gmail.com";
-    const validPhone = "9876543210";
-
-    if(
-        orderId === validOrder ||
-        email === validEmail ||
-        phone === validPhone
-    ){
-
-        result.innerHTML = `
-
-        <div class="success-box">
-
-            ✅ Order Found!
-
-            <br><br>
-
-            Your delicious order is currently
-            being prepared 🍰
-
+    // Render Beautiful Skeleton UI Loader
+    result.innerHTML = `
+        <div style="padding: 20px; text-align: left;">
+            <div class="skeleton-box skeleton-title"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text"></div>
+            <div class="skeleton-box skeleton-text-short"></div>
         </div>
+    `;
 
-        `;
+    // Simulate API fetch delay
+    setTimeout(() => {
+        const validOrder = "ORD123";
+        const validEmail = "brownie@gmail.com";
+        const validPhone = "9876543210";
 
-    }
-
-    else{
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Order Not Found
-
-            <br><br>
-
-            Please check your details again.
-
-        </div>
-
-        `;
-
-    }
-
+        if (orderId === validOrder || email === validEmail || phone === validPhone) {
+            showToast("✨ Order details fetched successfully!", "success");
+            result.innerHTML = `
+                <div class="success-box" style="animation: toast-in 0.4s ease forwards;">
+                    ✅ Order Found!
+                    <br><br>
+                    Your delicious order is currently
+                    being prepared 🍰
+                </div>
+            `;
+        } else {
+            showToast("❌ Order Not Found. Please try again.", "error");
+            result.innerHTML = `
+                <div class="error-box" style="animation: toast-in 0.4s ease forwards;">
+                    ❌ Order Not Found
+                    <br><br>
+                    Please check your details again.
+                </div>
+            `;
+        }
+    }, 1000);
 }
 
 </script>
