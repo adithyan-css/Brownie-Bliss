@@ -4114,6 +4114,7 @@ html.dark .theme-toggle-btn:hover {
 }
 /* =========================
    ABOUT PAGE
+========================= */
 
 .about-section {
   position: relative;
@@ -4220,7 +4221,7 @@ html.dark .theme-toggle-btn:hover {
   color: var(--text-mid);
   line-height: 1.8;
   font-size: 15px;
-}*/
+}
 
 
 /* QUOTE STRIP */
@@ -4369,7 +4370,7 @@ html.dark .theme-toggle-btn:hover {
 
   margin:
     30px 0 50px;
-}*/
+}
 
 /* INFO GRID */
 
@@ -4651,6 +4652,7 @@ html.dark .theme-toggle-btn:hover {
 
 /* =========================
    EXPERIENCE SECTION
+========================= */
 
 .experience-section {
   padding: 120px 30px;
@@ -4683,7 +4685,7 @@ html.dark .theme-toggle-btn:hover {
   color: var(--text-mid);
 
   margin-bottom: 24px;
-}*/
+}
 
 /* CARDS */
 

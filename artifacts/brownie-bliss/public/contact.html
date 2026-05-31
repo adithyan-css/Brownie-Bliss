@@ -10,6 +10,240 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-page {
+      position: relative;
+      overflow: hidden;
+      padding: 80px 30px 100px;
+      background: linear-gradient(135deg, #fffaf4 0%, #f9f1e7 100%);
+    }
+    html.dark .contact-page {
+      background: linear-gradient(135deg, #1a0d08 0%, #220e09 100%);
+    }
+    .contact-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: radial-gradient(var(--gold, #d4af37) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .contact-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .contact-left .section-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c9993e;
+      margin-bottom: 18px;
+    }
+    .contact-left .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      color: #1a0905;
+      line-height: 1.2;
+      margin-bottom: 22px;
+    }
+    html.dark .contact-left .section-title { color: #f5e6d3; }
+    .contact-left .section-title em {
+      font-style: italic;
+      color: #c9993e;
+    }
+    .contact-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      line-height: 1.8;
+      color: #7a5c44;
+      margin: 0 0 40px;
+    }
+    html.dark .contact-desc { color: #c4a882; }
+    .contact-info-grid {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .contact-info-card {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(212,175,55,0.2);
+      padding: 22px 24px;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    html.dark .contact-info-card {
+      background: rgba(40,18,10,0.7);
+      border-color: rgba(212,175,55,0.15);
+    }
+    .contact-info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(26,9,5,0.12);
+    }
+    .contact-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #1a0905;
+      color: #f5e6d3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .contact-info-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: #1a0905;
+      margin: 0 0 6px;
+    }
+    html.dark .contact-info-card h4 { color: #f5e6d3; }
+    .contact-info-card p,
+    .contact-info-card a {
+      color: #7a5c44;
+      font-size: 14px;
+      line-height: 1.6;
+      text-decoration: none;
+      margin: 0;
+    }
+    html.dark .contact-info-card p,
+    html.dark .contact-info-card a { color: #c4a882; }
+    .contact-info-card a:hover { color: #c9993e; }
+    .hours-card {
+      background: linear-gradient(135deg, #1a0905, #2f140d);
+      color: #f5e6d3;
+      padding: 32px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+    }
+    .hours-card h3 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #c9993e;
+    }
+    .hour-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+    .hour-row:last-child { border-bottom: none; }
+    .hour-row span { opacity: 0.8; }
+    .hour-row strong { color: #fff; }
+    .insta-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      padding: 20px 24px;
+      border-radius: 18px;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s ease;
+      box-shadow: 0 12px 32px rgba(131,58,180,0.3);
+    }
+    .insta-box:hover { transform: translateY(-4px) scale(1.01); }
+    .insta-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      backdrop-filter: blur(8px);
+      flex-shrink: 0;
+    }
+    .insta-box span { font-size: 12px; opacity: 0.85; display: block; margin-bottom: 2px; }
+    .insta-box h4 { font-size: 20px; margin: 0; font-family: 'Playfair Display', serif; }
+    .contact-form-box {
+      background: linear-gradient(to bottom, #2a120c, #1b0b07);
+      color: white;
+      padding: 48px 44px;
+      border-radius: 24px;
+      box-shadow: 0 24px 56px rgba(0,0,0,0.28);
+      position: sticky;
+      top: 100px;
+    }
+    .form-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .form-top span { font-size: 26px; }
+    .form-top h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: #d4af37;
+      margin: 0;
+    }
+    .form-desc {
+      color: rgba(255,255,255,0.68);
+      line-height: 1.7;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .contact-form-box form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .contact-form-box input,
+    .contact-form-box textarea {
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 12px;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+    .contact-form-box textarea { height: 130px; resize: vertical; }
+    .contact-form-box input::placeholder,
+    .contact-form-box textarea::placeholder { color: rgba(255,255,255,0.4); }
+    .contact-form-box input:focus,
+    .contact-form-box textarea:focus { border-color: #d4af37; }
+    .contact-form-box .send-btn {
+      background: #d4af37;
+      color: #1a0905;
+      border: none;
+      padding: 16px 28px;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+    .contact-form-box .send-btn:hover { background: #c9993e; transform: translateY(-2px); }
+    @media (max-width: 860px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .contact-form-box { position: static; padding: 32px 24px; }
+    }
+  </style>
   <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
   <script>
     (function () {
@@ -218,7 +452,7 @@
           required
         ></textarea>
 
-        <button type="submit" class="hero-cta">
+        <button type="submit" class="send-btn">
           Send Message →
         </button>
 
