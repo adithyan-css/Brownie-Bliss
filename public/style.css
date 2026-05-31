@@ -10410,659 +10410,899 @@ html.dark .topping-price {
   color: #5c372c !important;
 }
 
-/* ============================= */
-/* GLOBAL FIXES */
-/* ============================= */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-/* Prevent images/videos from overflowing */
-
-img,
-video {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ============================= */
-/* RESPONSIVE SECTION PADDING */
-/* ============================= */
-
-@media (max-width: 768px) {
-  section,
-  .products-section,
-  .birthday-section,
-  footer {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  .header-inner,
-  .footer-inner,
-  .products-inner,
-  .values-inner {
-    width: 100%;
-    max-width: 100%;
-  }
-}
-
-/* ============================= */
-/* HERO SECTION */
-/* ============================= */
-
-@media (max-width: 900px) {
-  .hero-content {
-    grid-template-columns: 1fr !important;
-    gap: 40px !important;
-    text-align: center;
-  }
-
-  .hero-title {
-    font-size: clamp(42px, 10vw, 70px);
-  }
-
-  .hero-visual {
-    width: 100%;
-  }
-
-  .hero-card img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-/* ============================= */
-/* BIRTHDAY / DESSERT / BROWNIE */
-/* MAIN OVERFLOW FIX */
-/* ============================= */
-
-@media (max-width: 900px) {
-  .bday-slide > div {
-    grid-template-columns: 1fr !important;
-    gap: 30px !important;
-  }
-
-  .birthday-card {
-    padding: 24px !important;
-  }
-
-  .birthday-visual img,
-  #birthdayCakeImg,
-  #dessertImg,
-  #brownieImg,
-  #cookieImg {
-    width: 100% !important;
-    height: clamp(250px, 60vw, 450px) !important;
-    object-fit: cover;
-  }
-}
-
-/* ============================= */
-/* GRID FIXES */
-/* ============================= */
-
-@media (max-width: 768px) {
-  /* Flavor grids */
-  div[style*="repeat(3, 1fr)"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  /* Product grid */
-  .products-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Review grid */
-  .reviews-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Feedback section */
-  #feedback div[style*="grid-template-columns: 1fr 1fr"] {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-.feedback-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-@media (max-width: 768px) {
-  .feedback-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* ============================= */
-/* BUTTON FIXES */
-/* ============================= */
-
-button,
-.hero-cta,
-.filter-tab {
-  max-width: 100%;
-  white-space: normal;
-}
-
-@media (max-width: 768px) {
-  .hero-cta {
-    width: 100%;
-  }
-
-  .filter-tab {
-    font-size: 12px;
-    padding: 10px 12px;
-  }
-}
-
-/* ============================= */
-/* NAVIGATION FIX */
-/* ============================= */
-
-@media (max-width: 900px) {
-  nav {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .header-actions {
-    gap: 10px;
-  }
-
-  .cart-btn {
-    font-size: 12px;
-    padding: 10px 14px;
-  }
-}
-
-/* ============================= */
-/* MOBILE MENU */
-/* ============================= */
-
-.mobile-menu {
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-/* ============================= */
-/* VALUES STRIP */
-/* ============================= */
-
-@media (max-width: 768px) {
-  .values-inner {
-    grid-template-columns: 1fr !important;
-    gap: 20px;
-  }
-
-  .value-item {
-    width: 100%;
-  }
-}
-
-/* ============================= */
-/* REVIEW CARDS */
-/* ============================= */
-
-.review-card {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-/* ============================= */
-/* FOOTER */
-/* ============================= */
-
-@media (max-width: 768px) {
-  .footer-top {
-    grid-template-columns: 1fr !important;
-    gap: 40px;
-  }
-}
-
-/* ============================= */
-/* CART SIDEBAR */
-/* ============================= */
-
-@media (max-width: 768px) {
-  .cart-sidebar {
-    width: 100% !important;
-    max-width: 100vw;
-  }
-}
-.responsive-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-@media (max-width: 768px) {
-  .responsive-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.birthday-grid {
-  max-width: 1300px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 60px;
-  align-items: center;
-}
-
-@media (max-width: 768px) {
-  .birthday-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-}
-
-@media (max-width: 768px) {
-  nav {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-}
-.menu-toggle {
-  display: none;
-}
 
 #scrollTopBtn:hover {
-  background-color: #8b5a3c;
-  transform: scale(1.1);
+    background-color: #8b5a3c;
+    transform: scale(1.1);
 }
 
-/* ============================================================
-   DARK MODE FINAL PATCH — Brownie Bliss
-============================================================ */
+/* Your feature styles */
+/* CUSTOMIZE SECTION */
 
-html.dark,
-html.dark body {
-  background: var(--cream) !important;
-  color: var(--text-dark) !important;
+.customize-section {
+    padding: 80px 10%;
+    background: #fff7f3;
 }
 
-/* Keep the announcement bar readable against the dark theme palette. */
-html.dark .announcement {
-  background: #2a140b !important;
-  color: #f6deb0 !important;
-  text-shadow: 0 1px 4px rgba(17, 9, 4, 0.45);
-}
-
-/* Header / navbar */
-html.dark header,
-html.dark .navbar,
-html.dark .mobile-menu {
-  background: var(--white) !important;
-  border-color: #3a2010 !important;
-}
-
-html.dark .logo-name,
-html.dark .brand-name,
-html.dark nav a,
-html.dark .mobile-menu a {
-  color: var(--text-dark) !important;
-}
-
-html.dark .logo-sub,
-html.dark .brand-tagline {
-  color: var(--gold) !important;
-}
-
-/* Sections */
-html.dark .products-section,
-html.dark .categories-section,
-html.dark .birthday-section,
-html.dark .favourites-page,
-html.dark .contact-page,
-html.dark .page-header,
-html.dark .track-content-wrapper {
-  background: var(--cream) !important;
-  color: var(--text-dark) !important;
-}
-
-/* Cards */
-html.dark .product-card,
-html.dark .birthday-card,
-html.dark .contact-card,
-html.dark .review-card,
-html.dark .testimonial-card,
-html.dark .stat-card,
-html.dark .orders-panel,
-html.dark .login-box,
-html.dark .cart-sidebar,
-html.dark .checkout-modal,
-html.dark .track-container,
-html.dark #result,
-html.dark .favourite-bakery-card {
-  background: var(--white) !important;
-  color: var(--text-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-/* Text */
-html.dark .section-title,
-html.dark .section-title em,
-html.dark h1,
-html.dark h2,
-html.dark h3,
-html.dark h4,
-html.dark .product-name,
-html.dark .product-title,
-html.dark .cart-title,
-html.dark .checkout-title,
-html.dark .track-container h2 {
-  color: var(--text-dark) !important;
-}
-
-html.dark p,
-html.dark .product-desc,
-html.dark .checkout-subtitle,
-html.dark .track-subtitle,
-html.dark .favourites-intro,
-html.dark .contact-text,
-html.dark .review-text {
-  color: var(--text-mid) !important;
-}
-
-html.dark .section-label,
-html.dark .product-category,
-html.dark .product-price,
-html.dark #cakePrice,
-html.dark .stars {
-  color: var(--gold) !important;
-}
-
-/* Inputs */
-html.dark input,
-html.dark textarea,
-html.dark select {
-  background: var(--cream-dark) !important;
-  color: var(--text-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-html.dark input::placeholder,
-html.dark textarea::placeholder {
-  color: #9b7b5c !important;
-}
-
-/* Buttons */
-html.dark .cart-btn,
-html.dark .theme-toggle-btn,
-html.dark .filter-tab {
-  color: var(--text-dark) !important;
-  border-color: var(--gold) !important;
-}
-
-html.dark .hero-cta,
-html.dark .add-to-cart,
-html.dark .whatsapp-btn,
-html.dark .login-btn,
-html.dark .track-container button,
-html.dark .filter-tab.active,
-html.dark .filter-tab:hover {
-  background: var(--gold) !important;
-  color: var(--brown-dark) !important;
-  border-color: var(--gold) !important;
-}
-
-/* Cart */
-html.dark .cart-item {
-  background: var(--cream-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-html.dark .cart-close,
-html.dark .cart-item-remove {
-  color: var(--text-dark) !important;
-}
-
-/* Checkout */
-html.dark .checkout-overlay,
-html.dark .cart-overlay,
-html.dark .customize-overlay {
-  background: rgba(0, 0, 0, 0.75) !important;
-}
-
-html.dark .confirm-section,
-html.dark .confirm-summary {
-  background: var(--cream-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-/* Favourites */
-html.dark .favorite-btn {
-  background: #2b1a0c !important;
-  color: var(--gold) !important;
-  border-color: #5a3820 !important;
-}
-
-html.dark .favorite-btn.active {
-  background: var(--gold) !important;
-  color: var(--brown-dark) !important;
-}
-
-/* Admin */
-html.dark .admin-page,
-html.dark .admin-body {
-  background: var(--cream) !important;
-  color: var(--text-dark) !important;
-}
-
-html.dark table,
-html.dark th,
-html.dark td {
-  background: var(--white) !important;
-  color: var(--text-dark) !important;
-  border-color: #3a2010 !important;
-}
-
-/* Toast */
-html.dark .toast {
-  background: #1a1008 !important;
-  color: var(--text-dark) !important;
-  border: 1px solid #3a2010 !important;
-}
-
-/* LEGAL PAGES */
-.legal-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.legal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 28px;
-  align-items: stretch;
-}
-
-.legal-card {
-  background: var(--white);
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  border-radius: 22px;
-  height: 100%;
-  padding: 32px;
-  transition: all 0.35s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-
-.legal-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  border-color: var(--gold);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
-}
-
-.legal-card h2 {
-  font-family: "Playfair Display", serif;
-  font-size: 24px;
-  color: var(--brown-dark);
-  margin-bottom: 14px;
-}
-
-.legal-card p {
-  color: var(--text-mid);
-  line-height: 1.8;
-  font-size: 15px;
-}
-
-.legal-hero {
-  padding: 140px 24px 80px;
-  background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
-  text-align: center;
-}
-
-.legal-hero p {
-  max-width: 650px;
-  margin: 18px auto 0;
-  color: var(--text-mid);
-}
-
-.legal-back {
-  text-align: center;
-  margin-top: 55px;
-}
-
-.legal-back-btn {
-  display: inline-block;
-  padding: 14px 30px;
-  background: var(--gold);
-  color: #000;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
-}
-
-.legal-back-btn:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 18px 35px rgba(212, 175, 55, 0.35);
-  background: #e6c14d;
-}
-
-html.dark .legal-hero {
-  background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
-}
-
-html.dark .legal-card {
-  background: var(--white);
-  color: var(--text-dark);
-  border-color: #3a2010;
-}
-
-html.dark .legal-card h2 {
-  color: var(--text-dark);
-}
-
-html.dark .legal-card p,
-html.dark .legal-hero p {
-  color: var(--text-mid);
-}
-
-/* Navbar Container */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-/* Navigation Links */
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  list-style: none;
-  flex-wrap: wrap;
-}
-
-/* Nav Link Styling */
-.nav-links a {
-  text-decoration: none;
-  font-size: 1rem;
-  transition: 0.3s ease;
-}
-
-/* Better Hover Effect */
-.nav-links a:hover {
-  opacity: 0.8;
-}
-
-/* Tablet Responsiveness */
-@media screen and (max-width: 992px) {
-  .navbar {
-    padding: 1rem;
-  }
-
-  .nav-links {
-    gap: 1rem;
-  }
-
-  .nav-links a {
-    font-size: 0.95rem;
-  }
-}
-
-/* Mobile Responsiveness */
-@media screen and (max-width: 768px) {
-
-  .navbar {
-    flex-direction: column;
+.customize-container {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-  }
+    gap: 40px;
+    flex-wrap: wrap;
+}
 
-  .nav-links {
+.customize-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.customize-tag {
+    color: #ff4d6d;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.customize-text h2 {
+    font-size: 42px;
+    color: #2d1b1b;
+    margin-bottom: 20px;
+}
+
+.customize-text p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.customize-btn {
+    padding: 14px 30px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.customize-btn:hover {
+    background: #e63956;
+    transform: translateY(-3px);
+}
+
+.customize-options {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.option-card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+}
+
+.option-card h3 {
+    margin-bottom: 12px;
+    color: #2d1b1b;
+}
+
+.option-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* ===== CUSTOMIZER MODAL ===== */
+
+.customizer-modal{
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.65);
+
+    display: none;
     justify-content: center;
-    margin-top: 1rem;
-    gap: 0.8rem;
-  }
+    align-items: center;
 
-  .nav-links a {
-    font-size: 0.9rem;
-  }
+    z-index: 9999;
+
+    padding: 20px;
 }
 
-/* Small Mobile Devices */
-@media screen and (max-width: 480px) {
 
-  .navbar {
-    padding: 0.8rem;
-  }
+/* ===== MODAL BOX ===== */
 
-  .nav-links {
-    flex-direction: column;
+.customizer-box{
+
     width: 100%;
-  }
+    max-width: 620px;
 
-  .nav-links a {
-    width: 100%;
+    background: #fff;
+
+    border-radius: 30px;
+
+    padding: 28px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    position: relative;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+
+/* ===== TITLE ===== */
+
+.customizer-box h2{
+
+    font-size: 28px;
+
+    margin-bottom: 25px;
+
+    color: #2b1616;
+
+    line-height: 1.2;
+}
+
+
+/* ===== CLOSE BUTTON ===== */
+
+.close-btn{
+
+    position: absolute;
+
+    top: 25px;
+    right: 30px;
+
+    font-size: 34px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.close-btn:hover{
+    transform: scale(1.1);
+}
+
+
+/* ===== FORM GROUP ===== */
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+.form-group label{
+
     display: block;
-    padding: 0.5rem 0;
-  }
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #d6a321;
+
+    text-transform: uppercase;
 }
+
+
+/* ===== INPUTS ===== */
+
+.form-group select,
+.form-group textarea{
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    border: 1px solid #ddd;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color: #ff758f;
+
+    box-shadow: 0 0 10px rgba(255,117,143,0.2);
+}
+
+
+/* ===== TEXTAREA ===== */
+
+.form-group textarea{
+
+    resize: none;
+
+    min-height: 90px;
+}
+
+
+/* ===== CHECKBOX GRID ===== */
+
+.checkbox-group{
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+/* ===== CHECKBOX CARD ===== */
+
+.checkbox-group label{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #fff7f8;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    border: 1px solid #ffd6de;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    color: #333;
+
+    text-transform: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+.checkbox-group label:hover{
+
+    transform: translateY(-2px);
+
+    background: #fff0f3;
+}
+
+
+/* ===== CHECKBOX ===== */
+
+.checkbox-group input{
+
+    width: 18px;
+    height: 18px;
+
+    accent-color: #ff4d6d;
+}
+
+
+/* ===== BUTTON ===== */
+
+.submit-customization{
+
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #ff4d6d,
+        #ff758f
+    );
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    margin-top: 10px;
+}
+
+.submit-customization:hover{
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(255,77,109,0.3);
+}
+
+.close-btn{
+
+    font-size: 28px;
+
+    top: 18px;
+    right: 22px;
+}
+
+/* ===== SUCCESS POPUP ===== */
+
+.success-popup{
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10000;
+}
+
+
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 90%;
+    max-width: 500px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 28px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.success-box h2{
+
+    font-size: 34px;
+
+    color: #2b1616;
+
+    margin-bottom: 20px;
+}
+
+
+/* ===== ORDER SUMMARY ===== */
+
+#orderSummary{
+
+    text-align: left;
+
+    margin-top: 20px;
+
+    background: #fff7f8;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    line-height: 1.8;
+
+    color: #444;
+}
+
+
+/* ===== SUCCESS BUTTON ===== */
+
+.success-box button{
+
+    margin-top: 25px;
+
+    padding: 14px 30px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #ff4d6d;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.success-box button:hover{
+
+    background: #ff335c;
+
+    transform: translateY(-2px);
+}
+
+/* ===== SUCCESS POPUP ===== */
+
+.success-popup{
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    backdrop-filter: blur(5px);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 20000;
+
+    padding: 20px;
+}
+
+
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 95%;
+    max-width: 760px;
+
+    background: #fff;
+
+    border-radius: 28px;
+
+    padding: 34px;
+
+    position: relative;
+
+    animation: popup 0.3s ease;
+
+    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+
+    overflow: hidden;
+}
+
+
+/* ===== POPUP ANIMATION ===== */
+
+@keyframes popup{
+
+    from{
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ===== TITLE ===== */
+
+.success-box h2{
+
+    text-align: center;
+
+    font-size: 38px;
+
+    color: #2b1616;
+
+    margin-bottom: 28px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+}
+
+
+/* ===== SUMMARY CARD ===== */
+
+#orderSummary{
+
+    background: #fff7f8;
+
+    border-radius: 24px;
+
+    padding: 28px 34px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px 30px;
+
+    align-items: start;
+
+    margin-bottom: 26px;
+}
+
+
+/* ===== SUMMARY TEXT ===== */
+
+#orderSummary p{
+
+    margin: 0;
+
+    font-size: 17px;
+
+    line-height: 1.6;
+
+    color: #444;
+}
+
+
+/* ===== LABEL ===== */
+
+#orderSummary strong{
+
+    color: #2b1616;
+
+    font-weight: 700;
+}
+
+
+/* ===== FULL WIDTH ITEMS ===== */
+
+.full-width{
+
+    grid-column: 1 / -1;
+}
+
+
+/* ===== DIVIDER ===== */
+
+#orderSummary hr{
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    border: none;
+
+    border-top: 1px dashed #ffb6c1;
+
+    margin: 4px 0;
+}
+
+
+/* ===== TOTAL PRICE ===== */
+
+#orderSummary h3{
+
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    font-size: 42px;
+
+    color: #ff3366;
+
+    margin-top: 8px;
+
+    font-weight: 800;
+}
+
+
+/* ===== BUTTON ===== */
+
+.success-box button{
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 18px;
+
+    padding: 16px;
+
+    background: linear-gradient(
+        135deg,
+        #ff4d6d,
+        #ff758f
+    );
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+/* ===== BUTTON HOVER ===== */
+
+.success-box button:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 12px 25px rgba(255,77,109,0.25);
+}
+
+
+/* ===== MOBILE ===== */
+
+@media(max-width: 768px){
+
+    .success-box{
+
+        padding: 24px;
+    }
+
+    .success-box h2{
+
+        font-size: 28px;
+    }
+
+    #orderSummary{
+
+        grid-template-columns: 1fr;
+
+        padding: 22px;
+    }
+
+    #orderSummary h3{
+
+        font-size: 32px;
+    }
+
+    #orderSummary p{
+
+        font-size: 15px;
+    }
+}
+
+/* ___________________________  */
+/* ===== SUCCESS BOX ===== */
+
+.success-box{
+
+    width: 92%;
+    max-width: 540px;
+
+    padding: 20px 22px;
+
+    border-radius: 22px;
+}
+
+
+/* ===== TITLE ===== */
+
+.success-box h2{
+
+    font-size: 20px;
+
+    margin-bottom: 16px;
+}
+
+
+/* ===== SUMMARY CARD ===== */
+
+#orderSummary{
+
+    padding: 16px 18px;
+
+    border-radius: 16px;
+
+    gap: 10px 18px;
+}
+
+
+/* ===== SUMMARY TEXT ===== */
+
+#orderSummary p{
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+/* ===== LABEL ===== */
+
+#orderSummary strong{
+
+    font-size: 13px;
+}
+
+
+/* ===== TOTAL ===== */
+
+#orderSummary h3{
+
+    font-size: 22px;
+
+    margin-top: 4px;
+}
+
+
+/* ===== BUTTON ===== */
+
+.success-box button{
+
+    padding: 11px;
+
+    font-size: 14px;
+
+    border-radius: 12px;
+}
+
+/* ===== MODAL BOX ===== */
+
+.customizer-box{
+
+    width: 92%;
+    max-width: 620px;
+
+    padding: 22px 24px;
+
+    border-radius: 24px;
+}
+
+
+/* ===== TITLE ===== */
+
+.customizer-box h2{
+
+    font-size: 22px;
+
+    margin-bottom: 18px;
+}
+
+
+/* ===== CLOSE BUTTON ===== */
+
+.close-btn{
+
+    font-size: 22px;
+
+    top: 16px;
+    right: 20px;
+}
+
+
+/* ===== FORM GROUP ===== */
+
+.form-group{
+
+    margin-bottom: 14px;
+}
+
+
+/* ===== LABELS ===== */
+
+.form-group label{
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* ===== INPUTS ===== */
+
+.form-group select,
+.form-group textarea{
+
+    padding: 10px 12px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+}
+
+
+/* ===== TEXTAREA ===== */
+
+.form-group textarea{
+
+    min-height: 60px;
+}
+
+
+/* ===== CHECKBOX GRID ===== */
+
+.checkbox-group{
+
+    gap: 8px;
+}
+
+
+/* ===== CHECKBOX CARD ===== */
+
+.checkbox-group label{
+
+    padding: 8px 10px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+
+    min-height: 46px;
+
+    gap: 8px;
+}
+
+
+/* ===== CHECKBOX ===== */
+
+.checkbox-group input{
+
+    width: 15px;
+    height: 15px;
+}
+
+
+/* ===== TOTAL PRICE ===== */
+
+.total-price-box{
+
+    padding: 12px;
+
+    border-radius: 14px;
+}
+
+.total-price-box h3{
+
+    font-size: 20px;
+}
+
+
+/* ===== BUTTON ===== */
+
+.submit-customization{
+
+    padding: 12px;
+
+    font-size: 15px;
+
+    border-radius: 14px;
+}
+
+
+/* ===== SCROLLBAR ===== */
+
+.customizer-box::-webkit-scrollbar{
+
+    width: 5px;
+}
+
+.customizer-box::-webkit-scrollbar-thumb{
+
+    background: #ffb3c1;
+
+    border-radius: 20px;
+}
+
