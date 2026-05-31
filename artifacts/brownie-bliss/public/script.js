@@ -23,6 +23,14 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
+// --- MOBILE MENU ---
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu) return;
+  menu.classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
@@ -684,20 +692,6 @@ AOS.init({
   once: true,
   easing: "ease-in-out"
 });
-    const message = document.getElementById('customizeMessage').value.trim();
-
-    const toppingsTotal = toppings.reduce((s, t) => s + t.price, 0);
-    const finalPrice = _customizeProduct.price + toppingsTotal;
-
-    const cartItem = {
-        ..._customizeProduct,
-        price: finalPrice,
-        customizations: {
-            dietary,
-            toppings,
-            message
-        }
-    };
 // ============================================================
 // TOAST
 // ============================================================
