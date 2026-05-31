@@ -75,9 +75,37 @@ const DEFAULT_BDAY_CAKES = {
   },
 };
 
+function buildCatalogFromList(list) {
+    if (!Array.isArray(list) || list.length === 0) {
+        products = DEFAULT_PRODUCTS;
+        bdayCakes = { ...DEFAULT_BDAY_CAKES };
+        return;
+    }
+
+    products = list
+        .filter(p => p.type === 'standard')
+        .map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || ''
+        }));
+
+    bdayCakes = {};
+    list.filter(p => p.type === 'birthday').forEach(p => {
+        bdayCakes[p.id_ref] = {
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img
+        };
+    });
+}
+
 function useFallbackProducts() {
-  products = DEFAULT_PRODUCTS;
-  bdayCakes = { ...DEFAULT_BDAY_CAKES };
+    buildCatalogFromList(null);
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
@@ -635,20 +663,38 @@ function renderRecentSearches() {
     return;
   }
 
-  container.innerHTML = `
-        ${recentSearches
-          .map(
-            (search) => `
-            <div
-                class="recent-search-tag"
-                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
-            >
-                ${search}
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+            <div class="product-img-wrap">
+                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+                    type="button"
+                    data-fav-type="dishes"
+                    data-fav-id="${p.id}"
+                    aria-label="Toggle ${p.name} favourite"
+                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+                </button>
+                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
             </div>
-        `
-          )
-          .join('')}
-    `;
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <div class="product-name">${p.name}</div>
+                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                <div class="product-price">₹${p.price}</div>
+                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
+                <button
+                    type="button"
+                    class="customize-and-add"
+                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                <button class="add-to-cart">
+                    Customize & Add
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function updatePriceFilter() {
@@ -1107,6 +1153,26 @@ function injectCheckoutModal() {
   `;
   document.body.appendChild(overlay);
 }
+
+function openReviewModal(){
+  document.getElementById("reviewModal").style.display="flex";
+}
+
+function closeReviewModal(){
+  document.getElementById("reviewModal").style.display="none";
+}
+
+document.getElementById("reviewForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const review = document.getElementById("reviewText").value;
+
+  console.log("Review submitted: ", review);
+
+  showToast("Thank you for your feedback!");
+  this.reset();
+  closeReviewModal();
+});
 
 function openCheckout() {
   if (cart.length === 0) {
@@ -1571,8 +1637,6 @@ function initStarRatings() {
 
 document.addEventListener('DOMContentLoaded', () => {
   updateFavouritesCount();
-
   renderFavouritesPage();
-
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
 });
