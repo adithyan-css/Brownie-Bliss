@@ -4,6 +4,48 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Strong mobile overrides for very small devices (iPhone SE, older phones) */
+@media (max-width: 420px) {
+  .header-inner { flex-wrap: wrap !important; padding: 10px 14px !important; }
+  .menu-toggle { display: block !important; margin-right: 8px !important; }
+  nav { display: none !important; }
+  .mobile-menu { top: 56px !important; position: fixed !important; display: flex !important; }
+  .mobile-menu.show { display: flex !important; }
+  .mobile-menu a { padding: 12px 8px !important; }
+
+  .hero-content { grid-template-columns: 1fr !important; padding: 28px 16px !important; gap: 18px !important; }
+  .hero-visual { grid-template-columns: 1fr !important; }
+  .hero-card img { height: 200px !important; }
+
+  .values-inner { flex-direction: column !important; gap: 12px !important; }
+  .products-inner { padding: 24px 12px !important; }
+
+  .birthday-grid { grid-template-columns: 1fr !important; padding: 0 12px; max-width: 100% !important; }
+  .birthday-visual { width: 100% !important; max-width: 100% !important; }
+  .birthday-visual img { height: auto !important; min-height: 200px; max-width: 100% !important; width: 100% !important; }
+}
+
+@media (max-width: 360px) {
+  .header-inner { padding: 8px 12px !important; }
+  .logo-name { font-size: 20px !important; }
+  .logo-sub { display: none !important; }
+  .hero-title { font-size: 28px !important; }
+  .hero-desc { font-size: 15px !important; }
+  .hero-card img { height: 170px !important; }
+  .mobile-menu { padding: 10px 12px !important; }
+}
+
+/* JS-driven fallback: when `.mobile-viewport` is present on <html> force mobile layout */
+.mobile-viewport .header-inner { flex-wrap: wrap !important; padding: 10px 12px !important; }
+.mobile-viewport .menu-toggle { display: block !important; }
+.mobile-viewport nav { display: none !important; }
+.mobile-viewport .mobile-menu { display: flex !important; position: fixed !important; top: 56px !important; left: 0; right: 0; }
+.mobile-viewport .hero-content { grid-template-columns: 1fr !important; padding: 24px 12px !important; gap: 16px !important; }
+.mobile-viewport .hero-visual { grid-template-columns: 1fr !important; }
+.mobile-viewport .hero-card img { height: 180px !important; }
+.mobile-viewport .values-inner { flex-direction: column !important; }
+.mobile-viewport .products-inner { padding: 20px 12px !important; }
+
 :root {
   --color-primary: #4A2C0A;
   --brown-mid: #3C1E14;
@@ -1465,6 +1507,26 @@ html {
     text-align: center;
   }
 
+  .birthday-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .bday-slide > div,
+  .bday-slide .slide-inner {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .birthday-visual {
+    width: 100% !important;
+  }
+
+  .birthday-visual img {
+    height: auto !important;
+    max-height: 400px !important;
+  }
+
   nav {
     display: none;
   }
@@ -1538,11 +1600,60 @@ footer {
     align-items: center;
   }
 
-  .categories-grid {
-    grid-template-columns: 1fr;
+  .birthday-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    padding: 0 12px;
   }
 
-  .values-inner {
+  .bday-slide > div,
+  .bday-slide .slide-inner {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    padding: 0 12px;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  .bday-slide {
+    overflow: visible !important;
+  }
+
+  .birthday-visual {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  .birthday-visual img {
+    height: 300px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .birthday-card {
+    padding: 24px !important;
+  }
+
+  .birthday-section {
+    padding: 40px 15px !important;
+    overflow: visible !important;
+    min-height: auto !important;
+  }
+
+  .birthday-slider {
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  .categories-grid {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 10px;
@@ -2599,10 +2710,13 @@ a.logo {
   display:none;
   flex-direction:column;
   background:white;
-  padding:15px;
-  position: sticky; 
-  top: 0;            
-  z-index: 999; 
+  padding:15px 20px;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
 }
 .mobile-menu.show {
   display: flex !important;
@@ -2612,21 +2726,95 @@ a.logo {
 .mobile-menu a{
   text-decoration:none;
   color:var(--brown-dark);
-  padding:10px 0;
+  padding:12px 0;
   border-bottom:1px solid #eee;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
 }
 
 @media (max-width: 900px) {
+  .header-inner {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    min-height: 72px;
+  }
+
   nav {
-    display: none !important;  /* add !important */
+    display: none !important;
+    width: 100%;
   }
 
   .menu-toggle {
     display: block !important;
     order: -1;
-    margin-right: 15px;
+    margin-right: 0;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 10px;
   }
 }
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  .hero-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card img {
+    height: 220px;
+  }
+
+  .hero-card:first-child img {
+    height: 240px;
+  }
+
+  .values-strip {
+    padding: 20px 20px;
+  }
+
+  .values-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 620px) {
+  .section-title {
+    font-size: 30px;
+  }
+
+  .birthday-slider > .bday-slide > div {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .birthday-card {
+    padding: 30px !important;
+  }
+
+  .birthday-visual img {
+    height: auto !important;
+    min-height: 260px;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -9844,6 +10032,7 @@ html.dark .topping-price {
 
 .birthday-slider::-webkit-scrollbar {
   display: none;
+}
 .price-filter {
   display: flex;
   align-items: center;
@@ -9996,4 +10185,31 @@ background-position: right 16px center;
 #scrollTopBtn:hover {
     background-color: #8b5a3c;
     transform: scale(1.1);
+}
+
+/* Mobile overrides appended at EOF to ensure precedence for very small devices */
+@media (max-width: 420px) {
+  .header-inner { flex-wrap: wrap !important; padding: 10px 14px !important; }
+  .menu-toggle { display: block !important; margin-right: 8px !important; }
+  nav { display: none !important; }
+  .mobile-menu { top: 56px !important; position: fixed !important; display: flex !important; }
+  .mobile-menu.show { display: flex !important; }
+  .mobile-menu a { padding: 12px 8px !important; }
+
+  .hero-content { grid-template-columns: 1fr !important; padding: 28px 16px !important; gap: 18px !important; }
+  .hero-visual { grid-template-columns: 1fr !important; }
+  .hero-card img { height: 200px !important; }
+
+  .values-inner { flex-direction: column !important; gap: 12px !important; }
+  .products-inner { padding: 24px 12px !important; }
+}
+
+@media (max-width: 360px) {
+  .header-inner { padding: 8px 12px !important; }
+  .logo-name { font-size: 20px !important; }
+  .logo-sub { display: none !important; }
+  .hero-title { font-size: 28px !important; }
+  .hero-desc { font-size: 15px !important; }
+  .hero-card img { height: 170px !important; }
+  .mobile-menu { padding: 10px 12px !important; }
 }
