@@ -47,6 +47,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 850,
     img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
   {
     id: 2,
@@ -54,6 +56,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 950,
     img: 'assets/dutch_truffle.png',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
   {
     id: 3,
@@ -61,6 +65,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 675,
     img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
 ];
 
@@ -75,9 +81,40 @@ const DEFAULT_BDAY_CAKES = {
   },
 };
 
+function buildCatalogFromList(list) {
+    if (!Array.isArray(list) || list.length === 0) {
+        products = DEFAULT_PRODUCTS;
+        bdayCakes = { ...DEFAULT_BDAY_CAKES };
+        return;
+    }
+
+    products = list
+        .filter(p => p.type === 'standard')
+        .map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || '',
+            allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
+
+        }));
+
+    bdayCakes = {};
+    list.filter(p => p.type === 'birthday').forEach(p => {
+        bdayCakes[p.id_ref] = {
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img
+        };
+    });
+}
+
 function useFallbackProducts() {
-  products = DEFAULT_PRODUCTS;
-  bdayCakes = { ...DEFAULT_BDAY_CAKES };
+    buildCatalogFromList(null);
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
@@ -89,16 +126,19 @@ function useFallbackProducts() {
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 const BROWNIE_BLISS_BAKERY = {
-    id: 'brownie-bliss',
-    name: 'Brownie Bliss',
-    category: 'Homemade Bakery',
-    location: 'Krishnagiri',
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338'
+  id: 'brownie-bliss',
+  name: 'Brownie Bliss',
+  category: 'Homemade Bakery',
+  location: 'Krishnagiri',
+  img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
 };
 
 let favouriteItems = { bakeries: [], dishes: [] };
 try {
-  favouriteItems = JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || { bakeries: [], dishes: [] };
+  favouriteItems = JSON.parse(localStorage.getItem(FAVOURITES_KEY)) || {
+    bakeries: [],
+    dishes: [],
+  };
   if (!favouriteItems.bakeries) favouriteItems.bakeries = [];
   if (!favouriteItems.dishes) favouriteItems.dishes = [];
 } catch (e) {
@@ -114,17 +154,21 @@ function saveFavourites() {
 }
 
 function isFavourite(type, id) {
-  return favouriteItems[type]?.some(item => item.id === id) || false;
+  return favouriteItems[type]?.some((item) => item.id === id) || false;
 }
 
 function toggleFavourite(type, item) {
   if (!favouriteItems[type]) favouriteItems[type] = [];
-  const idx = favouriteItems[type].findIndex(f => f.id === item.id);
+  const idx = favouriteItems[type].findIndex((f) => f.id === item.id);
   if (idx >= 0) {
     favouriteItems[type].splice(idx, 1);
     showToast('Removed from favourites 💔');
   } else {
-    favouriteItems[type].push(item);
+    const exists = favouriteItems[type].some((f) => f.id === item.id);
+
+    if (!exists) {
+      favouriteItems[type].push(item);
+    }
     showToast('Added to favourites ❤️');
   }
   saveFavourites();
@@ -134,20 +178,28 @@ function toggleFavourite(type, item) {
 }
 
 function updateFavouriteButtons(type, id) {
-  document.querySelectorAll(`.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`).forEach(btn => {
-    const active = isFavourite(type, id);
-    btn.classList.toggle('active', active);
-    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-    btn.innerHTML = active ? '&hearts;' : '&#9825;';
-  });
+  document
+    .querySelectorAll(
+      `.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`
+    )
+    .forEach((btn) => {
+      const active = isFavourite(type, id);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      btn.innerHTML = active ? '&hearts;' : '&#9825;';
+    });
 }
 
 function updateFavouritesCount() {
-  const total = (favouriteItems.bakeries?.length || 0) + (favouriteItems.dishes?.length || 0);
-  document.querySelectorAll('.fav-count, [data-favourites-count]').forEach(el => {
-    el.textContent = total;
-    el.style.display = total ? 'inline-block' : 'none';
-  });
+  const total =
+    (favouriteItems.bakeries?.length || 0) +
+    (favouriteItems.dishes?.length || 0);
+  document
+    .querySelectorAll('.fav-count, [data-favourites-count]')
+    .forEach((el) => {
+      el.textContent = total;
+      el.style.display = total ? 'inline-block' : 'none';
+    });
 }
 
 function toggleBakeryFavourite() {
@@ -161,10 +213,23 @@ function toggleBirthdayFavourite() {
 function renderFavouritesPage() {
   const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
   const dishesGrid = document.getElementById('favouriteDishesGrid');
+  const emptyState = document.getElementById('favouritesEmpty');
+
+  const hasBakeries = favouriteItems.bakeries?.length > 0;
+  const hasDishes = favouriteItems.dishes?.length > 0;
+
+  const hasAnyFavourites = hasBakeries || hasDishes;
+
+  if (emptyState) {
+    emptyState.style.display = hasAnyFavourites ? 'none' : 'block';
+  }
   if (!bakeryGrid && !dishesGrid) return;
 
   if (bakeryGrid) {
-    bakeryGrid.innerHTML = favouriteItems.bakeries.map(bakery => `
+    bakeryGrid.innerHTML =
+      favouriteItems.bakeries
+        .map(
+          (bakery) => `
       <article class="favourite-bakery-card">
         <img src="${bakery.img}" alt="${bakery.name}">
         <div class="favourite-bakery-info">
@@ -177,11 +242,16 @@ function renderFavouritesPage() {
           </button>
         </div>
       </article>
-    `).join('') || '<p>No favourite bakeries yet.</p>';
+    `
+        )
+        .join('') || '<p>No favourite bakeries yet.</p>';
   }
 
   if (dishesGrid) {
-    dishesGrid.innerHTML = favouriteItems.dishes.map(dish => `
+    dishesGrid.innerHTML =
+      favouriteItems.dishes
+        .map(
+          (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
@@ -197,12 +267,19 @@ function renderFavouritesPage() {
           <div class="product-category">${dish.category || 'favourite'}</div>
           <div class="product-name">${dish.name}</div>
           ${dish.price ? `<div class="product-price">₹${dish.price}</div>` : ''}
-          <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
-            Add to Cart
-          </button>
+          <div class="product-actions">
+            <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
+              Add to Cart
+            </button>
+            <button class="copy-btn" title="Copy Product Link" aria-label="Copy Product Link" onclick='copyProductLink("${dish.name.replace(/'/g, "\\'")}", event)'>
+              🔗
+            </button>
+          </div>
         </div>
       </div>
-    `).join('') || '<p>No favourite dishes yet.</p>';
+    `
+        )
+        .join('') || '<p>No favourite dishes yet.</p>';
   }
 }
 function buildCatalogFromList(list) {
@@ -217,6 +294,8 @@ function buildCatalogFromList(list) {
         emoji: p.emoji,
         img: p.img,
         description: p.description || '',
+         allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
       }));
 
     bdayCakes = {};
@@ -250,6 +329,9 @@ async function loadProducts() {
           img: p.img,
           stock: p.stock,
           description: p.description || '',
+            allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
+
         }));
 
       bdayCakes = {};
@@ -272,10 +354,17 @@ async function loadProducts() {
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
-  }
 
-  if (document.getElementById('cakePrice')) {
-    calculateBdayPrice();
+    updateFavouritesCount();
+
+    renderFavouritesPage();
+  }
+ if (document.getElementById('cakePrice')) {
+      calculateBdayPrice();
+    }
+  } catch (e) {
+    console.error('Failed to load products:', e);
+    useFallbackProducts();
   }
 }
 
@@ -286,7 +375,8 @@ try {
   if (!Array.isArray(cart)) cart = [];
 } catch (e) {
   console.error('Error parsing cart from localStorage:', e);
-  cart = [];
+
+
 }
 
 let checkoutState = {
@@ -387,14 +477,17 @@ function addToCart(product) {
     showToast('This item is sold out 😞');
     return;
   }
-  
-  const existing = cart.find(i => {
+
+  const existing = cart.find((i) => {
     if (i.name !== product.name || i.message !== product.message) return false;
     const hasCustom1 = !!i.customizations;
     const hasCustom2 = !!product.customizations;
     if (hasCustom1 !== hasCustom2) return false;
     if (hasCustom1 && hasCustom2) {
-      return JSON.stringify(i.customizations) === JSON.stringify(product.customizations);
+      return (
+        JSON.stringify(i.customizations) ===
+        JSON.stringify(product.customizations)
+      );
     }
     return true;
   });
@@ -596,8 +689,8 @@ function renderRecentSearches() {
 
   container.innerHTML = `
         ${recentSearches
-          .map(
-            (search) => `
+      .map(
+        (search) => `
             <div
                 class="recent-search-tag"
                 onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
@@ -605,9 +698,41 @@ function renderRecentSearches() {
                 ${search}
             </div>
         `
-          )
-          .join('')}
+      )
+      .join('')}
     `;
+    grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+            <div class="product-img-wrap">
+                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+                    type="button"
+                    data-fav-type="dishes"
+                    data-fav-id="${p.id}"
+                    aria-label="Toggle ${p.name} favourite"
+                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+                </button>
+                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
+            </div>
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <div class="product-name">${p.name}</div>
+                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
+                <div class="product-price">₹${p.price}</div>
+                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
+                <button
+                    type="button"
+                    class="customize-and-add"
+                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+                <button class="add-to-cart">
+                    Customize & Add
+                </button>
+            </div>
+        </div>
+    `).join('');
 }
 
 function updatePriceFilter() {
@@ -663,46 +788,71 @@ function filterProducts(category = 'all', btn = null) {
   grid.innerHTML = filtered
     .map(
       (p) => `
-      <div class="product-card">
+  <div class="product-card">
 
-        <div class="product-img-wrap">
+    <div class="product-img-wrap">
 
-          <img
-            src="${p.img}"
-            alt="${p.name}"
-          />
+      <img src="${p.img}" alt="${p.name}">
 
-        </div>
+      <button
+        class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+        type="button"
+        data-fav-type="dishes"
+        data-fav-id="${p.id}"
+        aria-label="Toggle favourite"
+        aria-pressed="${isFavourite('dishes', p.id)}"
+        onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'
+      >
+        ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+      </button>
 
-        <div class="product-info">
+    </div>
 
-          <div class="product-category">
-            ${p.category}
-          </div>
+    <div class="product-info">
 
-          <div class="product-name">
-            ${p.name}
-          </div>
-
-          <div class="product-desc">
-            ${p.description || ''}
-          </div>
-
-          <div class="product-price">
-            ₹${p.price}
-          </div>
-
-          <button
-            class="add-to-cart"
-            onclick='addToCart(${JSON.stringify(p)})'
-          >
-            Add To Cart
-          </button>
-
-        </div>
-
+      <div class="product-category">
+        ${p.category}
       </div>
-    `
+
+      <div class="product-name">
+        ${p.name}
+      </div>
+
+      <div class="product-desc">
+        ${p.description || ''}
+      </div>
+
+      <div class="product-meta">
+          <div><strong>Allergens:</strong> ${p.allergens || 'Not specified'}</div>
+          <div><strong>Shelf Life:</strong> ${p.shelfLife || 'Not specified'}</div>
+      </div>
+
+
+      <div class="product-price">
+        ₹${p.price}
+      </div>
+
+      <div class="product-actions">
+        <button
+          class="add-to-cart"
+          onclick='addToCart(${JSON.stringify(p)})'
+        >
+          Add To Cart
+        </button>
+        <button
+          class="copy-btn"
+          title="Copy Product Link"
+          aria-label="Copy Product Link"
+          onclick='copyProductLink("${p.name.replace(/'/g, "\\'")}", event)'
+        >
+          🔗
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+`
     )
     .join('');
 }
@@ -845,7 +995,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
     `_Your order has been recorded. Please share payment receipt for confirmation!_ ✨`;
 
-  const waUrl = `https://wa.me/918072596340?text=${encodeURIComponent(message)}`;
+  const waUrl = `https://wa.me/918262851488?text=${encodeURIComponent(message)}`;
 
   window.open(waUrl, '_blank');
 }
@@ -873,7 +1023,7 @@ const BIRTHDAY_FALLBACKS = DEFAULT_BDAY_CAKES;
 function showToast(msg) {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.innerHTML = msg;          // innerHTML to allow the track-order anchor
+  t.innerHTML = msg; // innerHTML to allow the track-order anchor
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 5000);
 }
