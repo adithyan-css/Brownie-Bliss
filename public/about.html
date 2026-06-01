@@ -9,6 +9,33 @@
   <script>
     (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
   </script>
+  <style>
+    html.dark body,
+    html.dark .about-section,
+    html.dark .about-inner,
+    html.dark .hero,
+    html.dark .stats,
+    html.dark .story,
+    html.dark .values,
+    html.dark .founder,
+    html.dark .cta,
+    html.dark .quote-banner {
+      background-color: #1a0f08 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark header {
+      background: #1a0f08 !important;
+    }
+    html.dark .value-card {
+      background: #2a1a10 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark .story-text p,
+    html.dark .founder-bio,
+    html.dark .hero-body {
+      color: #c9a97a !important;
+    }
+  </style>
 </head>
 <body>
 <!-- ANNOUNCEMENT -->
@@ -37,15 +64,17 @@
     </nav>
 
     <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
-    </div>
+
+  <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span id="themeIcon">🌙</span>
+  </button>
+
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Cart
+    <span class="cart-count" id="cartBadge">0</span>
+  </button>
+
+</div>
 
   </div>
 </header>
@@ -1910,8 +1939,7 @@
         </p>
 
       </div>
-    </div>
-    </section>
+
 
   <!-- Hero -->
   <section class="hero story-hero">
@@ -2194,5 +2222,14 @@
 
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <script>
+    document.getElementById('themeToggleBtn').onclick = function() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const next = isDark ? 'light' : 'dark';
+      localStorage.setItem('bb_theme', next);
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      document.getElementById('themeIcon').textContent = next === 'dark' ? '☀️' : '🌙';
+    };
+  </script>
 </body>
 </html>
