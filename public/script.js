@@ -263,6 +263,15 @@ function renderFavouritesPage() {
           <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
             Add to Cart
           </button>
+          ${dish.price ? `<div class="product-price">₹${dish.price}</div>` : ''}
+          <div class="product-actions">
+            <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
+              Add to Cart
+            </button>
+            <button class="copy-btn" title="Copy Product Link" aria-label="Copy Product Link" onclick='copyProductLink("${dish.name.replace(/'/g, "\\'")}", event)'>
+              🔗
+            </button>
+          </div>
         </div>
       </div>
     `,
@@ -344,6 +353,12 @@ async function loadProducts() {
   }
   if (document.getElementById("cakePrice")) {
     calculateBdayPrice();
+ if (document.getElementById('cakePrice')) {
+      calculateBdayPrice();
+    }
+  } catch (e) {
+    console.error('Failed to load products:', e);
+    useFallbackProducts();
   }
 }
 
@@ -355,6 +370,9 @@ try {
 } catch (e) {
   console.error("Error parsing cart from localStorage:", e);
   cart = [];
+  console.error('Error parsing cart from localStorage:', e);
+
+
 }
 
 let checkoutState = {
@@ -668,6 +686,21 @@ function renderRecentSearches() {
   grid.innerHTML = filtered
     .map(
       (p) => `
+  container.innerHTML = `
+        ${recentSearches
+      .map(
+        (search) => `
+            <div
+                class="recent-search-tag"
+                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
+            >
+                ${search}
+            </div>
+        `
+      )
+      .join('')}
+    `;
+    grid.innerHTML = filtered.map(p => `
         <div class="product-card">
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
@@ -794,12 +827,22 @@ function filterProducts(category = "all", btn = null) {
         ₹${p.price}
       </div>
 
-      <button
-        class="add-to-cart"
-        onclick='addToCart(${JSON.stringify(p)})'
-      >
-        Add To Cart
-      </button>
+      <div class="product-actions">
+        <button
+          class="add-to-cart"
+          onclick='addToCart(${JSON.stringify(p)})'
+        >
+          Add To Cart
+        </button>
+        <button
+          class="copy-btn"
+          title="Copy Product Link"
+          aria-label="Copy Product Link"
+          onclick='copyProductLink("${p.name.replace(/'/g, "\\'")}", event)'
+        >
+          🔗
+        </button>
+      </div>
 
     </div>
 
@@ -947,7 +990,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     `💰 *Total Amount: ₹${total.toLocaleString("en-IN")}*\n\n` +
     `_Your order has been recorded. Please share payment receipt for confirmation!_ ✨`;
 
-  const waUrl = `https://wa.me/918072596340?text=${encodeURIComponent(message)}`;
+  const waUrl = `https://wa.me/918262851488?text=${encodeURIComponent(message)}`;
 
   window.open(waUrl, "_blank");
 }
@@ -1525,6 +1568,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadProducts();
   initializeLiveSearch();
+
+  // Simple check for product deep link to filter on page load
+  const productParam = urlParams.get('product');
+  if (productParam) {
+    const searchInput = document.getElementById('productSearch');
+    if (searchInput) {
+      searchInput.value = productParam;
+      currentSearchTerm = productParam;
+      filterProducts('all');
+
+      // Smooth scroll to product grid
+      const grid = document.getElementById('productsGrid');
+      if (grid) {
+        grid.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }
 });
 
 window.addEventListener("scroll", function () {
@@ -1551,9 +1611,83 @@ function toggleMenu() {
   }
 }
 
+// --- PRODUCT LINK SHARING ---
+function getProductShareLink(productName) {
+  const url = new URL(window.location.href);
+  url.hash = '';
+  let path = url.pathname;
+  if (path.endsWith('/favourites.html')) {
+    path = path.replace('/favourites.html', '/products.html');
+  } else if (path.endsWith('/index.html')) {
+    path = path.replace('/index.html', '/products.html');
+  } else if (path.endsWith('/about.html')) {
+    path = path.replace('/about.html', '/products.html');
+  } else if (path.endsWith('/contact.html')) {
+    path = path.replace('/contact.html', '/products.html');
+  } else if (path.endsWith('/track.html')) {
+    path = path.replace('/track.html', '/products.html');
+  } else if (path.endsWith('/refund-policy.html') || path.endsWith('/privacy-policy.html') || path.endsWith('/terms-of-service.html')) {
+    path = path.substring(0, path.lastIndexOf('/')) + '/products.html';
+  } else if (!path.includes('products.html')) {
+    if (path.endsWith('/')) {
+      path += 'products.html';
+    } else {
+      path = path.substring(0, path.lastIndexOf('/')) + '/products.html';
+    }
+  }
+  url.pathname = path;
+  url.search = '';
+  url.searchParams.set('product', productName);
+  return url.toString();
+}
+
+function copyProductLink(productName, event) {
+  if (event) {
+    event.stopPropagation();
+  }
+
+  const shareLink = getProductShareLink(productName);
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareLink)
+      .then(() => {
+        showToast('Product link copied successfully! 📋');
+      })
+      .catch((err) => {
+        console.error('Failed to copy using Clipboard API:', err);
+        fallbackCopyText(shareLink);
+      });
+  } else {
+    fallbackCopyText(shareLink);
+  }
+}
+
+function fallbackCopyText(text) {
+  try {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    const successful = document.execCommand('copy');
+    document.body.removeChild(textArea);
+    if (successful) {
+      showToast('Product link copied successfully! 📋');
+    } else {
+      showToast('Failed to copy link ');
+    }
+  } catch (err) {
+    console.error('Fallback copy failed:', err);
+    showToast('Failed to copy link ');
+  }
+}
+
 // --- GLOBAL BINDINGS ---
 window.openCart = openCart;
 window.closeCart = closeCart;
+window.copyProductLink = copyProductLink;
 window.addToCart = addToCart;
 window.changeQty = changeQty;
 window.removeFromCart = removeFromCart;
@@ -1646,3 +1780,43 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFavouritesPage();
   updateFavouriteButtons("bakeries", BROWNIE_BLISS_BAKERY.id);
 });
+
+// ── Floating WhatsApp Quick-Order Button ──
+(function () {
+  const WA_LINK =
+    "https://wa.me/918072596340?text=Hi%2C%20I%27d%20like%20to%20place%20an%20order!";
+
+  // Inject the button HTML into every page
+  const btn = document.createElement("a");
+  btn.href = WA_LINK;
+  btn.target = "_blank";
+  btn.rel = "noopener noreferrer";
+  btn.className = "whatsapp-float";
+  btn.setAttribute("aria-label", "Quick Order via WhatsApp");
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15
+               -.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075
+               -.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059
+               -.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52
+               .149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52
+               -.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51
+               -.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372
+               -.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074
+               .149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625
+               .712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413
+               .248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.524 5.847L.057 23.882
+               l6.198-1.448A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z
+               m0 22c-1.88 0-3.645-.497-5.172-1.367l-.371-.214-3.681.86.927-3.585
+               -.233-.381A9.934 9.934 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10
+               -4.477 10-10 10z"/>
+    </svg>`;
+
+  document.body.appendChild(btn);
+
+  // Fade + scale in after 2 seconds
+  setTimeout(function () {
+    btn.classList.add("visible");
+  }, 2000);
+})();

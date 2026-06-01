@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -22,11 +22,12 @@
   </script>
 </head>
 
-<body id="home">
-
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+  <body id="home">
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">
+      ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
+      HAPPINESS IN EVERY BITE &nbsp; ✨
+    </div>
 
   <!-- HEADER -->
   <header>
@@ -43,8 +44,7 @@
         <a href="#feedback">Feedback</a>
         <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count
             style="display:none">0</span></a>
-        <a href="index.html#contact">Contact</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="contact.html">Contact</a>
         <a href="track.html">Track Order</a>
       </nav>
       <button class="menu-toggle" onclick="toggleMenu()">
@@ -142,48 +142,41 @@
     </div>
   </section>
   <!-- VALUES STRIP -->
-  <div class="values-strip" id="about">
-
-    <div class="values-inner" data-aos="fade-up">
-
-      <div class="value-item">
-        <span class="value-icon">📖</span>
-
-        <div class="value-text">
-          <strong>Authentic Recipes</strong>
-          <span>Traditional home-style methods</span>
+    <div class="values-strip" id="about">
+      <div class="values-inner">
+        <div class="value-item">
+          <span class="value-icon">📖</span>
+          <div class="value-text">
+            <strong>Authentic Recipes</strong>
+            <span>Traditional home-style methods</span>
+          </div>
         </div>
-      </div>
-
-      <div class="value-item">
-        <span class="value-icon">❤️</span>
-
-        <div class="value-text">
-          <strong>Baked with Love</strong>
-          <span>Every product crafted with passion</span>
+        <div class="value-item">
+          <span class="value-icon">❤️</span>
+          <div class="value-text">
+            <strong>Baked with Love</strong>
+            <span>Every product crafted with passion</span>
+          </div>
         </div>
-      </div>
-
-      <div class="value-item">
-        <span class="value-icon">✅</span>
-
-        <div class="value-text">
-          <strong>Committed to Quality</strong>
-          <span>Premium ingredients, always</span>
+        <div class="value-item">
+          <span class="value-icon">✅</span>
+          <div class="value-text">
+            <strong>Committed to Quality</strong>
+            <span>Premium ingredients, always</span>
+          </div>
         </div>
-      </div>
-
-      <div class="value-item">
-        <span class="value-icon">💛</span>
-
-        <div class="value-text">
-          <strong>Honestly Priced</strong>
-          <span>Best products at fair prices</span>
+        <div class="value-item">
+          <span class="value-icon">💛</span>
+          <div class="value-text">
+            <strong>Honestly Priced</strong>
+            <span>Best products at fair prices</span>
+          </div>
         </div>
-      </div>
-
     </div>
-  </div>
+    </div>
+  
+
+
   <!-- PRODUCTS SECTION -->
   <section class="products-section" id="products" style="padding: 100px 30px; background: var(--cream);">
     <div class="products-inner">
@@ -199,17 +192,30 @@
 
       </div>
 
-      <div class="filter-tabs" style="margin-bottom: 60px;">
-        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
-        <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
-        <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
-        <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
-      </div>
+        <div class="filter-tabs" style="margin-bottom: 60px">
+          <button
+            class="filter-tab active"
+            onclick="filterProducts('all', this)"
+          >
+            All
+          </button>
+          <button class="filter-tab" onclick="filterProducts('cakes', this)">
+            Cakes
+          </button>
+          <button class="filter-tab" onclick="filterProducts('brownies', this)">
+            Brownies
+          </button>
+          <button class="filter-tab" onclick="filterProducts('desserts', this)">
+            Desserts
+          </button>
+          <button class="filter-tab" onclick="filterProducts('cookies', this)">
+            Cookies
+          </button>
+        </div>
 
-      <div class="products-grid" id="productsGrid"></div>
-    </div>
-  </section>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
   <section class="birthday-section" data-aos="fade-up"
@@ -593,18 +599,19 @@
         </p>
       </div>
 
-      <div class="feedback-grid">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+ 
         <!-- Feedback Area -->
         <div
           style="background: var(--white); padding: 40px; border-radius: 4px; box-shadow: var(--shadow); border-left: 5px solid var(--gold);">
           <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 20px; color: var(--brown-dark);">Leave a
             Review</h3>
           <form
-            onsubmit="event.preventDefault(); const rating = this.querySelector('.star-rating')?.getAttribute('data-rating') || '4'; showToast('Thank you for your ' + rating + '-star feedback! ⭐'); this.reset();">
+            onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();">
             <div style="margin-bottom: 20px;">
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Rating</label>
-              <div class="star-rating" data-rating="4" data-inactive-color="var(--cream-dark)"
+              <div
                 style="display: flex; gap: 5px; font-size: 24px; color: var(--gold); cursor: pointer;">
                 <span>★</span><span>★</span><span>★</span><span>★</span><span style="color: var(--cream-dark);">★</span>
               </div>
@@ -648,7 +655,7 @@
               <label
                 style="display: block; font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase;">Order
                 ID (Optional)</label>
-              <input type="text" placeholder="e.g. ORD-1234"
+              <input type="text" placeholder="BB-YYYYMMDD-XXXX"
                 style="width: 100%; padding: 12px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
             </div>
             <div style="margin-bottom: 20px;">
@@ -775,16 +782,9 @@
         </form>
       </div>
     </div>
-    </div>
 
-    </div>
-  </section>
-
-  <div class="bb-overall">
-    <span class="stars-big">★★★★★</span>
-    <p class="rating-text"><strong>5.0</strong> · 5 reviews · All homemade, all heart</p>
-  </div>
-
+      </div>
+    </section>
 
   <!-- FOOTER -->
   <footer id="contact">
@@ -807,11 +807,10 @@
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
         </div>
-        <div class="footer-col">
+        <div class="footer-col" style="display: none;">
           <h4>Information</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-          <a href="refund-policy.html">Refund Policy</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Refund Policy</a>
         </div>
         <div class="footer-col">
           <h4>Get In Touch</h4>
@@ -829,31 +828,32 @@
 
   </footer>
 
-  <!-- SHARED COMPONENTS -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none">
-      <div class="cart-total">
-        <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">₹0</span>
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <span class="cart-title">Your Cart 🛒</span>
+        <button class="cart-close" onclick="closeCart()">✕</button>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-        Order via WhatsApp
-      </button>
-      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span class="cart-total-label">Total Amount</span>
+          <span class="cart-total-amt" id="cartTotal">₹0</span>
+        </div>
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+          Order via WhatsApp
+        </button>
+        <p class="whatsapp-note">
+          You'll be redirected to WhatsApp to confirm your order
+        </p>
+      </div>
     </div>
-  </div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 
 </html>
