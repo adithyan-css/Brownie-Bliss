@@ -330,6 +330,8 @@ async function loadProducts() {
     }
   } catch (error) {
     console.error("Error loading products:", error);
+  } catch (e) {
+    console.error('Error loading products from database:', e);
     useFallbackProducts();
   }
 
