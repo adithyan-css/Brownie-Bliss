@@ -2,26 +2,29 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order - Brownie Bliss</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <title>Track Order | Brownie Bliss</title>
+
+    <!-- GOOGLE FONTS -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <!-- Theme init: sets dark class synchronously before first paint (no flash) -->
-    <script>
-        (function () {
-            try {
-                var t = localStorage.getItem('bb_theme') || 'light';
-                if (t === 'dark') document.documentElement.classList.add('dark');
-            } catch (_) { }
-        })();
-    </script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="track.css">
+
 </head>
 
-<body class="track-page-body">
+<body>
 
     <!-- HEADER -->
     <header>
@@ -49,155 +52,510 @@
                 </button>
             </div>
         </div>
+
     </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#home">Home</a>
-  <a href="index.html#products">Products</a>
-  <a href="index.html#birthday">Birthday Cakes</a>
-  <a href="favourites.html">Favourites</a>
-  <a href="index.html#contact">Contact</a>
-  <a href="track.html">Track Order</a>
-</div>
-    <div class="track-content-wrapper">
-        <div class="track-container">
-            <h2>Track Your Order</h2>
-            <p class="track-subtitle">Enter your Order ID below to check the current status.</p>
 
-            <div class="track-input-group">
-                <input type="text" id="orderIdInput" placeholder="e.g. ORD-1234" />
-                <button onclick="trackOrder()">Track Order</button>
-            </div>
+    <!-- HERO -->
+    <section class="premium-hero">
 
-            <div id="trackError" class="track-error"></div>
+        <div class="hero-left">
 
-            <div id="result">
-                <h3>Order <span id="resOrderId"></span></h3>
+            <span class="hero-badge">
 
-                <div class="order-meta">
-                    <div>
-                        <span class="meta-label">Date Placed</span>
-                        <div id="resDate" class="meta-value"></div>
-                    </div>
-                    <div>
-                        <span class="meta-label">Total Amount</span>
-                        <div class="meta-value">₹<span id="resTotalTop"></span></div>
-                    </div>
-                </div>
+                HOMEMADE TREATS • HAPPINESS IN EVERY BITE
 
-                <div class="tracking-timeline" id="trackingTimeline">
-                    <div class="timeline-step" id="step-pending">
-                        <div class="step-icon">⏳</div>
-                        <div class="step-content">
-                            <div class="step-title">Order Placed</div>
-                            <div class="step-desc">We have received your order</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-confirmed">
-                        <div class="step-icon">✅</div>
-                        <div class="step-content">
-                            <div class="step-title">Confirmed</div>
-                            <div class="step-desc">Your order has been confirmed</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-preparing">
-                        <div class="step-icon">🧑‍🍳</div>
-                        <div class="step-content">
-                            <div class="step-title">Preparing</div>
-                            <div class="step-desc">We are baking your treats</div>
-                        </div>
-                    </div>
-                    <div class="timeline-step" id="step-delivered">
-                        <div class="step-icon">🚚</div>
-                        <div class="step-content">
-                            <div class="step-title">Delivered</div>
-                            <div class="step-desc">Enjoy your Brownie Bliss!</div>
-                        </div>
-                    </div>
-                </div>
+            </span>
+
+            <h1>
+
+                Track Your
+                <span>Sweet Order</span>
+
+            </h1>
+
+            <p>
+
+                From oven to your doorstep —
+                follow every delicious moment in real-time.
+
+            </p>
+
+            <div class="hero-buttons">
+
                 
-                <div id="cancelledAlert" class="cancelled-alert" style="display: none;">
-                    ❌ This order has been cancelled. Please contact support.
-                </div>
 
-                <h4>Items</h4>
-                <table class="receipt-table">
-                    <tbody id="resItems"></tbody>
-                    <tfoot>
-                        <tr class="result-total">
-                            <td>Total</td>
-                            <td class="text-right">₹<span id="resTotal"></span></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                    <button
+    class="primary-btn"
+    onclick="scrollToTrack()">
+
+    Track Now
+
+</button>
+
+                <button
+    class="secondary-btn"
+    onclick="goToProducts()">
+
+    Explore Cakes
+
+</button>
+
             </div>
+
         </div>
-    </div>
+
+        <div class="hero-right">
+
+            <div class="hero-image-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200"
+                    alt="Cake">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TRACK -->
+    <section class="premium-track-section"id="track-section">
+
+        <div class="premium-track-card">
+
+            <div class="track-icon">
+
+                🚚
+
+            </div>
+
+            <h2>
+
+                Track Your Order
+
+            </h2>
+
+            <p class="track-desc">
+
+                Use any ONE option below to track your order.
+
+            </p>
+
+            <!-- ORDER ID -->
+            <div class="premium-input-box">
+
+                <i class="fa-solid fa-box"></i>
+
+                <input
+                    type="text"
+                    id="orderId"
+                    placeholder="Enter Order ID">
+
+            </div>
+
+            <!-- EMAIL -->
+            <div class="premium-input-box">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <input
+                    type="email"
+                    id="emailId"
+                    placeholder="Enter Email ID">
+
+            </div>
+
+            <!-- PHONE -->
+            <div class="premium-input-box">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <input
+                    type="text"
+                    id="phoneNumber"
+                    placeholder="Enter Phone Number">
+
+            </div>
+
+            <!-- BUTTON -->
+            <button
+                class="track-order-btn"
+                onclick="trackOrder()">
+
+                Track Order
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+            <!-- RESULT -->
+            <div id="track-result"></div>
+
+            <!-- SECURITY -->
+            <div class="secure-text">
+
+                🔒 Your order details are safe & secure
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+
+        <div class="section-title">
+
+            <span></span>
+
+            <h2>How It Works</h2>
+
+            <span></span>
+
+        </div>
+
+        <div class="steps-grid">
+
+            <div class="step-card">
+
+                <div class="step-number">1</div>
+
+                <div class="step-icon">📋</div>
+
+                <h3>Enter Details</h3>
+
+                <p>
+                    Use your order ID, email, or phone number.
+                </p>
+
+            </div>
+
+            <div class="step-card">
+
+                <div class="step-number">2</div>
+
+                <div class="step-icon">🔍</div>
+
+                <h3>Verify Order</h3>
+
+                <p>
+                    We securely verify your bakery order details.
+                </p>
+
+            </div>
+
+            <div class="step-card">
+
+                <div class="step-number">3</div>
+
+                <div class="step-icon">🚚</div>
+
+                <h3>Live Tracking</h3>
+
+                <p>
+                    Track your delicious treats in real-time.
+                </p>
+
+            </div>
+
+            <div class="step-card">
+
+                <div class="step-number">4</div>
+
+                <div class="step-icon">❤️</div>
+
+                <h3>Enjoy!</h3>
+
+                <p>
+                    Enjoy freshly baked happiness delivered to you.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TRUST -->
+    <section class="trust-section">
+
+        <div class="trust-card">
+
+            <h2>10K+</h2>
+
+            <p>Happy Customers</p>
+
+        </div>
+
+        <div class="trust-card">
+
+            <h2>4.9★</h2>
+
+            <p>Customer Rating</p>
+
+        </div>
+
+        <div class="trust-card">
+
+            <h2>100%</h2>
+
+            <p>Freshly Baked</p>
+
+        </div>
+
+        <div class="trust-card">
+
+            <h2>30 Min</h2>
+
+            <p>Fast Delivery</p>
+
+        </div>
+
+    </section>
 
     <!-- FOOTER -->
-    <footer id="contact">
-        <div class="footer-inner">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <span class="logo-name">Brownie Bliss</span>
-                        <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
-                    </div>
-                    <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
-                        and cookies in Krishnagiri.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Navigate</h4>
-                    <a href="index.html#home">Home</a>
-                    <a href="index.html#products">Our Products</a>
-                    <a href="index.html#birthday">Birthday Cakes</a>
-                    <a href="favourites.html">Favourites</a>
-                    <a href="track.html">Track Order</a>
-                    <a href="index.html#contact">Contact Us</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Information</h4>
-                    <a href="privacy-policy.html">Privacy Policy</a>
-                    <a href="terms-of-service.html">Terms of Service</a>
-                    <a href="refund-policy.html">Refund Policy</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Get In Touch</h4>
-                    <a href="tel:08072596340">+91 8072596340</a>
-                    <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-                    <a href="https://instagram.com/brownie_bliss_" target="_blank">Instagram: @brownie_bliss_</a>
-                </div>
+    <footer class="premium-footer">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <h2>
+
+                    Brownie Bliss 🍫
+
+                </h2>
+
+                <p>
+
+                    Handcrafted brownies, cakes & cookies made with love.
+
+                </p>
+
             </div>
-            <div class="footer-bottom">
-                <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
-                <span>Made with ❤️ in Krishnagiri</span>
+
+            <div class="footer-links">
+
+                <h3>Explore</h3>
+
+                <a href="index.html">Home</a>
+
+                <a href="products.html">Products</a>
+
+                <a href="birthday.html">Birthday Cakes</a>
+
+                <a href="track.html">Track Order</a>
+
             </div>
+
+            <div class="footer-contact">
+
+                <h3>Contact</h3>
+
+                <p>📞 +91 8072596340</p>
+
+                <p>📧 browniebliss@gmail.com</p>
+
+                <p>📍 Krishnagiri, Tamil Nadu</p>
+
+            </div>
+
         </div>
+
+        <div class="footer-bottom">
+
+            © 2026 Brownie Bliss • Made with ❤️
+
+        </div>
+
     </footer>
 
-    <!-- SHARED COMPONENTS -->
-    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <span class="cart-title">Your Cart 🛒</span>
-            <button class="cart-close" onclick="closeCart()">✕</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-footer" id="cartFooter" style="display:none">
-            <div class="cart-total">
-                <span class="cart-total-label">Total Amount</span>
-                <span class="cart-total-amt" id="cartTotal">₹0</span>
-            </div>
-            <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-                Order via WhatsApp
-            </button>
-            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
-        </div>
-    </div>
+    <!-- SCRIPT -->
+    <script>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
+function trackOrder(){
 
-    <script src="script.js"></script>
+    const orderId =
+    document.getElementById("orderId").value.trim();
+
+    const email =
+    document.getElementById("emailId").value.trim();
+
+    const phone =
+    document.getElementById("phoneNumber").value.trim();
+
+    const result =
+    document.getElementById("track-result");
+
+    // EMAIL REGEX
+    const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // PHONE REGEX
+    const phonePattern =
+    /^[0-9]{10}$/;
+
+    // ORDER FORMAT
+    const orderPattern =
+    /^ORD[0-9]{3,6}$/;
+
+    // EMPTY CHECK
+    if(
+        orderId === "" &&
+        email === "" &&
+        phone === ""
+    ){
+
+        result.innerHTML = `
+
+        <div class="error-box">
+
+            ⚠ Please enter at least ONE detail.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    // ORDER VALIDATION
+    if(
+        orderId !== "" &&
+        !orderPattern.test(orderId)
+    ){
+
+        result.innerHTML = `
+
+        <div class="error-box">
+
+            ❌ Invalid Order ID
+
+            <br><br>
+
+            Example:
+            ORD123
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    // EMAIL VALIDATION
+    if(
+        email !== "" &&
+        !emailPattern.test(email)
+    ){
+
+        result.innerHTML = `
+
+        <div class="error-box">
+
+            ❌ Invalid Email Address
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    // PHONE VALIDATION
+    if(
+        phone !== "" &&
+        !phonePattern.test(phone)
+    ){
+
+        result.innerHTML = `
+
+        <div class="error-box">
+
+            ❌ Phone number must contain exactly 10 digits
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    // SAMPLE VALID DATA
+    const validOrder = "ORD123";
+    const validEmail = "brownie@gmail.com";
+    const validPhone = "9876543210";
+
+    if(
+        orderId === validOrder ||
+        email === validEmail ||
+        phone === validPhone
+    ){
+
+        result.innerHTML = `
+
+        <div class="success-box">
+
+            ✅ Order Found!
+
+            <br><br>
+
+            Your delicious order is currently
+            being prepared 🍰
+
+        </div>
+
+        `;
+
+    }
+
+    else{
+
+        result.innerHTML = `
+
+        <div class="error-box">
+
+            ❌ Order Not Found
+
+            <br><br>
+
+            Please check your details again.
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+</script>
+
+<script>
+
+function scrollToTrack(){
+
+    document
+    .getElementById("track-section")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+function goToProducts(){
+
+    window.location.href =
+    "products.html";
+
+}
+
+</script>
 </body>
 
 </html>
