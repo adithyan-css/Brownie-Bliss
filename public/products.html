@@ -1669,10 +1669,14 @@
         <div class="footer-bottom">
           <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
           <span>Made with ❤️ in Krishnagiri</span>
-        </div>
-      `).join('');
-    }
+        </div></div></footer>
+   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">...</div>
+    <div class="toast" id="toast"></div>
+    <div id="bb-cursor"></div>
 
+    <script src="script.js"></script>
+<script>
     window.addToCartFromProducts = function(id, name, price) {
       if (typeof window.addToCart === 'function') {
         window.addToCart({ id: id, name: name, price: price, quantity: 1 });
