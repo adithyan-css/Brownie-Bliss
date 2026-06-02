@@ -218,35 +218,32 @@
     </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" data-aos="fade-up"
-  style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
+<!-- BIRTHDAY & DESSERT SLIDER SECTION -->
+  <section class="birthday-section" data-aos="fade-up" style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
+    
+    <!-- Slider Hint -->
+    <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
+      Swipe to see Desserts &nbsp; ⟷
+    </div>
 
-  <!-- Slider Hint -->
-  <div
-    style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
-    Swipe to see Desserts &nbsp; ⟷
-  </div>
-
-  <div class="birthday-slider"
-    style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
-
-    <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div class="birthday-grid">
-        <div class="birthday-visual">
-          <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
-            alt="Birthday Cake"
-            style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: clamp(20px, 4vw, 50px); border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Celebrate with Us</span>
-          <div class="birthday-title-row">
-            <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
-            <button id="birthdayFavoriteBtn" class="favorite-btn favorite-btn-inline" type="button"
-              aria-label="Toggle birthday cake favourite" aria-pressed="false"
-              onclick="toggleBirthdayFavourite()">&#9825;</button>
+    <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+      
+      <!-- SLIDE 1: BIRTHDAY CAKES -->
+      <div class="bday-slide" style="flex: 0 0 100%; padding: 0 30px; box-sizing: border-box; scroll-snap-align: start;">
+        <div class="birthday-grid">
+          <div class="birthday-visual">
+            <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+              alt="Birthday Cake"
+              style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+          </div>
+          <div class="birthday-card" style="background: var(--white); padding: clamp(20px, 4vw, 50px); border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+            <span class="section-label">Celebrate with Us</span>
+            <div class="birthday-title-row">
+              <h2 class="section-title" style="margin-bottom: 20px;">Signature <em>Birthday Cakes</em></h2>
+              <button id="birthdayFavoriteBtn" class="favorite-btn favorite-btn-inline" type="button"
+                aria-label="Toggle birthday cake favourite" aria-pressed="false"
+                onclick="toggleBirthdayFavourite()">&#9825;</button>
+            </div>
           </div>
           <p
             style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
@@ -698,56 +695,82 @@
           </div>
         </div>
       </div>
-      <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          One of the best homemade dessert brands here.
-          Fresh, soft, and perfectly balanced sweetness.
-        </p>
-
-        <div class="reviewer">
-          <div class="reviewer-avatar">DR</div>
-          <div>
-            <p class="reviewer-name">Divya R.</p>
-            <p class="reviewer-location">Krishnagiri</p>
-          </div>
+</div>
+    
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        Ordered a birthday cake and everyone loved it.
+        Beautiful presentation and amazing taste!
+      </p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">RM</div>
+        <div>
+          <p class="reviewer-name">Rahul M.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
       </div>
+    </div>
 
-      <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          The cookies tasted just like homemade treats from childhood.
-          Soft, fresh and absolutely comforting.
-        </p>
-
-        <div class="reviewer">
-          <div class="reviewer-avatar">AK</div>
-          <div>
-            <p class="reviewer-name">Ananya K.</p>
-            <p class="reviewer-location">Krishnagiri</p>
-          </div>
-
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        One of the best homemade dessert brands here.
+        Fresh, soft, and perfectly balanced sweetness.
+      </p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">DR</div>
+        <div>
+          <p class="reviewer-name">Divya R.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
       </div>
+    </div>
 
-      <div class="review-card">
-        <span class="quote-mark">"</span>
-        <div class="stars">★★★★★</div>
-        <p class="review-text">
-          Brownie Bliss never disappoints.
-          Every dessert feels thoughtfully crafted and beautifully packed.
-        </p>
-
-        <div class="reviewer">
-          <div class="reviewer-avatar">SP</div>
-          <div>
-            <p class="reviewer-name">Sriram P.</p>
-            <p class="reviewer-location">Krishnagiri</p>
-          </div>
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        The cookies tasted just like homemade treats from childhood.
+        Soft, fresh and absolutely comforting.
+      </p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">AK</div>
+        <div>
+          <p class="reviewer-name">Ananya K.</p>
+          <p class="reviewer-location">Krishnagiri</p>
         </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <span class="quote-mark">"</span>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">
+        Brownie Bliss never disappoints.
+        Every dessert feels thoughtfully crafted and beautifully packed.
+      </p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">SP</div>
+        <div>
+          <p class="reviewer-name">Sriram P.</p>
+          <p class="reviewer-location">Krishnagiri</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-cta-container" style="margin-top: 24px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px;">
+      <h3 style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">Share Your Experience</h3>
+      <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love to hear your thoughts and suggestions.</p>
+      
+      <form onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();" style="display: inline-block;">
+        <button class="hero-cta premium-write-btn" type="submit">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Write a Review
+        </button>
+      </form>
       </div>
 
     </div>
