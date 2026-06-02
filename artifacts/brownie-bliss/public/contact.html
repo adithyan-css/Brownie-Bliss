@@ -35,7 +35,7 @@
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 60px;
-      align-items: start;
+      align-items: stretch;
     }
     .contact-left .section-label {
       display: block;
@@ -176,14 +176,27 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      position: sticky;
-      top: 100px;
-      align-self: start;
+      height: 100%;
+    }
+    .contact-right-col .map-card {
+      flex: 1;
+      min-height: 180px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(74,44,10,0.12);
+      border: 1px solid rgba(212,175,55,0.25);
+    }
+    .contact-right-col .map-card iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      min-height: 180px;
     }
     .contact-form-box {
       background: linear-gradient(to bottom, #2a120c, #1b0b07);
       color: white;
-      padding: 48px 44px;
+      padding: 56px 48px;
       border-radius: 24px;
       box-shadow: 0 24px 56px rgba(0,0,0,0.28);
     }
@@ -209,7 +222,7 @@
     .contact-form-box form {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
     .contact-form-box input,
     .contact-form-box textarea {
@@ -218,14 +231,14 @@
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.1);
       color: white;
-      padding: 14px 16px;
+      padding: 16px 18px;
       border-radius: 12px;
       outline: none;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       transition: border-color 0.2s ease;
     }
-    .contact-form-box textarea { height: 130px; resize: vertical; }
+    .contact-form-box textarea { height: 160px; resize: vertical; }
     .contact-form-box input::placeholder,
     .contact-form-box textarea::placeholder { color: rgba(255,255,255,0.4); }
     .contact-form-box input:focus,
@@ -467,13 +480,10 @@
 
       </div>
 
-      <!-- MAP — outside the dark box, below the form -->
-      <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 6px 28px rgba(74,44,10,0.12); border: 1px solid rgba(212,175,55,0.25);">
+      <!-- MAP — outside the dark box, fills remaining height to match left column -->
+      <div class="map-card">
         <iframe
           src="https://maps.google.com/maps?q=Krishnagiri,Tamil+Nadu,India&t=&z=14&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="220"
-          style="display: block; border: 0;"
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
