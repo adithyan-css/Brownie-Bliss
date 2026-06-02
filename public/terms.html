@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="en" class="smooth-scroll">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Terms & Conditions | Brownie Bliss</title>
+
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #fff9f4;
+        --white: #ffffff;
+        --dark: #2b160f;
+        --brown: #5b3427;
+        --gold: #d7a35d;
+        --gold-light: #f6e2c5;
+        --text: #5f5148;
+
+        --glass: rgba(255, 255, 255, 0.5);
+
+        --shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+
+        --shadow-heavy: 0 25px 80px rgba(0, 0, 0, 0.12);
+
+        --radius: 32px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--dark);
+        overflow-x: hidden;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ===================================== */
+      /* CUSTOM SCROLLBAR */
+      /* ===================================== */
+
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(var(--gold), #b97d34);
+        border-radius: 999px;
+      }
+
+      /* ===================================== */
+      /* ANNOUNCEMENT */
+      /* ===================================== */
+
+      .announcement {
+        background: linear-gradient(90deg, #3f2017, #2a120d);
+
+        color: white;
+
+        text-align: center;
+
+        padding: 14px;
+
+        font-size: 12px;
+
+        letter-spacing: 3px;
+
+        text-transform: uppercase;
+
+        position: relative;
+
+        overflow: hidden;
+      }
+
+      .announcement::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+
+        animation: shine 5s linear infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%);
+        }
+
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* ===================================== */
+      /* HEADER */
+      /* ===================================== */
+
+      header {
+        position: sticky;
+
+        top: 0;
+
+        z-index: 1000;
+
+        backdrop-filter: blur(20px);
+
+        background: rgba(255, 255, 255, 0.7);
+
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .header-inner {
+        max-width: 1500px;
+
+        margin: auto;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 18px 5%;
+      }
+
+      .logo {
+        display: flex;
+
+        flex-direction: column;
+      }
+
+      .logo-name {
+        font-family: "Playfair Display", serif;
+
+        font-size: 32px;
+
+        color: var(--dark);
+
+        font-weight: 700;
+      }
+
+      .logo-sub {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+
+        color: #947768;
+
+        text-transform: uppercase;
+      }
+
+      nav {
+        display: flex;
+
+        align-items: center;
+
+        gap: 34px;
+      }
+
+      nav a {
+        position: relative;
+
+        font-size: 14px;
+
+        font-weight: 500;
+
+        color: var(--text);
+
+        transition: 0.3s ease;
+      }
+
+      nav a::after {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+
+        bottom: -8px;
+
+        width: 0;
+
+        height: 2px;
+
+        background: var(--gold);
+
+        transition: 0.3s ease;
+      }
+
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      nav a:hover {
+        color: var(--dark);
+      }
+
+      .header-btn {
+        padding: 14px 24px;
+
+        border-radius: 999px;
+
+        background: linear-gradient(135deg, #6d3d2f, #351712);
+
+        color: white;
+
+        font-weight: 600;
+
+        transition: 0.4s ease;
+
+        box-shadow: var(--shadow);
+      }
+
+      .header-btn:hover {
+        transform: translateY(-4px);
+
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .menu-toggle {
+        display: none;
+
+        width: 52px;
+
+        height: 52px;
+
+        border: none;
+
+        border-radius: 18px;
+
+        background: white;
+
+        font-size: 24px;
+
+        cursor: pointer;
+
+        box-shadow: var(--shadow);
+      }
+
+      .mobile-menu {
+        display: none;
+
+        flex-direction: column;
+
+        background: white;
+
+        padding: 25px;
+
+        gap: 20px;
+      }
+
+      .mobile-menu a {
+        font-size: 15px;
+
+        font-weight: 600;
+      }
+
+      /* ===================================== */
+      /* HERO */
+      /* ===================================== */
+
+      .hero {
+        position: relative;
+
+        min-height: 100vh;
+
+        display: flex;
+
+        align-items: center;
+
+        overflow: hidden;
+
+        padding: 120px 5%;
+      }
+
+      .hero::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background:
+          radial-gradient(circle at top left, #ffddb3 0%, transparent 30%),
+          radial-gradient(circle at bottom right, #3f1d14 0%, transparent 30%);
+      }
+
+      .hero-grid {
+        position: relative;
+
+        z-index: 2;
+
+        max-width: 1500px;
+
+        margin: auto;
+
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1.1fr 0.9fr;
+
+        gap: 80px;
+
+        align-items: center;
+      }
+
+      .badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 14px 22px;
+
+        border-radius: 999px;
+
+        background: rgba(255, 255, 255, 0.55);
+
+        backdrop-filter: blur(18px);
+
+        border: 1px solid rgba(255, 255, 255, 0.6);
+
+        font-size: 11px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 2px;
+
+        color: #7a4e38;
+      }
+
+      .hero-title {
+        font-size: clamp(70px, 9vw, 140px);
+
+        line-height: 0.9;
+
+        margin: 35px 0 28px;
+
+        font-family: "Playfair Display", serif;
+
+        color: #2a120d;
+      }
+
+      .hero-title span {
+        display: block;
+
+        color: var(--gold);
+
+        font-style: italic;
+      }
+
+      .hero-desc {
+        max-width: 700px;
+
+        line-height: 2;
+
+        color: #675950;
+
+        font-size: 18px;
+      }
+
+      .hero-actions {
+        display: flex;
+
+        gap: 20px;
+
+        margin-top: 45px;
+
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 18px 34px;
+
+        border-radius: 22px;
+
+        font-weight: 600;
+
+        transition: 0.45s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #6b3a2d, #321510);
+
+        color: white;
+
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-6px) scale(1.02);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.5);
+
+        backdrop-filter: blur(18px);
+
+        border: 1px solid rgba(255, 255, 255, 0.7);
+      }
+
+      .btn-secondary:hover {
+        background: white;
+      }
+
+      /* HERO CARD */
+
+      .glass-card {
+        position: relative;
+
+        overflow: hidden;
+
+        background: rgba(255, 255, 255, 0.4);
+
+        backdrop-filter: blur(25px);
+
+        border: 1px solid rgba(255, 255, 255, 0.6);
+
+        border-radius: 40px;
+
+        padding: 35px;
+
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .glass-top {
+        display: flex;
+
+        gap: 10px;
+
+        margin-bottom: 30px;
+      }
+
+      .dot {
+        width: 14px;
+
+        height: 14px;
+
+        border-radius: 50%;
+      }
+
+      .red {
+        background: #ff5f56;
+      }
+      .yellow {
+        background: #ffbd2f;
+      }
+      .green {
+        background: #27c93f;
+      }
+
+      .policy-box {
+        padding: 28px;
+
+        border-radius: 28px;
+
+        background: rgba(255, 255, 255, 0.45);
+
+        margin-bottom: 18px;
+
+        transition: 0.45s ease;
+      }
+
+      .policy-box:hover {
+        transform: translateX(8px);
+      }
+
+      .policy-box.active {
+        background: linear-gradient(135deg, #6c3a2d, #2b140e);
+
+        color: white;
+      }
+
+      .policy-box span {
+        font-size: 13px;
+
+        opacity: 0.7;
+      }
+
+      .policy-box h4 {
+        margin: 8px 0 10px;
+      }
+
+      /* ===================================== */
+      /* FLOATING NAV */
+      /* ===================================== */
+
+      .floating-nav {
+        position: fixed;
+
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        bottom: 20px;
+
+        z-index: 999;
+
+        display: flex;
+
+        gap: 10px;
+
+        padding: 12px;
+
+        border-radius: 999px;
+
+        background: rgba(255, 255, 255, 0.55);
+
+        backdrop-filter: blur(22px);
+
+        border: 1px solid rgba(255, 255, 255, 0.6);
+
+        overflow-x: auto;
+
+        max-width: 95%;
+      }
+
+      .floating-nav a {
+        padding: 12px 18px;
+
+        border-radius: 999px;
+
+        font-size: 13px;
+
+        white-space: nowrap;
+
+        transition: 0.3s ease;
+      }
+
+      .floating-nav a:hover {
+        background: #34150f;
+
+        color: white;
+      }
+
+      /* ===================================== */
+      /* MAIN SECTION */
+      /* ===================================== */
+
+      .legal-wrapper {
+        padding: 120px 5%;
+      }
+
+      .legal-card {
+        position: relative;
+
+        overflow: hidden;
+
+        background: white;
+
+        border-radius: 40px;
+
+        padding: 70px;
+
+        margin-bottom: 50px;
+
+        box-shadow: var(--shadow);
+      }
+
+      .legal-card.dark {
+        background: linear-gradient(135deg, #3d1f16, #23100c);
+
+        color: white;
+      }
+
+      .card-number {
+        position: absolute;
+
+        right: 35px;
+
+        top: 20px;
+
+        font-size: 120px;
+
+        font-weight: 900;
+
+        opacity: 0.05;
+      }
+
+      .tag {
+        display: inline-block;
+
+        padding: 10px 18px;
+
+        border-radius: 999px;
+
+        background: rgba(215, 163, 93, 0.12);
+
+        color: var(--gold);
+
+        text-transform: uppercase;
+
+        font-size: 11px;
+
+        letter-spacing: 2px;
+
+        margin-bottom: 24px;
+      }
+
+      .legal-card h2 {
+        font-family: "Playfair Display", serif;
+
+        font-size: clamp(38px, 5vw, 65px);
+
+        margin-bottom: 22px;
+      }
+
+      .legal-card p {
+        line-height: 2;
+
+        max-width: 900px;
+      }
+
+      /* GRID */
+
+      .grid {
+        margin-top: 40px;
+
+        display: grid;
+
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+        gap: 24px;
+      }
+
+      .mini-card {
+        padding: 28px;
+
+        border-radius: 28px;
+
+        background: #fff8f0;
+
+        transition: 0.45s ease;
+      }
+
+      .mini-card:hover {
+        transform: translateY(-10px);
+
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .dark .mini-card {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      /* TIMELINE */
+
+      .timeline {
+        margin-top: 45px;
+
+        border-left: 2px solid rgba(255, 255, 255, 0.2);
+
+        padding-left: 30px;
+      }
+
+      .timeline-item {
+        position: relative;
+
+        margin-bottom: 35px;
+      }
+
+      .timeline-dot {
+        position: absolute;
+
+        left: -39px;
+
+        top: 5px;
+
+        width: 16px;
+
+        height: 16px;
+
+        border-radius: 50%;
+
+        background: var(--gold);
+      }
+
+      .timeline-box {
+        padding: 25px;
+
+        border-radius: 24px;
+
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      /* ALERT */
+
+      .alert {
+        margin-top: 40px;
+
+        display: flex;
+
+        gap: 25px;
+
+        align-items: flex-start;
+
+        padding: 35px;
+
+        border-radius: 32px;
+
+        background: linear-gradient(135deg, #fff1da, #fff9f2);
+      }
+
+      .alert-icon {
+        width: 80px;
+
+        height: 80px;
+
+        border-radius: 24px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: var(--gold);
+
+        font-size: 38px;
+      }
+
+      /* CONTACT */
+
+      .contact-section {
+        position: relative;
+
+        overflow: hidden;
+
+        background: linear-gradient(135deg, #3d1d15, #220f0b);
+
+        color: white;
+
+        border-radius: 42px;
+
+        padding: 80px;
+      }
+
+      .contact-section::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background: radial-gradient(
+          circle at top right,
+          rgba(255, 220, 130, 0.15),
+          transparent 30%
+        );
+      }
+
+      .contact-inner {
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .contact-inner h2 {
+        font-family: "Playfair Display", serif;
+
+        font-size: clamp(42px, 6vw, 75px);
+
+        margin-bottom: 20px;
+      }
+
+      .contact-grid {
+        margin-top: 45px;
+
+        display: grid;
+
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+        gap: 24px;
+      }
+
+      .contact-box {
+        padding: 28px;
+
+        border-radius: 28px;
+
+        background: rgba(255, 255, 255, 0.08);
+
+        display: flex;
+
+        gap: 18px;
+
+        align-items: center;
+      }
+
+      .contact-box span {
+        font-size: 38px;
+      }
+
+      /* ===================================== */
+      /* FOOTER */
+      /* ===================================== */
+
+      footer {
+        margin-top: 120px;
+
+        background: #2a120d;
+
+        color: white;
+
+        padding: 80px 5% 40px;
+      }
+
+      .footer-grid {
+        max-width: 1500px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: 2fr 1fr 1fr;
+
+        gap: 60px;
+      }
+
+      .footer-brand p {
+        margin-top: 20px;
+
+        line-height: 2;
+
+        color: #c4b4aa;
+      }
+
+      .footer-col h4 {
+        margin-bottom: 22px;
+
+        font-size: 18px;
+      }
+
+      .footer-col a {
+        display: block;
+
+        margin-bottom: 14px;
+
+        color: #c9bbb2;
+
+        transition: 0.3s ease;
+      }
+
+      .footer-col a:hover {
+        color: white;
+
+        transform: translateX(5px);
+      }
+
+      .footer-bottom {
+        margin-top: 60px;
+
+        padding-top: 25px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+        display: flex;
+
+        justify-content: space-between;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+
+        color: #bca99e;
+      }
+
+      /* ===================================== */
+      /* REVEAL */
+      /* ===================================== */
+
+      .reveal {
+        opacity: 0;
+
+        transform: translateY(60px);
+
+        transition: 1s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+
+      /* ===================================== */
+      /* ORBS */
+      /* ===================================== */
+
+      .orb {
+        position: absolute;
+
+        border-radius: 50%;
+
+        filter: blur(90px);
+
+        animation: float 8s ease-in-out infinite;
+      }
+
+      .orb1 {
+        width: 280px;
+
+        height: 280px;
+
+        background: #ffd08f;
+
+        top: -80px;
+
+        right: -50px;
+      }
+
+      .orb2 {
+        width: 220px;
+
+        height: 220px;
+
+        background: #5b2e22;
+
+        bottom: -60px;
+
+        left: -40px;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-25px);
+        }
+      }
+
+      /* ===================================== */
+      /* MOBILE */
+      /* ===================================== */
+
+      @media (max-width: 1100px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+
+        nav {
+          display: none;
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .mobile-menu.show {
+          display: flex;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 64px;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          text-align: center;
+        }
+
+        .legal-card {
+          padding: 40px 30px;
+        }
+
+        .contact-section {
+          padding: 50px 30px;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .floating-nav {
+          bottom: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===================================== -->
+    <!-- ANNOUNCEMENT -->
+    <!-- ===================================== -->
+
+    <div class="announcement">
+      ✨ HOMEMADE BROWNIES · PREMIUM CAKES · FRESHLY BAKED HAPPINESS ✨
+    </div>
+
+    <!-- ===================================== -->
+    <!-- HEADER -->
+    <!-- ===================================== -->
+
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-name"> Brownie Bliss </span>
+
+          <span class="logo-sub"> Homemade Treats </span>
+        </a>
+
+        <nav>
+          <a href="index.html">Home</a>
+
+          <a href="products.html">Products</a>
+
+          <a href="about.html">About</a>
+
+          <a href="#orders">Orders</a>
+
+          <a href="#refunds">Refunds</a>
+
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <a href="contact.html" class="header-btn"> Contact Us </a>
+
+        <button class="menu-toggle" id="menuBtn">☰</button>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="about.html">About</a>
+
+        <a href="#orders">Orders</a>
+
+        <a href="#refunds">Refunds</a>
+
+        <a href="#contact">Contact</a>
+      </div>
+    </header>
+
+    <!-- ===================================== -->
+    <!-- HERO -->
+    <!-- ===================================== -->
+
+    <section class="hero">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+
+      <div class="hero-grid">
+        <div>
+          <span class="badge"> ✦ Premium Legal Experience </span>
+
+          <h1 class="hero-title">
+            Terms &
+            <span>Conditions</span>
+          </h1>
+
+          <p class="hero-desc">
+            Welcome to Brownie Bliss. These Terms & Conditions define our
+            ordering process, payment policies, delivery guidelines, refund
+            practices, user responsibilities, and privacy standards.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#legal" class="btn btn-primary"> Explore Policies </a>
+
+            <a href="contact.html" class="btn btn-secondary">
+              Contact Support
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT CARD -->
+
+        <div class="glass-card">
+          <div class="glass-top">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+
+          <div class="policy-box active">
+            <span>01</span>
+
+            <h4>Orders & Payments</h4>
+
+            <p>Transparent and secure ordering system.</p>
+          </div>
+
+          <div class="policy-box">
+            <span>02</span>
+
+            <h4>Refund Policy</h4>
+
+            <p>Fair cancellation and refund process.</p>
+          </div>
+
+          <div class="policy-box">
+            <span>03</span>
+
+            <h4>Privacy</h4>
+
+            <p>Your information remains protected.</p>
+          </div>
+
+          <div class="policy-box">
+            <span>04</span>
+
+            <h4>Delivery</h4>
+
+            <p>Freshness guaranteed on every order.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================== -->
+    <!-- FLOATING NAV -->
+    <!-- ===================================== -->
+
+    <div class="floating-nav">
+      <a href="#orders">Orders</a>
+
+      <a href="#refunds">Refunds</a>
+
+      <a href="#delivery">Delivery</a>
+
+      <a href="#allergy">Allergy</a>
+
+      <a href="#privacy">Privacy</a>
+
+      <a href="#property">IP</a>
+
+      <a href="#contact">Contact</a>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MAIN -->
+    <!-- ===================================== -->
+
+    <main class="legal-wrapper" id="legal">
+      <!-- ORDERS -->
+
+      <section class="legal-card reveal" id="orders">
+        <div class="card-number">01</div>
+
+        <span class="tag"> Orders & Payments </span>
+
+        <h2>Transparent Ordering Experience</h2>
+
+        <p>
+          All orders placed with Brownie Bliss are subject to availability and
+          confirmation. Prices may vary depending on customization, seasonal
+          ingredients, and special requests.
+        </p>
+
+        <div class="grid">
+          <div class="mini-card">
+            <h4>Secure Payments</h4>
+
+            <p>All transactions are encrypted and protected.</p>
+          </div>
+
+          <div class="mini-card">
+            <h4>Advance Orders</h4>
+
+            <p>Customized cakes require prior booking confirmation.</p>
+          </div>
+
+          <div class="mini-card">
+            <h4>Availability</h4>
+
+            <p>Products depend on ingredient stock and demand.</p>
+          </div>
+
+          <div class="mini-card">
+            <h4>Fraud Protection</h4>
+
+            <p>Fraudulent orders may be rejected automatically.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- REFUND -->
+
+      <section class="legal-card dark reveal" id="refunds">
+        <div class="card-number">02</div>
+
+        <span class="tag"> Refund & Cancellation </span>
+
+        <h2>Fair & Customer Friendly Policy</h2>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-box">
+              <h4>Cancellation Window</h4>
+
+              <p>Orders may be cancelled within 1 hour of placing them.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-box">
+              <h4>Customized Cakes</h4>
+
+              <p>Personalized cakes become non-refundable after preparation.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-box">
+              <h4>Refund Processing</h4>
+
+              <p>Approved refunds are processed within 5–7 business days.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DELIVERY -->
+
+      <section class="legal-card reveal" id="delivery">
+        <div class="card-number">03</div>
+
+        <span class="tag"> Delivery & Pickup </span>
+
+        <h2>Freshness Delivered Beautifully</h2>
+
+        <div class="grid">
+          <div class="mini-card">
+            <h4>🚚 Timely Delivery</h4>
+
+            <p>Delivery timings may vary due to weather or traffic.</p>
+          </div>
+
+          <div class="mini-card">
+            <h4>❄ Fresh Packaging</h4>
+
+            <p>Products are packaged carefully for freshness.</p>
+          </div>
+
+          <div class="mini-card">
+            <h4>📍 Accurate Address</h4>
+
+            <p>Customers must provide correct delivery details.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALLERGY -->
+
+      <section class="legal-card reveal" id="allergy">
+        <div class="card-number">04</div>
+
+        <span class="tag"> Allergy Disclaimer </span>
+
+        <h2>Ingredient Transparency Matters</h2>
+
+        <div class="alert">
+          <div class="alert-icon">⚠</div>
+
+          <div>
+            <h3 style="margin-bottom: 12px">Important Notice</h3>
+
+            <p>
+              Our products may contain dairy, gluten, eggs, soy, nuts, and
+              chocolate. Cross contamination may occur despite all safety
+              precautions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRIVACY -->
+
+      <section class="legal-card dark reveal" id="privacy">
+        <div class="card-number">05</div>
+
+        <span class="tag"> Privacy & Responsibilities </span>
+
+        <h2>Safe & Respectful Usage</h2>
+
+        <div class="grid">
+          <div class="mini-card">
+            🔒 Your personal information is securely protected.
+          </div>
+
+          <div class="mini-card">
+            ✔ Fraudulent activity is strictly prohibited.
+          </div>
+
+          <div class="mini-card">
+            💳 Payments are processed through secure methods.
+          </div>
+
+          <div class="mini-card">
+            👤 Users are responsible for account accuracy.
+          </div>
+        </div>
+      </section>
+
+      <!-- IP -->
+
+      <section class="legal-card reveal" id="property">
+        <div class="card-number">06</div>
+
+        <span class="tag"> Intellectual Property </span>
+
+        <h2>Protected Brand Identity</h2>
+
+        <p>
+          All website content, branding, product images, UI elements, graphics,
+          logos, and creative materials are exclusive property of Brownie Bliss
+          and may not be reused without written permission.
+        </p>
+      </section>
+
+      <!-- CONTACT -->
+
+      <section class="contact-section reveal" id="contact">
+        <div class="contact-inner">
+          <h2>Need Help?</h2>
+
+          <p>
+            Contact Brownie Bliss for support, questions, or clarification
+            regarding our policies.
+          </p>
+
+          <div class="contact-grid">
+            <div class="contact-box">
+              <span>📞</span>
+
+              <div>
+                <h4>Phone</h4>
+
+                <p>+91 8072596340</p>
+              </div>
+            </div>
+
+            <div class="contact-box">
+              <span>✉</span>
+
+              <div>
+                <h4>Email</h4>
+
+                <p>gpriya26185@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="contact-box">
+              <span>📍</span>
+
+              <div>
+                <h4>Location</h4>
+
+                <p>Krishnagiri, Tamil Nadu</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================================== -->
+    <!-- FOOTER -->
+    <!-- ===================================== -->
+
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name" style="color: white"> Brownie Bliss </span>
+
+            <span class="logo-sub"> Homemade Treats </span>
+          </div>
+
+          <p>
+            Handcrafted brownies, cakes, cookies, and desserts baked with
+            passion, elegance, and premium ingredients.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+
+          <a href="index.html">Home</a>
+
+          <a href="products.html">Products</a>
+
+          <a href="about.html">About</a>
+
+          <a href="#orders">Orders</a>
+
+          <a href="#privacy">Privacy</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+
+          <a href="contact.html">Contact Us</a>
+
+          <a href="#refunds">Refund Policy</a>
+
+          <a href="#delivery">Delivery Policy</a>
+
+          <a href="#allergy">Allergy Notice</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span> © 2026 Brownie Bliss. All Rights Reserved. </span>
+
+        <span> Made with ❤️ in India </span>
+      </div>
+    </footer>
+
+    <!-- ===================================== -->
+    <!-- SCRIPT -->
+    <!-- ===================================== -->
+
+    <script>
+      /* MOBILE MENU */
+
+      const menuBtn = document.getElementById("menuBtn");
+
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("show");
+      });
+
+      /* REVEAL */
+
+      const reveals = document.querySelectorAll(".reveal");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        {
+          threshold: 0.15,
+        },
+      );
+
+      reveals.forEach((el) => {
+        observer.observe(el);
+      });
+    </script>
+  </body>
+</html>
