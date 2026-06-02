@@ -379,20 +379,37 @@
 
       </div>
 
-      <!-- HOURS -->
+      <!-- HOURS + MAP side by side -->
+      <div style="display: flex; gap: 16px; align-items: stretch;">
 
-      <div class="hours-card">
+        <div class="hours-card" style="flex: 1; min-width: 0;">
 
-        <h3>⏰ Baking Hours</h3>
+          <h3>⏰ Baking Hours</h3>
 
-        <div class="hour-row">
-          <span>Monday – Saturday</span>
-          <strong>9 AM – 9 PM</strong>
+          <div class="hour-row">
+            <span>Monday – Saturday</span>
+            <strong>9 AM – 9 PM</strong>
+          </div>
+
+          <div class="hour-row">
+            <span>Sunday</span>
+            <strong>10 AM – 7 PM</strong>
+          </div>
+
         </div>
 
-        <div class="hour-row">
-          <span>Sunday</span>
-          <strong>10 AM – 7 PM</strong>
+        <!-- MAP -->
+        <div style="flex: 1; min-width: 0; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 28px rgba(74,44,10,0.13); border: 1px solid rgba(212,175,55,0.2);">
+          <iframe
+            src="https://maps.google.com/maps?q=Krishnagiri,Tamil+Nadu,India&t=&z=14&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="100%"
+            style="display: block; border: 0; min-height: 150px;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Brownie Bliss Location — Krishnagiri, Tamil Nadu"
+          ></iframe>
         </div>
 
       </div>
@@ -415,20 +432,6 @@
         </div>
 
       </a>
-
-      <!-- MAP -->
-      <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 6px 28px rgba(74,44,10,0.13); border: 1px solid rgba(212,175,55,0.2);">
-        <iframe
-          src="https://maps.google.com/maps?q=Krishnagiri,Tamil+Nadu,India&t=&z=14&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="260"
-          style="display: block; border: 0;"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Brownie Bliss Location — Krishnagiri, Tamil Nadu"
-        ></iframe>
-      </div>
 
     </div>
 
