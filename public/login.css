@@ -17,7 +17,7 @@
   position: absolute;
   inset: 0;
   background:
-    url('https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860') center/cover no-repeat,
+    url('assets/velvet_dream_cake.png') center/cover no-repeat,
     linear-gradient(135deg, #1a0905 0%, #3d1f10 50%, #1a0c06 100%);
   filter: brightness(0.35) saturate(0.8);
   z-index: 0;
