@@ -26,20 +26,6 @@ window.toggleTheme = toggleTheme;
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
-let selectedFlavor = 'Red Velvet';
-let currentSearchTerm = '';
-let selectedPriceFilter = 'all';
-let recentSearches = JSON.parse(
-  localStorage.getItem('brownie_recent_searches') || '[]'
-);
-let selectedWeight = '1.0';
-const BIRTHDAY_BASE_PRICES = {
-  0.5: 450,
-  '1.0': 850,
-  1.5: 1250,
-  '2.0': 1600,
-};
-
 const DEFAULT_PRODUCTS = [
   {
     id: 1,
@@ -313,30 +299,31 @@ function buildCatalogFromList(list) {
 }
 
 async function loadProducts() {
-  try {
-    const res = await fetch(`${API_BASE}/products`);
-    const data = await res.json();
+try {
+  const res = await fetch(`${API_BASE}/products`);
+  const data = await res.json();
 
-    if (data.success && Array.isArray(data.products) && data.products.length) {
-      products = data.products
-        .filter((p) => p.type === 'standard')
-        .map((p) => ({
-          id: p.id_ref,
-          name: p.name,
-          category: p.category,
-          price: p.price,
-          emoji: p.emoji,
-          img: p.img,
-          stock: p.stock,
-          description: p.description || '',
-            allergens: p.allergens || 'Contains milk,wheat,gluten',
-            shelfLife: p.shelfLife || 'Best consumed within 3 days',
+  if (data.success && Array.isArray(data.products) && data.products.length) {
+    products = data.products
+      .filter((p) => p.type === 'standard')
+      .map((p) => ({
+        id: p.id_ref,
+        name: p.name,
+        category: p.category,
+        price: p.price,
+        emoji: p.emoji,
+        img: p.img,
+        stock: p.stock,
+        description: p.description || '',
+        allergens: p.allergens || 'Contains milk,wheat,gluten',
+        shelfLife: p.shelfLife || 'Best consumed within 3 days',
+      }));
 
-        }));
+    bdayCakes = {};
 
-      bdayCakes = {};
-      const bd = data.products.filter((p) => p.type === 'birthday');
-      bd.forEach((p) => {
+    data.products
+      .filter((p) => p.type === 'birthday')
+      .forEach((p) => {
         bdayCakes[p.id_ref] = {
           price: p.price,
           emoji: p.emoji,
@@ -344,28 +331,29 @@ async function loadProducts() {
           img: p.img,
         };
       });
-    } else {
-      useFallbackProducts();
-    }
-  } catch (e) {
-    console.error('Error loading products from database:', e);
+  } else {
     useFallbackProducts();
   }
+} catch (e) {
+  console.error('Error loading products:', e);
+  useFallbackProducts();
+}
 
-  if (document.getElementById('productsGrid')) {
-    filterProducts('all');
+if (document.getElementById('productsGrid')) {
+  filterProducts('all');
 
+  if (typeof updateFavouritesCount === 'function') {
     updateFavouritesCount();
+  }
 
+  if (typeof renderFavouritesPage === 'function') {
     renderFavouritesPage();
   }
- if (document.getElementById('cakePrice')) {
-      calculateBdayPrice();
-    }
-  } catch (e) {
-    console.error('Failed to load products:', e);
-    useFallbackProducts();
-  }
+}
+
+if (document.getElementById('cakePrice')) {
+  calculateBdayPrice();
+}
 }
 
 // --- CART STATE ---
@@ -640,7 +628,6 @@ function selectSuggestion(value) {
   const suggestionsBox = document.getElementById('searchSuggestions');
 
   if (!searchInput) return;
-
   searchInput.value = value;
 
   currentSearchTerm = value;
@@ -651,13 +638,16 @@ function selectSuggestion(value) {
 
   suggestionsBox.style.display = 'none';
 }
-
 function highlightMatch(text, term) {
   if (!term) return text;
 
   const regex = new RegExp(`(${term})`, 'gi');
 
   return text.replace(regex, `<span class="highlight-match">$1</span>`);
+}
+
+function sendToWhatsApp() {
+  openCheckout();
 }
 
 function saveRecentSearch(search) {
@@ -704,17 +694,24 @@ function renderRecentSearches() {
     grid.innerHTML = filtered.map(p => `
         <div class="product-card">
             <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
+<img
+  src="${p.img}"
+  alt="${p.name}"
+  style="cursor:pointer"
+  onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'
+>
+
+<button
+  class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
+  type="button"
+  data-fav-type="dishes"
+  data-fav-id="${p.id}"
+  aria-label="Toggle ${p.name} favourite"
+  aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
+  title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
+  onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+  ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
+</button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
             </div>
             <div class="product-info">
@@ -722,14 +719,21 @@ function renderRecentSearches() {
                 <div class="product-name">${p.name}</div>
                 ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
                 <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
-                <button
-                    type="button"
-                    class="customize-and-add"
-                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
+<div class="product-actions">
+  <button
+    type="button"
+    class="add-to-cart"
+    onclick='addToCart(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+    Add To Cart
+  </button>
+
+  <button
+    type="button"
+    class="customize-and-add"
+    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+    Customize & Add
+  </button>
+</div>
             </div>
         </div>
     `).join('');
@@ -1342,11 +1346,9 @@ async function verifyOTP() {
     } else {
       showToast(data.message || 'Invalid code. Try again.');
     }
-  } catch {
-    showToast('Verification failed. Try again.');
-  }
-}
-
+} catch {
+  showToast('Verification failed. Try again.');
+}}
 function goToConfirm() {
   const addr = document.getElementById('custAddr').value.trim();
   const city = document.getElementById('custCity').value.trim();
@@ -1764,20 +1766,21 @@ function initStarRatings() {
         });
       });
     });
+// Reset event handler on parent form (if any)
+const form = container.closest('form');
 
-    // Reset event handler on parent form (if any)
-    const form = container.closest('form');
-    if (form) {
-      form.addEventListener('reset', () => {
-        setTimeout(() => {
-          container.setAttribute('data-rating', '4');
-          stars.forEach((s, idx) => {
-            s.style.color = idx < 4 ? 'var(--gold)' : inactiveColor;
-          });
-        }, 0);
+if (form) {
+  form.addEventListener('reset', () => {
+    setTimeout(() => {
+      container.setAttribute('data-rating', '4');
+
+      stars.forEach((s, idx) => {
+        s.style.color = idx < 4 ? 'var(--gold)' : inactiveColor;
       });
-    }
+    }, 0);
   });
+}
+});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
