@@ -874,17 +874,9 @@ function updateBirthdayCake(flavor) {
     cakeImg.src = bdayCakes[flavor].img;
   }
 
-  if (cakeImg) {
-    cakeImg.src = bdayCakes[flavor].img;
-  }
-
-  // Update active flavor button
-  document.querySelectorAll('.filter-pill').forEach((btn) => {
-    if (btn.textContent.trim() === flavor) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
+  // Update active flavor buttons (syncing all instances on the page)
+  document.querySelectorAll('button[onclick*="updateBirthdayCake"]').forEach((btn) => {
+    btn.classList.toggle('active', btn.textContent.trim() === flavor);
   });
 
   calculateBdayPrice();
@@ -893,11 +885,10 @@ function updateBirthdayCake(flavor) {
 function setCakeWeight(weight, event) {
   selectedWeight = weight;
 
-  document
-    .querySelectorAll('.weight-btn')
-    .forEach((b) => b.classList.remove('active'));
-
-  if (event?.target) event.target.classList.add('active');
+  // Update active weight buttons (syncing all instances on the page)
+  document.querySelectorAll('button[onclick*="setCakeWeight"]').forEach((btn) => {
+    btn.classList.toggle('active', btn.textContent.trim() === `${weight} kg`);
+  });
 
   calculateBdayPrice();
 }
