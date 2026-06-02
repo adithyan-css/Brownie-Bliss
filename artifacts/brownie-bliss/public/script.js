@@ -129,7 +129,9 @@ function buildCatalogFromList(list) {
 async function loadProducts() {
   try {
     const res = await fetch(`${API_BASE}/products`);
-    const data = await res.json();
+    const text = await res.text();
+    if (!text) { useFallbackProducts(); return; }
+    const data = JSON.parse(text);
 
     if (data.success && Array.isArray(data.products) && data.products.length) {
       products = data.products
@@ -687,11 +689,9 @@ function scrollToTop() {
         behavior: "smooth"
     });
 }
-AOS.init({
-  duration: 1000,
-  once: true,
-  easing: "ease-in-out"
-});
+if (typeof AOS !== 'undefined') {
+  AOS.init({ duration: 1000, once: true, easing: 'ease-in-out' });
+}
 // ============================================================
 // TOAST
 // ============================================================
