@@ -172,14 +172,20 @@
     }
     .insta-box span { font-size: 12px; opacity: 0.85; display: block; margin-bottom: 2px; }
     .insta-box h4 { font-size: 20px; margin: 0; font-family: 'Playfair Display', serif; }
+    .contact-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
     .contact-form-box {
       background: linear-gradient(to bottom, #2a120c, #1b0b07);
       color: white;
       padding: 48px 44px;
       border-radius: 24px;
       box-shadow: 0 24px 56px rgba(0,0,0,0.28);
-      position: sticky;
-      top: 100px;
     }
     .form-top {
       display: flex;
@@ -420,46 +426,49 @@
 
     <!-- RIGHT -->
 
-    <div class="contact-form-box">
+    <div class="contact-right-col">
 
-      <div class="form-top">
-        <span>✨</span>
-        <h3>Send us a Message</h3>
+      <div class="contact-form-box">
+
+        <div class="form-top">
+          <span>✨</span>
+          <h3>Send us a Message</h3>
+        </div>
+
+        <p class="form-desc">
+          Have a custom order, celebration idea or dessert request?
+          We'd love to hear from you.
+        </p>
+
+        <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
+
+          <input
+            type="text"
+            placeholder="Your Name"
+            required
+          >
+
+          <input
+            type="email"
+            placeholder="Your Email"
+            required
+          >
+
+          <textarea
+            placeholder="Tell us about your order..."
+            required
+          ></textarea>
+
+          <button type="submit" class="send-btn">
+            Send Message →
+          </button>
+
+        </form>
+
       </div>
 
-      <p class="form-desc">
-        Have a custom order, celebration idea or dessert request?
-        We'd love to hear from you.
-      </p>
-
-      <!-- BUGFIX: Added onsubmit handler to prevent reload, show a toast success message, and clear fields -->
-      <form onsubmit="event.preventDefault(); showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
-
-        <input
-          type="text"
-          placeholder="Your Name"
-          required
-        >
-
-        <input
-          type="email"
-          placeholder="Your Email"
-          required
-        >
-
-        <textarea
-          placeholder="Tell us about your order..."
-          required
-        ></textarea>
-
-        <button type="submit" class="send-btn">
-          Send Message →
-        </button>
-
-      </form>
-
-      <!-- MAP below form -->
-      <div style="margin-top: 20px; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 28px rgba(74,44,10,0.13); border: 1px solid rgba(212,175,55,0.2);">
+      <!-- MAP — outside the dark box, below the form -->
+      <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 6px 28px rgba(74,44,10,0.12); border: 1px solid rgba(212,175,55,0.25);">
         <iframe
           src="https://maps.google.com/maps?q=Krishnagiri,Tamil+Nadu,India&t=&z=14&ie=UTF8&iwloc=&output=embed"
           width="100%"
