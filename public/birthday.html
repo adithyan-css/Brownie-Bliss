@@ -68,12 +68,12 @@
             style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
             Flavor</label>
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-            <button class="filter-pill flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
-            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
-            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
-            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
-            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
-            <button class="filter-pill flavor-btn" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+            <button class="filter-tab flavor-btn active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+            <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+            <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+            <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+            <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+            <button class="filter-tab flavor-btn" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
     <div class="birthday-slider" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
       
       <!-- SLIDE 1: BIRTHDAY CAKES -->
@@ -104,12 +104,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Flavor</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-pill active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
-                <button class="filter-pill" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
+                <button class="filter-tab active" onclick="updateBirthdayCake('Red Velvet')">Red Velvet</button>
+                <button class="filter-tab" onclick="updateBirthdayCake('Dutch Truffle')">Dutch Truffle</button>
+                <button class="filter-tab" onclick="updateBirthdayCake('Pineapple')">Pineapple</button>
+                <button class="filter-tab" onclick="updateBirthdayCake('Chocoholic')">Chocoholic</button>
+                <button class="filter-tab" onclick="updateBirthdayCake('Black Forest')">Black Forest</button>
+                <button class="filter-tab" onclick="updateBirthdayCake('Cheesecake')">Cheesecake</button>
               </div>
             </div>
     
@@ -118,10 +118,10 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Weight
                 (kg)</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill" onclick="setCakeWeight('0.5')">0.5 kg</button>
-                <button class="filter-pill active" onclick="setCakeWeight('1.0')">1.0 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('1.5')">1.5 kg</button>
-                <button class="filter-pill" onclick="setCakeWeight('2.0')">2.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('0.5')">0.5 kg</button>
+                <button class="filter-tab active" onclick="setCakeWeight('1.0')">1.0 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('1.5')">1.5 kg</button>
+                <button class="filter-tab" onclick="setCakeWeight('2.0')">2.0 kg</button>
               </div>
             </div>
     
@@ -183,12 +183,12 @@
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
                 Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-pill active">Macarons</button>
-                <button class="filter-pill">Tarts</button>
-                <button class="filter-pill">Pastries</button>
-                <button class="filter-pill">Cupcakes</button>
-                <button class="filter-pill">Mousse</button>
-                <button class="filter-pill">Donuts</button>
+                <button class="filter-tab active">Macarons</button>
+                <button class="filter-tab">Tarts</button>
+                <button class="filter-tab">Pastries</button>
+                <button class="filter-tab">Cupcakes</button>
+                <button class="filter-tab">Mousse</button>
+                <button class="filter-tab">Donuts</button>
               </div>
             </div>
     
@@ -196,10 +196,10 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill">Box of 2</button>
-                <button class="filter-pill active">Box of 4</button>
-                <button class="filter-pill">Box of 6</button>
-                <button class="filter-pill">Box of 12</button>
+                <button class="filter-tab">Box of 2</button>
+                <button class="filter-tab active">Box of 4</button>
+                <button class="filter-tab">Box of 6</button>
+                <button class="filter-tab">Box of 12</button>
               </div>
             </div>
     
@@ -256,12 +256,12 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-pill active">Walnut</button>
-                <button class="filter-pill">Overload</button>
-                <button class="filter-pill">Nutella</button>
-                <button class="filter-pill">Red Velvet</button>
-                <button class="filter-pill">Cookie</button>
-                <button class="filter-pill">Assorted</button>
+                <button class="filter-tab active">Walnut</button>
+                <button class="filter-tab">Overload</button>
+                <button class="filter-tab">Nutella</button>
+                <button class="filter-tab">Red Velvet</button>
+                <button class="filter-tab">Cookie</button>
+                <button class="filter-tab">Assorted</button>
               </div>
             </div>
     
@@ -269,10 +269,10 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill">Pack of 1</button>
-                <button class="filter-pill active">Pack of 4</button>
-                <button class="filter-pill">Pack of 6</button>
-                <button class="filter-pill">Pack of 12</button>
+                <button class="filter-tab">Pack of 1</button>
+                <button class="filter-tab active">Pack of 4</button>
+                <button class="filter-tab">Pack of 6</button>
+                <button class="filter-tab">Pack of 12</button>
               </div>
             </div>
     
@@ -280,8 +280,8 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift Wrap</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill active">Standard</button>
-                <button class="filter-pill">Premium Gold</button>
+                <button class="filter-tab active">Standard</button>
+                <button class="filter-tab">Premium Gold</button>
               </div>
             </div>
     
@@ -331,12 +331,12 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select Variety</label>
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <button class="filter-pill active">Choco Chip</button>
-                <button class="filter-pill">Double Choco</button>
-                <button class="filter-pill">Oatmeal Raisin</button>
-                <button class="filter-pill">Almond Biscotti</button>
-                <button class="filter-pill">Red Velvet</button>
-                <button class="filter-pill">Assorted</button>
+                <button class="filter-tab active">Choco Chip</button>
+                <button class="filter-tab">Double Choco</button>
+                <button class="filter-tab">Oatmeal Raisin</button>
+                <button class="filter-tab">Almond Biscotti</button>
+                <button class="filter-tab">Red Velvet</button>
+                <button class="filter-tab">Assorted</button>
               </div>
             </div>
     
@@ -344,10 +344,10 @@
               <label
                 style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack Size</label>
               <div style="display: flex; gap: 15px;">
-                <button class="filter-pill">Box of 2</button>
-                <button class="filter-pill active">Box of 6</button>
-                <button class="filter-pill">Box of 12</button>
-                <button class="filter-pill">Gift Tin</button>
+                <button class="filter-tab">Box of 2</button>
+                <button class="filter-tab active">Box of 6</button>
+                <button class="filter-tab">Box of 12</button>
+                <button class="filter-tab">Gift Tin</button>
               </div>
             </div>
     
