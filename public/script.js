@@ -47,6 +47,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 850,
     img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
   {
     id: 2,
@@ -54,6 +56,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 950,
     img: 'assets/dutch_truffle.png',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
   {
     id: 3,
@@ -61,6 +65,8 @@ const DEFAULT_PRODUCTS = [
     category: 'cakes',
     price: 675,
     img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+    allergens: 'Contains milk, wheat, gluten',
+    shelfLife: 'Best consumed within 3 days',
   },
 ];
 
@@ -91,7 +97,10 @@ function buildCatalogFromList(list) {
             price: p.price,
             emoji: p.emoji,
             img: p.img,
-            description: p.description || ''
+            description: p.description || '',
+            allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
+
         }));
 
     bdayCakes = {};
@@ -258,9 +267,14 @@ function renderFavouritesPage() {
           <div class="product-category">${dish.category || 'favourite'}</div>
           <div class="product-name">${dish.name}</div>
           ${dish.price ? `<div class="product-price">₹${dish.price}</div>` : ''}
-          <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
-            Add to Cart
-          </button>
+          <div class="product-actions">
+            <button class="add-to-cart" onclick='addToCart(${JSON.stringify(dish)})'>
+              Add to Cart
+            </button>
+            <button class="copy-btn" title="Copy Product Link" aria-label="Copy Product Link" onclick='copyProductLink("${dish.name.replace(/'/g, "\\'")}", event)'>
+              🔗
+            </button>
+          </div>
         </div>
       </div>
     `
@@ -280,6 +294,8 @@ function buildCatalogFromList(list) {
         emoji: p.emoji,
         img: p.img,
         description: p.description || '',
+         allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
       }));
 
     bdayCakes = {};
@@ -313,6 +329,9 @@ async function loadProducts() {
           img: p.img,
           stock: p.stock,
           description: p.description || '',
+            allergens: p.allergens || 'Contains milk,wheat,gluten',
+            shelfLife: p.shelfLife || 'Best consumed within 3 days',
+
         }));
 
       bdayCakes = {};
@@ -328,6 +347,10 @@ async function loadProducts() {
     } else {
       useFallbackProducts();
     }
+  } catch (e) {
+    console.error('Error loading products from database:', e);
+    useFallbackProducts();
+  }
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
@@ -336,8 +359,12 @@ async function loadProducts() {
 
     renderFavouritesPage();
   }
-  if (document.getElementById('cakePrice')) {
-    calculateBdayPrice();
+ if (document.getElementById('cakePrice')) {
+      calculateBdayPrice();
+    }
+  } catch (e) {
+    console.error('Failed to load products:', e);
+    useFallbackProducts();
   }
 }
 
@@ -348,7 +375,8 @@ try {
   if (!Array.isArray(cart)) cart = [];
 } catch (e) {
   console.error('Error parsing cart from localStorage:', e);
-  cart = [];
+
+
 }
 
 let checkoutState = {
@@ -659,6 +687,20 @@ function renderRecentSearches() {
     return;
   }
 
+  container.innerHTML = `
+        ${recentSearches
+      .map(
+        (search) => `
+            <div
+                class="recent-search-tag"
+                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
+            >
+                ${search}
+            </div>
+        `
+      )
+      .join('')}
+    `;
     grid.innerHTML = filtered.map(p => `
         <div class="product-card">
             <div class="product-img-wrap">
@@ -780,16 +822,32 @@ function filterProducts(category = 'all', btn = null) {
         ${p.description || ''}
       </div>
 
+      <div class="product-meta">
+          <div><strong>Allergens:</strong> ${p.allergens || 'Not specified'}</div>
+          <div><strong>Shelf Life:</strong> ${p.shelfLife || 'Not specified'}</div>
+      </div>
+
+
       <div class="product-price">
         ₹${p.price}
       </div>
 
-      <button
-        class="add-to-cart"
-        onclick='addToCart(${JSON.stringify(p)})'
-      >
-        Add To Cart
-      </button>
+      <div class="product-actions">
+        <button
+          class="add-to-cart"
+          onclick='addToCart(${JSON.stringify(p)})'
+        >
+          Add To Cart
+        </button>
+        <button
+          class="copy-btn"
+          title="Copy Product Link"
+          aria-label="Copy Product Link"
+          onclick='copyProductLink("${p.name.replace(/'/g, "\\'")}", event)'
+        >
+          🔗
+        </button>
+      </div>
 
     </div>
 
@@ -937,7 +995,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
     `💰 *Total Amount: ₹${total.toLocaleString('en-IN')}*\n\n` +
     `_Your order has been recorded. Please share payment receipt for confirmation!_ ✨`;
 
-  const waUrl = `https://wa.me/918072596340?text=${encodeURIComponent(message)}`;
+  const waUrl = `https://wa.me/918262851488?text=${encodeURIComponent(message)}`;
 
   window.open(waUrl, '_blank');
 }
