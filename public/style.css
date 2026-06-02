@@ -10286,6 +10286,15 @@ html.dark .topping-price {
   }
 }
 
+.birthday-section {
+  padding: 100px 0;
+  background: var(--cream-dark);
+  min-height: 80vh;
+  overflow: hidden;
+}
+
+.birthday-slider::-webkit-scrollbar {
+  display: none;
 /* Birthday Slider */
 .birthday-slider::-webkit-scrollbar {
   display: none;
@@ -10572,6 +10581,32 @@ html.dark .topping-price {
   color: #f4b400;
 }
 
+@media (max-width: 768px) {
+
+  .birthday-section {
+    padding: 60px 15px;
+  }
+
+  .birthday-slider {
+    overflow-x: scroll;
+  }
+
+  .bday-slide > div {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .birthday-card {
+    padding: 25px !important;
+  }
+
+  .birthday-visual img {
+    height: 300px !important;
+  }
+}
+
+.price-filter:hover {
+  transform: translateY(-2px);
 .rating-text {
   margin-top: 10px;
   color: #5f4b42;
