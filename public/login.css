@@ -392,6 +392,94 @@
   .card-head h2 { font-size: 24px; }
   .ob { font-size: 18px; }
 }
+/* =========================================
+   BROWNIE BLISS GLOW CURSOR
+
+#bb-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  z-index: 999999999;
+
+  transform: translate(-50%, -50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,1) 0%,
+    rgba(255,214,170,1) 30%,
+    rgba(212,141,74,1) 60%,
+    rgba(212,141,74,0.2) 100%
+  );
+
+  box-shadow:
+    0 0 8px rgba(255,214,170,1),
+    0 0 20px rgba(212,141,74,0.9),
+    0 0 45px rgba(212,141,74,0.6);
+
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    transform 0.08s linear,
+    opacity 0.3s ease;
+
+  backdrop-filter: blur(2px);
+}
+
+/* Outer Glow */
+
+#bb-cursor::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -12px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(212,141,74,0.25) 0%,
+    rgba(212,141,74,0.12) 45%,
+    transparent 75%
+  );
+
+  z-index: -1;
+}
+
+/* Hover Animation */
+
+#bb-cursor.hover {
+  width: 22px;
+  height: 22px;
+}
+
+/* Scroll Animation */
+
+#bb-cursor.scroll-glow {
+  width: 28px;
+  height: 28px;
+
+  box-shadow:
+    0 0 15px rgba(255,214,170,1),
+    0 0 35px rgba(212,141,74,1),
+    0 0 65px rgba(212,141,74,0.7);
+}
+
+/* Hide on Mobile */
+
+@media (max-width: 768px) {
+  #bb-cursor {
+    display: none;
+  }
+}
 html.dark .login-card,
 html.dark .card-body {
   background: var(--white) !important;
