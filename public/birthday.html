@@ -149,7 +149,7 @@
                 <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addBirthdayToCart()">
                   Add to Cart 🛒
                 </button>
-                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="orderSelectedCakeNow()">
                   Order Now &rarr;
                 </button>
               </div>
@@ -223,7 +223,7 @@
                 <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
                   Add to Cart 🛒
                 </button>
-                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="window.location.href='order-form.html'">
                   Order Now &rarr;
                 </button>
               </div>
@@ -298,7 +298,7 @@
                 <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addBrownieToCart()">
                   Add to Cart 🛒
                 </button>
-                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="window.location.href='order-form.html'">
                   Order Now &rarr;
                 </button>
               </div>
@@ -364,7 +364,7 @@
                 <button class="btn-primary" style="padding: 14px; font-size: 12px;" onclick="addCookieToCart()">
                   Add to Cart 🛒
                 </button>
-                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="openCheckout()">
+                <button class="btn-primary" style="padding: 14px; font-size: 12px; background: var(--brown); color: var(--white);" onclick="window.location.href='order-form.html'">
                   Order Now &rarr;
                 </button>
               </div>
@@ -575,82 +575,38 @@
   <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
-  <div id="bb-cursor"></div>
   <script>
-    /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
-========================================= */
+    function orderSelectedCakeNow() {
+      var flavors = ['Red Velvet', 'Dutch Truffle', 'Pineapple', 'Chocoholic', 'Black Forest', 'Cheesecake'];
+      var buttons = Array.from(document.querySelectorAll('#birthday button'));
+      var flavorButton = buttons.find(function (button) {
+        return button.classList.contains('active') && flavors.includes(button.textContent.trim());
+      });
+      var weightButton = buttons.find(function (button) {
+        return button.classList.contains('active') && /kg/i.test(button.textContent);
+      });
+      var flavor = flavorButton ? flavorButton.textContent.trim() : 'Red Velvet';
+      var priceText = document.getElementById('cakePrice')?.textContent || '850';
+      var price = Number(priceText.replace(/[^\d]/g, '')) || 850;
+      var weightByPrice = { 450: '0.5', 850: '1.0', 1250: '1.5', 1600: '2.0' };
+      var activeWeight = weightButton ? weightButton.textContent.replace(/kg/i, '').trim() : '1.0';
+      var weight = weightByPrice[price] || activeWeight;
+      var message = document.getElementById('cakeMessage')?.value.trim() || '';
+      var image = document.getElementById('birthdayCakeImg')?.src || '';
 
-const bbCursor = document.getElementById("bb-cursor");
+      localStorage.setItem('brownie_bliss_direct_order', JSON.stringify([{
+        id: 'direct-bday-' + Date.now(),
+        name: flavor + ' Cake (' + weight + 'kg)',
+        price: price,
+        qty: 1,
+        weight: weight,
+        img: image,
+        category: 'cakes',
+        message: message
+      }]));
 
-let mouseX = 0;
-let mouseY = 0;
-
-let currentX = 0;
-let currentY = 0;
-
-/* Track Mouse */
-
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-/* Smooth Cursor Animation */
-
-function animateCursor() {
-  currentX += (mouseX - currentX) * 0.15;
-  currentY += (mouseY - currentY) * 0.15;
-
-  bbCursor.style.left = currentX + "px";
-  bbCursor.style.top = currentY + "px";
-
-  requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-/* Hover Effect */
-
-document.querySelectorAll(
-  "a, button, input, textarea, select, .hero-card, .review-card"
-).forEach((el) => {
-
-  el.addEventListener("mouseenter", () => {
-    bbCursor.classList.add("hover");
-  });
-
-  el.addEventListener("mouseleave", () => {
-    bbCursor.classList.remove("hover");
-  });
-
-});
-
-/* Scroll Animation */
-
-let scrollTimer;
-
-window.addEventListener("scroll", () => {
-
-  bbCursor.classList.add("scroll-glow");
-
-  clearTimeout(scrollTimer);
-
-  scrollTimer = setTimeout(() => {
-    bbCursor.classList.remove("scroll-glow");
-  }, 180);
-
-});
-
-/* Hide when mouse leaves window */
-
-document.addEventListener("mouseleave", () => {
-  bbCursor.style.opacity = "0";
-});
-
-document.addEventListener("mouseenter", () => {
-  bbCursor.style.opacity = "1";
-});
+      window.location.href = 'order-form.html';
+    }
   </script>
 </body>
 
