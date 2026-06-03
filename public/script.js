@@ -1,5 +1,5 @@
 // --- CONFIG ---
-const API_BASE = '/api';
+const API_BASE = "http://localhost:3000/api";
 
 // --- SCROLL TO TOP (NEW FEATURE) ---
 document.addEventListener('keydown', (e) => {
