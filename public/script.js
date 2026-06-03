@@ -68,6 +68,15 @@ const DEFAULT_PRODUCTS = [
     allergens: 'Contains milk, wheat, gluten',
     shelfLife: 'Best consumed within 3 days',
   },
+  {
+    id: 4,
+    name: 'Chocolate Chip Cookie',
+    category: 'cookies',
+    price: 120,
+    img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e',
+    allergens: 'Contains wheat, butter',
+    shelfLife: 'Best consumed within 7 days',
+  },
 ];
 
 const DEFAULT_BDAY_CAKES = {
