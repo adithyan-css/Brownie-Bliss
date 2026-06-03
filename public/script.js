@@ -46,7 +46,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Velvet Dream Cake',
     category: 'cakes',
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/velvet_dream_cake.png',
     allergens: 'Contains milk, wheat, gluten',
     shelfLife: 'Best consumed within 3 days',
   },
@@ -82,7 +82,7 @@ const DEFAULT_PRODUCTS = [
 const DEFAULT_BDAY_CAKES = {
   'Red Velvet': {
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/velvet_dream_cake.png',
   },
 
   'Dutch Truffle': {
@@ -161,7 +161,7 @@ const BROWNIE_BLISS_BAKERY = {
   name: 'Brownie Bliss',
   category: 'Homemade Bakery',
   location: 'Krishnagiri',
-  img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+  img: 'assets/overload_brownie.png',
 };
 
 let favouriteItems = { bakeries: [], dishes: [] };
@@ -701,38 +701,6 @@ function renderRecentSearches() {
       )
       .join('')}
     `;
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
-                <button
-                    type="button"
-                    class="customize-and-add"
-                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
-        </div>
-    `).join('');
 }
 
 function updatePriceFilter() {
