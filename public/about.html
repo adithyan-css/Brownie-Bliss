@@ -9,6 +9,33 @@
   <script>
     (function(){try{var t=localStorage.getItem('bb_theme')||'light';if(t==='dark')document.documentElement.classList.add('dark');}catch(_){}}());
   </script>
+  <style>
+    html.dark body,
+    html.dark .about-section,
+    html.dark .about-inner,
+    html.dark .hero,
+    html.dark .stats,
+    html.dark .story,
+    html.dark .values,
+    html.dark .founder,
+    html.dark .cta,
+    html.dark .quote-banner {
+      background-color: #1a0f08 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark header {
+      background: #1a0f08 !important;
+    }
+    html.dark .value-card {
+      background: #2a1a10 !important;
+      color: #f5e8d0 !important;
+    }
+    html.dark .story-text p,
+    html.dark .founder-bio,
+    html.dark .hero-body {
+      color: #c9a97a !important;
+    }
+  </style>
 </head>
 <body>
 <!-- ANNOUNCEMENT -->
@@ -37,15 +64,17 @@
     </nav>
 
     <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
-    </div>
+
+  <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span id="themeIcon">🌙</span>
+  </button>
+
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Cart
+    <span class="cart-count" id="cartBadge">0</span>
+  </button>
+
+</div>
 
   </div>
 </header>
@@ -1910,8 +1939,7 @@
         </p>
 
       </div>
-    </div>
-    </section>
+
 
   <!-- Hero -->
   <section class="hero story-hero">
@@ -2194,82 +2222,14 @@
 
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
-  <div id="bb-cursor"></div>
   <script>
-    /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
-========================================= */
-
-const bbCursor = document.getElementById("bb-cursor");
-
-let mouseX = 0;
-let mouseY = 0;
-
-let currentX = 0;
-let currentY = 0;
-
-/* Track Mouse */
-
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-/* Smooth Cursor Animation */
-
-function animateCursor() {
-  currentX += (mouseX - currentX) * 0.15;
-  currentY += (mouseY - currentY) * 0.15;
-
-  bbCursor.style.left = currentX + "px";
-  bbCursor.style.top = currentY + "px";
-
-  requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-/* Hover Effect */
-
-document.querySelectorAll(
-  "a, button, input, textarea, select, .hero-card, .review-card"
-).forEach((el) => {
-
-  el.addEventListener("mouseenter", () => {
-    bbCursor.classList.add("hover");
-  });
-
-  el.addEventListener("mouseleave", () => {
-    bbCursor.classList.remove("hover");
-  });
-
-});
-
-/* Scroll Animation */
-
-let scrollTimer;
-
-window.addEventListener("scroll", () => {
-
-  bbCursor.classList.add("scroll-glow");
-
-  clearTimeout(scrollTimer);
-
-  scrollTimer = setTimeout(() => {
-    bbCursor.classList.remove("scroll-glow");
-  }, 180);
-
-});
-
-/* Hide when mouse leaves window */
-
-document.addEventListener("mouseleave", () => {
-  bbCursor.style.opacity = "0";
-});
-
-document.addEventListener("mouseenter", () => {
-  bbCursor.style.opacity = "1";
-});
+    document.getElementById('themeToggleBtn').onclick = function() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const next = isDark ? 'light' : 'dark';
+      localStorage.setItem('bb_theme', next);
+      document.documentElement.classList.toggle('dark', next === 'dark');
+      document.getElementById('themeIcon').textContent = next === 'dark' ? '☀️' : '🌙';
+    };
   </script>
 </body>
 </html>
