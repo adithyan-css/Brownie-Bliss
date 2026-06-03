@@ -39,6 +39,67 @@ html.dark {
   --glass: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.15);
 }
+/* Scroll Navigation Fixed Container */
+.scroll-nav-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999; /* Higher than elements, images, or standard modals */
+}
+
+/* Base Stylings for Scroll Buttons */
+.scroll-btn {
+  background-color: var(--gold, #d4a537);
+  color: #2d120d !important; /* Contrasting typography matching the theme colors */
+  border: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Hover & Interactive Polish */
+.scroll-btn:hover {
+  background-color: var(--brown, #4a1f14);
+  color: var(--cream, #f5ede3) !important;
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* Responsive adjust for mobile screens */
+@media(max-width: 600px) {
+  .scroll-nav-container {
+    bottom: 20px;
+    right: 20px;
+    gap: 8px;
+  }
+  .scroll-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* Dark Mode color adaptation override logic */
+html.dark .scroll-btn {
+  background-color: var(--gold, #caa14a);
+  color: #140d08 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .scroll-btn:hover {
+  background-color: #fffaf4;
+  color: #2d120d !important;
+}
 
 * {
   margin: 0;
