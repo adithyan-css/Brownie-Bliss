@@ -33,6 +33,7 @@ let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+const BIRTHDAY_DRAFT_KEY = 'brownie_bliss_birthday_draft';
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -151,8 +152,75 @@ function useFallbackProducts() {
     filterProducts('all');
   }
   if (document.getElementById('cakePrice')) {
+    restoreBirthdayDraft();
     calculateBdayPrice();
   }
+}
+
+function readBirthdayDraft() {
+  try {
+    const draft = JSON.parse(localStorage.getItem(BIRTHDAY_DRAFT_KEY) || '{}');
+    return draft && typeof draft === 'object' ? draft : {};
+  } catch (e) {
+    console.error('Error parsing birthday draft from localStorage:', e);
+    return {};
+  }
+}
+
+function saveBirthdayDraft() {
+  const msgInput = document.getElementById('cakeMessage');
+  try {
+    localStorage.setItem(
+      BIRTHDAY_DRAFT_KEY,
+      JSON.stringify({
+        flavor: selectedFlavor,
+        weight: selectedWeight,
+        message: msgInput ? msgInput.value : '',
+      })
+    );
+  } catch (e) {
+    console.error('Error saving birthday draft to localStorage:', e);
+  }
+}
+
+function updateCakeWeightButtons() {
+  document.querySelectorAll('.weight-btn').forEach((btn) => {
+    btn.classList.toggle(
+      'active',
+      btn.textContent.trim().startsWith(selectedWeight)
+    );
+  });
+}
+
+function restoreBirthdayDraft() {
+  if (!document.getElementById('cakePrice')) return;
+
+  const draft = readBirthdayDraft();
+  if (draft.flavor && bdayCakes[draft.flavor]) {
+    selectedFlavor = draft.flavor;
+  }
+  if (draft.weight && BIRTHDAY_BASE_PRICES[draft.weight]) {
+    selectedWeight = draft.weight;
+  }
+  if (!bdayCakes[selectedFlavor]) {
+    selectedFlavor = Object.keys(bdayCakes)[0] || 'Red Velvet';
+  }
+
+  const msgInput = document.getElementById('cakeMessage');
+  if (msgInput && typeof draft.message === 'string') {
+    msgInput.value = draft.message;
+  }
+
+  if (bdayCakes[selectedFlavor]) {
+    updateBirthdayCake(selectedFlavor, { skipSave: true });
+  }
+  updateCakeWeightButtons();
+}
+
+function bindBirthdayDraftInput() {
+  const msgInput = document.getElementById('cakeMessage');
+  if (!msgInput) return;
+  msgInput.addEventListener('input', saveBirthdayDraft);
 }
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
@@ -363,6 +431,7 @@ async function loadProducts() {
     renderFavouritesPage();
   }
  if (document.getElementById('cakePrice')) {
+      restoreBirthdayDraft();
       calculateBdayPrice();
     }
 
@@ -860,7 +929,7 @@ function filterProducts(category = 'all', btn = null) {
 // --- BIRTHDAY CAKE BUILDER ---
 // bdayCakes object is now populated dynamically via loadProducts()
 
-function updateBirthdayCake(flavor) {
+function updateBirthdayCake(flavor, options = {}) {
   if (!bdayCakes[flavor]) {
     console.error('Cake flavor not found:', flavor);
     return;
@@ -888,18 +957,17 @@ function updateBirthdayCake(flavor) {
 });
 
   calculateBdayPrice();
+  if (!options.skipSave) saveBirthdayDraft();
 }
 
 function setCakeWeight(weight, event) {
   selectedWeight = weight;
 
-  document
-    .querySelectorAll('.weight-btn')
-    .forEach((b) => b.classList.remove('active'));
-
   if (event?.target) event.target.classList.add('active');
+  updateCakeWeightButtons();
 
   calculateBdayPrice();
+  saveBirthdayDraft();
 }
 
 function calculateBdayPrice() {
@@ -1065,7 +1133,10 @@ function addBirthdayToCart() {
   });
 
   showToast('🎂 Birthday cake added to cart!');
-  if (msgInput) msgInput.value = '';
+  if (msgInput) {
+    msgInput.value = '';
+    saveBirthdayDraft();
+  }
   openCart();
 }
 
@@ -1577,6 +1648,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderFavouritesPage();
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
   initStarRatings();
+  bindBirthdayDraftInput();
 
   // Track Order auto-fill if on track.html
   const urlParams = new URLSearchParams(window.location.search);
