@@ -4343,7 +4343,7 @@ html.dark .theme-toggle-btn:hover {
     font-size: 16px;
   }
 }
-/* =========================
+/* ========================= */
    ABOUT PAGE
 
 .about-section {
@@ -6296,7 +6296,7 @@ footer {
   color: var(--text-mid);
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 600;
+font-weight: 600;
 }
 
 .cart-total-amt {
@@ -6546,7 +6546,7 @@ footer {
     display: none;
   }
 
-  .cart-sidebar {
+   .cart-sidebar {
     width: 100%;
   }
 
@@ -7896,6 +7896,7 @@ footer {
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 
 .sidebar-links {
   flex: 1;
@@ -10003,7 +10004,7 @@ html.dark .cart-custom-badge {
 html.dark .cart-custom-msg {
   background: rgba(240, 228, 208, 0.08);
   color: var(--text-mid);
-}
+  }
 
 /* ── FIX 1: Cart +/- buttons visible in dark mode ── */
 html.dark .qty-btn {
@@ -11211,6 +11212,167 @@ html.dark .toast {
   margin-bottom: 14px;
 }
 
+#scrollTopBtn:hover {
+    background-color: #8b5a3c;
+    transform: scale(1.1);
+}
+
+
+/* Ensure smooth, unclipped layout calculations */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 24px;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-mid);
+  transition: max-height 0.35s ease-out;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px; 
+  padding-bottom: 24px; /* Gently pushes away bottom padding */
+}
+
+/* Moves text down slightly without glitching the container height scale */
+.faq-answer p {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+/* extra */
+.bb-faq {
+  background: var(--cream);
+  padding: 90px 24px;
+  text-align: center;
+}
+
+.faq-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.bb-faq h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  color: var(--brown-dark);
+  margin-bottom: 50px;
+}
+
+.bb-faq h2 em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.faq-container {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.faq-question {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brown-dark);
+}
+
+.faq-icon {
+  font-size: 22px;
+  color: var(--gold);
+  transition: transform 0.3s ease;
+}
+
+/* 1. Reset the base answer state so padding changes don't fight the height */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 24px; /* Keeps left/right padding consistent */
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-mid);
+  transition: max-height 0.35s ease-out; /* Smooth height transition */
+}
+
+/* 2. Clean up the active rules at the bottom of your file */
+.faq-item.active .faq-answer {
+  max-height: 500px; /* Safe upper limit so text never gets clipped */
+  padding-bottom: 24px; /* Push the bottom border away naturally */
+}
+
+/* Optional: Add space above the text without breaking the animation */
+.faq-answer p {
+  margin-top: 12px; 
+  margin-bottom: 0;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+/* DARK MODE */
+
+html.dark .bb-faq {
+  background: var(--cream);
+}
+
+html.dark .faq-item {
+  background: var(--cream-dark);
+  border-color: #3a2010;
+}
+
+html.dark .faq-question {
+  color: var(--text-dark);
+}
+
+html.dark .faq-answer {
+  color: var(--text-mid);
+}
+
+
+/* Remove the display: none block from the bottom and ensure this is your active rule */
+.faq-item.active .faq-answer {
+  max-height: 300px; /* Increased slightly to make sure text isn't clipped */
+  padding: 10px 24px 24px 24px; /* Gives the text nice breathing room from the question */
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
 .legal-card p {
   color: var(--text-mid);
   line-height: 1.8;
