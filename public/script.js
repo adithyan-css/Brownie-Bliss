@@ -62,6 +62,15 @@ const DEFAULT_PRODUCTS = [
     price: 675,
     img: "https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg",
   },
+  {
+    id: 4,
+    name: "Tiramisu Dessert",
+    category: "desserts",
+    price: 350,
+    img: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9",
+    allergens: "Contains milk, eggs",
+    shelfLife: "Best consumed within 2 days",
+  },
 ];
 
 const DEFAULT_BDAY_CAKES = {
@@ -69,15 +78,37 @@ const DEFAULT_BDAY_CAKES = {
     price: 850,
     img: "https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860",
   },
-  "Dutch Truffle": {
+
+  'Dutch Truffle': {
     price: 950,
     img: "assets/dutch_truffle.png",
+  },
+
+  'Pineapple': {
+    price: 675,
+    img:  'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+  },
+
+  'Chocoholic': {
+    price: 990,
+    img: 'https://theobroma.in/cdn/shop/files/ChocoholicCakehalfkg_400x400.jpg?v=1711125918',
+  },
+  
+
+  'Black Forest': {
+    price: 875,
+    img: 'https://theobroma.in/cdn/shop/files/BlackForestCake.jpg?v=1750341419',
+  },
+
+  'Cheesecake': {
+    price: 1100,
+    img: 'https://theobroma.in/cdn/shop/files/FG0807_LotusBiscoffBentoCheesecake_300g_400x400.jpg?v=1770718506',
   },
 };
 
 function buildCatalogFromList(list) {
   if (!Array.isArray(list) || list.length === 0) {
-    products = DEFAULT_PRODUCTS;
+    products = [...DEFAULT_PRODUCTS];
     bdayCakes = { ...DEFAULT_BDAY_CAKES };
     return;
   }
@@ -91,27 +122,42 @@ function buildCatalogFromList(list) {
       price: p.price,
       emoji: p.emoji,
       img: p.img,
+      stock: p.stock,
       description: p.description || "",
+      allergens: p.allergens || "",
+      shelfLife: p.shelfLife || "",
     }));
 
   bdayCakes = {};
+
   list
     .filter((p) => p.type === "birthday")
     .forEach((p) => {
       bdayCakes[p.id_ref] = {
         price: p.price,
         emoji: p.emoji,
+        stock: p.stock,
         img: p.img,
       };
     });
+
+  if (!products.length) {
+    products = [...DEFAULT_PRODUCTS];
+  }
+
+  if (!Object.keys(bdayCakes).length) {
+    bdayCakes = { ...DEFAULT_BDAY_CAKES };
+  }
 }
 
 function useFallbackProducts() {
-  buildCatalogFromList(null);
+  products = [...DEFAULT_PRODUCTS];
+  bdayCakes = { ...DEFAULT_BDAY_CAKES };
 
   if (document.getElementById("productsGrid")) {
     filterProducts("all");
   }
+
   if (document.getElementById("cakePrice")) {
     calculateBdayPrice();
   }
@@ -280,52 +326,6 @@ function renderFavouritesPage() {
   }
 }
 
-function buildCatalogFromList(list) {
-  if (!Array.isArray(list) || list.length === 0) {
-    products = [...DEFAULT_PRODUCTS];
-    bdayCakes = { ...DEFAULT_BDAY_CAKES };
-    return;
-  }
-
-  products = list
-    .filter((p) => p.type === "standard")
-    .map((p) => ({
-      id: p.id_ref,
-      name: p.name,
-      category: p.category,
-      price: p.price,
-      emoji: p.emoji,
-      img: p.img,
-      stock: p.stock,
-      description: p.description || "",
-    }));
-
-  bdayCakes = {};
-
-  list
-    .filter((p) => p.type === "birthday")
-    .forEach((p) => {
-      bdayCakes[p.id_ref] = {
-        price: p.price,
-        emoji: p.emoji,
-        stock: p.stock,
-        img: p.img,
-      };
-    });
-}
-
-function useFallbackProducts() {
-  products = [...DEFAULT_PRODUCTS];
-  bdayCakes = { ...DEFAULT_BDAY_CAKES };
-
-  if (document.getElementById("productsGrid")) {
-    filterProducts("all");
-  }
-
-  if (document.getElementById("cakePrice")) {
-    calculateBdayPrice();
-  }
-}
 
 async function loadProducts() {
   try {
@@ -347,10 +347,10 @@ async function loadProducts() {
     updateFavouritesCount();
     renderFavouritesPage();
   }
+ if (document.getElementById('cakePrice')) {
+      calculateBdayPrice();
+    }
 
-  if (document.getElementById("cakePrice")) {
-    calculateBdayPrice();
-  }
 }
 
 // --- CART STATE ---
@@ -361,9 +361,6 @@ try {
 } catch (e) {
   console.error("Error parsing cart from localStorage:", e);
   cart = [];
-  console.error('Error parsing cart from localStorage:', e);
-
-
 }
 
 let checkoutState = {
@@ -826,13 +823,13 @@ function updateBirthdayCake(flavor) {
   }
 
   // Update active flavor button
-  document.querySelectorAll(".filter-pill").forEach((btn) => {
-    if (btn.textContent.trim() === flavor) {
-      btn.classList.add("active");
-    } else {
-      btn.classList.remove("active");
-    }
-  });
+  document.querySelectorAll('.flavor-btn').forEach((btn) => {
+  if (btn.textContent.trim() === flavor) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+});
 
   calculateBdayPrice();
 }
@@ -900,6 +897,22 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
       ? orderTotal
       : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
 
+    // Empty input validation
+    if (!orderId) {
+        if (trackError) {
+            trackError.textContent = 'Please enter an Order ID';
+            trackError.classList.add('show');
+        }
+        return;
+    }
+    // Validate Order ID format
+    if (!/^ORD-\d+$/.test(orderId)) {
+        if (trackError) {
+            trackError.textContent = 'Invalid Order ID. Format should be ORD-XXXX';
+            trackError.classList.add('show');
+        }
+        return;
+    }
   const itemLines = lines
     .map((i) => {
       let line = `• ${i.name} × ${i.qty} = ₹${(
