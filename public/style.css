@@ -11318,6 +11318,8 @@ html.dark .copy-btn:hover {
   background: var(--gold);
   color: var(--brown);
   border-color: var(--gold);
+}
+
 /* Navbar Container */
 .navbar {
   display: flex;
@@ -11474,4 +11476,53 @@ html.dark .copy-btn:hover {
     width: 24px;
     height: 24px;
   }
+}
+
+/* --- DARK MODE FOOTER CONTRAST FIX --- */
+html.dark footer,
+html.dark .premium-footer,
+html.dark #contact {
+  background-color: var(--cream-light, #fdf5e6) !important;
+}
+
+html.dark footer h2,
+html.dark footer h3,
+html.dark footer h4,
+html.dark footer p,
+html.dark footer a,
+html.dark footer span,
+html.dark footer small,
+html.dark footer strong,
+html.dark footer li,
+html.dark footer .logo-name,
+html.dark footer .logo-sub,
+html.dark .premium-footer h2,
+html.dark .premium-footer h3,
+html.dark .premium-footer h4,
+html.dark .premium-footer p,
+html.dark .premium-footer a,
+html.dark .premium-footer span,
+html.dark .premium-footer small,
+html.dark .premium-footer strong,
+html.dark .premium-footer li,
+html.dark .premium-footer .logo-name,
+html.dark .premium-footer .logo-sub,
+html.dark #contact h2,
+html.dark #contact h3,
+html.dark #contact h4,
+html.dark #contact p,
+html.dark #contact a,
+html.dark #contact span,
+html.dark #contact small,
+html.dark #contact strong,
+html.dark #contact li,
+html.dark #contact .logo-name,
+html.dark #contact .logo-sub {
+  color: #3d2514 !important;
+}
+
+html.dark footer a:hover,
+html.dark .premium-footer a:hover,
+html.dark #contact a:hover {
+  color: var(--color-accent, #d2691e) !important;
 }
