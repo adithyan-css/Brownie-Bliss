@@ -83,6 +83,130 @@
 
     <!-- CONTACT SECTION -->
     <section class="contact-page">
+      <a href="javascript:history.back()" class="back-btn">
+    <span>←</span>
+</a>
+
+<style>
+/* PREMIUM FLOATING BACK BUTTON (UPGRADED) */
+
+.back-btn{
+    position:absolute;
+    top:10px;
+    left:30px;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:12px 20px;
+
+    background:rgba(255,255,255,0.10);
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(212,165,55,0.35);
+    border-radius:999px;
+
+    text-decoration:none;
+    color:#fff;
+
+    font-weight:600;
+    letter-spacing:0.5px;
+
+    overflow:hidden;
+    transition:all 0.35s ease;
+
+    z-index:100;
+}
+
+/* glowing soft border effect */
+.back-btn::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:999px;
+    padding:1px;
+    background:linear-gradient(120deg, transparent, rgba(212,165,55,0.7), transparent);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity:0;
+    transition:0.4s;
+}
+
+/* subtle shine sweep */
+.back-btn::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:60%;
+    height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform:skewX(-20deg);
+}
+
+.back-btn span{
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+    background:linear-gradient(135deg, #d4a537, #b8860b);
+    color:#2d120d;
+    font-size:16px;
+
+    transition:0.3s ease;
+}
+
+/* hover effects */
+.back-btn:hover{
+    transform:translateY(-3px) scale(1.02);
+    background:rgba(255,255,255,0.16);
+    box-shadow:0 15px 35px rgba(0,0,0,0.35);
+}
+
+.back-btn:hover::before{
+    opacity:1;
+}
+
+.back-btn:hover::after{
+    animation:shine 1s ease forwards;
+}
+
+.back-btn:hover span{
+    transform:rotate(-15deg) scale(1.1);
+}
+
+/* shine animation */
+@keyframes shine{
+    0%{ left:-120%; }
+    100%{ left:140%; }
+}
+
+html.dark .back-btn{
+    background:rgba(0,0,0,0.25);
+}
+
+/* Mobile */
+@media(max-width:768px){
+
+    .back-btn{
+        top:80px;
+        left:20px;
+        padding:10px 14px;
+        font-size:13px;
+    }
+
+    .back-btn span{
+        width:26px;
+        height:26px;
+        font-size:14px;
+    }
+}
+</style>
       <div class="contact-bg"></div>
 
       <div class="contact-inner">
