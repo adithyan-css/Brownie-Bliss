@@ -10978,8 +10978,29 @@ button,
   display:none;
 }
 
+#scrollTopBtn{
+  position: fixed;
+  display: flex;
+  right: 24px;
+  bottom: 50px;
+  /* margin-bottom: 10px; */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: white;
+  box-shadow: 0px 0px 20px 0px #c49b3f ;
+  font-size: 15px;
+  color: #8b5a3c;
+
+}
+
+
 #scrollTopBtn:hover {
-  background-color: #8b5a3c;
+  background-color: #c49b3f;
+  color: white;
   transform: scale(1.1);
 }
 
@@ -11318,6 +11339,7 @@ html.dark .copy-btn:hover {
   background: var(--gold);
   color: var(--brown);
   border-color: var(--gold);
+}
 /* Navbar Container */
 .navbar {
   display: flex;
@@ -11406,7 +11428,7 @@ html.dark .copy-btn:hover {
 /* ── Floating WhatsApp Quick-Order Button ── */
 .whatsapp-float {
   position: fixed;
-  bottom: 80px;          /* sits above the back-to-top ↑ button */
+  bottom: 120px;          /* sits above the back-to-top ↑ button */
   right: 24px;
   z-index: 9999;
   width: 56px;
@@ -11466,12 +11488,17 @@ html.dark .copy-btn:hover {
   .whatsapp-float {
     width: 48px;
     height: 48px;
-    bottom: 72px;
+    bottom: 110px;
     right: 16px;
   }
 
   .whatsapp-float svg {
     width: 24px;
     height: 24px;
+  }
+  #scrollTopBtn{
+     width: 48px;
+    height: 48px;
+    right: 16px;
   }
 }
