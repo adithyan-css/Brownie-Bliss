@@ -26,13 +26,24 @@ window.toggleTheme = toggleTheme;
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
+let desserts = {};
+let brownies = {};
+
 let selectedFlavor = 'Red Velvet';
+let selectedVariety = 'Macarons';
+let selectedBrownieFlavor = 'Walnut';
+
 let currentSearchTerm = '';
 let selectedPriceFilter = 'all';
 let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+let selectedBoxSize = '4';
+let selectedBrowniePack = '4';
+
+let selectedGiftWrap = 'Standard';
+
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -97,9 +108,73 @@ const DEFAULT_BDAY_CAKES = {
   },
 };
 
+const DEFAULT_DESSERTS = {
+  Macarons: {
+    price: {
+      2: 200,
+      4: 350,
+      6: 500,
+      12: 900
+    },
+    img: 'https://theobroma.in/cdn/shop/files/HIGHRESCoconutMacaroons-Square_400x400.jpg?v=1711188230',
+  },
+
+  Tarts: {
+    price: {
+      2: 250,
+      4: 450,
+      6: 650,
+      12: 1200
+    },
+    img: 'https://theobroma.in/cdn/shop/files/FG0885__Choco_Caramel_Tart__1_Piece_1_400x400.jpg?v=1772100075',
+  },
+
+  Pastries: {
+    price: {
+      2: 250,
+      4: 400,
+      6: 600,
+      12: 1100
+    },
+    img: 'https://theobroma.in/cdn/shop/files/DutchTrufflePastry02_400x400.jpg?v=1711107853',
+  },
+
+  Cupcakes: {
+    price: {
+      2: 220,
+      4: 380,
+      6: 550,
+      12: 1150
+    },
+    img: 'https://theobroma.in/cdn/shop/files/ChocolateCupcake_400x400.jpg?v=1711514719',
+  },
+
+  Mousse: {
+    price: {
+      2: 300,
+      4: 420,
+      6: 800,
+      12: 1500
+    },
+    img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267',
+  },
+
+  Donuts: {
+    price: {
+      2: 220,
+      4: 400,
+      6: 550,
+      12: 1000
+    },
+    img: 'https://assets.limetray.com/assets/user_images/menus/compressed/1688997973_BrownieCrumble.jpg',
+  },
+};
+
 function useFallbackProducts() {
   products = DEFAULT_PRODUCTS;
   bdayCakes = { ...DEFAULT_BDAY_CAKES };
+  desserts = { ...DEFAULT_DESSERTS };
+  brownies = { ...DEFAULT_BROWNIES };
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
@@ -108,6 +183,63 @@ function useFallbackProducts() {
     calculateBdayPrice();
   }
 }
+
+const DEFAULT_BROWNIES = {
+  Walnut: {
+    price: {
+      1: 100,
+      4: 250,
+      6: 350,
+      12: 650
+    },
+    img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183450'
+  },
+  Overload: {
+    price: {
+      1: 150,
+      4: 350,
+      6: 500,
+      12: 850
+    },
+    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie02_400x400.jpg?v=1711183338'
+  },
+  Nutella: {
+    price: {
+      1: 120,
+      4: 300,
+      6: 450,
+      12: 750
+    },
+    img: 'https://theobroma.in/cdn/shop/files/Hazelnut_Nutella_Brownie_1_400x400.jpg?v=1778061405'
+  },
+  'Choco Chip': {
+    price: {
+      1: 250,
+      4: 450,
+      6: 700,
+      12: 950
+    },
+    img: 'https://theobroma.in/cdn/shop/files/ChocoChipBrownie_6d8a9048-e418-4fec-8228-682e4db32032_400x400.jpg?v=1711183550'
+  },
+  Cookie: {
+    price: {
+      1: 100,
+      4: 250,
+      6: 350,
+      12: 650
+    },
+    img: 'https://theobroma.in/cdn/shop/files/CookieBrownie_14b6ebe5-3c5e-4641-91b0-28c97d3554b6_400x400.jpg?v=1711183689'
+  },
+  Assorted: {
+    price: {
+      1: 420,
+      4: 800,
+      6: 1250,
+      12: 2250
+    },
+    img: 'https://theobroma.in/cdn/shop/files/AssortedBrownieBox6_400x400.jpg?v=1710838473'
+  },
+};
 
 const FAVOURITES_KEY = 'brownie_bliss_favourites';
 const BROWNIE_BLISS_BAKERY = {
@@ -867,6 +999,186 @@ function updateBirthdayFavouriteButton() {
   btn.innerHTML = active ? '&hearts;' : '&#9825;';
 }
 
+// --- BROWNIE BUILDER ---
+// brownies object is now populated dynamically via loadProducts()
+
+function updateBrownie(flavor) {
+  if (!brownies[flavor]) {
+    console.error('Brownie flavor not found:', flavor);
+    return;
+  }
+
+  selectedFlavor = flavor;
+
+  // Update image
+  const brownieImg = document.getElementById('brownieImg');
+  if (brownieImg && brownies[flavor]) {
+    brownieImg.src = brownies[flavor].img;
+  }
+
+  // Update active flavor button
+  document.querySelectorAll('.brownie-flavor-btn').forEach((btn) => {
+    if (btn.textContent.trim() === flavor) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  calculateBrowniePrice();
+}
+
+function updateBrowniePack(size, event) {
+  selectedBoxSize = size;
+
+  document
+    .querySelectorAll('.brownie-pack-btn')
+    .forEach((b) => b.classList.remove('active'));
+
+  if (event?.target) event.target.classList.add('active');
+
+  calculateBrowniePrice();
+}
+
+function calculateBrowniePrice() {
+  const price =
+    brownies[selectedFlavor]?.price?.[selectedBoxSize] || 350;
+
+  const priceEl = document.getElementById('browniePrice');
+
+  if (priceEl) {
+    priceEl.textContent = `₹ ${price}`;
+  }
+
+  updateBrownieFavouriteButton();
+}
+
+function updateGiftWrap(wrap, event) {
+  selectedGiftWrap = wrap;
+
+  document.querySelectorAll('.wrap-btn').forEach((btn) => {
+    btn.classList.remove('active');
+  });
+
+  if (event?.target) {
+    event.target.classList.add('active');
+  }
+}
+
+function getBrownieFavouriteItem() {
+  const brownie = brownies[selectedFlavor] || {};
+  return {
+    id: `brownie-${selectedFlavor}-${selectedBoxSize}`,
+    name: `${selectedFlavor} (${selectedBoxSize})`,
+    price: brownies[selectedFlavor]?.price?.[selectedBoxSize] || 350,
+    img: brownie.img || document.getElementById('brownieImg')?.src || '',
+    emoji: brownie.emoji || '🍰',
+    category: 'desserts',
+  };
+}
+function updateBrownieFavouriteButton() { 
+  const btn = document.getElementById('brownieFavoriteBtn');
+  if (!btn) return;
+
+  const item = getBrownieFavouriteItem();
+  const active = isFavourite('dishes', item.id);
+
+  btn.dataset.favType = 'dishes';
+  btn.dataset.favId = item.id;
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  btn.setAttribute(
+    'title',
+    active ? 'Remove from favourites' : 'Add to favourites'
+  );
+
+  btn.innerHTML = active ? '&hearts;' : '&#9825;';
+}
+
+// --- DESSERT BUILDER ---
+// desserts object is now populated dynamically via loadProducts()
+
+function updateDessert(variety) {
+  if (!desserts[variety]) {
+    console.error('Dessert variety not found:', variety);
+    return;
+  }
+
+  selectedVariety = variety;
+
+  // Update image
+  const dessertImg = document.getElementById('dessertImg');
+  if (dessertImg && desserts[variety]) {
+    dessertImg.src = desserts[variety].img;
+  }
+
+  // Update active variety button
+  document.querySelectorAll('.variety-btn').forEach((btn) => {
+    if (btn.textContent.trim() === variety) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  calculateDessertPrice();
+}
+
+function setBoxSize(size, event) {
+  selectedBoxSize = size;
+
+  document
+    .querySelectorAll('.quantity-btn')
+    .forEach((b) => b.classList.remove('active'));
+
+  if (event?.target) event.target.classList.add('active');
+
+  calculateDessertPrice();
+}
+
+function calculateDessertPrice() {
+  const price =
+    desserts[selectedVariety]?.price?.[selectedBoxSize] || 350;
+
+  const priceEl = document.getElementById('dessertPrice');
+
+  if (priceEl) {
+    priceEl.textContent = `₹ ${price}`;
+  }
+
+  updateDessertFavouriteButton();
+}
+
+function getDessertFavouriteItem() {
+  const dessert = desserts[selectedVariety] || {};
+  return {
+    id: `dessert-${selectedVariety}-${selectedBoxSize}`,
+    name: `${selectedVariety} (${selectedBoxSize})`,
+    price: desserts[selectedVariety]?.price?.[selectedBoxSize] || 350,
+    img: dessert.img || document.getElementById('dessertImg')?.src || '',
+    emoji: dessert.emoji || '🍰',
+    category: 'desserts',
+  };
+}
+function updateDessertFavouriteButton() { 
+  const btn = document.getElementById('dessertFavoriteBtn');
+  if (!btn) return;
+
+  const item = getDessertFavouriteItem();
+  const active = isFavourite('dishes', item.id);
+
+  btn.dataset.favType = 'dishes';
+  btn.dataset.favId = item.id;
+  btn.classList.toggle('active', active);
+  btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  btn.setAttribute(
+    'title',
+    active ? 'Remove from favourites' : 'Add to favourites'
+  );
+
+  btn.innerHTML = active ? '&hearts;' : '&#9825;';
+}
+
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
 
@@ -976,29 +1288,34 @@ function addBirthdayToCart() {
 }
 
 function addDessertToCart() {
+  const dessert = desserts[selectedVariety];
+
   const item = {
-    id: 'dessert-macarons',
-    name: 'Assorted Macarons (Box of 4)',
-    price: 350,
-    img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
-    emoji: '🍮',
+    id: `dessert-${selectedVariety}-${selectedBoxSize}`,
+    name: `${selectedVariety} (Box of ${selectedBoxSize})`,
+    price:
+      dessert?.price?.[selectedBoxSize] || 350,
+    img: dessert?.img || '',
     category: 'desserts',
     qty: 1,
   };
+
   addToCart(item);
   openCart();
 }
 
 function addBrownieToCart() {
+  const brownie = brownies[selectedBrownieFlavor];
+
   const item = {
-    id: 'brownie-overload',
-    name: 'Overload Brownie (Pack of 4)',
-    price: 250,
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
-    emoji: '🍫',
+    id: `brownie-${selectedBrownieFlavor}-${selectedBrowniePack}`,
+    name: `${selectedBrownieFlavor} Brownie (Pack of ${selectedBrowniePack})`,
+    price: brownie?.price?.[selectedBrowniePack] || 250,
+    img: brownie?.img || '',
     category: 'brownies',
     qty: 1,
   };
+
   addToCart(item);
   openCart();
 }

@@ -350,12 +350,12 @@
               style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
               Variety</label>
             <div class="responsive-grid" style="display: grid; gap: 10px;">
-              <button class="filter-tab active">Macarons</button>
-              <button class="filter-tab">Tarts</button>
-              <button class="filter-tab">Pastries</button>
-              <button class="filter-tab">Cupcakes</button>
-              <button class="filter-tab">Mousse</button>
-              <button class="filter-tab">Donuts</button>
+              <button class="filter-tab variety-btn active" onclick="updateDessert('Macarons')">Macarons</button>
+              <button class="filter-tab variety-btn" onclick="updateDessert('Tarts')">Tarts</button>
+              <button class="filter-tab variety-btn" onclick="updateDessert('Pastries')">Pastries</button>
+              <button class="filter-tab variety-btn" onclick="updateDessert('Cupcakes')">Cupcakes</button>
+              <button class="filter-tab variety-btn" onclick="updateDessert('Mousse')">Mousse</button>
+              <button class="filter-tab variety-btn" onclick="updateDessert('Donuts')">Donuts</button>
             </div>
           </div>
 
@@ -364,10 +364,10 @@
               style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
               Size</label>
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Box of 2</button>
-              <button class="filter-tab active">Box of 4</button>
-              <button class="filter-tab">Box of 6</button>
-              <button class="filter-tab">Box of 12</button>
+              <button class="filter-tab quantity-btn "onclick= "setBoxSize('2',event)">Box of 2</button>
+              <button class="filter-tab quantity-btn active" onclick="setBoxSize('4',event)">Box of 4</button>
+              <button class="filter-tab quantity-btn" onclick="setBoxSize('6',event)">Box of 6</button>
+              <button class="filter-tab quantity-btn" onclick="setBoxSize('12',event)">Box of 12</button>
             </div>
           </div>
 
@@ -386,7 +386,7 @@
                 <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
                   starts
                   from</span>
-                <span
+                <span id="dessertPrice"
                   style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
                   350</span>
               </div>
@@ -430,12 +430,12 @@
               style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
               Flavor</label>
             <div class="responsive-grid" style="display: grid; gap: 10px;">
-              <button class="filter-tab active">Walnut</button>
-              <button class="filter-tab">Overload</button>
-              <button class="filter-tab">Nutella</button>
-              <button class="filter-tab">Red Velvet</button>
-              <button class="filter-tab">Cookie</button>
-              <button class="filter-tab">Assorted</button>
+              <button class="filter-tab brownie-flavor-btn active" onclick="updateBrownie('Walnut')">Walnut</button>
+              <button class="filter-tab brownie-flavor-btn" onclick="updateBrownie('Overload')">Overload</button>
+              <button class="filter-tab brownie-flavor-btn" onclick="updateBrownie('Nutella')">Nutella</button>
+              <button class="filter-tab brownie-flavor-btn" onclick="updateBrownie('Choco Chip')">Choco Chip</button>
+              <button class="filter-tab brownie-flavor-btn" onclick="updateBrownie('Cookie')">Cookie</button>
+              <button class="filter-tab brownie-flavor-btn" onclick="updateBrownie('Assorted')">Assorted</button>
             </div>
           </div>
 
@@ -444,10 +444,10 @@
               style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Pack
               Size</label>
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Pack of 1</button>
-              <button class="filter-tab active">Pack of 4</button>
-              <button class="filter-tab">Pack of 6</button>
-              <button class="filter-tab">Pack of 12</button>
+              <button class="filter-tab brownie-pack-btn" onclick="updateBrowniePack('1', event)">Pack of 1</button>
+              <button class="filter-tab brownie-pack-btn active" onclick="updateBrowniePack('4', event)">Pack of 4</button>
+              <button class="filter-tab brownie-pack-btn" onclick="updateBrowniePack('6', event)">Pack of 6</button>
+              <button class="filter-tab brownie-pack-btn" onclick="updateBrowniePack('12', event)">Pack of 12</button>
             </div>
           </div>
 
@@ -456,8 +456,8 @@
               style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Gift
               Wrap</label>
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab active">Standard</button>
-              <button class="filter-tab">Premium Gold</button>
+              <button class="filter-tab wrap-btn active" onclick="updateGiftWrap('Standard')">Standard</button>
+              <button class="filter-tab wrap-btn" onclick="updateGiftWrap('Premium Gold')">Premium Gold</button>
             </div>
           </div>
 
@@ -468,7 +468,7 @@
                 <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
                   starts
                   from</span>
-                <span
+                <span id="browniePrice"
                   style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
                   250</span>
               </div>
