@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -22,11 +22,12 @@
   </script>
 </head>
 
-<body id="home">
-
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+  <body id="home">
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement">
+      ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
+      HAPPINESS IN EVERY BITE &nbsp; ✨
+    </div>
 
   <!-- HEADER -->
   <header>
@@ -137,7 +138,7 @@
 
         </div>
 
-      </div>
+        <div class="hero-card">
 
     </div>
   </section>
@@ -199,17 +200,32 @@
 
       </div>
 
-      <div class="filter-tabs" style="margin-bottom: 60px;">
-        <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
-        <button class="filter-tab" onclick="filterProducts('cakes', this)">Cakes</button>
-        <button class="filter-tab" onclick="filterProducts('brownies', this)">Brownies</button>
-        <button class="filter-tab" onclick="filterProducts('desserts', this)">Desserts</button>
-        <button class="filter-tab" onclick="filterProducts('cookies', this)">Cookies</button>
       </div>
 
-      <div class="products-grid" id="productsGrid"></div>
-    </div>
-  </section>
+        <div class="filter-tabs" style="margin-bottom: 60px">
+          <button
+            class="filter-tab active"
+            onclick="filterProducts('all', this)"
+          >
+            All
+          </button>
+          <button class="filter-tab" onclick="filterProducts('cakes', this)">
+            Cakes
+          </button>
+          <button class="filter-tab" onclick="filterProducts('brownies', this)">
+            Brownies
+          </button>
+          <button class="filter-tab" onclick="filterProducts('desserts', this)">
+            Desserts
+          </button>
+          <button class="filter-tab" onclick="filterProducts('cookies', this)">
+            Cookies
+          </button>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
   <section class="birthday-section" data-aos="fade-up"></section>
@@ -776,11 +792,24 @@
                 </div>
   </section>
 
-  <div class="bb-overall">
-    <span class="stars-big">★★★★★</span>
-    <p class="rating-text"><strong>5.0</strong> · 5 reviews · All homemade, all heart</p>
-  </div>
+    <div id="reviewModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onClick="closeReviewModal()">&times;</span>
 
+        <h2>Write a review</h2>
+
+        <form id="reviewForm">
+          <textarea id="reviewText"
+          placeholder="Write your review here..."
+          required></textarea>
+
+          <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
+      </div>
+    </div>
+
+      </div>
+    </section>
 
   <!-- FOOTER -->
   <footer id="contact">
@@ -803,11 +832,10 @@
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
         </div>
-        <div class="footer-col">
+        <div class="footer-col" style="display: none;">
           <h4>Information</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-          <a href="refund-policy.html">Refund Policy</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Refund Policy</a>
         </div>
         <div class="footer-col">
           <h4>Get In Touch</h4>
@@ -825,30 +853,109 @@
 
   </footer>
 
-  <!-- SHARED COMPONENTS -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <span class="cart-title">Your Cart 🛒</span>
-      <button class="cart-close" onclick="closeCart()">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none">
-      <div class="cart-total">
-        <span class="cart-total-label">Total Amount</span>
-        <span class="cart-total-amt" id="cartTotal">₹0</span>
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <span class="cart-title">Your Cart 🛒</span>
+        <button class="cart-close" onclick="closeCart()">✕</button>
       </div>
-      <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-        Order via WhatsApp
-      </button>
-      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer" id="cartFooter" style="display: none">
+        <div class="cart-total">
+          <span class="cart-total-label">Total Amount</span>
+          <span class="cart-total-amt" id="cartTotal">₹0</span>
+        </div>
+        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+          Order via WhatsApp
+        </button>
+        <p class="whatsapp-note">
+          You'll be redirected to WhatsApp to confirm your order
+        </p>
+      </div>
     </div>
-  </div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+  <!-- Animated Cursor -->
+<div id="bb-cursor"></div>
+<script>
+  /* =========================================
+   BROWNIE BLISS ANIMATED CURSOR
+
+const bbCursor = document.getElementById("bb-cursor");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let currentX = 0;
+let currentY = 0;
+
+/* Track Mouse */
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+/* Smooth Cursor Animation */
+
+function animateCursor() {
+  currentX += (mouseX - currentX) * 0.15;
+  currentY += (mouseY - currentY) * 0.15;
+
+  bbCursor.style.left = currentX + "px";
+  bbCursor.style.top = currentY + "px";
+
+  requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+
+/* Hover Effect */
+
+document.querySelectorAll(
+  "a, button, input, textarea, select, .hero-card, .review-card"
+).forEach((el) => {
+
+  el.addEventListener("mouseenter", () => {
+    bbCursor.classList.add("hover");
+  });
+
+  el.addEventListener("mouseleave", () => {
+    bbCursor.classList.remove("hover");
+  });
+
+});
+
+/* Scroll Animation */
+
+let scrollTimer;
+
+window.addEventListener("scroll", () => {
+
+  bbCursor.classList.add("scroll-glow");
+
+  clearTimeout(scrollTimer);
+
+  scrollTimer = setTimeout(() => {
+    bbCursor.classList.remove("scroll-glow");
+  }, 180);
+
+});
+
+/* Hide when mouse leaves window */
+
+document.addEventListener("mouseleave", () => {
+  bbCursor.style.opacity = "0";
+});
+
+document.addEventListener("mouseenter", () => {
+  bbCursor.style.opacity = "1";
+});
+</script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 
