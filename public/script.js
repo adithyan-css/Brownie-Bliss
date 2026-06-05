@@ -1705,6 +1705,57 @@ function fallbackCopyText(text) {
   }
 }
 
+/**
+ * =========================================================================
+ * BIRTHDAY & DESSERT SECTION SLIDER LOGIC
+ * =========================================================================
+ * This script manages the horizontal navigation for the artisanal treats slider.
+ * It coordinates native CSS snap-scrolling layout adjustments with dot indicators.
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sliderTrack = document.getElementById("birthday-slider");
+  const dots = document.querySelectorAll(".bday-dot");
+
+  if (!sliderTrack || dots.length === 0) return;
+
+  // --- 1. CLICK TO NAVIGATE ---
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      const slideWidth = sliderTrack.clientWidth;
+      
+      sliderTrack.scrollTo({
+        left: index * slideWidth,
+        behavior: "smooth"
+      });
+    });
+  });
+
+  /**
+   * 2. AUTOMATIC SCROLL STATE OBSERVER
+   * Listens to the user's manual swipes/scrolls and updates the dot highlights seamlessly.
+   */
+  let scrollTimeout;
+  sliderTrack.addEventListener("scroll", () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const slideWidth = sliderTrack.clientWidth;
+      if (slideWidth === 0) return;
+
+      const currentIndex = Math.round(sliderTrack.scrollLeft / slideWidth);
+
+      // Cleanly toggle active class without forcing inline CSS backgrounds
+      dots.forEach((dot, index) => {
+        if (index === currentIndex) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+    }, 50);
+  });
+});
+
 // --- GLOBAL BINDINGS ---
 window.openCart = openCart;
 window.closeCart = closeCart;

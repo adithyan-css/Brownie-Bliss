@@ -139,6 +139,23 @@ nav a::after {
   transition: transform 0.25s;
 }
 
+/* Base styling for all slider dots */
+.bday-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1.5px solid var(--gold); /* Keeps an explicit border visible at all times */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Filled state when a dot is selected */
+.bday-dot.active {
+  background-color: var(--gold) !important;
+  transform: scale(1.1); /* Subtle upscale to indicate focus selection */
+}
+
 nav a:hover::after {
   transform: scaleX(1);
 }
