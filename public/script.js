@@ -46,7 +46,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Velvet Dream Cake',
     category: 'cakes',
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/dutch_truffle.png',
     allergens: 'Contains milk, wheat, gluten',
     shelfLife: 'Best consumed within 3 days',
   },
@@ -55,7 +55,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Chocolate Brownie',
     category: 'brownies',
     price: 250,
-    img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c',
+    img: 'assets/classic_choco.png',
     allergens: 'Contains milk, wheat, gluten',
     shelfLife: 'Best consumed within 5 days',
   },
@@ -64,7 +64,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Chocolate Chip Cookie',
     category: 'cookies',
     price: 120,
-    img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e',
+    img: 'assets/choco_chip_cookies.png',
     allergens: 'Contains wheat, butter',
     shelfLife: 'Best consumed within 7 days',
   },
@@ -73,7 +73,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Tiramisu Dessert',
     category: 'desserts',
     price: 350,
-    img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9',
+    img: 'assets/tiramisu_jar.png',
     allergens: 'Contains milk, eggs',
     shelfLife: 'Best consumed within 2 days',
   }
@@ -82,7 +82,7 @@ const DEFAULT_PRODUCTS = [
 const DEFAULT_BDAY_CAKES = {
   'Red Velvet': {
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/dutch_truffle.png',
   },
 
   'Dutch Truffle': {
@@ -92,23 +92,23 @@ const DEFAULT_BDAY_CAKES = {
 
   'Pineapple': {
     price: 675,
-    img:  'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+    img:  'assets/dutch_truffle.png',
   },
 
   'Chocoholic': {
     price: 990,
-    img: 'https://theobroma.in/cdn/shop/files/ChocoholicCakehalfkg_400x400.jpg?v=1711125918',
+    img: 'assets/dutch_truffle.png',
   },
   
 
   'Black Forest': {
     price: 875,
-    img: 'https://theobroma.in/cdn/shop/files/BlackForestCake.jpg?v=1750341419',
+    img: 'assets/dutch_truffle.png',
   },
 
   'Cheesecake': {
     price: 1100,
-    img: 'https://theobroma.in/cdn/shop/files/FG0807_LotusBiscoffBentoCheesecake_300g_400x400.jpg?v=1770718506',
+    img: 'assets/dutch_truffle.png',
   },
 };
 
@@ -1074,7 +1074,7 @@ function addDessertToCart() {
     id: 'dessert-macarons',
     name: 'Assorted Macarons (Box of 4)',
     price: 350,
-    img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    img: 'assets/dutch_truffle.png',
     emoji: '🍮',
     category: 'desserts',
     qty: 1,
@@ -1088,7 +1088,7 @@ function addBrownieToCart() {
     id: 'brownie-overload',
     name: 'Overload Brownie (Pack of 4)',
     price: 250,
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+    img: 'assets/classic_choco.png',
     emoji: '🍫',
     category: 'brownies',
     qty: 1,
@@ -1102,7 +1102,7 @@ function addCookieToCart() {
     id: 'cookie-choco-chip',
     name: 'Choco Chip Cookies (Box of 6)',
     price: 250,
-    img: 'https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg',
+    img: 'assets/choco_chip_cookies.png',
     emoji: '🍪',
     category: 'cookies',
     qty: 1,
@@ -1796,10 +1796,45 @@ function initStarRatings() {
   });
 }
 
+function initProductCarousel() {
+  const slider = document.querySelector('.birthday-slider');
+  const dots = document.querySelectorAll('.slider-dot');
+
+  if (!slider || dots.length === 0) return;
+
+  // Handle dot clicks
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.getAttribute('data-index'), 10);
+      if (isNaN(index)) return;
+
+      const slideWidth = slider.clientWidth;
+      slider.scrollTo({
+        left: index * slideWidth,
+        behavior: 'smooth',
+      });
+    });
+  });
+
+  // Handle scroll events to update dot state
+  slider.addEventListener('scroll', () => {
+    const slideWidth = slider.clientWidth;
+    if (slideWidth <= 0) return;
+
+    // Calculate which slide index is closest to current scroll position
+    const index = Math.round(slider.scrollLeft / slideWidth);
+
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === index);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateFavouritesCount();
   renderFavouritesPage();
   updateFavouriteButtons('bakeries', BROWNIE_BLISS_BAKERY.id);
+  initProductCarousel();
 });
 
 // ── Floating WhatsApp Quick-Order Button ──
