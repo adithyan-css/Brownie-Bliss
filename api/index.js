@@ -7,6 +7,7 @@ const serverless = require('serverless-http');
 
 const { connectDB } = require('./config/db');
 const adminRoutes = require('./routes/adminRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
 const otpRoutes = require('./routes/otpRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -69,6 +70,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', otpRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/checkout', checkoutRoutes);
 app.get('/api/stats', adminAuth, getStats);
 
 // ─── STATIC FALLBACK ────────────────────────────────────────────────────────────

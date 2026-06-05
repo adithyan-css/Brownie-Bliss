@@ -7,6 +7,7 @@ const {
   isValidEmail,
   normalizeEmail,
 } = require('../email/mailer');
+const CheckoutRecovery = require('../models/CheckoutRecovery');
 
 const memoryOrders = [];
 const orderLocks = new Set();
@@ -260,6 +261,22 @@ async function createOrder(req, res) {
         message: 'Missing delivery or contact details',
       });
     }
+    
+    // Recovery token handling
+    const { recovery_token } = req.body;
+    let recoverySession = null;
+    if (recovery_token) {
+      recoverySession = await CheckoutRecovery.findOne({ recovery_token });
+      if (!recoverySession) {
+        return res.status(400).json({ success: false, message: 'Invalid recovery token' });
+      }
+      if (recoverySession.status === 'completed' && recoverySession.order_id) {
+        // Order already completed for this session
+        return res.json({ success: true, order_id: recoverySession.order_id, message: 'Order already completed (idempotent)' });
+      }
+      // If pending, proceed with order creation using provided payload
+    }
+    
     if (!Array.isArray(items) || items.length === 0) {
       return res
         .status(400)
@@ -447,6 +464,14 @@ async function createOrder(req, res) {
       }
 
       const order = await Order.create(orderDoc);
+
+      // Update recovery session if present
+      if (recoverySession) {
+        recoverySession.status = 'completed';
+        recoverySession.order_id = order.order_id;
+        await recoverySession.save();
+      }
+
       res.json({
         success: true,
         order_id: order.order_id,
