@@ -1,15 +1,8 @@
 const express = require('express');
-
-const rateLimit = require('express-rate-limit');
-
 const router = express.Router();
-
 const adminAuth = require('../../middlewares/adminAuth');
-
 const validate = require('../middlewares/validate');
-
 const orderSchema = require('../validators/orderValidator');
-
 const {
   createOrder,
   getAllOrders,
@@ -18,57 +11,21 @@ const {
   updateOrderStatus,
   getStats,
 } = require('../controllers/orderController');
+const { orderCreateLimiter, orderReadLimiter } = require('../services/rateLimiters');
 
-const orderCreationRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+// ─── Order creation: 10 orders / 15 min ─────────────────────────────────────
+router.post('/', orderCreateLimiter, validate(orderSchema), createOrder);
 
-  max: 10,
+// ─── Admin-only order listing (protected, no public rate limit needed) ───────
+router.get('/', adminAuth, getAllOrders);
+router.get('/stats', adminAuth, getStats);
 
-  standardHeaders: true,
+// ─── Public order lookup: 120 reads / 15 min ────────────────────────────────
+router.get('/:orderId', orderReadLimiter, getOrder);
 
-  legacyHeaders: false,
-
-  message: {
-    success: false,
-    message:
-      'Too many order requests from this IP, please try again after 15 minutes',
-  },
-});
-
-router.post(
-  '/',
-  orderCreationRateLimiter,
-  validate(orderSchema),
-  createOrder
-);
-
-router.get(
-  '/',
-  adminAuth,
-  getAllOrders
-);
-
-router.get(
-  '/stats',
-  adminAuth,
-  getStats
-);
-
-router.get(
-  '/:orderId',
-  getOrder
-);
-
-router.patch(
-  '/:orderId/confirm-payment',
-  adminAuth,
-  confirmPayment
-);
-
-router.patch(
-  '/:orderId/status',
-  adminAuth,
-  updateOrderStatus
-);
+// ─── Admin-only order mutations ──────────────────────────────────────────────
+router.patch('/:orderId/confirm-payment', adminAuth, confirmPayment);
+router.patch('/:orderId/status', adminAuth, updateOrderStatus);
 
 module.exports = router;
+
