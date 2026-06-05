@@ -8,6 +8,7 @@ const {
 } = require('../email/mailer');
 
 const memoryOrders = [];
+const orderLocks = new Set();
 
 const ALLOWED_ORDER_STATUSES = [
   'pending',
@@ -283,6 +284,7 @@ async function createOrder(req, res) {
     let serverTotal = 0;
 
     for (const item of items) {
+      const qtyRaw = Number(item.qty);
       if (!Number.isFinite(qtyRaw) || qtyRaw <= 0 || qtyRaw > 999) {
         return res.status(400).json({
           success: false,
@@ -325,66 +327,76 @@ async function createOrder(req, res) {
         ? Math.round(clientTotal * 100) / 100
         : Math.round(computedTotal * 100) / 100;
 
-    // ── DUPLICATE PROTECTION ────────────────────────────────────────────────────
-    const duplicateWindowMs = 2 * 60 * 1000;
-    if (isDbReady()) {
-      const duplicate = await Order.findOne({
-        phone: phoneDigits.slice(0, 15),
-        total: finalTotal,
-        created_at: { $gt: new Date(Date.now() - duplicateWindowMs) }
-      });
-      if (duplicate) {
-        return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
-      }
-    } else {
-      const duplicate = memoryOrders.find(o => 
-        o.phone === phoneDigits.slice(0, 15) && 
-        o.total === finalTotal && 
-        new Date(o.created_at).getTime() > Date.now() - duplicateWindowMs
-      );
-      if (duplicate) {
-        return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
-      }
+    const lockKey = `${phoneDigits.slice(0, 15)}_${finalTotal}`;
+    if (orderLocks.has(lockKey)) {
+      return res.status(409).json({ success: false, message: 'Your order is currently being processed. Please wait.' });
     }
+    
+    orderLocks.add(lockKey);
+    try {
+      // ── DUPLICATE PROTECTION ────────────────────────────────────────────────────
+      const duplicateWindowMs = 2 * 60 * 1000;
+      if (isDbReady()) {
+        const duplicate = await Order.findOne({
+          phone: phoneDigits.slice(0, 15),
+          total: finalTotal,
+          created_at: { $gt: new Date(Date.now() - duplicateWindowMs) }
+        });
+        if (duplicate) {
+          return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
+        }
+      } else {
+        const duplicate = memoryOrders.find(o => 
+          o.phone === phoneDigits.slice(0, 15) && 
+          o.total === finalTotal && 
+          new Date(o.created_at).getTime() > Date.now() - duplicateWindowMs
+        );
+        if (duplicate) {
+          return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
+        }
+      }
 
-    const order_id = generateOrderId();
-    const orderDoc = {
-      order_id,
-      customer_name: sanitizedCustomerName,
-      email: customerEmail,
-      phone: phoneDigits.slice(0, 15),
-      address: sanitizedAddress,
-      city: sanitizedCity,
-      pincode: sanitizedPincode,
-      items: verifiedItems,
-      total: finalTotal,
-    };
-
-    if (!isDbReady()) {
-      const now = new Date();
-      memoryOrders.unshift({
-        ...orderDoc,
-        status: 'pending',
-        payment_status: 'unpaid',
-        notes: '',
-        confirmed_at: null,
-        created_at: now,
-        updated_at: now,
-      });
-      return res.json({
-        success: true,
+      const order_id = generateOrderId();
+      const orderDoc = {
         order_id,
-        message:
-          'Order placed successfully (memory mode — add MONGO_URI to persist orders in MongoDB).',
-      });
-    }
+        customer_name: sanitizedCustomerName,
+        email: customerEmail,
+        phone: phoneDigits.slice(0, 15),
+        address: sanitizedAddress,
+        city: sanitizedCity,
+        pincode: sanitizedPincode,
+        items: verifiedItems,
+        total: finalTotal,
+      };
 
-    const order = await Order.create(orderDoc);
-    res.json({
-      success: true,
-      order_id: order.order_id,
-      message: 'Order placed successfully',
-    });
+      if (!isDbReady()) {
+        const now = new Date();
+        memoryOrders.unshift({
+          ...orderDoc,
+          status: 'pending',
+          payment_status: 'unpaid',
+          notes: '',
+          confirmed_at: null,
+          created_at: now,
+          updated_at: now,
+        });
+        return res.json({
+          success: true,
+          order_id,
+          message:
+            'Order placed successfully (memory mode — add MONGO_URI to persist orders in MongoDB).',
+        });
+      }
+
+      const order = await Order.create(orderDoc);
+      res.json({
+        success: true,
+        order_id: order.order_id,
+        message: 'Order placed successfully',
+      });
+    } finally {
+      orderLocks.delete(lockKey);
+    }
   } catch (err) {
     console.error(err);
     res

@@ -18,9 +18,13 @@ jest.mock('mongoose', () => {
 });
 
 // Mock models
-jest.mock('../models/Product', () => {
+jest.mock('../api/models/Product', () => {
   return {
+    seedProducts: jest.fn().mockResolvedValue(),
     countDocuments: jest.fn().mockResolvedValue(10),
+    findOne: jest.fn().mockReturnValue({
+      lean: jest.fn().mockResolvedValue({ id_ref: 1, name: "Velvet Dream Cake", price: 850, category: 'cakes', emoji: '🎂' })
+    }),
     find: jest.fn().mockReturnValue({
       lean: jest.fn().mockResolvedValue([
         { id_ref: 1, name: "Velvet Dream Cake", price: 850 }
@@ -29,10 +33,29 @@ jest.mock('../models/Product', () => {
   };
 });
 
-jest.mock('../models/Otp', () => {
+jest.mock('../api/models/Otp', () => {
   return {
     updateMany: jest.fn().mockResolvedValue({}),
     create: jest.fn().mockResolvedValue({})
+  };
+});
+
+// We need a slight delay in findOne to simulate DB race conditions, but Jest might run it fast.
+jest.mock('../api/models/Order', () => {
+  const mockOrders = [];
+  return {
+    findOne: jest.fn().mockImplementation(async (query) => {
+      // Simulate small DB latency to widen the race condition window
+      await new Promise(r => setTimeout(r, 10));
+      return mockOrders.find(o => o.phone === query.phone && o.total === query.total);
+    }),
+    create: jest.fn().mockImplementation(async (doc) => {
+      await new Promise(r => setTimeout(r, 10));
+      mockOrders.push(doc);
+      return doc;
+    }),
+    countDocuments: jest.fn().mockResolvedValue(0),
+    find: jest.fn().mockReturnValue({ lean: jest.fn().mockResolvedValue([]) })
   };
 });
 
@@ -41,6 +64,7 @@ process.env.ADMIN_USERNAME = 'admin';
 process.env.ADMIN_PASSWORD = 'secure_password_test';
 process.env.ADMIN_JWT_SECRET = 'secret_test_key_123';
 process.env.NODE_ENV = 'test';
+process.env.MONGO_URI = 'mongodb://mock';
 
 // Load the express app
 const app = require('../api/index');
@@ -90,6 +114,50 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
       const res = await request(app).get('/api/products');
       expect(res.headers).toHaveProperty('x-content-type-options');
       expect(res.headers['x-content-type-options']).toBe('nosniff');
+    });
+  });
+
+  describe('POST /api/orders Concurrent Protection', () => {
+    const validOrderPayload = {
+      customer_name: "Test User",
+      phone: "9876543210",
+      address: "123 Test St",
+      city: "Test City",
+      pincode: "123456",
+      items: [
+        { id: 1, name: "Velvet Dream Cake", price: 850, qty: 1 }
+      ],
+      total: 850
+    };
+
+    it('should prevent race condition duplicate orders (concurrent requests)', async () => {
+      // Fire 3 identical requests at the exact same time
+      const requests = [
+        request(app).post('/api/orders').send(validOrderPayload),
+        request(app).post('/api/orders').send(validOrderPayload),
+        request(app).post('/api/orders').send(validOrderPayload)
+      ];
+
+      const responses = await Promise.all(requests);
+      
+      const successes = responses.filter(r => r.status === 200 && r.body.success === true);
+      const conflicts = responses.filter(r => r.status === 409);
+
+      // Only exactly ONE should succeed, others should be blocked by the mutex lock
+      expect(successes.length).toBe(1);
+      expect(conflicts.length).toBe(2);
+      expect(conflicts[0].body.message).toContain('currently being processed');
+    });
+
+    it('should prevent duplicate payload sequential submission (2-min window)', async () => {
+      // First request (already created in previous test, but let's assume it's in DB mock)
+      // Since our mock order persists in `mockOrders` array from previous test:
+      const res = await request(app)
+        .post('/api/orders')
+        .send(validOrderPayload)
+        .expect(409);
+
+      expect(res.body.message).toContain('Duplicate order detected');
     });
   });
 });
