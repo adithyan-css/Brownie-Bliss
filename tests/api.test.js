@@ -55,7 +55,13 @@ jest.mock('../api/models/Order', () => {
       return doc;
     }),
     countDocuments: jest.fn().mockResolvedValue(0),
-    find: jest.fn().mockReturnValue({ lean: jest.fn().mockResolvedValue([]) })
+    find: jest.fn().mockReturnValue({ lean: jest.fn().mockResolvedValue([]) }),
+    aggregate: jest.fn().mockResolvedValue([{
+      total_orders:   [{ count: 42 }],
+      pending_orders: [{ count: 10 }],
+      paid_orders:    [{ count: 30 }],
+      total_revenue:  [{ total: 95000 }],
+    }])
   };
 });
 
@@ -158,6 +164,28 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
         .expect(409);
 
       expect(res.body.message).toContain('Duplicate order detected');
+    });
+  });
+
+  describe('GET /api/admin/stats (Database Optimization)', () => {
+    it('should return stats from a single $facet aggregation pipeline', async () => {
+      const jwt = require('jsonwebtoken');
+      const token = jwt.sign({ username: 'admin' }, process.env.ADMIN_JWT_SECRET, { algorithm: 'HS256' });
+
+      const res = await request(app)
+        .get('/api/orders/stats')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      expect(res.body.success).toBe(true);
+      expect(res.body.stats).toHaveProperty('total_orders', 42);
+      expect(res.body.stats).toHaveProperty('pending_orders', 10);
+      expect(res.body.stats).toHaveProperty('paid_orders', 30);
+      expect(res.body.stats).toHaveProperty('total_revenue', 95000);
+
+      // Verify aggregate was called exactly ONCE (single $facet pipeline)
+      const Order = require('../api/models/Order');
+      expect(Order.aggregate).toHaveBeenCalledTimes(1);
     });
   });
 });

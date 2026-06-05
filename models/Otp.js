@@ -11,4 +11,7 @@ const otpSchema = new mongoose.Schema({
 // Auto-delete OTP documents after they expire (TTL index)
 otpSchema.index({ expires_at: 1 }, { expireAfterSeconds: 0 });
 
+// Fast OTP lookup by phone, most-recent first
+otpSchema.index({ phone: 1, created_at: -1 });
+
 module.exports = mongoose.model('Otp', otpSchema);

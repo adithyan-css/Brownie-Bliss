@@ -635,29 +635,28 @@ async function getStats(req, res) {
       });
     }
 
-    const facetResult = await Order.aggregate([
+    // Single $facet pipeline replaces 4 separate DB round-trips
+    const [facetResult] = await Order.aggregate([
       {
         $facet: {
-          totalOrders: [{ $count: 'count' }],
-          pendingOrders: [{ $match: { status: 'pending' } }, { $count: 'count' }],
-          paidOrders: [{ $match: { payment_status: 'paid' } }, { $count: 'count' }],
-          revenue: [
+          total_orders: [{ $count: 'count' }],
+          pending_orders: [{ $match: { status: 'pending' } }, { $count: 'count' }],
+          paid_orders: [{ $match: { payment_status: 'paid' } }, { $count: 'count' }],
+          total_revenue: [
             { $match: { payment_status: 'paid' } },
-            { $group: { _id: null, total: { $sum: '$total' } } }
-          ]
-        }
-      }
+            { $group: { _id: null, total: { $sum: '$total' } } },
+          ],
+        },
+      },
     ]);
-
-    const statsData = facetResult[0];
 
     res.json({
       success: true,
       stats: {
-        total_orders: statsData.totalOrders[0]?.count || 0,
-        pending_orders: statsData.pendingOrders[0]?.count || 0,
-        paid_orders: statsData.paidOrders[0]?.count || 0,
-        total_revenue: statsData.revenue[0]?.total || 0,
+        total_orders:   facetResult.total_orders[0]?.count   || 0,
+        pending_orders: facetResult.pending_orders[0]?.count || 0,
+        paid_orders:    facetResult.paid_orders[0]?.count    || 0,
+        total_revenue:  facetResult.total_revenue[0]?.total  || 0,
       },
     });
   } catch (err) {

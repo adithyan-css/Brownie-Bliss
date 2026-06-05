@@ -34,10 +34,4 @@ const orderSchema = new mongoose.Schema({
   confirmed_at: { type: Date, default: null },
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
-orderSchema.index({ created_at: -1 });
-orderSchema.index({ phone: 1, total: 1, created_at: -1 });
-orderSchema.index({ status: 1 });
-orderSchema.index({ payment_status: 1 });
-orderSchema.index({ phone: 1 });
-
 module.exports = mongoose.model('Order', orderSchema);
