@@ -283,6 +283,7 @@ async function createOrder(req, res) {
     let serverTotal = 0;
 
     for (const item of items) {
+      const qtyRaw = item.qty;
       if (!Number.isFinite(qtyRaw) || qtyRaw <= 0 || qtyRaw > 999) {
         return res.status(400).json({
           success: false,
