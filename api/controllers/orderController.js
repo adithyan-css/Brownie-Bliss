@@ -344,6 +344,14 @@ async function createOrder(req, res) {
           created_at: { $gt: new Date(Date.now() - duplicateWindowMs) }
         });
         if (duplicate) {
+          const metrics = require('../services/metricsService');
+          metrics.trackEvent({
+            event_type: 'order_failure',
+            severity: 'low',
+            description: 'Duplicate order creation blocked (DB)',
+            ip: req.ip || null,
+            metadata: { phone: phoneDigits.slice(0, 15), total: finalTotal }
+          });
           return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
         }
       } else {
@@ -353,6 +361,14 @@ async function createOrder(req, res) {
           new Date(o.created_at).getTime() > Date.now() - duplicateWindowMs
         );
         if (duplicate) {
+          const metrics = require('../services/metricsService');
+          metrics.trackEvent({
+            event_type: 'order_failure',
+            severity: 'low',
+            description: 'Duplicate order creation blocked (Memory)',
+            ip: req.ip || null,
+            metadata: { phone: phoneDigits.slice(0, 15), total: finalTotal }
+          });
           return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
         }
       }
@@ -370,8 +386,35 @@ async function createOrder(req, res) {
         total: finalTotal,
       };
 
+      // ── SUSPICIOUS ACTIVITY CHECKS ──────────────────────────────────────────────
+      const metrics = require('../services/metricsService');
+      
+      if (finalTotal > 5000) {
+        metrics.trackEvent({
+          event_type: 'suspicious_order',
+          severity: 'high',
+          description: `High value order detected: ₹${finalTotal}`,
+          ip: req.ip || null,
+          metadata: { phone: phoneDigits.slice(0, 15), total: finalTotal, order_id }
+        });
+      }
+
       if (!isDbReady()) {
         const now = new Date();
+        const memoryCount = memoryOrders.filter(o => 
+          o.phone === phoneDigits.slice(0, 15) && 
+          new Date(o.created_at).getTime() > Date.now() - 24 * 60 * 60 * 1000
+        ).length;
+        if (memoryCount >= 3) {
+          metrics.trackEvent({
+            event_type: 'suspicious_order',
+            severity: 'medium',
+            description: `Multiple orders from same phone number (memory): ${memoryCount + 1} in 24 hours`,
+            ip: req.ip || null,
+            metadata: { phone: phoneDigits.slice(0, 15), total: finalTotal, order_id }
+          });
+        }
+
         memoryOrders.unshift({
           ...orderDoc,
           status: 'pending',
@@ -389,6 +432,20 @@ async function createOrder(req, res) {
         });
       }
 
+      const orderCount = await Order.countDocuments({
+        phone: phoneDigits.slice(0, 15),
+        created_at: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) }
+      });
+      if (orderCount >= 3) {
+        metrics.trackEvent({
+          event_type: 'suspicious_order',
+          severity: 'medium',
+          description: `Multiple orders from same phone number: ${orderCount + 1} in 24 hours`,
+          ip: req.ip || null,
+          metadata: { phone: phoneDigits.slice(0, 15), total: finalTotal, order_id }
+        });
+      }
+
       const order = await Order.create(orderDoc);
       res.json({
         success: true,
@@ -400,6 +457,14 @@ async function createOrder(req, res) {
     }
   } catch (err) {
     console.error(err);
+    const metrics = require('../services/metricsService');
+    metrics.trackEvent({
+      event_type: 'order_failure',
+      severity: 'high',
+      description: `Order creation failed: ${err.message}`,
+      ip: req.ip || null,
+      metadata: { error: err.message, stack: err.stack }
+    });
     res
       .status(500)
       .json({ success: false, message: err.message || 'Server error' });

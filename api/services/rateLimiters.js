@@ -28,6 +28,22 @@ function makeHandler(message, auditAction) {
         ip: req.ip || null,
       });
     }
+
+    const metrics = require('./metricsService');
+    metrics.trackEvent({
+      event_type: 'rate_limit_violation',
+      severity: 'low',
+      description: `Rate limit exceeded on path: ${req.path}`,
+      ip: req.ip || null,
+      metadata: {
+        path: req.path,
+        method: req.method,
+        max: options.max,
+        windowMs: options.windowMs,
+        actor: String(req.body?.username || req.body?.phone || 'unknown').slice(0, 120),
+      }
+    });
+
     res.status(429).json({ success: false, message });
   };
 }

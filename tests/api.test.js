@@ -83,6 +83,56 @@ jest.mock('../api/models/Order', () => {
   };
 });
 
+// Mock SecurityEvent and ApiMetric models
+const mockSecurityEvents = [];
+const mockApiMetrics = [];
+
+jest.mock('../api/models/SecurityEvent', () => {
+  return {
+    create: jest.fn().mockImplementation(async (doc) => {
+      mockSecurityEvents.push(doc);
+      return doc;
+    }),
+    find: jest.fn().mockReturnValue({
+      sort: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      lean: jest.fn().mockImplementation(() => {
+        return Promise.resolve(mockSecurityEvents);
+      })
+    }),
+    aggregate: jest.fn().mockImplementation(async (pipeline) => {
+      const groups = {};
+      mockSecurityEvents.forEach(evt => {
+        groups[evt.event_type] = (groups[evt.event_type] || 0) + 1;
+      });
+      return Object.entries(groups).map(([_id, count]) => ({ _id, count }));
+    })
+  };
+});
+
+jest.mock('../api/models/ApiMetric', () => {
+  return {
+    create: jest.fn().mockImplementation(async (doc) => {
+      mockApiMetrics.push(doc);
+      return doc;
+    }),
+    aggregate: jest.fn().mockImplementation(async (pipeline) => {
+      return [
+        {
+          path: '/api/products',
+          method: 'GET',
+          avgDuration: 25.5,
+          maxDuration: 50,
+          minDuration: 10,
+          requestCount: mockApiMetrics.length || 1,
+          errorCount: 0,
+          errorRate: 0
+        }
+      ];
+    })
+  };
+});
+
 // Initialize environment variables for testing before loading the app
 process.env.ADMIN_USERNAME = 'admin';
 process.env.ADMIN_PASSWORD = 'secure_password_test';
@@ -430,5 +480,122 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
       delete process.env.EMAIL_MAX_RETRIES;
       _resetTransport();
     }, 10000);
+  });
+
+  describe('Security Monitoring & Operational Metrics', () => {
+    const metricsService = require('../api/services/metricsService');
+
+    beforeEach(() => {
+      mockSecurityEvents.length = 0;
+      mockApiMetrics.length = 0;
+    });
+
+    it('should track security events correctly', async () => {
+      await metricsService.trackEvent({
+        event_type: 'otp_abuse',
+        severity: 'medium',
+        description: 'Test OTP cooldown hit',
+        ip: '127.0.0.1',
+        metadata: { phone: '1234567890' }
+      });
+
+      expect(mockSecurityEvents.length).toBe(1);
+      expect(mockSecurityEvents[0].event_type).toBe('otp_abuse');
+      expect(mockSecurityEvents[0].severity).toBe('medium');
+      expect(mockSecurityEvents[0].description).toBe('Test OTP cooldown hit');
+    });
+
+    it('should track API latency metrics correctly', async () => {
+      await metricsService.trackApiPerformance('/api/products', 'GET', 200, 15.5);
+
+      expect(mockApiMetrics.length).toBe(1);
+      expect(mockApiMetrics[0].path).toBe('/api/products');
+      expect(mockApiMetrics[0].duration).toBe(15.5);
+    });
+
+    it('should record a security event on failed login attempt', async () => {
+      const initialCount = mockSecurityEvents.length;
+
+      await request(app)
+        .post('/api/admin/login')
+        .send({ username: 'admin', password: 'wrong_password' })
+        .expect(401);
+
+      const failedLoginEvents = mockSecurityEvents.filter(e => e.event_type === 'failed_login');
+      expect(failedLoginEvents.length).toBeGreaterThan(initialCount);
+      expect(failedLoginEvents[0].metadata.username).toBe('admin');
+    });
+
+    it('should track email delivery failures', async () => {
+      const { sendOrderReceiptEmail, _resetTransport } = require('../api/email/mailer');
+      const initialCount = mockSecurityEvents.length;
+
+      // Force email failure
+      process.env.SMTP_HOST = '127.0.0.1';
+      process.env.SMTP_USER = 'test@test.com';
+      process.env.SMTP_PASS = 'pass';
+      process.env.EMAIL_MAX_RETRIES = '0';
+      _resetTransport();
+
+      await sendOrderReceiptEmail({
+        order_id: 'BB-TEST-002',
+        customer_name: 'John Doe',
+        phone: '1234567890',
+        address: '123 Main St',
+        city: 'Mumbai',
+        pincode: '400001',
+        items: [{ id: 1, name: 'Velvet Dream Cake', price: 850, qty: 1 }],
+        total: 850,
+        email: 'john@example.com'
+      });
+
+      const emailFailEvents = mockSecurityEvents.filter(e => e.event_type === 'email_delivery_failure');
+      expect(emailFailEvents.length).toBeGreaterThan(initialCount);
+      expect(emailFailEvents[0].metadata.order_id).toBe('BB-TEST-002');
+
+      // Cleanup SMTP env
+      delete process.env.SMTP_HOST;
+      delete process.env.SMTP_USER;
+      delete process.env.SMTP_PASS;
+      delete process.env.EMAIL_MAX_RETRIES;
+      _resetTransport();
+    }, 10000);
+
+    it('GET /api/admin/monitoring/dashboard should block unauthenticated requests', async () => {
+      await request(app)
+        .get('/api/admin/monitoring/dashboard')
+        .expect(401);
+    });
+
+    it('GET /api/admin/monitoring/dashboard should return dashboard stats for authenticated admin', async () => {
+      // Seed some mock data
+      await metricsService.trackEvent({ event_type: 'failed_login', severity: 'medium', description: 'Failed login' });
+      await metricsService.trackEvent({ event_type: 'rate_limit_violation', severity: 'low', description: 'Rate limit hit' });
+      await metricsService.trackApiPerformance('/api/products', 'GET', 200, 20.5);
+
+      const jwt = require('jsonwebtoken');
+      const token = jwt.sign({ username: 'admin' }, process.env.ADMIN_JWT_SECRET, { algorithm: 'HS256' });
+
+      const res = await request(app)
+        .get('/api/admin/monitoring/dashboard')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      expect(res.body.success).toBe(true);
+      expect(res.body).toHaveProperty('failedLoginsCount');
+      expect(res.body).toHaveProperty('rateLimitViolationCount');
+      expect(res.body).toHaveProperty('otpAbuseCount');
+      expect(res.body).toHaveProperty('orderFailureCount');
+      expect(res.body).toHaveProperty('emailFailureCount');
+      expect(res.body).toHaveProperty('systemHealth');
+      expect(res.body).toHaveProperty('recentSecurityEvents');
+      expect(res.body).toHaveProperty('apiPerformanceStats');
+      
+      expect(res.body.failedLoginsCount).toBe(1);
+      expect(res.body.rateLimitViolationCount).toBe(1);
+      expect(res.body.systemHealth.database).toBe('connected');
+      expect(res.body.recentSecurityEvents.length).toBeGreaterThan(0);
+      expect(res.body.apiPerformanceStats.length).toBeGreaterThan(0);
+    });
   });
 });

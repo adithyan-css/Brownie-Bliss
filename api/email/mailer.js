@@ -164,6 +164,14 @@ async function sendOrderReceiptEmail(order) {
       `[email] Failed to send receipt for ${order.order_id} after ${attempts} attempt(s):`,
       sendErr.message
     );
+    const metrics = require('../services/metricsService');
+    metrics.trackEvent({
+      event_type: 'email_delivery_failure',
+      severity: 'medium',
+      description: `Failed to send receipt email for order: ${order.order_id}`,
+      ip: null,
+      metadata: { order_id: order.order_id, to, error: sendErr.message, attempts }
+    });
     return { sent: false, error: sendErr.message, attempts };
   }
 }

@@ -16,6 +16,14 @@ async function sendOtp(req, res) {
     // DB-level rate limiting: prevent generating an OTP if one was created in the last 1 minute
     const recentOtp = await Otp.findOne({ phone, created_at: { $gt: new Date(Date.now() - 60 * 1000) } });
     if (recentOtp) {
+      const metrics = require('../services/metricsService');
+      metrics.trackEvent({
+        event_type: 'otp_abuse',
+        severity: 'medium',
+        description: `OTP request cooldown active for phone: ${phone}`,
+        ip: req.ip || null,
+        metadata: { phone }
+      });
       return res.status(429).json({ success: false, message: 'Please wait before requesting a new OTP' });
     }
 
@@ -67,12 +75,28 @@ async function verifyOtp(req, res) {
     if (record.attempts >= 3) {
       record.used = true; // invalidate it
       await record.save();
+      const metrics = require('../services/metricsService');
+      metrics.trackEvent({
+        event_type: 'otp_abuse',
+        severity: 'medium',
+        description: `OTP verification attempts exhausted for phone: ${phone}`,
+        ip: req.ip || null,
+        metadata: { phone, attempts: record.attempts }
+      });
       return res.status(429).json({ success: false, message: 'Too many failed attempts, please request a new OTP' });
     }
 
     if (record.otp !== otp) {
       record.attempts += 1;
       await record.save();
+      const metrics = require('../services/metricsService');
+      metrics.trackEvent({
+        event_type: 'otp_abuse',
+        severity: 'low',
+        description: `Invalid OTP verification attempt for phone: ${phone}`,
+        ip: req.ip || null,
+        metadata: { phone, attempt: record.attempts }
+      });
       return res.status(400).json({ success: false, message: 'Invalid OTP' });
     }
 

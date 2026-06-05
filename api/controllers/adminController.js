@@ -34,6 +34,14 @@ function login(req, res) {
       metadata: { reason: 'invalid_credentials' },
       ip: req.ip || null,
     });
+    const metrics = require('../services/metricsService');
+    metrics.trackEvent({
+      event_type: 'failed_login',
+      severity: 'medium',
+      description: `Failed admin login attempt for user: ${username || 'unknown'}`,
+      ip: req.ip || null,
+      metadata: { username: String(username || 'unknown').slice(0, 120) }
+    });
     return res.status(401).json({ success: false, message: 'Invalid credentials' });
   }
 
