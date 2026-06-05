@@ -10289,6 +10289,7 @@ html.dark .topping-price {
 /* Birthday Slider */
 .birthday-slider::-webkit-scrollbar {
   display: none;
+}
 .price-filter {
   display: flex;
   align-items: center;
@@ -10409,7 +10410,7 @@ html.dark .topping-price {
   color: #5c372c !important;
 }
 
-} 
+
 /* ===== Reviews Section ===== */
 
 .bb-reviews {
@@ -10600,7 +10601,7 @@ html.dark .topping-price {
   color: white;
 }
 /* =========================================
-   BROWNIE BLISS GLOW CURSOR
+   BROWNIE BLISS GLOW CURSOR */
 
 #bb-cursor {
   position: fixed;
@@ -11474,4 +11475,21 @@ html.dark .copy-btn:hover {
     width: 24px;
     height: 24px;
   }
+}
+
+/* Birthday Slider Navigation Dots */
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cream-dark);
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.slider-dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.2);
 }

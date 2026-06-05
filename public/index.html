@@ -110,7 +110,7 @@
 
         <div class="hero-card">
 
-          <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Cake">
+          <img src="assets/dutch_truffle.png" alt="Red Velvet Cake">
 
           <div class="hero-card-label">
             🎂 Signature Cakes
@@ -120,7 +120,7 @@
 
         <div class="hero-card">
 
-          <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownies">
+          <img src="assets/dutch_truffle.png" alt="Brownies">
 
           <div class="hero-card-label">
             🍫 Brownies
@@ -130,7 +130,7 @@
 
         <div class="hero-card">
 
-          <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
+          <img src="assets/dutch_truffle.png" alt="Desserts">
 
           <div class="hero-card-label">
             🍮 Desserts
@@ -241,11 +241,10 @@
     style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
 
     <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; box-sizing: border-box; scroll-snap-align: start; padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
-          <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
+            <img id="birthdayCakeImg" src="assets/dutch_truffle.png"
             alt="Birthday Cake"
             style="width: 100%; height: clamp(250px, 50vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
         </div>
@@ -344,11 +343,10 @@
     </div>
 
     <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; box-sizing: border-box; scroll-snap-align: start; padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
-          <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
+            <img id="dessertImg" src="assets/dutch_truffle.png" alt="Desserts"
             style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
         </div>
         <div class="birthday-card"
@@ -423,11 +421,10 @@
     </div>
 
     <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; box-sizing: border-box; scroll-snap-align: start; padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
-          <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
+            <img id="brownieImg" src="assets/dutch_truffle.png"
             alt="Brownies"
             style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
         </div>
@@ -505,13 +502,12 @@
     </div>
 
     <!-- SLIDE 4: COOKIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; box-sizing: border-box; scroll-snap-align: start; padding: 0 30px;">
       <div
         style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
         <div class="birthday-visual">
-          <img id="cookieImg"
-            src="https://www.shugarysweets.com/wp-content/uploads/2020/05/chocolate-chip-cookies-recipe.jpg"
+            <img id="cookieImg"
+            src="assets/dutch_truffle.png"
             alt="Cookies"
             style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
         </div>
@@ -580,17 +576,11 @@
   </div>
 
   <!-- Slider Navigation Dots -->
-  <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
-    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
+  <div class="slider-dots-container" style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+    <div class="slider-dot active" data-index="0"></div>
+    <div class="slider-dot" data-index="1"></div>
+    <div class="slider-dot" data-index="2"></div>
+    <div class="slider-dot" data-index="3"></div>
   </div>
 
   </section>
@@ -883,7 +873,7 @@
 <div id="bb-cursor"></div>
 <script>
   /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
+   BROWNIE BLISS ANIMATED CURSOR */
 
 const bbCursor = document.getElementById("bb-cursor");
 
