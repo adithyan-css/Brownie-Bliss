@@ -11,6 +11,8 @@ const productSchema = new mongoose.Schema({
   description: { type: String, default: '' },
 });
 
+productSchema.index({ type: 1, id_ref: 1 });
+
 const Product = mongoose.model('Product', productSchema);
 
 async function seedProducts() {
