@@ -67,7 +67,12 @@ app.get('*', (req, res) => {
 // ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.status(err.status || 500).json({ 
+    success: false, 
+    message: err.message || 'Something went wrong!',
+    ...( !isProduction && { stack: err.stack } )
+  });
 });
 
 // ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
@@ -88,7 +93,7 @@ function startServer(port) {
   });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
   startServer(PORT);
 }
 
