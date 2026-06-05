@@ -18,9 +18,13 @@ jest.mock('mongoose', () => {
 });
 
 // Mock models
-jest.mock('../models/Product', () => {
+jest.mock('../api/models/Product', () => {
   return {
+    seedProducts: jest.fn().mockResolvedValue(),
     countDocuments: jest.fn().mockResolvedValue(10),
+    findOne: jest.fn().mockReturnValue({
+      lean: jest.fn().mockResolvedValue({ id_ref: 1, name: "Velvet Dream Cake", price: 850, category: 'cakes', emoji: '🎂' })
+    }),
     find: jest.fn().mockReturnValue({
       lean: jest.fn().mockResolvedValue([
         { id_ref: 1, name: "Velvet Dream Cake", price: 850 }
@@ -29,10 +33,53 @@ jest.mock('../models/Product', () => {
   };
 });
 
-jest.mock('../models/Otp', () => {
+jest.mock('../api/models/Otp', () => {
   return {
     updateMany: jest.fn().mockResolvedValue({}),
     create: jest.fn().mockResolvedValue({})
+  };
+});
+
+// Mock AuditLog model
+const mockAuditLogs = [];
+jest.mock('../api/models/AuditLog', () => {
+  return {
+    create: jest.fn().mockImplementation(async (doc) => {
+      mockAuditLogs.push(doc);
+      return doc;
+    }),
+    find: jest.fn().mockReturnValue({
+      sort: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      lean: jest.fn().mockResolvedValue([
+        { actor: 'admin', action: 'ADMIN_LOGIN', resource: 'session', resourceId: null, metadata: {}, ip: '::1', created_at: new Date() },
+      ])
+    })
+  };
+});
+
+// We need a slight delay in findOne to simulate DB race conditions, but Jest might run it fast.
+jest.mock('../api/models/Order', () => {
+  const mockOrders = [];
+  return {
+    findOne: jest.fn().mockImplementation(async (query) => {
+      // Simulate small DB latency to widen the race condition window
+      await new Promise(r => setTimeout(r, 10));
+      return mockOrders.find(o => o.phone === query.phone && o.total === query.total);
+    }),
+    create: jest.fn().mockImplementation(async (doc) => {
+      await new Promise(r => setTimeout(r, 10));
+      mockOrders.push(doc);
+      return doc;
+    }),
+    countDocuments: jest.fn().mockResolvedValue(0),
+    find: jest.fn().mockReturnValue({ lean: jest.fn().mockResolvedValue([]) }),
+    aggregate: jest.fn().mockResolvedValue([{
+      total_orders:   [{ count: 42 }],
+      pending_orders: [{ count: 10 }],
+      paid_orders:    [{ count: 30 }],
+      total_revenue:  [{ total: 95000 }],
+    }])
   };
 });
 
@@ -41,9 +88,10 @@ process.env.ADMIN_USERNAME = 'admin';
 process.env.ADMIN_PASSWORD = 'secure_password_test';
 process.env.ADMIN_JWT_SECRET = 'secret_test_key_123';
 process.env.NODE_ENV = 'test';
+process.env.MONGO_URI = 'mongodb://mock';
 
 // Load the express app
-const { app } = require('../api/index');
+const app = require('../api/index');
 
 describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
   // Clear mock history before each test
@@ -71,7 +119,7 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
         .expect(400);
 
       expect(res.body.success).toBe(false);
-      expect(res.body.message).toContain('required');
+      expect(JSON.stringify(res.body.errors)).toContain('required');
     });
 
     it('should reject invalid credentials with HTTP 401', async () => {
@@ -90,6 +138,128 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
       const res = await request(app).get('/api/products');
       expect(res.headers).toHaveProperty('x-content-type-options');
       expect(res.headers['x-content-type-options']).toBe('nosniff');
+    });
+  });
+
+  describe('POST /api/orders Concurrent Protection', () => {
+    const validOrderPayload = {
+      customer_name: "Test User",
+      phone: "9876543210",
+      address: "123 Test St",
+      city: "Test City",
+      pincode: "123456",
+      items: [
+        { id: 1, name: "Velvet Dream Cake", price: 850, qty: 1 }
+      ],
+      total: 850
+    };
+
+    it('should prevent race condition duplicate orders (concurrent requests)', async () => {
+      // Fire 3 identical requests at the exact same time
+      const requests = [
+        request(app).post('/api/orders').send(validOrderPayload),
+        request(app).post('/api/orders').send(validOrderPayload),
+        request(app).post('/api/orders').send(validOrderPayload)
+      ];
+
+      const responses = await Promise.all(requests);
+      
+      const successes = responses.filter(r => r.status === 200 && r.body.success === true);
+      const conflicts = responses.filter(r => r.status === 409);
+
+      // Only exactly ONE should succeed, others should be blocked by the mutex lock
+      expect(successes.length).toBe(1);
+      expect(conflicts.length).toBe(2);
+      expect(conflicts[0].body.message).toContain('currently being processed');
+    });
+
+    it('should prevent duplicate payload sequential submission (2-min window)', async () => {
+      // First request (already created in previous test, but let's assume it's in DB mock)
+      // Since our mock order persists in `mockOrders` array from previous test:
+      const res = await request(app)
+        .post('/api/orders')
+        .send(validOrderPayload)
+        .expect(409);
+
+      expect(res.body.message).toContain('Duplicate order detected');
+    });
+  });
+
+  describe('GET /api/admin/stats (Database Optimization)', () => {
+    it('should return stats from a single $facet aggregation pipeline', async () => {
+      const jwt = require('jsonwebtoken');
+      const token = jwt.sign({ username: 'admin' }, process.env.ADMIN_JWT_SECRET, { algorithm: 'HS256' });
+
+      const res = await request(app)
+        .get('/api/orders/stats')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      expect(res.body.success).toBe(true);
+      expect(res.body.stats).toHaveProperty('total_orders', 42);
+      expect(res.body.stats).toHaveProperty('pending_orders', 10);
+      expect(res.body.stats).toHaveProperty('paid_orders', 30);
+      expect(res.body.stats).toHaveProperty('total_revenue', 95000);
+
+      // Verify aggregate was called exactly ONCE (single $facet pipeline)
+      const Order = require('../api/models/Order');
+      expect(Order.aggregate).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Audit Logging', () => {
+    it('should write an ADMIN_LOGIN audit entry on successful login', async () => {
+      mockAuditLogs.length = 0; // reset before test
+
+      await request(app)
+        .post('/api/admin/login')
+        .send({ username: 'admin', password: 'secure_password_test' })
+        .expect(200);
+
+      // auditService.log is async fire-and-forget; allow microtask queue to flush
+      await new Promise(r => setImmediate(r));
+
+      const loginEntry = mockAuditLogs.find(e => e.action === 'ADMIN_LOGIN');
+      expect(loginEntry).toBeDefined();
+      expect(loginEntry.actor).toBe('admin');
+      expect(loginEntry.resource).toBe('session');
+    });
+
+    it('should write an ADMIN_LOGIN_FAILED audit entry on bad credentials', async () => {
+      mockAuditLogs.length = 0;
+
+      await request(app)
+        .post('/api/admin/login')
+        .send({ username: 'admin', password: 'wrong!' })
+        .expect(401);
+
+      await new Promise(r => setImmediate(r));
+
+      const failEntry = mockAuditLogs.find(e => e.action === 'ADMIN_LOGIN_FAILED');
+      expect(failEntry).toBeDefined();
+      expect(failEntry.metadata.reason).toBe('invalid_credentials');
+    });
+
+    it('GET /api/admin/audit-logs should return logs for authenticated admin', async () => {
+      const jwt = require('jsonwebtoken');
+      const token = jwt.sign({ username: 'admin' }, process.env.ADMIN_JWT_SECRET, { algorithm: 'HS256' });
+
+      const res = await request(app)
+        .get('/api/admin/audit-logs')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      expect(res.body.success).toBe(true);
+      expect(Array.isArray(res.body.logs)).toBe(true);
+      expect(res.body.logs[0]).toHaveProperty('action', 'ADMIN_LOGIN');
+    });
+
+    it('GET /api/admin/audit-logs should reject unauthenticated requests', async () => {
+      const res = await request(app)
+        .get('/api/admin/audit-logs')
+        .expect(401);
+
+      expect(res.body.success).toBe(false);
     });
   });
 });
