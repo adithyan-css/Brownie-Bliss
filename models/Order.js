@@ -22,6 +22,27 @@ const orderSchema = new mongoose.Schema({
   payment_status: { type: String, enum: ['unpaid', 'paid'], default: 'unpaid' },
   notes: { type: String, default: '' },
   confirmed_at: { type: Date, default: null },
+  // ── Receipt email tracking ──────────────────────────────────────────────────
+  receipt_email_status: {
+    type: String,
+    enum: ['pending', 'sent', 'failed', 'skipped'],
+    default: 'pending',
+  },
+  receipt_sent_at: { type: Date, default: null },
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
+
+// ── INDEXES ──────────────────────────────────────────────────────────────────
+// Sorts all orders by date for admin dashboard (avoids in-memory sort)
+orderSchema.index({ created_at: -1 });
+
+// Duplicate detection: phone + total + created_at in one covered query
+orderSchema.index({ phone: 1, total: 1, created_at: -1 });
+
+// Admin dashboard status / payment_status filters
+orderSchema.index({ status: 1 });
+orderSchema.index({ payment_status: 1 });
+
+// Admin search by phone number
+orderSchema.index({ phone: 1 });
 
 module.exports = mongoose.model('Order', orderSchema);
