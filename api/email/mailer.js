@@ -181,7 +181,7 @@ function _resetTransport() {
   cachedTransport = null;
 }
 
-module.exports = {
+module.exports = { getTransport,
   sendOrderReceiptEmail,
   validateOrderForReceipt,
   isEmailConfigured,

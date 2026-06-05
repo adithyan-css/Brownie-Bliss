@@ -2,11 +2,8 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const { isDbReady } = require('../config/db');
 const audit = require('../services/auditService');
-const {
-  sendOrderReceiptEmail,
-  isValidEmail,
-  normalizeEmail,
-} = require('../email/mailer');
+const { isValidEmail, normalizeEmail } = require('../email/mailer');
+const { enqueue } = require('../services/QueueService');
 const CheckoutRecovery = require('../models/CheckoutRecovery');
 
 const memoryOrders = [];
@@ -472,6 +469,18 @@ async function createOrder(req, res) {
         await recoverySession.save();
       }
 
+      // Enqueue asynchronous receipt email job
+      await enqueue('sendReceiptEmail', { orderId: order.order_id, order });
+      // Enqueue audit log job for order creation
+      await enqueue('logAudit', {
+        actor: 'system',
+        action: 'ORDER_CREATED',
+        resource: 'order',
+        resourceId: order.order_id,
+        metadata: { total: order.total, items: order.items },
+        ip: req.ip || null,
+      });
+
       res.json({
         success: true,
         order_id: order.order_id,
@@ -610,11 +619,12 @@ async function confirmPayment(req, res) {
         order.email = bodyEmail;
       }
 
-      const receipt_email = await sendOrderReceiptEmail(order);
+      // Enqueue receipt email job (non-blocking) for memory mode
+      await enqueue('sendReceiptEmail', { orderId: order.order_id, order });
       return res.json({
         success: true,
         message: 'Payment confirmed',
-        receipt_email,
+        receipt_email: { queued: true },
       });
     }
 
@@ -650,43 +660,22 @@ async function confirmPayment(req, res) {
       { new: true }
     ).lean();
 
-    // ── DUPLICATE RECEIPT GUARD ────────────────────────────────────────────────
-    // If a receipt was already successfully sent for this order, skip sending again.
-    let receipt_email;
-    if (existing.receipt_email_status === 'sent') {
-      receipt_email = { sent: false, skipped: true, reason: 'already_sent' };
-      console.warn(`[email] Duplicate receipt send blocked for ${order.order_id}`);
-    } else {
-      receipt_email = await sendOrderReceiptEmail(order);
-
-      // Persist delivery outcome back to the Order record
-      const receiptUpdate = {
-        receipt_email_status: receipt_email.sent ? 'sent'
-          : (receipt_email.skipped ? 'skipped' : 'failed'),
-      };
-      if (receipt_email.sent) receiptUpdate.receipt_sent_at = new Date();
-
-      // Non-blocking — receipt status update must not fail the confirm response
-      Order.findOneAndUpdate(
-        { order_id: order.order_id },
-        receiptUpdate
-      ).catch((err) => console.error('[email] Failed to persist receipt status:', err.message));
-    }
-
-    // Audit: payment confirmation (non-blocking)
-    audit.log({
+    // Enqueue receipt email job (non-blocking)
+    await enqueue('sendReceiptEmail', { orderId: order.order_id, order });
+    // Enqueue audit log for payment confirmation
+    await enqueue('logAudit', {
       actor: req.admin?.username || 'admin',
       action: 'PAYMENT_CONFIRMED',
       resource: 'order',
       resourceId: req.params.orderId,
-      metadata: { receipt_email, notes: order?.notes },
+      metadata: { notes: order?.notes },
       ip: req.ip || null,
     });
 
     res.json({
       success: true,
       message: 'Payment confirmed',
-      receipt_email,
+      receipt_email: { queued: true },
     });
   } catch (err) {
     console.error(err);
