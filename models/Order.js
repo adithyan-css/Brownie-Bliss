@@ -22,6 +22,13 @@ const orderSchema = new mongoose.Schema({
   payment_status: { type: String, enum: ['unpaid', 'paid'], default: 'unpaid' },
   notes: { type: String, default: '' },
   confirmed_at: { type: Date, default: null },
+  // ── Receipt email tracking ──────────────────────────────────────────────────
+  receipt_email_status: {
+    type: String,
+    enum: ['pending', 'sent', 'failed', 'skipped'],
+    default: 'pending',
+  },
+  receipt_sent_at: { type: Date, default: null },
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 // ── INDEXES ──────────────────────────────────────────────────────────────────

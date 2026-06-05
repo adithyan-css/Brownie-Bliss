@@ -560,7 +560,28 @@ async function confirmPayment(req, res) {
       { new: true }
     ).lean();
 
-    const receipt_email = await sendOrderReceiptEmail(order);
+    // ── DUPLICATE RECEIPT GUARD ────────────────────────────────────────────────
+    // If a receipt was already successfully sent for this order, skip sending again.
+    let receipt_email;
+    if (existing.receipt_email_status === 'sent') {
+      receipt_email = { sent: false, skipped: true, reason: 'already_sent' };
+      console.warn(`[email] Duplicate receipt send blocked for ${order.order_id}`);
+    } else {
+      receipt_email = await sendOrderReceiptEmail(order);
+
+      // Persist delivery outcome back to the Order record
+      const receiptUpdate = {
+        receipt_email_status: receipt_email.sent ? 'sent'
+          : (receipt_email.skipped ? 'skipped' : 'failed'),
+      };
+      if (receipt_email.sent) receiptUpdate.receipt_sent_at = new Date();
+
+      // Non-blocking — receipt status update must not fail the confirm response
+      Order.findOneAndUpdate(
+        { order_id: order.order_id },
+        receiptUpdate
+      ).catch((err) => console.error('[email] Failed to persist receipt status:', err.message));
+    }
 
     // Audit: payment confirmation (non-blocking)
     audit.log({

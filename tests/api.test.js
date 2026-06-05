@@ -325,4 +325,110 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
       expect([200, 409]).toContain(res.status);
     });
   });
+
+  describe('Email Delivery & Receipt Reliability', () => {
+    // Import mailer directly — we test the service functions as pure units
+    const {
+      sendOrderReceiptEmail,
+      validateOrderForReceipt,
+      isValidEmail,
+      normalizeEmail,
+      _resetTransport,
+    } = require('../api/email/mailer');
+
+    const validOrder = {
+      order_id: 'BB-TEST-001',
+      customer_name: 'Test User',
+      email: 'test@example.com',
+      phone: '9876543210',
+      address: '123 Test St',
+      city: 'Chennai',
+      pincode: '600001',
+      items: [{ name: 'Velvet Dream Cake', qty: 1, price: 850, emoji: '🎂' }],
+      total: 850,
+    };
+
+    beforeEach(() => {
+      _resetTransport();
+      // Ensure SMTP is NOT configured so tests skip actual delivery
+      delete process.env.SMTP_HOST;
+      delete process.env.SMTP_USER;
+      delete process.env.SMTP_PASS;
+    });
+
+    it('validateOrderForReceipt should accept a valid order', () => {
+      expect(validateOrderForReceipt(validOrder)).toBeNull();
+    });
+
+    it('validateOrderForReceipt should reject null order', () => {
+      expect(validateOrderForReceipt(null)).toBe('missing_order');
+    });
+
+    it('validateOrderForReceipt should reject order with no items', () => {
+      expect(validateOrderForReceipt({ ...validOrder, items: [] })).toBe('empty_items');
+    });
+
+    it('validateOrderForReceipt should reject order with invalid total', () => {
+      expect(validateOrderForReceipt({ ...validOrder, total: -1 })).toBe('invalid_total');
+    });
+
+    it('normalizeEmail should lowercase and trim whitespace', () => {
+      expect(normalizeEmail('  Test@Example.COM  ')).toBe('test@example.com');
+    });
+
+    it('isValidEmail should reject invalid formats', () => {
+      expect(isValidEmail('not-an-email')).toBe(false);
+      expect(isValidEmail('a@b.c')).toBe(true);
+    });
+
+    it('sendOrderReceiptEmail should skip when SMTP is not configured', async () => {
+      const result = await sendOrderReceiptEmail(validOrder);
+      expect(result.sent).toBe(false);
+      expect(result.skipped).toBe(true);
+      expect(result.reason).toBe('smtp_not_configured');
+    });
+
+    it('sendOrderReceiptEmail should skip when email is missing', async () => {
+      const result = await sendOrderReceiptEmail({ ...validOrder, email: null });
+      expect(result.sent).toBe(false);
+      expect(result.skipped).toBe(true);
+      expect(result.reason).toBe('no_email');
+    });
+
+    it('sendOrderReceiptEmail should skip when email is invalid', async () => {
+      const result = await sendOrderReceiptEmail({ ...validOrder, email: 'not-valid' });
+      expect(result.sent).toBe(false);
+      expect(result.skipped).toBe(true);
+      expect(result.reason).toBe('invalid_email');
+    });
+
+    it('sendOrderReceiptEmail should skip for invalid order data', async () => {
+      const result = await sendOrderReceiptEmail({ ...validOrder, order_id: null });
+      expect(result.sent).toBe(false);
+      expect(result.skipped).toBe(true);
+      expect(result.reason).toBe('missing_order_id');
+    });
+
+    it('sendOrderReceiptEmail should simulate retry and return failure when SMTP configured but unreachable', async () => {
+      // Point SMTP at a non-existent host to trigger send failure
+      process.env.SMTP_HOST = '127.0.0.1';
+      process.env.SMTP_USER = 'test@test.com';
+      process.env.SMTP_PASS = 'pass';
+      process.env.EMAIL_MAX_RETRIES = '0'; // 0 retries = fail fast for the test
+
+      _resetTransport();
+
+      const result = await sendOrderReceiptEmail(validOrder);
+
+      expect(result.sent).toBe(false);
+      expect(result).toHaveProperty('error');
+
+      // Cleanup
+      delete process.env.SMTP_HOST;
+      delete process.env.SMTP_USER;
+      delete process.env.SMTP_PASS;
+      delete process.env.EMAIL_MAX_RETRIES;
+      _resetTransport();
+    }, 10000);
+  });
 });
