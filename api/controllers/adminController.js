@@ -16,7 +16,13 @@ function login(req, res) {
     return res.status(400).json({ success: false, message: 'Username and password are required' });
   }
 
-  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+  const bcrypt = require('bcryptjs');
+  const isBcrypt = ADMIN_PASSWORD.startsWith('$2a$') || ADMIN_PASSWORD.startsWith('$2b$');
+  const passwordMatch = isBcrypt 
+    ? bcrypt.compareSync(password, ADMIN_PASSWORD) 
+    : password === ADMIN_PASSWORD;
+
+  if (username !== ADMIN_USERNAME || !passwordMatch) {
     return res.status(401).json({ success: false, message: 'Invalid credentials' });
   }
 
