@@ -1,6 +1,7 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const { isDbReady } = require('../config/db');
+const audit = require('../services/auditService');
 const {
   sendOrderReceiptEmail,
   isValidEmail,
@@ -561,6 +562,16 @@ async function confirmPayment(req, res) {
 
     const receipt_email = await sendOrderReceiptEmail(order);
 
+    // Audit: payment confirmation (non-blocking)
+    audit.log({
+      actor: req.admin?.username || 'admin',
+      action: 'PAYMENT_CONFIRMED',
+      resource: 'order',
+      resourceId: req.params.orderId,
+      metadata: { receipt_email, notes: order?.notes },
+      ip: req.ip || null,
+    });
+
     res.json({
       success: true,
       message: 'Payment confirmed',
@@ -605,6 +616,17 @@ async function updateOrderStatus(req, res) {
       return res
         .status(404)
         .json({ success: false, message: 'Order not found' });
+
+    // Audit: status change (non-blocking)
+    audit.log({
+      actor: req.admin?.username || 'admin',
+      action: 'ORDER_STATUS_CHANGED',
+      resource: 'order',
+      resourceId: req.params.orderId,
+      metadata: { previousStatus: order.status, newStatus: status },
+      ip: req.ip || null,
+    });
+
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error' });
