@@ -315,25 +315,6 @@ function renderFavouritesPage() {
 }
 
 
-async function loadProducts() {
-  try {
-    const res = await fetch(`${API_BASE}/products`);
-    const data = await res.json();
-
-    if (data.success && Array.isArray(data.products) && data.products.length) {
-      products = data.products
-        .filter((p) => p.type === 'standard')
-        .map((p) => ({
-          id: p.id_ref,
-          name: p.name,
-          category: p.category,
-          price: p.price,
-          emoji: p.emoji,
-          img: p.img,
-          stock: p.stock,
-          description: p.description || '',
-            allergens: p.allergens || 'Contains milk,wheat,gluten',
-            shelfLife: p.shelfLife || 'Best consumed within 3 days',
 
         }));
 
@@ -1044,29 +1025,53 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 5000);
 }
 
+// ============================================================
+// FIX FOR ADD TO CART FUNCTION (PNG PATHS & CASING SAFE)
+// ============================================================
+
 function addBirthdayToCart() {
-  const cakeInfo =
-    bdayCakes[selectedFlavor] ||
-    BIRTHDAY_FALLBACKS[selectedFlavor] ||
-    BIRTHDAY_FALLBACKS['Red Velvet'];
+  const cakesMap = (typeof bdayCakes !== 'undefined') ? bdayCakes : {};
+  const fallbacks = window.BIRTHDAY_FALLBACKS || {};
+
+  // --- SAFE KEY MATCHING FOR CART IMAGES ---
+  // Agar flavor 'Pineapple' hai, toh check karega cakesMap['Pineapple'], fir fallbacks['Pineapple']
+  let cakeInfo = cakesMap[selectedFlavor] || fallbacks[selectedFlavor];
+
+  // Agar casing ka farq ho (jaise lowercase keys), toh ek safe search fallback loop run karenge
+  if (!cakeInfo) {
+    const matchedKey = Object.keys(fallbacks).find(
+      key => key.toLowerCase().trim() === String(selectedFlavor).toLowerCase().trim()
+    );
+    cakeInfo = fallbacks[matchedKey] || fallbacks['Red Velvet'] || {};
+  }
 
   const msgInput = document.getElementById('cakeMessage');
   const message = msgInput ? msgInput.value.trim() : '';
 
-  addToCart({
-    id: `bday-${selectedFlavor}-${selectedWeight}`,
-    name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
-    price: BIRTHDAY_BASE_PRICES[selectedWeight] || 850,
-    img: cakeInfo.img,
-    emoji: cakeInfo.emoji || '🎂',
-    category: 'cakes',
-    message,
-    qty: 1,
-  });
+  // Real shopping cart mein sahi image path aur unique ID ke sath push karna
+  if (typeof addToCart === 'function') {
+    // Unique ID ko URL safe banane ke liye spaces hatana
+    const safeId = String(selectedFlavor).toLowerCase().replace(/\s+/g, '-');
 
-  showToast('🎂 Birthday cake added to cart!');
-  if (msgInput) msgInput.value = '';
-  openCart();
+    addToCart({
+      id: `bday-${safeId}-${selectedWeight}`,
+      name: `${selectedFlavor} Cake (${selectedWeight}kg)`,
+      price: (typeof BIRTHDAY_BASE_PRICES !== 'undefined' && BIRTHDAY_BASE_PRICES[selectedWeight]) 
+             ? BIRTHDAY_BASE_PRICES[selectedWeight] 
+             : 850,
+      img: cakeInfo.img || 'assets/dutch_truffle.png', // Fallback agar kuch bhi na mile
+      emoji: cakeInfo.emoji || '🎂',
+      category: 'cakes',
+      message: message,
+      qty: 1,
+    });
+  }
+
+  // Toast notification trigger karna
+  showToast(`🎂 ${selectedFlavor} Cake (${selectedWeight}kg) added to cart!`);
+  
+  if (msgInput) msgInput.value = ''; // Input box khali karna
+  if (typeof openCart === 'function') openCart(); // Cart panel open karna
 }
 
 function addDessertToCart() {
@@ -1841,3 +1846,158 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add("visible");
   }, 2000);
 })();
+
+// ============================================================
+// GSSOC 2026: SIGNATURE CAKES ABSOLUTE FINAL CORRECT PRICING FIX
+// ============================================================
+
+// 1. Maintainer ka original Price config framework data sync
+if (typeof selectedWeight === 'undefined') window.selectedWeight = '1.0';
+
+window.BIRTHDAY_BASE_PRICES = {
+  0.5: 450,
+  '1.0': 850,
+  1.5: 1250,
+  '2.0': 1600,
+};
+
+// 2. Local Assets Map (.png configuration matching your folder level)
+window.BIRTHDAY_FALLBACKS = {
+  'Red Velvet': { img: 'assets/dutch_truffle.png', emoji: '🎂', basePrice: 850 }, 
+  'Dutch Truffle': { img: 'assets/dutch_truffle.png', emoji: '🍫', basePrice: 950 },
+  'Pineapple': { img: 'assets/pineapplecake.png', emoji: '🍍', basePrice: 675 },
+  'Chocoholic': { img: 'assets/chocoholiccake.png', emoji: '🍩', basePrice: 850 },
+  'Black Forest': { img: 'assets/black-forest-cake.png', emoji: '🍒', basePrice: 850 },
+  'Cheesecake': { img: 'assets/Cheesecake.png', emoji: '🍰', basePrice: 950 }
+};
+
+// --- DYNAMIC CALCULATOR WITH CORRECT MULTIPLIER ---
+window.calculateBdayPrice = function() {
+    const currentW = window.selectedWeight || '1.0';
+    const currentF = window.selectedFlavor || 'Red Velvet';
+    
+    // Flavor ke according base price choose karna (Default 850 agar match na mile)
+    const cakeData = window.BIRTHDAY_FALLBACKS[currentF] || window.BIRTHDAY_FALLBACKS['Red Velvet'];
+    let basePrice = cakeData.basePrice || 850;
+
+    // Weight multiplier formula lagana (1.0 kg standard baseline)
+    let finalPrice = basePrice;
+    if (currentW === '0.5') finalPrice = basePrice - 200; // Multiplier step logic
+    else if (currentW === '1.5') finalPrice = basePrice + 400;
+    else if (currentW === '2.0') finalPrice = basePrice * 1.8;
+
+    // Rounding price for clean layout formatting
+    finalPrice = Math.round(finalPrice);
+
+    const priceDisplay = document.getElementById('cakePrice') || 
+                         document.querySelector('.price') || 
+                         document.querySelector('.cake-price-display');
+
+    if (priceDisplay) {
+        priceDisplay.innerHTML = `₹ ${finalPrice}`;
+        console.log(`Dynamic Price updated: ₹ ${finalPrice} for ${currentF} (${currentW}kg)`);
+    }
+};
+
+// 3. Complete Integrated Flavor Switcher (Images + Highlight Fix)
+window.updateBirthdayCake = function(flavorName) {
+    window.selectedFlavor = flavorName;
+    if (window.currentCake) {
+        window.currentCake.flavor = flavorName;
+    }
+
+    const cakeImg = document.getElementById('birthdayCakeImg');
+    if (cakeImg && window.BIRTHDAY_FALLBACKS[flavorName]) {
+        cakeImg.src = window.BIRTHDAY_FALLBACKS[flavorName].img;
+    }
+
+    // Highlighters loop logic
+    document.querySelectorAll('.flavor-btn').forEach((btn) => {
+        if (btn.textContent.trim().toLowerCase() === flavorName.toLowerCase().trim()) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    window.calculateBdayPrice();
+};
+
+// 4. Complete Weight Switcher (Fixes Pricing Sync)
+window.setCakeWeight = function(weight, event) {
+    let cleanWeight = String(weight).toLowerCase().replace('kg', '').replace(' kg', '').trim();
+    if (cleanWeight === '.5') cleanWeight = '0.5';
+
+    window.selectedWeight = cleanWeight;
+    if (window.currentCake) {
+        window.currentCake.weight = cleanWeight;
+    }
+
+    // Weight button active element classes swapping toggler
+    document.querySelectorAll('.weight-btn, button[onclick*="setCakeWeight"]').forEach((btn) => {
+        if (btn.textContent.toLowerCase().includes(cleanWeight)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    if (event?.target) {
+        event.target.classList.add('active');
+    }
+
+    window.calculateBdayPrice();
+};
+
+// 5. Dynamic Add to Cart
+window.addBirthdayToCart = function() {
+  const fallbacks = window.BIRTHDAY_FALLBACKS;
+  const cakeInfo = fallbacks[window.selectedFlavor] || fallbacks['Red Velvet'];
+  
+  const currentW = window.selectedWeight || '1.0';
+  let basePrice = cakeInfo.basePrice || 850;
+  let finalPrice = basePrice;
+  if (currentW === '0.5') finalPrice = basePrice - 200;
+  else if (currentW === '1.5') finalPrice = basePrice + 400;
+  else if (currentW === '2.0') finalPrice = basePrice * 1.8;
+  
+  finalPrice = Math.round(finalPrice);
+  const msgInput = document.getElementById('cakeMessage');
+  const message = msgInput ? msgInput.value.trim() : '';
+
+  if (typeof addToCart === 'function') {
+    const safeId = String(window.selectedFlavor).toLowerCase().replace(/\s+/g, '-');
+
+    addToCart({
+      id: `bday-${safeId}-${window.selectedWeight}`,
+      name: `${window.selectedFlavor} Cake (${window.selectedWeight}kg)`,
+      price: finalPrice,
+      img: cakeInfo.img,
+      emoji: cakeInfo.emoji || '🎂',
+      category: 'cakes',
+      message: message,
+      qty: 1,
+    });
+  }
+
+  if (typeof showToast === 'function') {
+      showToast(`🎂 ${window.selectedFlavor} Cake (${window.selectedWeight}kg) added to cart!`);
+  }
+  if (msgInput) msgInput.value = '';
+  if (typeof openCart === 'function') openCart();
+};
+
+// 6. Checkout binding Module step trigger
+window.openCheckout = function() {
+  window.addBirthdayToCart();
+  if (typeof showCheckoutStep === 'function') {
+    showCheckoutStep(1);
+  }
+  const finalOverlay = document.getElementById('checkoutOverlay');
+  if (finalOverlay) finalOverlay.classList.add('open');
+};
+
+// Autoload initializer process block
+setTimeout(() => {
+    window.calculateBdayPrice();
+}, 400);
