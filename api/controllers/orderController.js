@@ -325,6 +325,28 @@ async function createOrder(req, res) {
         ? Math.round(clientTotal * 100) / 100
         : Math.round(computedTotal * 100) / 100;
 
+    // ── DUPLICATE PROTECTION ────────────────────────────────────────────────────
+    const duplicateWindowMs = 2 * 60 * 1000;
+    if (isDbReady()) {
+      const duplicate = await Order.findOne({
+        phone: phoneDigits.slice(0, 15),
+        total: finalTotal,
+        created_at: { $gt: new Date(Date.now() - duplicateWindowMs) }
+      });
+      if (duplicate) {
+        return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
+      }
+    } else {
+      const duplicate = memoryOrders.find(o => 
+        o.phone === phoneDigits.slice(0, 15) && 
+        o.total === finalTotal && 
+        new Date(o.created_at).getTime() > Date.now() - duplicateWindowMs
+      );
+      if (duplicate) {
+        return res.status(409).json({ success: false, message: 'Duplicate order detected. Please wait before placing another order.' });
+      }
+    }
+
     const order_id = generateOrderId();
     const orderDoc = {
       order_id,
@@ -373,7 +395,9 @@ async function createOrder(req, res) {
 
 async function getAllOrders(req, res) {
   try {
-    const { status, search, from, to } = req.query;
+    const status = req.query.status ? String(req.query.status) : undefined;
+    const search = req.query.search ? String(req.query.search) : undefined;
+    const { from, to } = req.query;
 
     if (!isDbReady()) {
       let list = [...memoryOrders];
@@ -540,6 +564,8 @@ async function confirmPayment(req, res) {
 
 async function updateOrderStatus(req, res) {
   try {
+    const status = String(req.body.status || '').trim();
+
     if (!ALLOWED_ORDER_STATUSES.includes(status)) {
       return res.status(400).json({
         success: false,
