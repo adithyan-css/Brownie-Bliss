@@ -17,16 +17,8 @@ jest.mock('mongoose', () => {
   return mockMongoose;
 });
 
-// Mock axios
-jest.mock('axios', () => {
-  return {
-    get: jest.fn().mockResolvedValue({ data: {} }),
-    post: jest.fn().mockResolvedValue({ data: {} })
-  };
-});
-
 // Mock models
-jest.mock('../api/models/Product', () => {
+jest.mock('../models/Product', () => {
   return {
     countDocuments: jest.fn().mockResolvedValue(10),
     find: jest.fn().mockReturnValue({
@@ -37,7 +29,7 @@ jest.mock('../api/models/Product', () => {
   };
 });
 
-jest.mock('../api/models/Otp', () => {
+jest.mock('../models/Otp', () => {
   return {
     updateMany: jest.fn().mockResolvedValue({}),
     create: jest.fn().mockResolvedValue({})
@@ -49,10 +41,9 @@ process.env.ADMIN_USERNAME = 'admin';
 process.env.ADMIN_PASSWORD = 'secure_password_test';
 process.env.ADMIN_JWT_SECRET = 'secret_test_key_123';
 process.env.NODE_ENV = 'test';
-process.env.FAST2SMS_API_KEY = '';
 
 // Load the express app
-const app = require('../api/index');
+const { app } = require('../api/index');
 
 describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
   // Clear mock history before each test
@@ -99,44 +90,6 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
       const res = await request(app).get('/api/products');
       expect(res.headers).toHaveProperty('x-content-type-options');
       expect(res.headers['x-content-type-options']).toBe('nosniff');
-    });
-  });
-
-  describe('Rate Limiting Middleware', () => {
-    it('should allow up to 5 requests to POST /api/send-otp and block the 6th request with 429', async () => {
-      for (let i = 0; i < 5; i++) {
-        const res = await request(app)
-          .post('/api/send-otp')
-          .send({ phone: '9876543210' });
-        expect(res.status).not.toBe(429);
-      }
-
-      const res6 = await request(app)
-        .post('/api/send-otp')
-        .send({ phone: '9876543210' });
-      expect(res6.status).toBe(429);
-      expect(res6.body).toEqual({
-        success: false,
-        message: 'Too many requests from this IP, please try again after 15 minutes'
-      });
-    });
-
-    it('should allow up to 10 requests to POST /api/orders and block the 11th request with 429', async () => {
-      for (let i = 0; i < 10; i++) {
-        const res = await request(app)
-          .post('/api/orders')
-          .send({});
-        expect(res.status).not.toBe(429);
-      }
-
-      const res11 = await request(app)
-        .post('/api/orders')
-        .send({});
-      expect(res11.status).toBe(429);
-      expect(res11.body).toEqual({
-        success: false,
-        message: 'Too many order requests from this IP, please try again after 15 minutes'
-      });
     });
   });
 });

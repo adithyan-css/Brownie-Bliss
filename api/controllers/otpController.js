@@ -1,6 +1,5 @@
 const axios = require('axios');
 const Otp = require('../models/Otp');
-const { isDbReady } = require('../config/db');
 
 function generateOTP() {
   return String(Math.floor(100000 + Math.random() * 900000));
@@ -14,16 +13,12 @@ async function sendOtp(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid phone number' });
     }
 
-    if (isDbReady()) {
-      await Otp.updateMany({ phone, used: false }, { used: true });
-    }
+    await Otp.updateMany({ phone, used: false }, { used: true });
 
     const otp = generateOTP();
+    const expires_at = new Date(Date.now() + 5 * 60 * 1000);
 
-    if (isDbReady()) {
-      const expires_at = new Date(Date.now() + 5 * 60 * 1000);
-      await Otp.create({ phone, otp, expires_at });
-    }
+    await Otp.create({ phone, otp, expires_at });
 
     const apiKey = process.env.FAST2SMS_API_KEY;
     if (apiKey && apiKey !== 'your_actual_api_key_here') {
@@ -50,11 +45,6 @@ async function sendOtp(req, res) {
 async function verifyOtp(req, res) {
   try {
     const { phone, otp } = req.body;
-
-    if (!isDbReady()) {
-      console.log(`📱 [DEMO MODE] Bypassing OTP verification for ${phone} (Database offline)`);
-      return res.json({ success: true, message: 'OTP verified' });
-    }
 
     const record = await Otp.findOne({
       phone,
