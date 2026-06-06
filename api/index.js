@@ -12,6 +12,8 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminAuth = require('../middlewares/adminAuth');
 const { getStats } = require('./controllers/orderController');
+const customBoxRoutes = require('./custom-box');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -57,6 +59,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', otpRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api', customBoxRoutes);
 app.get('/api/stats', adminAuth, getStats);
 
 // ─── STATIC FALLBACK ────────────────────────────────────────────────────────────
