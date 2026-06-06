@@ -1,0 +1,200 @@
+/* Brownie Box Customizer Styles */
+.brownie-customizer {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fdf8f0;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.size-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 2px solid #8B4513;
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.size-btn.active {
+  background: #8B4513;
+  color: white;
+  transform: scale(1.05);
+}
+
+.box-grid {
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f5e6d3;
+  border-radius: 20px;
+  min-height: 400px;
+}
+
+.box-grid[data-size="4"] {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.box-grid[data-size="6"] {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.box-grid[data-size="12"] {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.slot {
+  aspect-ratio: 1;
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid #deb887;
+  position: relative;
+  overflow: hidden;
+}
+
+.slot.empty {
+  background: #fff9f0;
+  border: 3px dashed #deb887;
+  cursor: pointer;
+}
+
+.slot.filled {
+  background: linear-gradient(135deg, #5c3317, #8B4513);
+  color: white;
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.slot-content {
+  text-align: center;
+}
+
+.slot-emoji {
+  font-size: 2rem;
+}
+
+.slot-name {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.slot-price {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+
+.remove-slot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.flavour-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.flavour-btn {
+  padding: 12px 20px;
+  background: white;
+  border: 2px solid #8B4513;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.flavour-btn:hover {
+  background: #8B4513;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.counter {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.reset-btn {
+  padding: 10px 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.add-to-cart-btn {
+  padding: 16px 32px;
+  background: #ccc;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart-btn.active {
+  background: #4CAF50;
+  cursor: pointer;
+  animation: glow 1.5s infinite;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px #4CAF50; }
+  50% { box-shadow: 0 0 20px #4CAF50; }
+  100% { box-shadow: 0 0 5px #4CAF50; }
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
