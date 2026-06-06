@@ -314,105 +314,106 @@
 
     </section>
 
-    <!-- FOOTER -->
-    <footer class="premium-footer">
+  <!-- UPDATED FOOTER -->
+<footer id="contact">
+  <div class="footer-inner">
 
-        <div class="footer-grid">
+    <div class="footer-top">
 
-            <div class="footer-brand">
-
-                <h2>
-
-                    Brownie Bliss 🍫
-
-                </h2>
-
-                <p>
-
-                    Handcrafted brownies, cakes & cookies made with love.
-
-                </p>
-
-            </div>
-
-            <div class="footer-links">
-
-                <h3>Explore</h3>
-
-                <a href="index.html">Home</a>
-
-                <a href="products.html">Products</a>
-
-                <a href="birthday.html">Birthday Cakes</a>
-
-                <a href="track.html">Track Order</a>
-
-            </div>
-
-            <div class="footer-contact">
-
-                <h3>Contact</h3>
-
-                <p>📞 +91 8072596340</p>
-
-                <p>📧 browniebliss@gmail.com</p>
-
-                <p>📍 Krishnagiri, Tamil Nadu</p>
-
-            </div>
-
+      <!-- Brand Section -->
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-name">Brownie Bliss</span>
+          <span class="logo-sub">
+            Homemade Treats · Happiness in every bite
+          </span>
         </div>
 
-        <div class="footer-bottom">
+        <p>
+          Hand-crafted with love by A.R. Shanmugapriya. Bringing you the
+          finest homemade brownies, cakes, and cookies in Krishnagiri with
+          premium ingredients and unforgettable taste.
+        </p>
 
-            © 2026 Brownie Bliss • Made with ❤️
-
+        <div class="footer-socials">
+          <a href="https://instagram.com/brownie_bliss_" target="_blank">
+            Instagram
+          </a>
         </div>
+      </div>
 
-    </footer>
+      <!-- Navigation -->
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="#home">Home</a>
+        <a href="products.html">Our Products</a>
+        <a href="#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="track.html">Track Order</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
 
-    <!-- SCRIPT -->
-    <script>
+      <!-- Policies -->
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="#">Refund Policy</a>
+      </div>
 
-function trackOrder(){
+      <!-- Contact -->
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
 
-    const orderId =
-    document.getElementById("orderId").value.trim();
+        <a href="tel:08072596340">
+          📞 +91 8072596340
+        </a>
 
-    const email =
-    document.getElementById("emailId").value.trim();
+        <a href="mailto:gpriya26185@gmail.com">
+          ✉️ gpriya26185@gmail.com
+        </a>
 
-    const phone =
-    document.getElementById("phoneNumber").value.trim();
+        <a
+          href="https://instagram.com/brownie_bliss_"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          📷 @brownie_bliss_
+        </a>
 
-    const result =
-    document.getElementById("track-result");
+        <span class="footer-location">
+          📍 Krishnagiri, Tamil Nadu
+        </span>
+      </div>
 
-    // EMAIL REGEX
-    const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    </div>
 
-    // PHONE REGEX
-    const phonePattern =
-    /^[0-9]{10}$/;
+    <div class="footer-divider"></div>
 
-    // ORDER FORMAT
-    const orderPattern =
-    /^ORD[0-9]{3,6}$/;
+    <div class="footer-bottom">
+      <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+      <span>Made with ❤️ in Krishnagiri</span>
+    </div>
 
-    // EMPTY CHECK
-    if(
-        orderId === "" &&
-        email === "" &&
-        phone === ""
-    ){
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ⚠ Please enter at least ONE detail.
-
+  </div>
+</footer>
+    <!-- SHARED COMPONENTS -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+                <span class="cart-total-label">Total Amount</span>
+                <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+                Order via WhatsApp
+            </button>
+            <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
         </div>
 
         `;
