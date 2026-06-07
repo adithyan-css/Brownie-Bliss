@@ -11474,4 +11474,94 @@ html.dark .copy-btn:hover {
     width: 24px;
     height: 24px;
   }
+}}
+/* ==============================================
+   BROWNIE BLISS — BUG FIX PATCH
+   Add this block at the very END of style.css
+   Root cause: #bb-cursor had no CSS rules defined
+   (they were inside an unclosed CSS comment block),
+   so the element rendered at its default browser
+   size with no positioning — appearing as a large
+   blank space near the footer.
+   Fix: Define the cursor element properly with
+   fixed positioning, zero dimensions as baseline,
+   and pointer-events: none so it never blocks clicks.
+============================================== */
+
+#bb-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 214, 170, 1) 30%,
+    rgba(212, 141, 74, 1) 60%,
+    rgba(212, 141, 74, 0.2) 100%
+  );
+  box-shadow:
+    0 0 8px rgba(255, 214, 170, 1),
+    0 0 20px rgba(212, 141, 74, 0.9),
+    0 0 45px rgba(212, 141, 74, 0.6);
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+#bb-cursor::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(212, 141, 74, 0.25) 0%,
+    rgba(212, 141, 74, 0.12) 45%,
+    transparent 75%
+  );
+  z-index: -1;
+}
+
+#bb-cursor.hover {
+  width: 22px;
+  height: 22px;
+}
+
+#bb-cursor.scroll-glow {
+  width: 28px;
+  height: 28px;
+  box-shadow:
+    0 0 15px rgba(255, 214, 170, 1),
+    0 0 35px rgba(212, 141, 74, 1),
+    0 0 65px rgba(212, 141, 74, 0.7);
+}
+
+/* Hide custom cursor on touch/mobile devices */
+@media (max-width: 768px) {
+  #bb-cursor {
+    display: none;
+  }
+}
+/* Fix: WhatsApp float SVG oversized */
+.whatsapp-float svg {
+  width: 28px !important;
+  height: 28px !important;
+  fill: #ffffff;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
 }
