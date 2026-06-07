@@ -13,43 +13,37 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
-async function seedProducts() {
-  const count = await Product.countDocuments();
-  
-  const initialProducts = [
-    // Standard Products
-    { type: 'standard', id_ref: 1, name: 'Velvet Dream Cake', category: 'cakes', price: 850, emoji: '🎂', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860', description: 'Rich chocolate brownie with overload toppings' },
-    { type: 'standard', id_ref: 2, name: 'Dutch Truffle Delight', category: 'cakes', price: 950, emoji: '🍰', img: 'assets/dutch_truffle.png' },
-    { type: 'standard', id_ref: 3, name: 'Pineapple Fresh Cream', category: 'cakes', price: 675, emoji: '🍍', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
-    { type: 'standard', id_ref: 4, name: 'Overload Brownie', category: 'brownies', price: 120, emoji: '🍫', img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338' },
-    { type: 'standard', id_ref: 5, name: 'Walnut Fudge', category: 'brownies', price: 95, emoji: '🥜', img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181' },
-    { type: 'standard', id_ref: 6, name: 'Classic Choco', category: 'brownies', price: 80, emoji: '🍫', img: 'assets/classic_choco.png' },
-    { type: 'standard', id_ref: 7, name: 'Chocolate Mousse', category: 'desserts', price: 150, emoji: '🍮', img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427' },
-    { type: 'standard', id_ref: 8, name: 'Tiramisu Jar', category: 'desserts', price: 180, emoji: '☕', img: 'assets/tiramisu_jar.png' },
-    { type: 'standard', id_ref: 9, name: 'Choco Chip Cookies', category: 'cookies', price: 250, emoji: '🍪', img: 'assets/choco_chip_cookies.png' },
-    { type: 'standard', id_ref: 10, name: 'Almond Biscotti', category: 'cookies', price: 300, emoji: '🥖', img: 'assets/almond_biscotti.png' },
-    // Birthday Cakes (base price per kg)
-    { type: 'birthday', id_ref: 'Red Velvet', name: 'Red Velvet', price: 850, emoji: '🎂', img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860' },
-    { type: 'birthday', id_ref: 'Dutch Truffle', name: 'Dutch Truffle', price: 950, emoji: '🍰', img: 'assets/dutch_truffle.png' },
-    { type: 'birthday', id_ref: 'Pineapple', name: 'Pineapple', price: 675, emoji: '🍍', img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785' },
-    { type: 'birthday', id_ref: 'Chocoholic', name: 'Chocoholic', price: 900, emoji: '🍫', img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267' },
-    { type: 'birthday', id_ref: 'Black Forest', name: 'Black Forest', price: 750, emoji: '🌲', img: 'https://sweetandsavorymeals.com/wp-content/uploads/2020/02/black-forest-cake-recipe-SweetAndSavoryMeals4-1054x1536.jpg' },
-    { type: 'birthday', id_ref: 'Cheesecake', name: 'Cheesecake', price: 1200, emoji: '🧀', img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg' },
-  ];
+const CATALOG = [
+  { type: 'standard', id_ref: 1,  name: 'Velvet Dream Cake',    category: 'cakes',    price: 850,  emoji: '🎂', img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop', description: 'Rich red velvet sponge with cream cheese frosting' },
+  { type: 'standard', id_ref: 2,  name: 'Dutch Truffle Delight', category: 'cakes',   price: 950,  emoji: '🍰', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 3,  name: 'Pineapple Fresh Cream', category: 'cakes',   price: 675,  emoji: '🍍', img: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 4,  name: 'Overload Brownie',      category: 'brownies', price: 120, emoji: '🍫', img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 5,  name: 'Walnut Fudge',          category: 'brownies', price: 95,  emoji: '🥜', img: 'https://images.unsplash.com/photo-1548365328-8c6db3220e4c?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 6,  name: 'Classic Choco',         category: 'brownies', price: 80,  emoji: '🍫', img: 'https://images.unsplash.com/photo-1589375681055-aa9716e4bdf0?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 7,  name: 'Chocolate Mousse',      category: 'desserts', price: 150, emoji: '🍮', img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 8,  name: 'Tiramisu Jar',          category: 'desserts', price: 180, emoji: '☕',  img: 'https://images.unsplash.com/photo-1618426703623-c1b335803e07?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 9,  name: 'Choco Chip Cookies',    category: 'cookies',  price: 250, emoji: '🍪', img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&auto=format&fit=crop' },
+  { type: 'standard', id_ref: 10, name: 'Almond Biscotti',       category: 'cookies',  price: 300, emoji: '🥖', img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Red Velvet',    name: 'Red Velvet',    price: 850,  emoji: '🎂', img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Dutch Truffle', name: 'Dutch Truffle', price: 950,  emoji: '🍰', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Pineapple',     name: 'Pineapple',     price: 675,  emoji: '🍍', img: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Chocoholic',    name: 'Chocoholic',    price: 900,  emoji: '🍫', img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Black Forest',  name: 'Black Forest',  price: 750,  emoji: '🌲', img: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&auto=format&fit=crop' },
+  { type: 'birthday', id_ref: 'Cheesecake',    name: 'Cheesecake',    price: 1200, emoji: '🧀', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop' },
+];
 
-  if (count === 0) {
-    await Product.insertMany(initialProducts);
-    console.log('🌱 Seeded initial products to database');
-  } else {
-    // Dynamically update existing products if they use outdated/broken image links
-    for (const item of initialProducts) {
-      await Product.updateOne(
-        { name: item.name, type: item.type },
-        { $set: { img: item.img } }
-      );
-    }
-    console.log('🌱 Synced and updated database product images');
-  }
+async function seedProducts() {
+  // Always upsert so broken/missing images in existing DB records get fixed
+  await Product.bulkWrite(
+    CATALOG.map(item => ({
+      updateOne: {
+        filter: { type: item.type, id_ref: item.id_ref },
+        update: { $set: item },
+        upsert: true,
+      },
+    }))
+  );
+  console.log('🌱 Product catalog synced to database');
 }
 
 module.exports = Product;

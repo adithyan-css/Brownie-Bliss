@@ -46,7 +46,7 @@ const DEFAULT_PRODUCTS = [
     name: 'Velvet Dream Cake',
     category: 'cakes',
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop',
     allergens: 'Contains milk, wheat, gluten',
     shelfLife: 'Best consumed within 3 days',
   },
@@ -82,33 +82,33 @@ const DEFAULT_PRODUCTS = [
 const DEFAULT_BDAY_CAKES = {
   'Red Velvet': {
     price: 850,
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&auto=format&fit=crop',
   },
 
   'Dutch Truffle': {
     price: 950,
-    img: 'assets/dutch_truffle.png',
+    img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop',
   },
 
   'Pineapple': {
     price: 675,
-    img:  'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+    img: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop',
   },
 
   'Chocoholic': {
     price: 990,
-    img: 'https://theobroma.in/cdn/shop/files/ChocoholicCakehalfkg_400x400.jpg?v=1711125918',
+    img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop',
   },
   
 
   'Black Forest': {
     price: 875,
-    img: 'https://theobroma.in/cdn/shop/files/BlackForestCake.jpg?v=1750341419',
+    img: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&auto=format&fit=crop',
   },
 
   'Cheesecake': {
     price: 1100,
-    img: 'https://theobroma.in/cdn/shop/files/FG0807_LotusBiscoffBentoCheesecake_300g_400x400.jpg?v=1770718506',
+    img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop',
   },
 };
 
@@ -680,59 +680,31 @@ function saveRecentSearch(search) {
 function renderRecentSearches() {
   const container = document.getElementById('recentSearches');
 
+  // Defensive: container may not exist on pages without a search bar
   if (!container) return;
 
-  if (!recentSearches.length) {
+  // Defensive: guard against null/undefined recentSearches
+  if (!Array.isArray(recentSearches) || !recentSearches.length) {
     container.innerHTML = '';
     return;
   }
 
-  container.innerHTML = `
-        ${recentSearches
-      .map(
-        (search) => `
-            <div
-                class="recent-search-tag"
-                onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
-            >
-                ${search}
-            </div>
-        `
-      )
-      .join('')}
-    `;
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
-                <button
-                    type="button"
-                    class="customize-and-add"
-                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
+  // Fix: removed stray `grid.innerHTML = filtered.map(...)` block that was
+  // accidentally pasted here from filterProducts(). `grid` and `filtered` are
+  // local variables in filterProducts() and are undefined in this scope,
+  // causing a ReferenceError every time renderRecentSearches() was called.
+  container.innerHTML = recentSearches
+    .map(
+      (search) => `
+        <div
+            class="recent-search-tag"
+            onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
+        >
+            ${search}
         </div>
-    `).join('');
+      `
+    )
+    .join('');
 }
 
 function updatePriceFilter() {
@@ -792,7 +764,7 @@ function filterProducts(category = 'all', btn = null) {
 
     <div class="product-img-wrap">
 
-      <img src="${p.img}" alt="${p.name}">
+      <img src="${p.img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop'">
 
       <button
         class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
@@ -1074,7 +1046,7 @@ function addDessertToCart() {
     id: 'dessert-macarons',
     name: 'Assorted Macarons (Box of 4)',
     price: 350,
-    img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=600&auto=format&fit=crop',
     emoji: '🍮',
     category: 'desserts',
     qty: 1,
@@ -1088,7 +1060,7 @@ function addBrownieToCart() {
     id: 'brownie-overload',
     name: 'Overload Brownie (Pack of 4)',
     price: 250,
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+    img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop',
     emoji: '🍫',
     category: 'brownies',
     qty: 1,
