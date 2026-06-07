@@ -227,9 +227,18 @@
       </div>
     </section>
 
+  <!-- =====================================================
+       FIX 2 (Root cause): The original code had:
+         <section class="birthday-section" data-aos="fade-up"></section>
+         style="padding: 100px 0; ..."
+       The closing </section> ended the tag prematurely, leaving
+       the style="..." attribute text to render as raw visible HTML.
+       Fix: Keep the section open (remove the premature </section>)
+       and properly close it at the bottom of the slider block.
+  ====================================================== -->
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" data-aos="fade-up"></section>
-  style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
+  <section class="birthday-section" id="birthday" data-aos="fade-up"
+    style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
 
   <!-- Slider Hint -->
   <div
@@ -241,8 +250,7 @@
     style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
 
     <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
@@ -344,8 +352,7 @@
     </div>
 
     <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
@@ -423,8 +430,7 @@
     </div>
 
     <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
@@ -505,8 +511,7 @@
     </div>
 
     <!-- SLIDE 4: COOKIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box; scroll-snap-align: start;">
       <div
         style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
         <div class="birthday-visual">
@@ -594,6 +599,7 @@
   </div>
 
   </section>
+  <!-- END BIRTHDAY & DESSERT SLIDER SECTION -->
 
   <!-- FEEDBACK & COMPLAINTS SECTION -->
   <section id="feedback" style="padding: 100px 24px; background: var(--cream);">
@@ -682,12 +688,22 @@
     </div>
   </section>
 
+  <!-- =====================================================
+       FIX 1 (Root cause): The original review cards were
+       deeply NESTED inside each other — each new .review-card
+       was opened inside the previous card's .reviewer div,
+       rather than being a sibling inside .reviews-grid.
+       The browser rendered them as stacked overlapping boxes.
+       Fix: All five review cards are now flat siblings inside
+       .reviews-grid. Closing tags are properly matched.
+  ====================================================== -->
   <section class="bb-reviews">
     <p class="eyebrow">Loved by our customers</p>
     <h2>Sweet Words from <em>Happy Customers</em></h2>
 
     <div class="reviews-grid">
 
+      <!-- Card 1 — Featured (spans 2 columns on wider screens) -->
       <div class="review-card featured">
         <span class="featured-badge">Top review</span>
         <span class="quote-mark">"</span>
@@ -697,7 +713,6 @@
           You can genuinely feel the homemade touch in every bite.
           This isn't just food — it's comfort wrapped in chocolate.
         </p>
-
         <div class="reviewer">
           <div class="reviewer-avatar">KS</div>
           <div>
@@ -705,111 +720,114 @@
             <p class="reviewer-location">Krishnagiri</p>
           </div>
         </div>
-
-        <div class="review-card">
-          <span class="quote-mark">"</span>
-          <div class="stars">★★★★★</div>
-          <p class="review-text">
-            Ordered a birthday cake and everyone loved it.
-            Beautiful presentation and amazing taste!
-          </p>
-
-          <div class="reviewer">
-            <div class="reviewer-avatar">RM</div>
-            <div>
-              <p class="reviewer-name">Rahul M.</p>
-              <p class="reviewer-location">Krishnagiri</p>
-            </div>
-
-            <div class="review-card">
-              <span class="quote-mark">"</span>
-              <div class="stars">★★★★★</div>
-              <p class="review-text">
-                One of the best homemade dessert brands here.
-                Fresh, soft, and perfectly balanced sweetness.
-              </p>
-
-              <div class="reviewer">
-                <div class="reviewer-avatar">DR</div>
-                <div>
-                  <p class="reviewer-name">Divya R.</p>
-                  <p class="reviewer-location">Krishnagiri</p>
-                </div>
-
-                <div class="review-card">
-                  <span class="quote-mark">"</span>
-                  <div class="stars">★★★★★</div>
-                  <p class="review-text">
-                    The cookies tasted just like homemade treats from childhood.
-                    Soft, fresh and absolutely comforting.
-                  </p>
-
-                  <div class="reviewer">
-                    <div class="reviewer-avatar">AK</div>
-                    <div>
-                      <p class="reviewer-name">Ananya K.</p>
-                      <p class="reviewer-location">Krishnagiri</p>
-                    </div>
-
-                  </div>
-
-                  <div class="review-card">
-                    <span class="quote-mark">"</span>
-                    <div class="stars">★★★★★</div>
-                    <p class="review-text">
-                      Brownie Bliss never disappoints.
-                      Every dessert feels thoughtfully crafted and beautifully packed.
-                    </p>
-
-                    <div class="reviewer">
-                      <div class="reviewer-avatar">SP</div>
-                      <div>
-                        <p class="reviewer-name">Sriram P.</p>
-                        <p class="reviewer-location">Krishnagiri</p>
-                      </div>
-                      <h3
-                        style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">
-                        Share Your Experience</h3>
-                      <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love
-                        to hear your thoughts and suggestions.</p>
-
-                      <form
-                        onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();"
-                        style="display: inline-block;">
-                        <button class="hero-cta premium-write-btn" type="submit">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" style="margin-right: 4px;">
-                            <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round"
-                              stroke-linejoin="round" />
-                          </svg>
-                          Write a Review
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-
-                </div>
-  </section>
-
-    <div id="reviewModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onClick="closeReviewModal()">&times;</span>
-
-        <h2>Write a review</h2>
-
-        <form id="reviewForm">
-          <textarea id="reviewText"
-          placeholder="Write your review here..."
-          required></textarea>
-
-          <button type="submit" class="submit-btn">Submit Review</button>
-        </form>
       </div>
+
+      <!-- Card 2 -->
+      <div class="review-card">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="review-text">
+          Ordered a birthday cake and everyone loved it.
+          Beautiful presentation and amazing taste!
+        </p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">RM</div>
+          <div>
+            <p class="reviewer-name">Rahul M.</p>
+            <p class="reviewer-location">Krishnagiri</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="review-card">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="review-text">
+          One of the best homemade dessert brands here.
+          Fresh, soft, and perfectly balanced sweetness.
+        </p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">DR</div>
+          <div>
+            <p class="reviewer-name">Divya R.</p>
+            <p class="reviewer-location">Krishnagiri</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="review-card">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="review-text">
+          The cookies tasted just like homemade treats from childhood.
+          Soft, fresh and absolutely comforting.
+        </p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">AK</div>
+          <div>
+            <p class="reviewer-name">Ananya K.</p>
+            <p class="reviewer-location">Krishnagiri</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="review-card">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="review-text">
+          Brownie Bliss never disappoints.
+          Every dessert feels thoughtfully crafted and beautifully packed.
+        </p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">SP</div>
+          <div>
+            <p class="reviewer-name">Sriram P.</p>
+            <p class="reviewer-location">Krishnagiri</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-      </div>
-    </section>
+    <!-- Write a Review CTA -->
+    <div style="margin-top: 40px; text-align: center;">
+      <h3
+        style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">
+        Share Your Experience</h3>
+      <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love
+        to hear your thoughts and suggestions.</p>
+      <form
+        onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();"
+        style="display: inline-block;">
+        <button class="hero-cta premium-write-btn" type="submit">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" style="margin-right: 4px;">
+            <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Write a Review
+        </button>
+      </form>
+    </div>
+
+  </section>
+
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onClick="closeReviewModal()">&times;</span>
+      <h2>Write a review</h2>
+      <form id="reviewForm">
+        <textarea id="reviewText"
+        placeholder="Write your review here..."
+        required></textarea>
+        <button type="submit" class="submit-btn">Submit Review</button>
+      </form>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer id="contact">
@@ -879,83 +897,90 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+
+  <!-- =====================================================
+       FIX 3 (Root cause): The original inline <script> block
+       began with a multi-line comment  /* ... BROWNIE BLISS
+       ANIMATED CURSOR  but was never closed with */  before
+       the actual JS code began. This caused the entire cursor
+       JS to be treated as a comment and never execute, while
+       the unclosed comment also confused some parsers into
+       rendering artefacts. The fix: properly close the
+       opening comment block before the JS code starts.
+  ====================================================== -->
   <!-- Animated Cursor -->
-<div id="bb-cursor"></div>
-<script>
-  /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
+  <div id="bb-cursor"></div>
+  <script>
+    /* =========================================
+       BROWNIE BLISS ANIMATED CURSOR
+    ========================================= */
 
-const bbCursor = document.getElementById("bb-cursor");
+    const bbCursor = document.getElementById("bb-cursor");
 
-let mouseX = 0;
-let mouseY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
 
-let currentX = 0;
-let currentY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
-/* Track Mouse */
+    /* Track Mouse */
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
+    /* Smooth Cursor Animation */
+    function animateCursor() {
+      currentX += (mouseX - currentX) * 0.15;
+      currentY += (mouseY - currentY) * 0.15;
 
-/* Smooth Cursor Animation */
+      bbCursor.style.left = currentX + "px";
+      bbCursor.style.top = currentY + "px";
 
-function animateCursor() {
-  currentX += (mouseX - currentX) * 0.15;
-  currentY += (mouseY - currentY) * 0.15;
+      requestAnimationFrame(animateCursor);
+    }
 
-  bbCursor.style.left = currentX + "px";
-  bbCursor.style.top = currentY + "px";
+    animateCursor();
 
-  requestAnimationFrame(animateCursor);
-}
+    /* Hover Effect */
+    document.querySelectorAll(
+      "a, button, input, textarea, select, .hero-card, .review-card"
+    ).forEach((el) => {
 
-animateCursor();
+      el.addEventListener("mouseenter", () => {
+        bbCursor.classList.add("hover");
+      });
 
-/* Hover Effect */
+      el.addEventListener("mouseleave", () => {
+        bbCursor.classList.remove("hover");
+      });
 
-document.querySelectorAll(
-  "a, button, input, textarea, select, .hero-card, .review-card"
-).forEach((el) => {
+    });
 
-  el.addEventListener("mouseenter", () => {
-    bbCursor.classList.add("hover");
-  });
+    /* Scroll Animation */
+    let scrollTimer;
 
-  el.addEventListener("mouseleave", () => {
-    bbCursor.classList.remove("hover");
-  });
+    window.addEventListener("scroll", () => {
 
-});
+      bbCursor.classList.add("scroll-glow");
 
-/* Scroll Animation */
+      clearTimeout(scrollTimer);
 
-let scrollTimer;
+      scrollTimer = setTimeout(() => {
+        bbCursor.classList.remove("scroll-glow");
+      }, 180);
 
-window.addEventListener("scroll", () => {
+    });
 
-  bbCursor.classList.add("scroll-glow");
+    /* Hide when mouse leaves window */
+    document.addEventListener("mouseleave", () => {
+      bbCursor.style.opacity = "0";
+    });
 
-  clearTimeout(scrollTimer);
-
-  scrollTimer = setTimeout(() => {
-    bbCursor.classList.remove("scroll-glow");
-  }, 180);
-
-});
-
-/* Hide when mouse leaves window */
-
-document.addEventListener("mouseleave", () => {
-  bbCursor.style.opacity = "0";
-});
-
-document.addEventListener("mouseenter", () => {
-  bbCursor.style.opacity = "1";
-});
-</script>
+    document.addEventListener("mouseenter", () => {
+      bbCursor.style.opacity = "1";
+    });
+  </script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 
