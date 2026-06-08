@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--brown-mid);
+    color: var(--cream);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.container {
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 6rem;
+    color: var(--gold);
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--gold);
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.error-card{
+    background: rgba(255,255,255,0.08);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-width: 500px;
+    width: 90%;
+     transition: transform 0.3s ease;
+     font-family: "Playfair Display", serif;
+}
+.error-card:hover{
+    transform: translateY(-5px);
+}
+
+.btn{
+    transition: 0.3s;
+}
+
+.btn:hover{
+    /* transform: translateY(-3px); */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(212,175,55,0.3);
+}
+
+.cookie{
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle,
+        transparent 40%,
+        rgba(0,0,0,0.25) 100%
+    );
+}
+
+.buttons{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .cookie {
+        font-size: 3rem;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 80%;
+    }
+}
+
