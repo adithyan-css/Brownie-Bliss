@@ -1,15 +1,9 @@
 const express = require('express');
-
 const rateLimit = require('express-rate-limit');
-
 const router = express.Router();
-
 const adminAuth = require('../../middlewares/adminAuth');
-
 const validate = require('../middlewares/validate');
-
 const orderSchema = require('../validators/orderValidator');
-
 const {
   createOrder,
   getAllOrders,
@@ -21,17 +15,12 @@ const {
 
 const orderCreationRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-
   max: 10,
-
   standardHeaders: true,
-
   legacyHeaders: false,
-
   message: {
     success: false,
-    message:
-      'Too many order requests from this IP, please try again after 15 minutes',
+    message: 'Too many requests, please try again later',
   },
 });
 
