@@ -17,7 +17,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Security Enhancements
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'img-src': ["'self'", 'data:', 'https:'],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'script-src-attr': ["'unsafe-inline'"],
+      },
+    },
+  })
+);
 
 // Restrict CORS origins dynamically
 const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
@@ -44,12 +55,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────
 app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
-  }
+  await connectDB();
+  next();
 });
 
 // ─── API ROUTES ─────────────────────────────────────────────────────────────────
@@ -88,9 +95,10 @@ function startServer(port) {
   });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
   startServer(PORT);
 }
 
 module.exports = app;
+module.exports.app = app;
 module.exports.handler = serverless(app);

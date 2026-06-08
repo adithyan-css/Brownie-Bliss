@@ -1,8 +1,24 @@
 const axios = require('axios');
 const Otp = require('../models/Otp');
+const { isDbReady } = require('../config/db');
+
+const memoryOtps = [];
+const SMS_PLACEHOLDER_KEYS = new Set([
+  'your_actual_api_key_here',
+  'your_fast2sms_api_key_here',
+]);
 
 function generateOTP() {
   return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+function cleanupMemoryOtps() {
+  const now = Date.now();
+  for (let i = memoryOtps.length - 1; i >= 0; i -= 1) {
+    if (memoryOtps[i].expires_at.getTime() <= now || memoryOtps[i].used) {
+      memoryOtps.splice(i, 1);
+    }
+  }
 }
 
 async function sendOtp(req, res) {
@@ -13,15 +29,22 @@ async function sendOtp(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid phone number' });
     }
 
-    await Otp.updateMany({ phone, used: false }, { used: true });
-
     const otp = generateOTP();
     const expires_at = new Date(Date.now() + 5 * 60 * 1000);
 
-    await Otp.create({ phone, otp, expires_at });
+    if (isDbReady()) {
+      await Otp.updateMany({ phone, used: false }, { used: true });
+      await Otp.create({ phone, otp, expires_at });
+    } else {
+      cleanupMemoryOtps();
+      memoryOtps.forEach((record) => {
+        if (record.phone === phone && !record.used) record.used = true;
+      });
+      memoryOtps.push({ phone, otp, expires_at, used: false });
+    }
 
     const apiKey = process.env.FAST2SMS_API_KEY;
-    if (apiKey && apiKey !== 'your_actual_api_key_here') {
+    if (apiKey && !SMS_PLACEHOLDER_KEYS.has(apiKey)) {
       try {
         await axios.get('https://www.fast2sms.com/dev/bulkV2', {
           params: { route: 'otp', variables_values: otp, numbers: phone },
@@ -46,19 +69,29 @@ async function verifyOtp(req, res) {
   try {
     const { phone, otp } = req.body;
 
-    const record = await Otp.findOne({
-      phone,
-      otp,
-      used: false,
-      expires_at: { $gt: new Date() },
-    }).sort({ created_at: -1 });
+    let record;
+    if (isDbReady()) {
+      record = await Otp.findOne({
+        phone,
+        otp,
+        used: false,
+        expires_at: { $gt: new Date() },
+      }).sort({ created_at: -1 });
+    } else {
+      cleanupMemoryOtps();
+      record = memoryOtps
+        .filter((item) => item.phone === phone && item.otp === otp && !item.used)
+        .sort((a, b) => b.expires_at - a.expires_at)[0];
+    }
 
     if (!record) {
       return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
     }
 
     record.used = true;
-    await record.save();
+    if (isDbReady()) {
+      await record.save();
+    }
 
     res.json({ success: true, message: 'OTP verified' });
   } catch (err) {
