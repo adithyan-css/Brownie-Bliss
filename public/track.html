@@ -29,7 +29,6 @@
     <!-- HEADER -->
     <header>
         <div class="header-inner">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
             <a href="index.html" class="logo">
                 <span class="logo-name">Brownie Bliss</span>
                 <span class="logo-sub">Homemade Treats</span>
@@ -42,6 +41,7 @@
                 <a href="index.html#contact">Contact</a>
                 <a href="track.html">Track Order</a>
             </nav>
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open navigation menu">☰</button>
             <div class="header-actions">
                 <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
                     aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -54,6 +54,14 @@
         </div>
 
     </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home">Home</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="favourites.html">Favourites</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="track.html">Track Order</a>
+    </div>
 
     <!-- HERO -->
     <section class="premium-hero">
@@ -109,8 +117,8 @@
             <div class="hero-image-card">
 
                 <img
-                    src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200"
-                    alt="Cake">
+                    src="assets/dutch_truffle.png"
+                    alt="Dutch truffle chocolate cake">
 
             </div>
 
@@ -372,6 +380,7 @@
     </footer>
 
     <!-- SCRIPT -->
+    <script src="script.js"></script>
     <script>
 
 function trackOrder(){
