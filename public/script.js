@@ -1225,23 +1225,74 @@ function injectCheckoutModal() {
 }
 
 function openReviewModal(){
-  document.getElementById("reviewModal").style.display="flex";
+  const modal = document.getElementById("reviewModal");
+  if (modal) {
+    modal.classList.add('open');
+  }
 }
 
 function closeReviewModal(){
-  document.getElementById("reviewModal").style.display="none";
+  const modal = document.getElementById("reviewModal");
+  if (modal) {
+    modal.classList.remove('open');
+  }
 }
 
-document.getElementById("reviewForm").addEventListener("submit", function(e){
-  e.preventDefault();
+function setRating(rating) {
+  const starContainer = document.getElementById('modalStarRating');
+  starContainer.setAttribute('data-rating', rating);
+  
+  const stars = starContainer.querySelectorAll('span');
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.style.color = 'var(--gold)';
+    } else {
+      star.style.color = 'var(--cream-dark)';
+    }
+  });
+}
 
-  const review = document.getElementById("reviewText").value;
+function submitReview() {
+  const name = document.getElementById('reviewerName').value.trim();
+  const review = document.getElementById('reviewText').value.trim();
+  const rating = document.getElementById('modalStarRating').getAttribute('data-rating') || '4';
 
-  console.log("Review submitted: ", review);
+  if (!name) {
+    showToast('Please enter your name');
+    return;
+  }
 
-  showToast("Thank you for your feedback!");
-  this.reset();
+  if (!review) {
+    showToast('Please write a review');
+    return;
+  }
+
+  console.log("Review submitted:", { name, review, rating });
+  showToast(`Thank you for your ${rating}-star review! ⭐`);
+  
+  document.getElementById('reviewForm').reset();
+  setRating(4); // Reset to default 4 stars
   closeReviewModal();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const reviewForm = document.getElementById("reviewForm");
+  if (reviewForm) {
+    reviewForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      submitReview();
+    });
+  }
+
+  // Close modal when clicking on backdrop
+  const modal = document.getElementById("reviewModal");
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeReviewModal();
+      }
+    });
+  }
 });
 
 function openCheckout() {
