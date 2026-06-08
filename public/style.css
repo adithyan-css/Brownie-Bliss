@@ -4597,13 +4597,21 @@ html.dark .theme-toggle-btn:hover {
 
 /* LEFT */
 
+.contact-header{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+
 .contact-desc{
   font-family:'Cormorant Garamond', serif;
-  font-size:28px;
-  line-height:1.7;
+  font-size:20px;
+  line-height:1.8;
   color:#5c5148;
-
-  margin:30px 0 60px;
+  margin:20px 0 40px;
+  max-width:600px;
 }
 
 /* INFO GRID */
@@ -11318,6 +11326,7 @@ html.dark .copy-btn:hover {
   background: var(--gold);
   color: var(--brown);
   border-color: var(--gold);
+}
 /* Navbar Container */
 .navbar {
   display: flex;
