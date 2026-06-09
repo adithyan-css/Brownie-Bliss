@@ -208,16 +208,60 @@ function toggleFavourite(type, item) {
   renderFavouritesPage();
 }
 
+function encodeFavouriteItem(item) {
+  return encodeURIComponent(JSON.stringify(item));
+}
+
+function getFavouriteItemFromButton(btn) {
+  if (btn.dataset.favItem) {
+    try {
+      return JSON.parse(decodeURIComponent(btn.dataset.favItem));
+    } catch (e) {
+      console.error('Error parsing favourite item data:', e);
+    }
+  }
+
+  if (btn.dataset.favType === 'bakeries' && btn.dataset.favId === BROWNIE_BLISS_BAKERY.id) {
+    return BROWNIE_BLISS_BAKERY;
+  }
+
+  if (btn.id === 'birthdayFavoriteBtn') {
+    return getBirthdayFavouriteItem();
+  }
+
+  return null;
+}
+
+function initFavouriteClickHandlers() {
+  document.addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-fav-type][data-fav-id]');
+    if (!btn) return;
+
+    const item = getFavouriteItemFromButton(btn);
+    if (!item) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFavourite(btn.dataset.favType, item);
+  });
+}
+
 function updateFavouriteButtons(type, id) {
   document
     .querySelectorAll(
-      `.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`
+      `.favorite-btn[data-fav-type="${type}"][data-fav-id="${id}"], .hero-favourite-btn[data-fav-type="${type}"][data-fav-id="${id}"]`
     )
     .forEach((btn) => {
       const active = isFavourite(type, id);
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-      btn.innerHTML = active ? '&hearts;' : '&#9825;';
+      btn.setAttribute(
+        'title',
+        active ? 'Remove from favourites' : 'Add to favourites'
+      );
+      btn.innerHTML = btn.classList.contains('hero-favourite-btn')
+        ? `${active ? '&hearts;' : '&#9825;'} Favourite Bakery`
+        : active ? '&hearts;' : '&#9825;';
     });
 }
 
@@ -268,7 +312,8 @@ function renderFavouritesPage() {
           <h3>${bakery.name}</h3>
           <p>${bakery.location || ''}</p>
           <button class="add-to-cart favourite-remove" type="button"
-            onclick='toggleFavourite("bakeries", ${JSON.stringify(bakery)})'>
+            data-fav-type="bakeries" data-fav-id="${bakery.id}"
+            data-fav-item="${encodeFavouriteItem(bakery)}">
             Remove Favourite
           </button>
         </div>
@@ -288,9 +333,9 @@ function renderFavouritesPage() {
           <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
           <button class="favorite-btn active" type="button"
             data-fav-type="dishes" data-fav-id="${dish.id}"
+            data-fav-item="${encodeFavouriteItem(dish)}"
             aria-label="Remove ${dish.name} from favourites" aria-pressed="true"
-            title="Remove from favourites"
-            onclick='toggleFavourite("dishes", ${JSON.stringify(dish)})'>
+            title="Remove from favourites">
             &hearts;
           </button>
         </div>
@@ -709,10 +754,10 @@ function renderRecentSearches() {
                     type="button"
                     data-fav-type="dishes"
                     data-fav-id="${p.id}"
+                    data-fav-item="${encodeFavouriteItem(p)}"
                     aria-label="Toggle ${p.name} favourite"
                     aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
+                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}">
                     ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
                 </button>
                 ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
@@ -799,9 +844,9 @@ function filterProducts(category = 'all', btn = null) {
         type="button"
         data-fav-type="dishes"
         data-fav-id="${p.id}"
+        data-fav-item="${encodeFavouriteItem(p)}"
         aria-label="Toggle favourite"
         aria-pressed="${isFavourite('dishes', p.id)}"
-        onclick='toggleFavourite("dishes", ${JSON.stringify(p)})'
       >
         ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
       </button>
@@ -935,6 +980,7 @@ function updateBirthdayFavouriteButton() {
 
   btn.dataset.favType = 'dishes';
   btn.dataset.favId = item.id;
+  btn.dataset.favItem = encodeFavouriteItem(item);
   btn.classList.toggle('active', active);
   btn.setAttribute('aria-pressed', active ? 'true' : 'false');
   btn.setAttribute(
@@ -1232,17 +1278,20 @@ function closeReviewModal(){
   document.getElementById("reviewModal").style.display="none";
 }
 
-document.getElementById("reviewForm").addEventListener("submit", function(e){
-  e.preventDefault();
+const reviewForm = document.getElementById("reviewForm");
+if (reviewForm) {
+  reviewForm.addEventListener("submit", function(e){
+    e.preventDefault();
 
-  const review = document.getElementById("reviewText").value;
+    const review = document.getElementById("reviewText").value;
 
-  console.log("Review submitted: ", review);
+    console.log("Review submitted: ", review);
 
-  showToast("Thank you for your feedback!");
-  this.reset();
-  closeReviewModal();
-});
+    showToast("Thank you for your feedback!");
+    this.reset();
+    closeReviewModal();
+  });
+}
 
 function openCheckout() {
   if (cart.length === 0) {
@@ -1572,6 +1621,7 @@ function renderOrderDetails(order) {
 // --- INIT & SCROLL EVENT ---
 document.addEventListener('DOMContentLoaded', async () => {
   applyTheme(localStorage.getItem('bb_theme') || 'light');
+  initFavouriteClickHandlers();
   updateCartUI();
   updateFavouritesCount();
   renderFavouritesPage();
