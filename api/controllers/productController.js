@@ -44,12 +44,10 @@ async function getAllProducts(req, res) {
 async function createProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
 const {
   type,
@@ -62,6 +60,16 @@ const {
   emoji,
   img,
 } = req.body;
+
+    const sanitizedName = name.trim();
+
+    const sanitizedCategory = category?.trim();
+
+    const sanitizedEmoji = emoji?.trim();
+
+    const sanitizedImg = img?.trim();
+
+    const sanitizedDescription = description?.trim();
 
     if (!type || !name || price === undefined) {
       return res
@@ -94,6 +102,7 @@ const {
       emoji,
       img,
     });
+
     res.json({ success: true, product });
   } catch (err) {
     console.error(err);
@@ -104,19 +113,17 @@ const {
 async function updateProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
     const {
       price, name, img, description, dummyShop, location,
     } = req.body;
     const updateData = {};
 
-    if (price !== undefined && !isNaN(price) && price >= 0)
+    if (price !== undefined && !isNaN(price) && Number(price) > 0) {
       updateData.price = Number(price);
     if (name !== undefined && name.trim() !== '') updateData.name = name.trim();
     if (img !== undefined) updateData.img = img.trim();
@@ -125,17 +132,23 @@ async function updateProduct(req, res) {
     if (location !== undefined) updateData.location = String(location).trim();
 
     if (Object.keys(updateData).length === 0) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: 'No valid fields provided for update',
-        });
+      return res.status(400).json({
+        success: false,
+        message: 'No valid fields provided for update',
+      });
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: updateData,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     if (!product)
       return res
         .status(404)
@@ -151,12 +164,10 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
   try {
     if (!isDbReady()) {
-      return res
-        .status(503)
-        .json({
-          success: false,
-          message: 'Product admin requires MongoDB (set MONGO_URI).',
-        });
+      return res.status(503).json({
+        success: false,
+        message: 'Product admin requires MongoDB (set MONGO_URI).',
+      });
     }
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product)

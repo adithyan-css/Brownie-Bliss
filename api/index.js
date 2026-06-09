@@ -1,13 +1,17 @@
 require('dotenv').config();
-
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
 const serverless = require('serverless-http');
+
+const { connectDB } = require('./config/db');
+const adminRoutes = require('./routes/adminRoutes');
+const otpRoutes = require('./routes/otpRoutes');
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const adminAuth = require('../middlewares/adminAuth');
+const { getStats } = require('./controllers/orderController');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -104,34 +108,20 @@ const orderItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const orderSchema = new mongoose.Schema(
-  {
-    order_id: { type: String, unique: true, required: true },
-    customer_name: { type: String, required: true },
-    phone: { type: String, required: true },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    pincode: { type: String, required: true },
-    items: { type: [orderItemSchema], required: true },
-    total: { type: Number, required: true },
-    status: { type: String, enum: ORDER_STATUSES, default: 'pending' },
-    payment_status: {
-      type: String,
-      enum: ['unpaid', 'paid'],
-      default: 'unpaid',
-    },
-    notes: { type: String, default: '' },
-    confirmed_at: { type: Date, default: null },
-  },
-  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
-);
-
-const otpSchema = new mongoose.Schema(
-  {
-    phone: { type: String, required: true },
-    otp: { type: String, required: true },
-    expires_at: { type: Date, required: true },
-    used: { type: Boolean, default: false },
+// Restrict CORS origins dynamically
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5173'
+];
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   { timestamps: { createdAt: 'created_at' } }
 );
@@ -175,19 +165,13 @@ function generateOTP() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
+// ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────
 app.use(async (req, res, next) => {
-  if (req.path === '/' || !req.path.startsWith('/api')) return next();
-
   try {
     await connectDB();
     next();
   } catch (err) {
-    res
-      .status(503)
-      .json({
-        success: false,
-        message: `Database connection failed: ${err.message}`,
-      });
+    res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
   }
 });
 
@@ -757,16 +741,18 @@ app.get('/api/stats', adminAuth, async (req, res) => {
   }
 });
 
+// ─── STATIC FALLBACK ────────────────────────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'Something went wrong!' });
 });
 
-// ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
+// ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
@@ -775,23 +761,18 @@ function startServer(port) {
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE' && !process.env.PORT) {
       const nextPort = Number(port) + 1;
-
       console.warn(`⚠️ Port ${port} is already in use. Trying ${nextPort}...`);
-
       startServer(nextPort);
       return;
     }
-
     console.error('❌ Server startup error:', err);
     process.exit(1);
   });
 }
 
-// ─── START LOCAL SERVER ────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
   startServer(PORT);
 }
 
-// ─── EXPORTS ───────────────────────────────────────────────────────────────────
 module.exports = app;
 module.exports.handler = serverless(app);
