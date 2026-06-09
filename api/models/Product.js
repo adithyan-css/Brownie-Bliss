@@ -5,6 +5,9 @@ const productSchema = new mongoose.Schema({
   id_ref: { type: mongoose.Schema.Types.Mixed },
   name: { type: String, required: true },
   category: { type: String },
+  description: { type: String, default: '' },
+  dummyShop: { type: String, default: '' },
+  location: { type: String, default: '' },
   price: { type: Number, required: true },
   emoji: { type: String },
   img: { type: String },
@@ -37,19 +40,17 @@ async function seedProducts() {
     { type: 'birthday', id_ref: 'Cheesecake', name: 'Cheesecake', price: 1200, emoji: '🧀', img: 'https://www.inspiredtaste.net/wp-content/uploads/2024/03/New-York-Cheesecake-Recipe-1.jpg' },
   ];
 
-  if (count === 0) {
-    await Product.insertMany(initialProducts);
-    console.log('🌱 Seeded initial products to database');
-  } else {
-    // Dynamically update existing products if they use outdated/broken image links
-    for (const item of initialProducts) {
-      await Product.updateOne(
-        { name: item.name, type: item.type },
-        { $set: { img: item.img } }
-      );
-    }
-    console.log('🌱 Synced and updated database product images');
-  }
+  const shops = ['Bliss Central Kitchen', 'Choco Street Counter', 'Brownie Hub Express', 'Dessert Dock', 'Cookie Corner'];
+  const locations = ['Krishnagiri', 'Hosur', 'Dharmapuri', 'Salem'];
+  const enrichedProducts = initialProducts.map((product, index) => ({
+    ...product,
+    description: `${product.name} made with quality ingredients and a signature Brownie Bliss taste profile.`,
+    dummyShop: shops[index % shops.length],
+    location: locations[index % locations.length],
+  }));
+
+  await Product.insertMany(enrichedProducts);
+  console.log('🌱 Seeded initial products to database');
 }
 
 module.exports = Product;

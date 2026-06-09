@@ -1670,216 +1670,38 @@
           <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
           <span>Made with ❤️ in Krishnagiri</span>
         </div>
-      `).join('');
-    }
-
-    window.addToCartFromProducts = function(id, name, price) {
-      if (typeof window.addToCart === 'function') {
-        window.addToCart({ id: id, name: name, price: price, quantity: 1 });
-        if (typeof showToast === 'function') showToast(`${name} added to cart!`);
-      } else {
-        alert(`Added to cart: ${name} - ₹${price}`);
-      }
-      if (typeof updateCartBadge === 'function') updateCartBadge();
-    };
-
-    document.addEventListener('DOMContentLoaded', function() {
-      renderAllProducts();
-      if (typeof updateCartBadge === 'function') updateCartBadge();
-      if (typeof updateThemeIcon === 'function') updateThemeIcon();
-    });
-  </script>
-  <script>
-  function searchProducts() {
-
-    const input = document
-      .getElementById("searchInput")
-      .value
-      .toLowerCase();
-
-    const filteredProducts = productsList.filter(product =>
-      product.name.toLowerCase().includes(input) ||
-      product.category.toLowerCase().includes(input) ||
-      product.desc.toLowerCase().includes(input)
-    );
-
-    renderFilteredProducts(filteredProducts);
-  }
-
-  function renderFilteredProducts(products) {
-
-    const container = document.getElementById('allProductsGrid');
-
-    container.innerHTML = products.map(p => `
-      <div class="product-card">
-        <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy">
-
-        <div class="product-info">
-          <div class="product-title">${p.name}</div>
-
-          <div class="product-category">${p.category}</div>
-
-          <div class="product-desc">${p.desc}</div>
-
-          <div class="product-price">₹${p.price}</div>
-
-          <button
-            class="add-to-cart-btn"
-            onclick="addToCartFromProducts(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})"
-          >
-            Add to Cart 🛒
-          </button>
         </div>
-      </div>
-    `).join('');
-  }
-</script>
-<script>
+        </footer>
 
-const themeToggle = document.getElementById("themeToggle");
+        <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 
-themeToggle.addEventListener("click", () => {
+        <div class="cart-sidebar" id="cartSidebar">
+          <div class="cart-header">
+            <span class="cart-title">Your Cart 🛒</span>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+          </div>
 
-    document.body.classList.toggle("dark-mode");
+          <div class="cart-items" id="cartItems"></div>
 
-    // Save theme in localStorage
+          <div class="cart-footer" id="cartFooter" style="display:none">
+            <div class="cart-total">
+              <span class="cart-total-label">Total Amount</span>
+              <span class="cart-total-amt" id="cartTotal">₹0</span>
+            </div>
 
-    if (document.body.classList.contains("dark-mode")) {
+            <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+              💬 Order via WhatsApp
+            </button>
 
-        localStorage.setItem("theme", "dark");
-
-        themeToggle.innerHTML = "☀️";
-
-    } 
-    
-    else {
-
-        localStorage.setItem("theme", "light");
-
-        themeToggle.innerHTML = "🌙";
-    }
-});
-
-
-// Load saved theme
-
-window.addEventListener("load", () => {
-
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "dark") {
-
-        document.body.classList.add("dark-mode");
-
-        themeToggle.innerHTML = "☀️";
-    }
-});
-
-</script>
-<div id="bb-cursor"></div>
-<script>
-  /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
-
-const bbCursor = document.getElementById("bb-cursor");
-
-let mouseX = 0;
-let mouseY = 0;
-
-let currentX = 0;
-let currentY = 0;
-
-/* Track Mouse */
-
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-/* Smooth Cursor Animation */
-
-function animateCursor() {
-  currentX += (mouseX - currentX) * 0.15;
-  currentY += (mouseY - currentY) * 0.15;
-
-  bbCursor.style.left = currentX + "px";
-  bbCursor.style.top = currentY + "px";
-
-  requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-/* Hover Effect */
-
-document.querySelectorAll(
-  "a, button, input, textarea, select, .hero-card, .review-card"
-).forEach((el) => {
-
-  el.addEventListener("mouseenter", () => {
-    bbCursor.classList.add("hover");
-  });
-
-  el.addEventListener("mouseleave", () => {
-    bbCursor.classList.remove("hover");
-  });
-
-});
-
-/* Scroll Animation */
-
-let scrollTimer;
-
-window.addEventListener("scroll", () => {
-
-  bbCursor.classList.add("scroll-glow");
-
-  clearTimeout(scrollTimer);
-
-  scrollTimer = setTimeout(() => {
-    bbCursor.classList.remove("scroll-glow");
-  }, 180);
-
-});
-
-/* Hide when mouse leaves window */
-
-document.addEventListener("mouseleave", () => {
-  bbCursor.style.opacity = "0";
-});
-
-document.addEventListener("mouseenter", () => {
-  bbCursor.style.opacity = "1";
-});
-</script>
-</body>
-</html>
-      </div>
-    </footer>
-
-    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-      <div class="cart-header">
-        <span class="cart-title">Your Cart 🛒</span>
-        <button class="cart-close" onclick="closeCart()">✕</button>
-      </div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="cart-footer" id="cartFooter" style="display: none">
-        <div class="cart-total">
-          <span class="cart-total-label">Total Amount</span>
-          <span class="cart-total-amt" id="cartTotal">₹0</span>
+            <p class="whatsapp-note">
+              You'll be redirected to WhatsApp to confirm your order
+            </p>
+          </div>
         </div>
-        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-          💬 &nbsp; Order via WhatsApp
-        </button>
-        <p class="whatsapp-note">
-          You'll be redirected to WhatsApp to confirm your order
-        </p>
-      </div>
-    </div>
 
-    <div class="toast" id="toast"></div>
+        <div class="toast" id="toast"></div>
 
-    <script src="script.js"></script>
-  </body>
+        <script src="script.js"></script>
+
+        </body>
 </html>
