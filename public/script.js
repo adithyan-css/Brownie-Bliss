@@ -113,6 +113,18 @@ const DEFAULT_BDAY_CAKES = {
   },
 };
 
+function dedupeProducts(productList) {
+  const seenIds = new Set();
+  return productList.filter((product) => {
+    const productId = product.id ?? product.id_ref ?? `${product.name}:${product.category}`;
+    if (seenIds.has(productId)) {
+      return false;
+    }
+    seenIds.add(productId);
+    return true;
+  });
+}
+
 function buildCatalogFromList(list) {
     if (!Array.isArray(list) || list.length === 0) {
         products = DEFAULT_PRODUCTS;
@@ -120,7 +132,7 @@ function buildCatalogFromList(list) {
         return;
     }
 
-    products = list
+    const standardProducts = list
         .filter(p => p.type === 'standard')
         .map(p => ({
             id: p.id_ref,
@@ -134,6 +146,8 @@ function buildCatalogFromList(list) {
             shelfLife: p.shelfLife || 'Best consumed within 3 days',
 
         }));
+
+    products = dedupeProducts(standardProducts);
 
     bdayCakes = {};
     list.filter(p => p.type === 'birthday').forEach(p => {
@@ -322,7 +336,7 @@ async function loadProducts() {
     const data = await res.json();
 
     if (data.success && Array.isArray(data.products) && data.products.length) {
-      products = data.products
+      const standardProducts = data.products
         .filter((p) => p.type === 'standard')
         .map((p) => ({
           id: p.id_ref,
@@ -337,6 +351,8 @@ async function loadProducts() {
             shelfLife: p.shelfLife || 'Best consumed within 3 days',
 
         }));
+
+      products = dedupeProducts(standardProducts);
 
       bdayCakes = {};
       const bd = data.products.filter((p) => p.type === 'birthday');
