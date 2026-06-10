@@ -1232,7 +1232,7 @@ function injectCheckoutModal() {
               </div>
             </div>
           </div>
-          <button class="whatsapp-btn" style="border-radius:0;" onclick="placeOrder()">
+          <button id="placeOrderBtn" class="whatsapp-btn" style="border-radius:0;" onclick="placeOrder()">
             Place Order &amp; Confirm via WhatsApp &rarr;
           </button>
         </div>
@@ -1460,6 +1460,12 @@ async function placeOrder() {
     total: orderTotal,
   };
 
+  const placeOrderBtn = document.getElementById('placeOrderBtn');
+  if (placeOrderBtn) {
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.textContent = '⏳ Placing order...';
+  }
+
   try {
     const res = await fetch(`${API_BASE}/orders`, {
       method: 'POST',
@@ -1483,6 +1489,11 @@ async function placeOrder() {
     }
   } catch {
     showToast('Error placing order. Please try again.');
+  } finally {
+    if (placeOrderBtn) {
+      placeOrderBtn.disabled = false;
+      placeOrderBtn.textContent = 'Place Order & Confirm via WhatsApp →';
+    }
   }
 }
 

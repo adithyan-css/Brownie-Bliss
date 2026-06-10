@@ -11247,6 +11247,15 @@ html.dark .toast {
   font-size: 15px;
 }
 
+.whatsapp-btn:disabled,
+.whatsapp-btn.disabled {
+  background: #b2e5c0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.85;
+}
+
 .legal-hero {
   padding: 140px 24px 80px;
   background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
