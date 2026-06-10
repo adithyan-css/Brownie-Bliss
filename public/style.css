@@ -364,6 +364,53 @@ nav a:hover {
   max-width: 100%;
 }
 
+.controls-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;   
+    justify-content: center !important; 
+    gap: 24px !important;              
+    margin: 40px auto !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+}
+.controls-container .search-section {
+    width: 450px !important;           
+    margin: 0 !important;   
+    display: flex !important;
+    align-items: center !important;           
+}
+.controls-container .search-box {
+    width: 100% !important;
+}
+.controls-container .price-filter {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;              
+    font-family: 'Playfair Display', Georgia, serif !important; /* Matches your premium serif headers */
+    color: #4a2c11 !important;
+    font-size: 1.05rem !important;
+    white-space: nowrap !important;
+}
+
+/* 5. Style the native dropdown element slightly so it looks premium */
+.controls-container .custom-price-filter {
+    padding: 10px 16px !important;       /* Balanced padding to match search height */
+    border: 1px solid #e8dec9 !important; /* Soft brown/gold border border */
+    border-radius: 30px !important;      /* Pill shape to flawlessly match the search input pill */
+    background-color: #ffffff !important; 
+    color: #4a2c11 !important;
+    font-family: inherit;
+    font-size: 0.95rem !important;
+    outline: none !important;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Subtle depth matching the search box */
+    transition: all 0.2s ease;
+}
+.controls-container .custom-price-filter:hover {
+    border-color: #c5a880 !important;
+    background-color: #fffbf7 !important;
+}
 /* VALUES STRIP */
 .values-strip {
   background: var(--brown-mid);
@@ -11474,4 +11521,6 @@ html.dark .copy-btn:hover {
     width: 24px;
     height: 24px;
   }
+}
+
 }
