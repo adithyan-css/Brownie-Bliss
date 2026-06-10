@@ -393,9 +393,14 @@ function normalizeCartItem(item) {
   const qty = Number(qtyValue);
   const normalizedQty = Number.isFinite(qty) && qty > 0 ? qty : 1;
 
+  const rawPrice = item.price ?? 0;
+  const parsedPrice = Number(String(rawPrice).replace(/[^0-9.-]+/g, ''));
+  const normalizedPrice = Number.isFinite(parsedPrice) && parsedPrice >= 0 ? parsedPrice : 0;
+
   const normalizedItem = {
     ...item,
     qty: normalizedQty,
+    price: normalizedPrice,
   };
 
   if ('quantity' in normalizedItem) {
@@ -403,6 +408,18 @@ function normalizeCartItem(item) {
   }
 
   return normalizedItem;
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, item) => {
+    const price = Number(item.price);
+    const qty = Number(item.qty);
+    return (
+      sum +
+      (Number.isFinite(price) ? price : 0) *
+      (Number.isFinite(qty) && qty > 0 ? qty : 0)
+    );
+  }, 0);
 }
 
 function loadCart() {
@@ -509,8 +526,9 @@ function updateCartUI() {
       })
       .join('');
     if (cartFooter) cartFooter.style.display = 'block';
-    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-    if (cartTotal) cartTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+    const total = getCartTotal();
+    const cartTotalEl = document.getElementById('cartTotal');
+    if (cartTotalEl) cartTotalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
   }
   updateCartBadge();
 }
