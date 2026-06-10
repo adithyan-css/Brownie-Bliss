@@ -52,22 +52,31 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: 2,
-    name: 'Dutch Truffle Delight',
-    category: 'cakes',
-    price: 950,
-    img: 'assets/dutch_truffle.png',
+    name: 'Chocolate Brownie',
+    category: 'brownies',
+    price: 250,
+    img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c',
     allergens: 'Contains milk, wheat, gluten',
-    shelfLife: 'Best consumed within 3 days',
+    shelfLife: 'Best consumed within 5 days',
   },
   {
     id: 3,
-    name: 'Pineapple Fresh Cream',
-    category: 'cakes',
-    price: 675,
-    img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
-    allergens: 'Contains milk, wheat, gluten',
-    shelfLife: 'Best consumed within 3 days',
+    name: 'Chocolate Chip Cookie',
+    category: 'cookies',
+    price: 120,
+    img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e',
+    allergens: 'Contains wheat, butter',
+    shelfLife: 'Best consumed within 7 days',
   },
+  {
+    id: 4,
+    name: 'Tiramisu Dessert',
+    category: 'desserts',
+    price: 350,
+    img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9',
+    allergens: 'Contains milk, eggs',
+    shelfLife: 'Best consumed within 2 days',
+  }
 ];
 
 const DEFAULT_BDAY_CAKES = {
@@ -75,9 +84,31 @@ const DEFAULT_BDAY_CAKES = {
     price: 850,
     img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
   },
+
   'Dutch Truffle': {
     price: 950,
     img: 'assets/dutch_truffle.png',
+  },
+
+  'Pineapple': {
+    price: 675,
+    img:  'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_400x400.jpg',
+  },
+
+  'Chocoholic': {
+    price: 990,
+    img: 'https://theobroma.in/cdn/shop/files/ChocoholicCakehalfkg_400x400.jpg?v=1711125918',
+  },
+  
+
+  'Black Forest': {
+    price: 875,
+    img: 'https://theobroma.in/cdn/shop/files/BlackForestCake.jpg?v=1750341419',
+  },
+
+  'Cheesecake': {
+    price: 1100,
+    img: 'https://theobroma.in/cdn/shop/files/FG0807_LotusBiscoffBentoCheesecake_300g_400x400.jpg?v=1770718506',
   },
 };
 
@@ -282,35 +313,7 @@ function renderFavouritesPage() {
         .join('') || '<p>No favourite dishes yet.</p>';
   }
 }
-function buildCatalogFromList(list) {
-  if (list && Array.isArray(list) && list.length) {
-    products = list
-      .filter((p) => p.type === 'standard')
-      .map((p) => ({
-        id: p.id_ref,
-        name: p.name,
-        category: p.category,
-        price: p.price,
-        emoji: p.emoji,
-        img: p.img,
-        description: p.description || '',
-         allergens: p.allergens || 'Contains milk,wheat,gluten',
-            shelfLife: p.shelfLife || 'Best consumed within 3 days',
-      }));
 
-    bdayCakes = {};
-    const bd = list.filter((p) => p.type === 'birthday');
-    bd.forEach((p) => {
-      bdayCakes[p.id_ref] = {
-        price: p.price,
-        emoji: p.emoji,
-        img: p.img,
-      };
-    });
-  } else {
-    useFallbackProducts();
-  }
-}
 
 async function loadProducts() {
   try {
@@ -362,10 +365,7 @@ async function loadProducts() {
  if (document.getElementById('cakePrice')) {
       calculateBdayPrice();
     }
-  } catch (e) {
-    console.error('Failed to load products:', e);
-    useFallbackProducts();
-  }
+
 }
 
 // --- CART STATE ---
@@ -879,13 +879,13 @@ function updateBirthdayCake(flavor) {
   }
 
   // Update active flavor button
-  document.querySelectorAll('.filter-pill').forEach((btn) => {
-    if (btn.textContent.trim() === flavor) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
+  document.querySelectorAll('.flavor-btn').forEach((btn) => {
+  if (btn.textContent.trim() === flavor) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+});
 
   calculateBdayPrice();
 }
@@ -953,6 +953,22 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
       ? orderTotal
       : lines.reduce((s, i) => s + Number(i.price) * Number(i.qty), 0);
 
+    // Empty input validation
+    if (!orderId) {
+        if (trackError) {
+            trackError.textContent = 'Please enter an Order ID';
+            trackError.classList.add('show');
+        }
+        return;
+    }
+    // Validate Order ID format
+    if (!/^ORD-\d+$/.test(orderId)) {
+        if (trackError) {
+            trackError.textContent = 'Invalid Order ID. Format should be ORD-XXXX';
+            trackError.classList.add('show');
+        }
+        return;
+    }
   const itemLines = lines
     .map((i) => {
       let line = `• ${i.name} × ${i.qty} = ₹${(
