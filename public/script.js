@@ -1158,7 +1158,18 @@ function injectCheckoutModal() {
             <label>Phone Number</label>
             <div class="phone-input-group">
               <span class="prefix">+91</span>
-              <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
+              <input
+                type="tel"
+                id="custPhone"
+                placeholder="10-digit number"
+                maxlength="10"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                required
+                autocomplete="tel"
+                oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number.')"
+                oninput="this.setCustomValidity('')"
+              >
             </div>
           </div>
           <button class="hero-cta" style="width:100%;margin-top:20px;" onclick="sendOTP()">
@@ -1371,6 +1382,12 @@ async function verifyOTP() {
 }
 
 function goToConfirm() {
+  if (!checkoutState.verified) {
+    showToast('Verify your phone number before reviewing your order.');
+    showCheckoutStep(2);
+    return;
+  }
+
   const addr = document.getElementById('custAddr').value.trim();
   const city = document.getElementById('custCity').value.trim();
   const pin = document.getElementById('custPin').value.trim();
@@ -1416,6 +1433,12 @@ function goToConfirm() {
 }
 
 async function placeOrder() {
+  if (!checkoutState.verified || !checkoutState.phone || checkoutState.phone.length !== 10 || !/^\d{10}$/.test(checkoutState.phone)) {
+    showToast('Please verify a valid 10-digit phone number before placing the order.');
+    showCheckoutStep(checkoutState.verified ? 4 : 2);
+    return;
+  }
+
   const itemsSnap = cart.map((i) => ({ ...i })); // snapshot before clearing
   const orderTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
