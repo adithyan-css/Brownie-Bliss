@@ -33,6 +33,7 @@ let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+const DEFAULT_PRODUCT_IMAGE = 'assets/image-placeholder.svg';
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -262,7 +263,7 @@ function renderFavouritesPage() {
         .map(
           (bakery) => `
       <article class="favourite-bakery-card">
-        <img src="${bakery.img}" alt="${bakery.name}">
+        <img src="${bakery.img || DEFAULT_PRODUCT_IMAGE}" alt="${bakery.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
         <div class="favourite-bakery-info">
           <div class="product-category">${bakery.category || ''}</div>
           <h3>${bakery.name}</h3>
@@ -285,7 +286,7 @@ function renderFavouritesPage() {
           (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
-          <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+          <img src="${dish.img || DEFAULT_PRODUCT_IMAGE}" alt="${dish.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
           <button class="favorite-btn active" type="button"
             data-fav-type="dishes" data-fav-id="${dish.id}"
             aria-label="Remove ${dish.name} from favourites" aria-pressed="true"
@@ -475,7 +476,7 @@ function updateCartUI() {
         }
         return `
             <div class="cart-item">
-                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+                <img src="${item.img || DEFAULT_PRODUCT_IMAGE}" alt="${item.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
@@ -798,7 +799,7 @@ function filterProducts(category = 'all', btn = null) {
 
     <div class="product-img-wrap">
 
-      <img src="${p.img}" alt="${p.name}">
+      <img src="${p.img || DEFAULT_PRODUCT_IMAGE}" alt="${p.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
 
       <button
         class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
