@@ -88,7 +88,7 @@ function startServer(port) {
   });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module) {
   startServer(PORT);
 }
 
