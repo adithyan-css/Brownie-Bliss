@@ -27,9 +27,9 @@
 <body>
 
     <!-- HEADER -->
-    <header>
+    <header >
         <div class="header-inner">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <button class="menu-toggle" onclick="Menu()">☰</button>
             <a href="index.html" class="logo">
                 <span class="logo-name">Brownie Bliss</span>
                 <span class="logo-sub">Homemade Treats</span>
@@ -54,7 +54,13 @@
         </div>
 
     </header>
-
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
     <!-- HERO -->
     <section class="premium-hero">
 
@@ -373,7 +379,7 @@
 
     <!-- SCRIPT -->
     <script>
-
+    
 function trackOrder(){
 
     const orderId =
