@@ -67,6 +67,43 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
+:root {
+  --color-primary: #4a2c0a;
+  --brown-mid: #3c1e14;
+  --color-accent: #d2691e;
+  --brand-red: #8b0000;
+  --gold: #d4af37;
+  --gold-light: #f4e4bc;
+  --cream: #fff9f2;
+  --cream-dark: #f5e8d0;
+  --text-dark: #1a0f08;
+  --text-mid: #4a2f1a;
+  --white: #fff;
+  --shadow-sm: 0 2px 4px rgba(26, 9, 5, 0.05);
+  --shadow-md: 0 10px 30px rgba(26, 9, 5, 0.1);
+  --shadow-lg: 0 20px 50px rgba(26, 9, 5, 0.15);
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --glass: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.2);
+      }
+
+      .dark {
+  --cream: #121212;
+  --cream-dark: #1e1e1e;
+  --white: #1a1a1a;
+
+  --text-dark: #f5f5f5;
+  --text-mid: #d1d1d1;
+
+  --brown-dark: #f5e6ca;
+  --brown-mid: #d6b98c;
+  --brown-warm: #e0b97f;
+
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
+      }
 
     *{
       margin:0;
@@ -107,21 +144,27 @@
     /* =========================
        NAVBAR
     ========================= */
-
+ 
     header{
-      position:fixed;
-      width:100%;
-      top:0;
-      z-index:1000;
-
-      backdrop-filter:blur(18px);
-
-      background:
-      rgba(255,250,244,0.92);
-
-      border-bottom:
-      1px solid rgba(0,0,0,0.05);
+    background: var(--white);
+    border-bottom: 1px solid var(--cream-dark);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(44, 24, 16, 0.08);
     }
+
+    .header-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 30px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        justify-content: space-between;
+
+      }
 
     .navbar{
       max-width:1450px;
@@ -135,23 +178,32 @@
     }
 
     .logo{
-      text-decoration:none;
+      display: flex;
+       flex-direction: column;
+      line-height: 1;
     }
 
-    .logo h1{
-      font-size:34px;
-      color:var(--dark);
-      font-family:'Cormorant Garamond',serif;
-      line-height:1;
-    }
+  
+.logo-name {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  }
 
-    .logo span{
-      color:var(--gold);
-      font-size:9px;
-      letter-spacing:5px;
-    }
+  
+ .logo-sub {
+   font-family: "Cormorant Garamond", serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 15px; 
+ }
 
-    nav{
+    header nav{
       display:flex;
       gap:38px;
     }
@@ -178,7 +230,7 @@
     }
 
     nav a:hover{
-      color:var(--gold);
+      color:var(--color-primary);
     }
 
     nav a:hover::after{
