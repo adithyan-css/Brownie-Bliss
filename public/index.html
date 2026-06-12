@@ -882,6 +882,7 @@
   <div class="toast" id="toast"></div>
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
   <script src="script.js"></script>
+
   <!-- Animated Cursor -->
 <div id="bb-cursor"></div>
 <script>
@@ -948,6 +949,10 @@ window.addEventListener("scroll", () => {
   }, 180);
 
 });
+
+document
+  .getElementById("cart-btn")
+  .addEventListener("click", toggleCart);
 
 /* Hide when mouse leaves window */
 
