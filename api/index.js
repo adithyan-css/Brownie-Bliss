@@ -64,11 +64,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+const errorHandler = require('./middlewares/errorHandler');
+
 // ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
-});
+app.use(errorHandler);
 
 // ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
 function startServer(port) {
