@@ -28,7 +28,7 @@
 
     <nav>
       <a href="index.html">Home</a>
-      <a href="about.html">About</a>
+      <a href="about.html" class="active">About</a>
       <a href="products.html">Products</a>
       <a href="birthday.html">Birthday Cakes</a>
       <a href="favourites.html">Favourites</a>
@@ -104,23 +104,14 @@
       z-index:9999;
     }
 
-    /* =========================
-       NAVBAR
-    ========================= */
-
     header{
-      position:fixed;
-      width:100%;
-      top:0;
-      z-index:1000;
-
-      backdrop-filter:blur(18px);
-
-      background:
-      rgba(255,250,244,0.92);
-
-      border-bottom:
-      1px solid rgba(0,0,0,0.05);
+      position: sticky;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: #ffffff;
+      border-bottom: 1px solid var(--cream);
+      box-shadow: 0 2px 20px rgba(44,24,16,0.08);
     }
 
     .navbar{
@@ -138,18 +129,10 @@
       text-decoration:none;
     }
 
-    .logo h1{
-      font-size:34px;
-      color:var(--dark);
-      font-family:'Cormorant Garamond',serif;
-      line-height:1;
-    }
-
-    .logo span{
-      color:var(--gold);
-      font-size:9px;
-      letter-spacing:5px;
-    }
+    <a href = "index.html" class="logo">
+     <span class="logo-name">Brownie Bliss</span>
+     <span class="logo-sub">Homemade Treats</span>
+    </a>
 
     nav{
       display:flex;
@@ -180,6 +163,15 @@
     nav a:hover{
       color:var(--gold);
     }
+    nav a.active {
+      color: var(--dark) !important;
+      font-weight: 700 !important;
+    }
+
+    nav a.active::after {
+      width: 100% !important;
+      background: var(--gold) !important;
+   }
 
     nav a:hover::after{
       width:100%;
