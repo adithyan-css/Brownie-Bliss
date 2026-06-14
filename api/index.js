@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
 const serverless = require('serverless-http');
 
 const { connectDB } = require('./config/db');
@@ -15,9 +16,30 @@ const { getStats } = require('./controllers/orderController');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── GLOBAL MIDDLEWARE ──────────────────────────────────────────────────────────
-app.use(cors());
-app.use(express.json());
+// Security Enhancements
+app.use(helmet());
+
+// Restrict CORS origins dynamically
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5173'
+];
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
+// Apply request body size limit
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ─── DB CONNECTION (per-request, serverless-safe) ───────────────────────────────

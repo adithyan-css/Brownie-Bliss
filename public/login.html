@@ -40,7 +40,7 @@
         <a href="about.html">About</a>
         <a href="index.html#products">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="contact.html">Contact</a>
         <a href="track.html">Track Order</a>
       </nav>
       <div class="header-actions">
@@ -238,5 +238,82 @@
       finally { btn.disabled = false; btn.textContent = 'Verify & Login →'; }
     }
   </script>
+  <script>
+    /* =========================================
+   BROWNIE BLISS ANIMATED CURSOR
+========================================= */
+
+const bbCursor = document.getElementById("bb-cursor");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let currentX = 0;
+let currentY = 0;
+
+/* Track Mouse */
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+/* Smooth Cursor Animation */
+
+function animateCursor() {
+  currentX += (mouseX - currentX) * 0.15;
+  currentY += (mouseY - currentY) * 0.15;
+
+  bbCursor.style.left = currentX + "px";
+  bbCursor.style.top = currentY + "px";
+
+  requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+
+/* Hover Effect */
+
+document.querySelectorAll(
+  "a, button, input, textarea, select, .hero-card, .review-card"
+).forEach((el) => {
+
+  el.addEventListener("mouseenter", () => {
+    bbCursor.classList.add("hover");
+  });
+
+  el.addEventListener("mouseleave", () => {
+    bbCursor.classList.remove("hover");
+  });
+
+});
+
+/* Scroll Animation */
+
+let scrollTimer;
+
+window.addEventListener("scroll", () => {
+
+  bbCursor.classList.add("scroll-glow");
+
+  clearTimeout(scrollTimer);
+
+  scrollTimer = setTimeout(() => {
+    bbCursor.classList.remove("scroll-glow");
+  }, 180);
+
+});
+
+/* Hide when mouse leaves window */
+
+document.addEventListener("mouseleave", () => {
+  bbCursor.style.opacity = "0";
+});
+
+document.addEventListener("mouseenter", () => {
+  bbCursor.style.opacity = "1";
+});
+  </script>
+  <div id="bb-cursor"></div>
 </body>
 </html>

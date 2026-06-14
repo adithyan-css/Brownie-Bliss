@@ -1,5 +1,296 @@
 <!doctype html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brownie Bliss — Our Full Range</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch(_) {}
+    })();
+  </script>
+  <style>
+    .all-products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 40px;
+      margin: 60px 0 80px;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+    }
+    .product-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .product-info {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--brown-dark);
+    }
+    .product-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .product-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      margin-bottom: 16px;
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 16px;
+    }
+    .add-to-cart-btn {
+      background: var(--gold);
+      border: none;
+      padding: 10px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+      width: 100%;
+      margin-top: auto;
+    }
+    .add-to-cart-btn:hover {
+      background: #c9a03d;
+    }
+    .page-header {
+      text-align: center;
+      padding: 60px 20px 20px;
+      background: var(--cream);
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--brown-dark);
+    }
+    .page-header p {
+      color: var(--text-mid);
+      max-width: 600px;
+      margin: 10px auto;
+    }
+    .dark .product-card {
+      background: var(--brown-dark);
+    }
+    .dark .product-title,
+    .dark .product-price {
+      color: var(--white);
+    }
+    .dark .product-desc {
+      color: rgba(255,255,255,0.8);
+    }
+    /* Search Bar */
+.search-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.search-wrapper input {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 20px;
+  border: 2px solid var(--gold);
+  border-radius: 40px;
+  outline: none;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--brown-dark);
+  transition: 0.3s ease;
+}
+
+.search-wrapper input:focus {
+  box-shadow: 0 0 10px rgba(201, 160, 61, 0.3);
+}
+
+.dark .search-wrapper input {
+  background: var(--brown-dark);
+  color: var(--white);
+  border: 2px solid var(--gold);
+}
+/* Theme Toggle Button */
+
+#themeToggle {
+  background: #d4a017;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s ease;
+}
+
+#themeToggle:hover {
+  transform: scale(1.1);
+}
+
+/* DARK MODE */
+
+.dark-mode {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.dark-mode header,
+.dark-mode footer,
+.dark-mode .product-card {
+  background-color: #2b2b2b;
+  color: white;
+}
+
+.dark-mode input,
+.dark-mode select {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark-mode .product-title,
+.dark-mode .product-price {
+  color: white;
+}
+/* Fix brown text in dark mode */
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.dark-mode a,
+.dark-mode label,
+.dark-mode li,
+.dark-mode .product-title,
+.dark-mode .product-price,
+.dark-mode .product-category,
+.dark-mode .logo-name,
+.dark-mode .logo-sub,
+.dark-mode .footer-col h4,
+.dark-mode .footer-col a,
+.dark-mode .page-header h1,
+/* .dark-mode .page-header p {
+  color: white !important;
+} */
+
+/* Optional: softer white for descriptions */
+
+.dark-mode .product-desc,
+.dark-mode .footer-brand p,
+.dark-mode .footer-bottom span {
+  color: rgba(255,255,255,0.8) !important;
+}
+  </style>
+</head>
+<body>
+
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html" class="active">Our Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggle">
+  🌙!
+</button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="products.html">Our Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
+
+  <div class="page-header">
+    <h1>Our <em>Full Range</em></h1>
+    <p>Hand-crafted with love & the finest ingredients — every bite tells a story.</p>
+  </div>
+
+  <div class="products-inner" style="padding: 0 30px 80px;">
+    <!-- Search Bar -->
+<div class="search-wrapper">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search brownies, cakes, cookies..."
+    onkeyup="searchProducts()"
+  />
+</div>
+    <!-- Price Filter from main branch -->
+    <div class="price-filter-wrapper">
+      <div class="price-filter">
+        <label for="priceFilter">Filter by Price</label>
+        <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
+          <option value="all">All Prices</option>
+          <option value="under200">Under ₹200</option>
+          <option value="200to500">₹200 - ₹500</option>
+          <option value="above500">Above ₹500</option>
+        </select>
+      </div>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -683,6 +974,29 @@
         margin-bottom: 18px;
         flex: 1;
       }
+      .product-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 12px;
+        padding: 10px;
+        background: var(--gold-glow);
+        border: 1px solid var(--border-soft);
+        border-radius: 8px;
+        font-size: 0.75rem;
+        color: var(--text-mid);
+}
+        .product-meta span {
+        display: block;
+}
+
+.product-meta strong {
+  color: var(--brown);
+}
+
+.dark .product-meta strong {
+  color: var(--gold-light);
+}
 
       /* Price + CTA row */
       .product-footer,
@@ -1226,69 +1540,42 @@
       HAPPINESS IN EVERY BITE &nbsp; ✦
     </div>
 
-    <header>
-      <div class="header-inner">
-        <a href="index.html" class="logo">
-          <span class="logo-name">Brownie Bliss</span>
-          <span class="logo-sub">Homemade Treats</span>
-        </a>
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="about.html">About</a>
-          <a href="products.html" class="active">Our Products</a>
-          <a href="index.html#birthday">Birthday Cakes</a>
-          <a href="index.html#feedback">Feedback</a>
-          <a href="favourites.html"
-            >Favourites
-            <span class="nav-count" data-favourites-count style="display: none"
-              >0</span
-            ></a
-          >
-          <a href="index.html#contact">Contact</a>
-          <a href="contact.html">Contact Us</a>
-          <a href="track.html">Track Order</a>
-        </nav>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <div class="header-actions">
-          <button
-            id="themeToggleBtn"
-            class="theme-toggle-btn"
-            onclick="toggleTheme()"
-            aria-label="Toggle dark mode"
-          >
-            <span id="themeIcon">🌙</span>
-          </button>
-          <button class="cart-btn" onclick="openCart()">
-            🛒 Cart
-            <span class="cart-count" id="cartBadge">0</span>
-          </button>
-        </div>
-        <div class="footer-col">
-          <h4>Information</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-          <a href="refund-policy.html">Refund Policy</a>
-        </div>
-        <div class="footer-col">
-          <h4>Get In Touch</h4>
-          <a href="tel:08072596340">+91 8072596340</a>
-          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
-        </div>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html" class="active">Our Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
       </div>
-      <div class="footer-bottom">
-        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
-        <span>Made with ❤️ in Krishnagiri</span>
-      </div>
-    </header>
-
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="index.html">Home</a>
-      <a href="products.html">Our Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="track.html">Track Order</a>
     </div>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="products.html">Our Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
 
     <div class="page-header">
       <h1>Our <em>Full Range</em></h1>
@@ -1383,6 +1670,190 @@
           <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
           <span>Made with ❤️ in Krishnagiri</span>
         </div>
+      `).join('');
+    }
+
+    window.addToCartFromProducts = function(id, name, price) {
+      if (typeof window.addToCart === 'function') {
+        window.addToCart({ id: id, name: name, price: price, quantity: 1 });
+        if (typeof showToast === 'function') showToast(`${name} added to cart!`);
+      } else {
+        alert(`Added to cart: ${name} - ₹${price}`);
+      }
+      if (typeof updateCartBadge === 'function') updateCartBadge();
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAllProducts();
+      if (typeof updateCartBadge === 'function') updateCartBadge();
+      if (typeof updateThemeIcon === 'function') updateThemeIcon();
+    });
+  </script>
+  <script>
+  function searchProducts() {
+
+    const input = document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase();
+
+    const filteredProducts = productsList.filter(product =>
+      product.name.toLowerCase().includes(input) ||
+      product.category.toLowerCase().includes(input) ||
+      product.desc.toLowerCase().includes(input)
+    );
+
+    renderFilteredProducts(filteredProducts);
+  }
+
+  function renderFilteredProducts(products) {
+
+    const container = document.getElementById('allProductsGrid');
+
+    container.innerHTML = products.map(p => `
+      <div class="product-card">
+        <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy">
+
+        <div class="product-info">
+          <div class="product-title">${p.name}</div>
+
+          <div class="product-category">${p.category}</div>
+
+          <div class="product-desc">${p.desc}</div>
+
+          <div class="product-price">₹${p.price}</div>
+
+          <button
+            class="add-to-cart-btn"
+            onclick="addToCartFromProducts(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price})"
+          >
+            Add to Cart 🛒
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+</script>
+<script>
+
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-mode");
+
+    // Save theme in localStorage
+
+    if (document.body.classList.contains("dark-mode")) {
+
+        localStorage.setItem("theme", "dark");
+
+        themeToggle.innerHTML = "☀️";
+
+    } 
+    
+    else {
+
+        localStorage.setItem("theme", "light");
+
+        themeToggle.innerHTML = "🌙";
+    }
+});
+
+
+// Load saved theme
+
+window.addEventListener("load", () => {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark-mode");
+
+        themeToggle.innerHTML = "☀️";
+    }
+});
+
+</script>
+<div id="bb-cursor"></div>
+<script>
+  /* =========================================
+   BROWNIE BLISS ANIMATED CURSOR
+
+const bbCursor = document.getElementById("bb-cursor");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let currentX = 0;
+let currentY = 0;
+
+/* Track Mouse */
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+/* Smooth Cursor Animation */
+
+function animateCursor() {
+  currentX += (mouseX - currentX) * 0.15;
+  currentY += (mouseY - currentY) * 0.15;
+
+  bbCursor.style.left = currentX + "px";
+  bbCursor.style.top = currentY + "px";
+
+  requestAnimationFrame(animateCursor);
+}
+
+animateCursor();
+
+/* Hover Effect */
+
+document.querySelectorAll(
+  "a, button, input, textarea, select, .hero-card, .review-card"
+).forEach((el) => {
+
+  el.addEventListener("mouseenter", () => {
+    bbCursor.classList.add("hover");
+  });
+
+  el.addEventListener("mouseleave", () => {
+    bbCursor.classList.remove("hover");
+  });
+
+});
+
+/* Scroll Animation */
+
+let scrollTimer;
+
+window.addEventListener("scroll", () => {
+
+  bbCursor.classList.add("scroll-glow");
+
+  clearTimeout(scrollTimer);
+
+  scrollTimer = setTimeout(() => {
+    bbCursor.classList.remove("scroll-glow");
+  }, 180);
+
+});
+
+/* Hide when mouse leaves window */
+
+document.addEventListener("mouseleave", () => {
+  bbCursor.style.opacity = "0";
+});
+
+document.addEventListener("mouseenter", () => {
+  bbCursor.style.opacity = "1";
+});
+</script>
+</body>
+</html>
       </div>
     </footer>
 
