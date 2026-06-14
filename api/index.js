@@ -83,6 +83,7 @@ function startServer(port) {
       startServer(nextPort);
       return;
     }
+
     console.error('❌ Server startup error:', err);
     process.exit(1);
   });
