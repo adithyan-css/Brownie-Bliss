@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+  <rect width="800" height="600" rx="32" ry="32" fill="#f5eee8"/>
+  <g fill="#7b5a3a" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="400" y="260" font-size="48" font-weight="700">Image Unavailable</text>
+    <text x="400" y="330" font-size="28" fill="#a07c55">Please try again later</text>
+  </g>
+</svg>

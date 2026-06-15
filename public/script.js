@@ -33,6 +33,7 @@ let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+const DEFAULT_PRODUCT_IMAGE = 'assets/image-placeholder.svg';
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -262,7 +263,7 @@ function renderFavouritesPage() {
         .map(
           (bakery) => `
       <article class="favourite-bakery-card">
-        <img src="${bakery.img}" alt="${bakery.name}">
+        <img src="${bakery.img || DEFAULT_PRODUCT_IMAGE}" alt="${bakery.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
         <div class="favourite-bakery-info">
           <div class="product-category">${bakery.category || ''}</div>
           <h3>${bakery.name}</h3>
@@ -285,7 +286,7 @@ function renderFavouritesPage() {
           (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
-          <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+          <img src="${dish.img || DEFAULT_PRODUCT_IMAGE}" alt="${dish.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
           <button class="favorite-btn active" type="button"
             data-fav-type="dishes" data-fav-id="${dish.id}"
             aria-label="Remove ${dish.name} from favourites" aria-pressed="true"
@@ -369,15 +370,42 @@ async function loadProducts() {
 }
 
 // --- CART STATE ---
-let cart = [];
-try {
-  cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
-  if (!Array.isArray(cart)) cart = [];
-} catch (e) {
-  console.error('Error parsing cart from localStorage:', e);
+function normalizeCartItem(item) {
+  if (!item || typeof item !== 'object') return null;
 
+  const qtyValue = item.qty ?? item.quantity ?? 1;
+  const qty = Number(qtyValue);
+  const normalizedQty = Number.isFinite(qty) && qty > 0 ? qty : 1;
 
+  const normalizedItem = {
+    ...item,
+    qty: normalizedQty,
+  };
+
+  if ('quantity' in normalizedItem) {
+    delete normalizedItem.quantity;
+  }
+
+  return normalizedItem;
 }
+
+function loadCart() {
+  const rawCart = localStorage.getItem('brownie_bliss_cart');
+  if (!rawCart) return [];
+
+  try {
+    const parsed = JSON.parse(rawCart);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(normalizeCartItem)
+      .filter((item) => item !== null);
+  } catch (e) {
+    console.error('Error parsing cart from localStorage:', e);
+    return [];
+  }
+}
+
+let cart = loadCart();
 
 let checkoutState = {
   name: '',
@@ -391,11 +419,18 @@ let checkoutState = {
 
 function saveCart() {
   try {
-    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+    const cartToSave = cart.map((item) => {
+      const cleanItem = { ...item };
+      if ('quantity' in cleanItem) delete cleanItem.quantity;
+      return cleanItem;
+    });
+    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cartToSave));
   } catch (e) {
     console.error('Error saving cart to localStorage:', e);
   }
 }
+
+window.addEventListener('beforeunload', saveCart);
 
 const cartFooter = document.getElementById('cartFooter');
 const cartTotal = document.getElementById('cartTotal');
@@ -441,7 +476,7 @@ function updateCartUI() {
         }
         return `
             <div class="cart-item">
-                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+                <img src="${item.img || DEFAULT_PRODUCT_IMAGE}" alt="${item.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
@@ -493,10 +528,14 @@ function addToCart(product) {
   });
 
   if (existing) {
-    existing.qty++;
+    existing.qty = Number(existing.qty) + 1;
   } else {
     const newItem = { ...product };
-    if (!newItem.qty) newItem.qty = 1;
+    const qtyValue = newItem.qty ?? newItem.quantity ?? 1;
+    let qty = Number(qtyValue);
+    if (!Number.isFinite(qty) || qty <= 0) qty = 1;
+    newItem.qty = qty;
+    if ('quantity' in newItem) delete newItem.quantity;
     cart.push(newItem);
   }
 
@@ -508,8 +547,10 @@ function addToCart(product) {
 // FIXED QTY
 function changeQty(index, delta) {
   if (!cart[index]) return;
-  cart[index].qty += delta;
-  if (cart[index].qty <= 0) cart.splice(index, 1);
+  cart[index].qty = Number(cart[index].qty) + delta;
+  if (!Number.isFinite(cart[index].qty) || cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
   saveCart();
   updateCartUI();
 }
@@ -687,10 +728,9 @@ function renderRecentSearches() {
     return;
   }
 
-  container.innerHTML = `
-        ${recentSearches
-      .map(
-        (search) => `
+  container.innerHTML = recentSearches
+    .map(
+      (search) => `
             <div
                 class="recent-search-tag"
                 onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
@@ -698,41 +738,8 @@ function renderRecentSearches() {
                 ${search}
             </div>
         `
-      )
-      .join('')}
-    `;
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
-                <button
-                    type="button"
-                    class="customize-and-add"
-                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
-        </div>
-    `).join('');
+    )
+    .join('');
 }
 
 function updatePriceFilter() {
@@ -768,7 +775,7 @@ function filterProducts(category = 'all', btn = null) {
       : products.filter((p) => p.category === category);
 
   if (currentSearchTerm.trim()) {
-    const term = currentSearchTerm.toLowerCase();
+    const term = currentSearchTerm.trim().toLowerCase();
 
     filtered = filtered.filter((product) => {
       return (
@@ -792,7 +799,7 @@ function filterProducts(category = 'all', btn = null) {
 
     <div class="product-img-wrap">
 
-      <img src="${p.img}" alt="${p.name}">
+      <img src="${p.img || DEFAULT_PRODUCT_IMAGE}" alt="${p.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
 
       <button
         class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
