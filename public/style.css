@@ -11409,8 +11409,8 @@ html.dark .copy-btn:hover {
   bottom: 80px;          /* sits above the back-to-top ↑ button */
   right: 24px;
   z-index: 9999;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   background-color: #25D366;
   border-radius: 50%;
   display: flex;
@@ -11432,12 +11432,12 @@ html.dark .copy-btn:hover {
 
 .whatsapp-float:hover {
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .whatsapp-float svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   fill: #ffffff;
 }
 
