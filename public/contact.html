@@ -1,370 +1,284 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Us — Brownie Bliss Patisserie</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <title>Contact Us — Brownie Bliss</title>
 
-    <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
 
-    <!-- Theme init -->
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem("bb_theme") || "light";
-          if (t === "dark") document.documentElement.classList.add("dark");
-        } catch (_) {}
-      })();
-    </script>
-  </head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) { }
+    })();
+  </script>
+</head>
 
-  <body>
-    <!-- ANNOUNCEMENT -->
-    <div class="announcement">
-      ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
-      HAPPINESS IN EVERY BITE &nbsp; ✨
-    </div>
+<body id="contact-page">
+  <div class="announcement">
+    ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
+  </div>
 
-    <!-- HEADER -->
-    <header>
-      <div class="header-inner">
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-
-        <a href="index.html" class="logo">
-          <span class="logo-name">Brownie Bliss</span>
-          <span class="logo-sub">Homemade Treats</span>
-        </a>
-
-        <nav>
-          <a href="index.html#home">Home</a>
-          <a href="index.html#products">Products</a>
-          <a href="index.html#birthday">Birthday Cakes</a>
-          <a href="favourites.html"
-            >Favourites
-            <span class="nav-count" data-favourites-count style="display: none"
-              >0</span
-            ></a
-          >
-          <a href="index.html#contact">Contact</a>
-          <a href="track.html">Track Order</a>
-        </nav>
-
-        <div class="header-actions">
-          <button
-            id="themeToggleBtn"
-            class="theme-toggle-btn"
-            onclick="toggleTheme()"
-          >
-            <span id="themeIcon">🌙</span>
-          </button>
-
-          <button class="cart-btn" onclick="openCart()">
-            🛒 Cart <span class="cart-count" id="cartBadge">0</span>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="index.html#home">Home</a>
-      <a href="index.html#products">Products</a>
-      <a href="index.html#birthday">Birthday Cakes</a>
-      <a href="favourites.html">Favourites</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="track.html">Track Order</a>
-    </div>
-
-    <!-- CONTACT SECTION -->
-    <section class="contact-page">
-      <div class="contact-bg"></div>
-
-      <div class="contact-inner">
-        <!-- LEFT SIDE -->
-        <div class="contact-left">
-          <!-- HEADER WRAP (fix spacing + hierarchy) -->
-          <header class="contact-header">
-            <span class="section-label">Get In Touch</span>
-
-            <h2 class="section-title">
-              Let’s Make Life <em>Sweeter Together</em>
-            </h2>
-
-            <p class="contact-desc">
-              Whether you're planning a birthday celebration, craving rich
-              homemade brownies, or simply want to surprise someone special —
-              we’d love to bake happiness for you.
-            </p>
-          </header>
-
-          <!-- CONTACT INFO -->
-          <section class="contact-info-grid">
-            <div class="contact-info-card">
-              <div class="contact-icon">📍</div>
-              <div>
-                <h4>Visit Us</h4>
-                <p>Krishnagiri,<br />Tamil Nadu</p>
-              </div>
-            </div>
-
-            <div class="contact-info-card">
-              <div class="contact-icon">📞</div>
-              <div>
-                <h4>Call Us</h4>
-                <a href="tel:08072596340">+91 8072596340</a>
-              </div>
-            </div>
-
-            <div class="contact-info-card">
-              <div class="contact-icon">✉️</div>
-              <div>
-                <h4>Email</h4>
-                <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-              </div>
-            </div>
-          </section>
-
-          <!-- HOURS -->
-          <section class="hours-card">
-            <h3>⏰ Baking Hours</h3>
-
-            <div class="hour-row">
-              <span>Monday – Saturday</span>
-              <strong>9 AM – 9 PM</strong>
-            </div>
-
-            <div class="hour-row">
-              <span>Sunday</span>
-              <strong>10 AM – 7 PM</strong>
-            </div>
-          </section>
-
-          <!-- INSTAGRAM -->
-          <a
-            href="https://instagram.com/brownie_bliss_"
-            target="_blank"
-            class="insta-box contact-social"
-          >
-            <div class="insta-icon">📸</div>
-            <div>
-              <span>Follow our baking journey</span>
-              <h4>@brownie_bliss_</h4>
-            </div>
-          </a>
-        </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="contact-form-box">
-          <header class="form-top">
-            <span>✨</span>
-            <h3>Send us a Message</h3>
-          </header>
-
-          <p class="form-desc">
-            Have a custom order, celebration idea or dessert request? We'd love
-            to hear from you.
-          </p>
-
-          <!-- FORM -->
-          <form
-            class="contact-form"
-            onsubmit="
-              event.preventDefault();
-              showToast('Thanks! We\'ll get back to you soon 🍫');
-              this.reset();
-            "
-          >
-            <div class="form-group">
-              <input type="text" placeholder="Your Name" required />
-            </div>
-
-            <div class="form-group">
-              <input type="email" placeholder="Your Email" required />
-            </div>
-
-            <div class="form-group">
-              <textarea
-                id="contactMessage"
-                placeholder="Tell us about your order..."
-                required
-                class="form-input"
-              ></textarea>
-              <span class="error-message" id="messageError"></span>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="hero-cta" id="submitBtn">Send Message →</button>
-            </div>
-          </form>
-
-          <div class="map-box">
-
-          <!-- MAP -->
-          <section class="map-box contact-map">
-            <iframe
-              src="https://www.google.com/maps?q=Krishnagiri,Tamil%20Nadu&output=embed"
-              loading="lazy"
-              allowfullscreen
-            >
-            </iframe>
-          </section>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer id="contact">
-      <div class="footer-inner">
-        <div class="footer-top">
-          <div class="footer-brand">
-            <div class="logo">
-              <span class="logo-name">Brownie Bliss</span>
-              <span class="logo-sub"
-                >Homemade Treats · Happiness in every bite</span
-              >
-            </div>
-            <p>
-              Every brownie, cake, and cookie at Brownie Bliss is handcrafted in
-              small batches using homemade recipes, premium ingredients, and
-              lots of love.
-            </p>
-          </div>
-
-          <div class="footer-col">
-            <h4>Navigate</h4>
-            <a href="index.html">Home</a>
-            <a href="products.html">Our Products</a>
-            <a href="birthday.html">Birthday Cakes</a>
-            <a href="favourites.html">Favourites</a>
-            <a href="contact.html">Contact Us</a>
-          </div>
-
-          <div class="footer-col">
-            <h4>Information</h4>
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms-of-service.html">Terms of Service</a>
-            <a href="refund-policy.html">Refund Policy</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- CART -->
-    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-
-    <div class="cart-sidebar" id="cartSidebar">
-      <div class="cart-header">
-        <span class="cart-title">Your Cart 🛒</span>
-        <button class="cart-close" onclick="closeCart()">✕</button>
-      </div>
-
-      <div class="cart-items" id="cartItems"></div>
-
-      <div class="cart-footer" id="cartFooter" style="display: none">
-        <div class="cart-total">
-          <span class="cart-total-label">Total Amount</span>
-          <span class="cart-total-amt" id="cartTotal">₹0</span>
-        </div>
-
-        <button class="whatsapp-btn" onclick="sendToWhatsApp()">
-          Order via WhatsApp
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html" class="active">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
         </button>
       </div>
     </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="contact.html" class="active">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
+
+  <section class="contact-page">
+    <div class="contact-bg"></div>
+
+    <div class="contact-inner" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; padding: 60px 20px; max-width: 1200px; margin: 0 auto;">
+      <div class="contact-left">
+        <header class="contact-header" style="margin-bottom: 40px;">
+          <span class="section-label" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700;">Get In Touch</span>
+          <h2 class="section-title" style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--brown); margin-top: 10px;">
+            Let’s Make Life <br><em>Sweeter Together</em>
+          </h2>
+          <p class="contact-desc" style="color: var(--text-mid); font-family: 'DM Sans', sans-serif; font-size: 1.1rem; line-height: 1.6; margin-top: 20px;">
+            Whether you're planning a birthday celebration, craving rich homemade brownies, or simply want to surprise someone special — we’d love to bake happiness for you.
+          </p>
+        </header>
+
+        <section class="contact-info-grid" style="display: grid; gap: 30px; margin-bottom: 40px;">
+          <div class="contact-info-card" style="display: flex; gap: 20px; align-items: flex-start;">
+            <div class="contact-icon" style="font-size: 1.5rem; background: var(--cream-dark); padding: 15px; border-radius: 50%; color: var(--brown);">📍</div>
+            <div>
+              <h4 style="color: var(--brown); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 5px;">Visit Us</h4>
+              <p style="color: var(--text-light); line-height: 1.5;">Krishnagiri,<br>Tamil Nadu</p>
+            </div>
+          </div>
+
+          <div class="contact-info-card" style="display: flex; gap: 20px; align-items: flex-start;">
+            <div class="contact-icon" style="font-size: 1.5rem; background: var(--cream-dark); padding: 15px; border-radius: 50%; color: var(--brown);">📞</div>
+            <div>
+              <h4 style="color: var(--brown); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 5px;">Call Us</h4>
+              <a href="tel:08072596340" style="color: var(--text-light); text-decoration: none;">+91 8072596340</a>
+            </div>
+          </div>
+
+          <div class="contact-info-card" style="display: flex; gap: 20px; align-items: flex-start;">
+            <div class="contact-icon" style="font-size: 1.5rem; background: var(--cream-dark); padding: 15px; border-radius: 50%; color: var(--brown);">✉️</div>
+            <div>
+              <h4 style="color: var(--brown); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 5px;">Email</h4>
+              <a href="mailto:gpriya26185@gmail.com" style="color: var(--text-light); text-decoration: none;">gpriya26185@gmail.com</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="hours-card" style="background: var(--cream-dark); padding: 30px; border-radius: 12px; border: 1px solid var(--gold); margin-bottom: 40px;">
+          <h3 style="font-family: 'Playfair Display', serif; color: var(--brown); margin-bottom: 20px;">⏰ Baking Hours</h3>
+          <div class="hour-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-mid);">
+            <span>Monday – Saturday</span>
+            <strong>9 AM – 9 PM</strong>
+          </div>
+          <div class="hour-row" style="display: flex; justify-content: space-between; color: var(--text-mid);">
+            <span>Sunday</span>
+            <strong>10 AM – 7 PM</strong>
+          </div>
+        </section>
+      </div>
+
+      <div class="contact-form-box" style="background: var(--white); padding: 40px; border-radius: 12px; box-shadow: var(--shadow); height: fit-content;">
+        <header class="form-top" style="text-align: center; margin-bottom: 30px;">
+          <span style="font-size: 2rem;">✨</span>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--brown); margin-top: 10px;">Send us a Message</h3>
+          <p class="form-desc" style="color: var(--text-light); font-size: 0.95rem; margin-top: 10px;">
+            Have a custom order, celebration idea or dessert request? We'd love to hear from you.
+          </p>
+        </header>
+
+        <form class="contact-form" onsubmit="event.preventDefault(); if(typeof showToast === 'function') showToast('Thanks! We\'ll get back to you soon 🍫'); this.reset();">
+          <div class="form-group" style="margin-bottom: 20px;">
+            <input type="text" placeholder="Your Name" required style="width: 100%; padding: 16px; border: 1px solid var(--cream-dark); border-radius: 8px; font-family: 'DM Sans', sans-serif; outline: none;"/>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <input type="email" placeholder="Your Email" required style="width: 100%; padding: 16px; border: 1px solid var(--cream-dark); border-radius: 8px; font-family: 'DM Sans', sans-serif; outline: none;"/>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 30px;">
+            <textarea id="contactMessage" placeholder="Tell us about your order..." required class="form-input" rows="5" style="width: 100%; padding: 16px; border: 1px solid var(--cream-dark); border-radius: 8px; font-family: 'DM Sans', sans-serif; outline: none; resize: none;"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="hero-cta" id="submitBtn" style="width: 100%; padding: 18px; border: none; font-size: 1rem;">Send Message →</button>
+          </div>
+        </form>
+        
+        <div class="map-box" style="margin-top: 40px; border-radius: 8px; overflow: hidden; height: 250px;">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124434.56230491008!2d78.14088034827018!3d12.527318721759604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bac54a242c16eb3%3A0xc39f979730f0f5b4!2sKrishnagiri%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding: 60px 0 48px;">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html#home" style="text-decoration: none;">Home</a>
+          <a href="products.html" style="text-decoration: none;">Our Products</a>
+          <a href="index.html#birthday" style="text-decoration: none;">Birthday Cakes</a>
+          <a href="favourites.html" style="text-decoration: none;">Favourites</a>
+          <a href="track.html" style="text-decoration: none;">Track Order</a>
+          <a href="contact.html" style="text-decoration: none;">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            +91 8072596340
+          </a>
+          <a href="mailto:gpriya26185@gmail.com" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            gpriya26185@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 0 0;">
+        <span style="opacity: 0.7;">© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span style="opacity: 0.7;">Made with ❤️ in Krishnagiri</span>
+        
+        <div class="social-links" style="display: flex; gap: 16px;">
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color: var(--gold-pale); transition: color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-pale)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://wa.me/918072596340" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="color: var(--gold-pale); transition: color 0.2s;" onmouseover="this.style.color='#25D366'" onmouseout="this.style.color='var(--gold-pale)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display: none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.953 12.004-.001 0-.001 0 0 0-2.002-.001-3.975-.51-5.729-1.479L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.428 1.978 13.96 1.957 12.01 1.957c-5.438 0-9.863 4.374-9.868 9.804-.001 1.694.453 3.342 1.317 4.825l-.993 3.629 3.72-.962zm13.013-7.228c-.1-.167-.367-.267-.767-.467-.4-.2-2.367-1.167-2.734-1.3-.367-.133-.633-.2-.9.2-.267.4-1.034 1.3-1.267 1.567-.233.267-.467.3-.867.1-.4-.2-1.694-.624-3.23-1.993-1.194-1.064-2-2.377-2.233-2.776-.233-.4-.025-.616.175-.815.18-.18.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.234-2.967-.325-.783-.658-.677-.9-.692-.233-.013-.5-.016-.767-.016-.267 0-.7.1-1.067.5-.367.4-1.4 1.367-1.4 3.333 0 1.966 1.433 3.867 1.633 4.133.2.266 2.818 4.302 6.822 6.033 1 .43 1.745.686 2.342.875.997.317 1.902.272 2.618.165.8-.12 2.367-.967 2.7-1.9.333-.933.333-1.733.233-1.9z"/>
+        </svg>
+        Order via WhatsApp
+      </button>
+      <p class="whatsapp-note" style="text-align: center; font-size: 11px; margin-top: 8px; color: var(--text-light);">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
 
   <script src="script.js"></script>
-  <script>
-    // Adjust badge ID if needed
-    window.addEventListener('DOMContentLoaded', () => {
-      // Basic initializers for the page
-    });
-  </script>
+
   <div id="bb-cursor"></div>
   <script>
     /* =========================================
-   BROWNIE BLISS ANIMATED CURSOR
+       BROWNIE BLISS ANIMATED CURSOR
+    ========================================= */
+    const bbCursor = document.getElementById("bb-cursor");
+    let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
 
-const bbCursor = document.getElementById("bb-cursor");
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
-let mouseX = 0;
-let mouseY = 0;
+    function animateCursor() {
+      currentX += (mouseX - currentX) * 0.15;
+      currentY += (mouseY - currentY) * 0.15;
+      if(bbCursor) {
+        bbCursor.style.left = currentX + "px";
+        bbCursor.style.top = currentY + "px";
+      }
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
 
-let currentX = 0;
-let currentY = 0;
+    document.querySelectorAll("a, button, input, textarea, select, .hero-card").forEach((el) => {
+      el.addEventListener("mouseenter", () => { if(bbCursor) bbCursor.classList.add("hover"); });
+      el.addEventListener("mouseleave", () => { if(bbCursor) bbCursor.classList.remove("hover"); });
+    });
 
-/* Track Mouse */
+    let scrollTimer;
+    window.addEventListener("scroll", () => {
+      if(bbCursor) bbCursor.classList.add("scroll-glow");
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        if(bbCursor) bbCursor.classList.remove("scroll-glow");
+      }, 180);
+    });
 
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-/* Smooth Cursor Animation */
-
-function animateCursor() {
-  currentX += (mouseX - currentX) * 0.15;
-  currentY += (mouseY - currentY) * 0.15;
-
-  bbCursor.style.left = currentX + "px";
-  bbCursor.style.top = currentY + "px";
-
-  requestAnimationFrame(animateCursor);
-}
-
-animateCursor();
-
-/* Hover Effect */
-
-document.querySelectorAll(
-  "a, button, input, textarea, select, .hero-card, .review-card"
-).forEach((el) => {
-
-  el.addEventListener("mouseenter", () => {
-    bbCursor.classList.add("hover");
-  });
-
-  el.addEventListener("mouseleave", () => {
-    bbCursor.classList.remove("hover");
-  });
-
-});
-
-/* Scroll Animation */
-
-let scrollTimer;
-
-window.addEventListener("scroll", () => {
-
-  bbCursor.classList.add("scroll-glow");
-
-  clearTimeout(scrollTimer);
-
-  scrollTimer = setTimeout(() => {
-    bbCursor.classList.remove("scroll-glow");
-  }, 180);
-
-});
-
-/* Hide when mouse leaves window */
-
-document.addEventListener("mouseleave", () => {
-  bbCursor.style.opacity = "0";
-});
-
-document.addEventListener("mouseenter", () => {
-  bbCursor.style.opacity = "1";
-});
+    document.addEventListener("mouseleave", () => { if(bbCursor) bbCursor.style.opacity = "0"; });
+    document.addEventListener("mouseenter", () => { if(bbCursor) bbCursor.style.opacity = "1"; });
   </script>
 </body>
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
-
-    <script src="script.js"></script>
-  </body>
 </html>

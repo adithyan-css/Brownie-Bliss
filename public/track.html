@@ -1,561 +1,356 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <title>Track Order - Brownie Bliss</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Order - Brownie Bliss</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <title>Track Order | Brownie Bliss</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- GOOGLE FONTS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="track.css">
-
+  <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="track.css"> <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) { }
+    })();
+  </script>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="header-inner">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            <a href="index.html" class="logo">
-                <span class="logo-name">Brownie Bliss</span>
-                <span class="logo-sub">Homemade Treats</span>
-            </a>
-            <nav>
-                <a href="index.html#home">Home</a>
-                <a href="index.html#products">Products</a>
-                <a href="index.html#birthday">Birthday Cakes</a>
-                <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
-                <a href="index.html#contact">Contact</a>
-                <a href="track.html">Track Order</a>
-            </nav>
-            <div class="header-actions">
-                <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-                    aria-label="Toggle dark mode" title="Toggle dark mode">
-                    <span id="themeIcon">🌙</span>
-                </button>
-                <button class="cart-btn" onclick="openCart()">
-                    🛒 Cart <span class="cart-count" id="cartBadge">0</span>
-                </button>
-            </div>
+  <div class="announcement">
+    ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html" class="active">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#home">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="contact.html">Contact</a>
+    <a href="track.html" class="active">Track Order</a>
+  </div>
+
+  <section class="premium-hero">
+    <div class="hero-left">
+      <span class="hero-badge">
+        HOMEMADE TREATS • HAPPINESS IN EVERY BITE
+      </span>
+      <h1>
+        Track Your
+        <span>Sweet Order</span>
+      </h1>
+      <p>
+        From oven to your doorstep — follow every delicious moment in real-time.
+      </p>
+      <div class="hero-buttons">
+        <button class="primary-btn" onclick="scrollToTrack()">
+          Track Now
+        </button>
+        <button class="secondary-btn" onclick="goToProducts()">
+          Explore Cakes
+        </button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-image-card">
+        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200" alt="Cake">
+      </div>
+    </div>
+  </section>
+
+  <section class="premium-track-section" id="track-section">
+    <div class="premium-track-card">
+      <div class="track-icon">🚚</div>
+      <h2>Track Your Order</h2>
+      <p class="track-desc">Use any ONE option below to track your order.</p>
+
+      <div class="premium-input-box">
+        <i class="fa-solid fa-box"></i>
+        <input type="text" id="orderId" placeholder="Enter Order ID">
+      </div>
+
+      <div class="premium-input-box">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="emailId" placeholder="Enter Email ID">
+      </div>
+
+      <div class="premium-input-box">
+        <i class="fa-solid fa-phone"></i>
+        <input type="text" id="phoneNumber" placeholder="Enter Phone Number">
+      </div>
+
+      <button class="track-order-btn" onclick="trackOrder()">
+        Track Order <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div id="track-result"></div>
+
+      <div class="secure-text">
+        🔒 Your order details are safe & secure
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="section-title">
+      <span></span>
+      <h2>How It Works</h2>
+      <span></span>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-icon">📋</div>
+        <h3>Enter Details</h3>
+        <p>Use your order ID, email, or phone number.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-icon">🔍</div>
+        <h3>Verify Order</h3>
+        <p>We securely verify your bakery order details.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-icon">🚚</div>
+        <h3>Live Tracking</h3>
+        <p>Track your delicious treats in real-time.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <div class="step-icon">❤️</div>
+        <h3>Enjoy!</h3>
+        <p>Enjoy freshly baked happiness delivered to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-card">
+      <h2>10K+</h2>
+      <p>Happy Customers</p>
+    </div>
+    <div class="trust-card">
+      <h2>4.9★</h2>
+      <p>Customer Rating</p>
+    </div>
+    <div class="trust-card">
+      <h2>100%</h2>
+      <p>Freshly Baked</p>
+    </div>
+    <div class="trust-card">
+      <h2>30 Min</h2>
+      <p>Fast Delivery</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding: 60px 0 48px;">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
         </div>
-
-    </header>
-
-    <!-- HERO -->
-    <section class="premium-hero">
-
-        <div class="hero-left">
-
-            <span class="hero-badge">
-
-                HOMEMADE TREATS • HAPPINESS IN EVERY BITE
-
-            </span>
-
-            <h1>
-
-                Track Your
-                <span>Sweet Order</span>
-
-            </h1>
-
-            <p>
-
-                From oven to your doorstep —
-                follow every delicious moment in real-time.
-
-            </p>
-
-            <div class="hero-buttons">
-
-                
-
-                    <button
-    class="primary-btn"
-    onclick="scrollToTrack()">
-
-    Track Now
-
-</button>
-
-                <button
-    class="secondary-btn"
-    onclick="goToProducts()">
-
-    Explore Cakes
-
-</button>
-
-            </div>
-
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html#home" style="text-decoration: none;">Home</a>
+          <a href="products.html" style="text-decoration: none;">Our Products</a>
+          <a href="index.html#birthday" style="text-decoration: none;">Birthday Cakes</a>
+          <a href="favourites.html" style="text-decoration: none;">Favourites</a>
+          <a href="track.html" style="text-decoration: none;">Track Order</a>
+          <a href="contact.html" style="text-decoration: none;">Contact Us</a>
         </div>
-
-        <div class="hero-right">
-
-            <div class="hero-image-card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=1200"
-                    alt="Cake">
-
-            </div>
-
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          
+          <a href="tel:08072596340" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            +91 8072596340
+          </a>
+          
+          <a href="mailto:gpriya26185@gmail.com" style="display: flex; align-items: center; gap: 8px; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            gpriya26185@gmail.com
+          </a>
         </div>
+      </div>
 
-    </section>
-
-    <!-- TRACK -->
-    <section class="premium-track-section"id="track-section">
-
-        <div class="premium-track-card">
-
-            <div class="track-icon">
-
-                🚚
-
-            </div>
-
-            <h2>
-
-                Track Your Order
-
-            </h2>
-
-            <p class="track-desc">
-
-                Use any ONE option below to track your order.
-
-            </p>
-
-            <!-- ORDER ID -->
-            <div class="premium-input-box">
-
-                <i class="fa-solid fa-box"></i>
-
-                <input
-                    type="text"
-                    id="orderId"
-                    placeholder="Enter Order ID">
-
-            </div>
-
-            <!-- EMAIL -->
-            <div class="premium-input-box">
-
-                <i class="fa-solid fa-envelope"></i>
-
-                <input
-                    type="email"
-                    id="emailId"
-                    placeholder="Enter Email ID">
-
-            </div>
-
-            <!-- PHONE -->
-            <div class="premium-input-box">
-
-                <i class="fa-solid fa-phone"></i>
-
-                <input
-                    type="text"
-                    id="phoneNumber"
-                    placeholder="Enter Phone Number">
-
-            </div>
-
-            <!-- BUTTON -->
-            <button
-                class="track-order-btn"
-                onclick="trackOrder()">
-
-                Track Order
-
-                <i class="fa-solid fa-arrow-right"></i>
-
-            </button>
-
-            <!-- RESULT -->
-            <div id="track-result"></div>
-
-            <!-- SECURITY -->
-            <div class="secure-text">
-
-                🔒 Your order details are safe & secure
-
-            </div>
-
+      <div class="footer-bottom" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 0 0;">
+        <span style="opacity: 0.7;">© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span style="opacity: 0.7;">Made with ❤️ in Krishnagiri</span>
+        
+        <div class="social-links" style="display: flex; gap: 16px;">
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color: var(--gold-pale); transition: color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-pale)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://wa.me/918072596340" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" style="color: var(--gold-pale); transition: color 0.2s;" onmouseover="this.style.color='#25D366'" onmouseout="this.style.color='var(--gold-pale)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+          </a>
         </div>
-
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="how-it-works">
-
-        <div class="section-title">
-
-            <span></span>
-
-            <h2>How It Works</h2>
-
-            <span></span>
-
-        </div>
-
-        <div class="steps-grid">
-
-            <div class="step-card">
-
-                <div class="step-number">1</div>
-
-                <div class="step-icon">📋</div>
-
-                <h3>Enter Details</h3>
-
-                <p>
-                    Use your order ID, email, or phone number.
-                </p>
-
-            </div>
-
-            <div class="step-card">
-
-                <div class="step-number">2</div>
-
-                <div class="step-icon">🔍</div>
-
-                <h3>Verify Order</h3>
-
-                <p>
-                    We securely verify your bakery order details.
-                </p>
-
-            </div>
-
-            <div class="step-card">
-
-                <div class="step-number">3</div>
-
-                <div class="step-icon">🚚</div>
-
-                <h3>Live Tracking</h3>
-
-                <p>
-                    Track your delicious treats in real-time.
-                </p>
-
-            </div>
-
-            <div class="step-card">
-
-                <div class="step-number">4</div>
-
-                <div class="step-icon">❤️</div>
-
-                <h3>Enjoy!</h3>
-
-                <p>
-                    Enjoy freshly baked happiness delivered to you.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- TRUST -->
-    <section class="trust-section">
-
-        <div class="trust-card">
-
-            <h2>10K+</h2>
-
-            <p>Happy Customers</p>
-
-        </div>
-
-        <div class="trust-card">
-
-            <h2>4.9★</h2>
-
-            <p>Customer Rating</p>
-
-        </div>
-
-        <div class="trust-card">
-
-            <h2>100%</h2>
-
-            <p>Freshly Baked</p>
-
-        </div>
-
-        <div class="trust-card">
-
-            <h2>30 Min</h2>
-
-            <p>Fast Delivery</p>
-
-        </div>
-
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="premium-footer">
-
-        <div class="footer-grid">
-
-            <div class="footer-brand">
-
-                <h2>
-
-                    Brownie Bliss 🍫
-
-                </h2>
-
-                <p>
-
-                    Handcrafted brownies, cakes & cookies made with love.
-
-                </p>
-
-            </div>
-
-            <div class="footer-links">
-
-                <h3>Explore</h3>
-
-                <a href="index.html">Home</a>
-
-                <a href="products.html">Products</a>
-
-                <a href="birthday.html">Birthday Cakes</a>
-
-                <a href="track.html">Track Order</a>
-
-            </div>
-
-            <div class="footer-contact">
-
-                <h3>Contact</h3>
-
-                <p>📞 +91 8072596340</p>
-
-                <p>📧 browniebliss@gmail.com</p>
-
-                <p>📍 Krishnagiri, Tamil Nadu</p>
-
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-
-            © 2026 Brownie Bliss • Made with ❤️
-
-        </div>
-
-    </footer>
-
-    <!-- SCRIPT -->
-    <script>
-
-function trackOrder(){
-
-    const orderId =
-    document.getElementById("orderId").value.trim();
-
-    const email =
-    document.getElementById("emailId").value.trim();
-
-    const phone =
-    document.getElementById("phoneNumber").value.trim();
-
-    const result =
-    document.getElementById("track-result");
-
-    // EMAIL REGEX
-    const emailPattern =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // PHONE REGEX
-    const phonePattern =
-    /^[0-9]{10}$/;
-
-    // ORDER FORMAT
-    const orderPattern =
-    /^ORD[0-9]{3,6}$/;
-
-    // EMPTY CHECK
-    if(
-        orderId === "" &&
-        email === "" &&
-        phone === ""
-    ){
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ⚠ Please enter at least ONE detail.
-
-        </div>
-
-        `;
-
+      </div>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display: none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.953 12.004-.001 0-.001 0 0 0-2.002-.001-3.975-.51-5.729-1.479L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.428 1.978 13.96 1.957 12.01 1.957c-5.438 0-9.863 4.374-9.868 9.804-.001 1.694.453 3.342 1.317 4.825l-.993 3.629 3.72-.962zm13.013-7.228c-.1-.167-.367-.267-.767-.467-.4-.2-2.367-1.167-2.734-1.3-.367-.133-.633-.2-.9.2-.267.4-1.034 1.3-1.267 1.567-.233.267-.467.3-.867.1-.4-.2-1.694-.624-3.23-1.993-1.194-1.064-2-2.377-2.233-2.776-.233-.4-.025-.616.175-.815.18-.18.4-.467.6-.7.2-.233.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.234-2.967-.325-.783-.658-.677-.9-.692-.233-.013-.5-.016-.767-.016-.267 0-.7.1-1.067.5-.367.4-1.4 1.367-1.4 3.333 0 1.966 1.433 3.867 1.633 4.133.2.266 2.818 4.302 6.822 6.033 1 .43 1.745.686 2.342.875.997.317 1.902.272 2.618.165.8-.12 2.367-.967 2.7-1.9.333-.933.333-1.733.233-1.9z"/>
+        </svg>
+        Order via WhatsApp
+      </button>
+      <p class="whatsapp-note" style="text-align: center; font-size: 11px; margin-top: 8px; color: var(--text-light);">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+
+  <script>
+    function trackOrder() {
+      const orderId = document.getElementById("orderId").value.trim();
+      const email = document.getElementById("emailId").value.trim();
+      const phone = document.getElementById("phoneNumber").value.trim();
+      const result = document.getElementById("track-result");
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phonePattern = /^[0-9]{10}$/;
+      const orderPattern = /^ORD[0-9]{3,6}$/;
+
+      if (orderId === "" && email === "" && phone === "") {
+        result.innerHTML = `<div class="error-box">⚠ Please enter at least ONE detail.</div>`;
         return;
+      }
 
-    }
-
-    // ORDER VALIDATION
-    if(
-        orderId !== "" &&
-        !orderPattern.test(orderId)
-    ){
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Invalid Order ID
-
-            <br><br>
-
-            Example:
-            ORD123
-
-        </div>
-
-        `;
-
+      if (orderId !== "" && !orderPattern.test(orderId)) {
+        result.innerHTML = `<div class="error-box">❌ Invalid Order ID<br><br>Example: ORD123</div>`;
         return;
+      }
 
-    }
-
-    // EMAIL VALIDATION
-    if(
-        email !== "" &&
-        !emailPattern.test(email)
-    ){
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Invalid Email Address
-
-        </div>
-
-        `;
-
+      if (email !== "" && !emailPattern.test(email)) {
+        result.innerHTML = `<div class="error-box">❌ Invalid Email Address</div>`;
         return;
+      }
 
-    }
-
-    // PHONE VALIDATION
-    if(
-        phone !== "" &&
-        !phonePattern.test(phone)
-    ){
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Phone number must contain exactly 10 digits
-
-        </div>
-
-        `;
-
+      if (phone !== "" && !phonePattern.test(phone)) {
+        result.innerHTML = `<div class="error-box">❌ Phone number must contain exactly 10 digits</div>`;
         return;
+      }
 
+      // SAMPLE VALID DATA
+      const validOrder = "ORD123";
+      const validEmail = "brownie@gmail.com";
+      const validPhone = "9876543210";
+
+      if (orderId === validOrder || email === validEmail || phone === validPhone) {
+        result.innerHTML = `<div class="success-box">✅ Order Found!<br><br>Your delicious order is currently being prepared 🍰</div>`;
+      } else {
+        result.innerHTML = `<div class="error-box">❌ Order Not Found<br><br>Please check your details again.</div>`;
+      }
     }
 
-    // SAMPLE VALID DATA
-    const validOrder = "ORD123";
-    const validEmail = "brownie@gmail.com";
-    const validPhone = "9876543210";
-
-    if(
-        orderId === validOrder ||
-        email === validEmail ||
-        phone === validPhone
-    ){
-
-        result.innerHTML = `
-
-        <div class="success-box">
-
-            ✅ Order Found!
-
-            <br><br>
-
-            Your delicious order is currently
-            being prepared 🍰
-
-        </div>
-
-        `;
-
+    function scrollToTrack() {
+      document.getElementById("track-section").scrollIntoView({
+        behavior: "smooth"
+      });
     }
 
-    else{
-
-        result.innerHTML = `
-
-        <div class="error-box">
-
-            ❌ Order Not Found
-
-            <br><br>
-
-            Please check your details again.
-
-        </div>
-
-        `;
-
+    function goToProducts() {
+      window.location.href = "products.html";
     }
+  </script>
 
-}
+  <div id="bb-cursor"></div>
+  <script>
+    const bbCursor = document.getElementById("bb-cursor");
+    let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
 
-</script>
-
-<script>
-
-function scrollToTrack(){
-
-    document
-    .getElementById("track-section")
-    .scrollIntoView({
-        behavior:"smooth"
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
-}
+    function animateCursor() {
+      currentX += (mouseX - currentX) * 0.15;
+      currentY += (mouseY - currentY) * 0.15;
+      if(bbCursor) {
+        bbCursor.style.left = currentX + "px";
+        bbCursor.style.top = currentY + "px";
+      }
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
 
-function goToProducts(){
+    document.querySelectorAll("a, button, input, textarea, select, .hero-card").forEach((el) => {
+      el.addEventListener("mouseenter", () => { if(bbCursor) bbCursor.classList.add("hover"); });
+      el.addEventListener("mouseleave", () => { if(bbCursor) bbCursor.classList.remove("hover"); });
+    });
 
-    window.location.href =
-    "products.html";
+    let scrollTimer;
+    window.addEventListener("scroll", () => {
+      if(bbCursor) bbCursor.classList.add("scroll-glow");
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        if(bbCursor) bbCursor.classList.remove("scroll-glow");
+      }, 180);
+    });
 
-}
-
-</script>
+    document.addEventListener("mouseleave", () => { if(bbCursor) bbCursor.style.opacity = "0"; });
+    document.addEventListener("mouseenter", () => { if(bbCursor) bbCursor.style.opacity = "1"; });
+  </script>
 </body>
-
 </html>
