@@ -188,7 +188,7 @@ function isFavourite(type, id) {
   return favouriteItems[type]?.some((item) => item.id === id) || false;
 }
 
-function toggleFavourite(type, item) {
+/*function toggleFavourite(type, item) {
   if (!favouriteItems[type]) favouriteItems[type] = [];
   const idx = favouriteItems[type].findIndex((f) => f.id === item.id);
   if (idx >= 0) {
@@ -206,6 +206,29 @@ function toggleFavourite(type, item) {
   updateFavouriteButtons(type, item.id);
   updateFavouritesCount();
   renderFavouritesPage();
+}
+  */
+ function toggleFavourite(type, item) {
+    console.log("toggleFavourite called", type, item);
+    if (!favouriteItems[type]) favouriteItems[type] = [];
+  const idx = favouriteItems[type].findIndex((f) => f.id === item.id);
+  if (idx >= 0) {
+    favouriteItems[type].splice(idx, 1);
+    showToast('Removed from favourites 💔');
+  } else {
+    const exists = favouriteItems[type].some((f) => f.id === item.id);
+
+    if (!exists) {
+      favouriteItems[type].push(item);
+    }
+    showToast('Added to favourites ❤️');
+  }
+  saveFavourites();
+  updateFavouriteButtons(type, item.id);
+  updateFavouritesCount();
+  renderFavouritesPage();
+
+    // existing code below
 }
 
 function updateFavouriteButtons(type, id) {
@@ -1232,17 +1255,21 @@ function closeReviewModal(){
   document.getElementById("reviewModal").style.display="none";
 }
 
-document.getElementById("reviewForm").addEventListener("submit", function(e){
-  e.preventDefault();
+const reviewForm = document.getElementById("reviewForm");
 
-  const review = document.getElementById("reviewText").value;
+if (reviewForm) {
+  reviewForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  console.log("Review submitted: ", review);
+    const review = document.getElementById("reviewText").value;
 
-  showToast("Thank you for your feedback!");
-  this.reset();
-  closeReviewModal();
-});
+    console.log("Review submitted:", review);
+
+    showToast("Thank you for your feedback!");
+    this.reset();
+    closeReviewModal();
+  });
+}
 
 function openCheckout() {
   if (cart.length === 0) {
