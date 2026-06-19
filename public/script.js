@@ -23,6 +23,13 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
+// --- MOBILE MENU ---
+function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+}
+window.toggleMenu = toggleMenu;
+
 // --- PRODUCTS DATA ---
 let products = [];
 let bdayCakes = {};
@@ -33,6 +40,7 @@ let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -504,8 +512,9 @@ function addToCart(product) {
   updateCartUI();
   showToast('Added to cart! 🛒');
 }
+window.addToCart = addToCart;
 
-// FIXED QTY
+// --- CHANGE QTY ---
 function changeQty(index, delta) {
   if (!cart[index]) return;
   cart[index].qty += delta;
@@ -513,6 +522,7 @@ function changeQty(index, delta) {
   saveCart();
   updateCartUI();
 }
+window.changeQty = changeQty;
 
 function removeFromCart(index) {
   if (cart[index]) {
@@ -595,6 +605,7 @@ function initializeLiveSearch() {
     }
   });
 }
+window.verifyOTP = verifyOTP;
 
 function generateSuggestions(searchTerm) {
   const suggestionsBox = document.getElementById('searchSuggestions');
@@ -633,6 +644,7 @@ function generateSuggestions(searchTerm) {
 
   suggestionsBox.style.display = 'block';
 }
+window.goToConfirm = goToConfirm;
 
 function selectSuggestion(value) {
   const searchInput = document.getElementById('productSearch');
@@ -659,6 +671,36 @@ function highlightMatch(text, term) {
 
   return text.replace(regex, `<span class="highlight-match">$1</span>`);
 }
+window.sendToWhatsApp = sendToWhatsApp;
+
+// --- NAVIGATE TO CATEGORY (hero cards) ---
+function navigateToCategory(category) {
+    const section = document.getElementById('products');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+            const tabs = document.querySelectorAll('.filter-tabs .filter-tab');
+            tabs.forEach(btn => {
+                if (btn.textContent.trim().toLowerCase() === category) {
+                    filterProducts(category, btn);
+                }
+            });
+        }, 400);
+    } else {
+        window.location.href = 'products.html';
+    }
+}
+window.navigateToCategory = navigateToCategory;
+
+// --- SLIDE SECTION IMAGE MAPS ---
+const DESSERT_IMAGES = {
+    'Macarons': 'https://www.labellemiette.com.au/cdn/shop/files/12pc_Assorted.png?v=1697772671&width=1946',
+    'Tarts': 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600',
+    'Pastries': 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267',
+    'Cupcakes': 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=600',
+    'Mousse': 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    'Donuts': 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600'
+};
 
 function saveRecentSearch(search) {
   if (!search) return;
@@ -856,10 +898,9 @@ function filterProducts(category = 'all', btn = null) {
     )
     .join('');
 }
+window.toggleBakeryFavourite = toggleBakeryFavourite;
 
 // --- BIRTHDAY CAKE BUILDER ---
-// bdayCakes object is now populated dynamically via loadProducts()
-
 function updateBirthdayCake(flavor) {
   if (!bdayCakes[flavor]) {
     console.error('Cake flavor not found:', flavor);
@@ -901,6 +942,7 @@ function setCakeWeight(weight, event) {
 
   calculateBdayPrice();
 }
+window.setCakeWeight = setCakeWeight;
 
 function calculateBdayPrice() {
   const price = BIRTHDAY_BASE_PRICES[selectedWeight] || 850;
@@ -912,6 +954,7 @@ function calculateBdayPrice() {
 
   updateBirthdayFavouriteButton();
 }
+window.calculateBdayPrice = calculateBdayPrice;
 
 function getBirthdayFavouriteItem() {
   const cake = bdayCakes[selectedFlavor] || {};
@@ -944,6 +987,14 @@ function updateBirthdayFavouriteButton() {
 
   btn.innerHTML = active ? '&hearts;' : '&#9825;';
 }
+window.addBirthdayToCart = addBirthdayToCart;
+
+// --- ORDER NOW (direct shortcut) ---
+function orderNow(product) {
+    addToCart(product);
+    openCheckout();
+}
+window.orderNow = orderNow;
 
 function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
   const lines = Array.isArray(itemsSnap) && itemsSnap.length ? itemsSnap : cart;
