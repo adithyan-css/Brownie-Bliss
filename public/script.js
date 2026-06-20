@@ -1841,7 +1841,7 @@ document.addEventListener('DOMContentLoaded', () => {
                m0 22c-1.88 0-3.645-.497-5.172-1.367l-.371-.214-3.681.86.927-3.585
                -.233-.381A9.934 9.934 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10
                -4.477 10-10 10z"/>
-    </svg>`;
+    </svg>`
 
   document.body.appendChild(btn);
 
