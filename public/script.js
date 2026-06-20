@@ -766,7 +766,15 @@ function filterProducts(category = 'all', btn = null) {
     category === 'all'
       ? [...products]
       : products.filter((p) => p.category === category);
-
+  if (selectedPriceFilter === 'under200') {
+  filtered = filtered.filter(p => p.price < 200);
+}
+else if (selectedPriceFilter === '200to500') {
+  filtered = filtered.filter(p => p.price >= 200 && p.price <= 500);
+}
+else if (selectedPriceFilter === 'above500') {
+  filtered = filtered.filter(p => p.price > 500);
+}
   if (currentSearchTerm.trim()) {
     const term = currentSearchTerm.toLowerCase();
 
@@ -1231,8 +1239,9 @@ function openReviewModal(){
 function closeReviewModal(){
   document.getElementById("reviewModal").style.display="none";
 }
-
-document.getElementById("reviewForm").addEventListener("submit", function(e){
+const reviewForm=document.getElementById("reviewForm");
+if(reviewForm){
+reviewForm.addEventListener("submit", function(e){
   e.preventDefault();
 
   const review = document.getElementById("reviewText").value;
@@ -1243,7 +1252,7 @@ document.getElementById("reviewForm").addEventListener("submit", function(e){
   this.reset();
   closeReviewModal();
 });
-
+}
 function openCheckout() {
   if (cart.length === 0) {
     showToast('Your cart is empty! 🍫');
