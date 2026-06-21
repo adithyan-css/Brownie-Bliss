@@ -1841,3 +1841,69 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add("visible");
   }, 2000);
 })();
+
+// ============================================================
+// TESTIMONIAL & REVIEW MODALS
+// ============================================================
+
+function openTestimonialModal(cardElement) {
+  const modal = document.getElementById('testimonialZoomModal');
+  const body = document.getElementById('testimonialZoomBody');
+  if (!modal || !body) return;
+
+  // Clone the card content but remove onclick to prevent recursive opening
+  const clone = cardElement.cloneNode(true);
+  clone.removeAttribute('onclick');
+  clone.classList.remove('featured');
+  
+  body.innerHTML = '';
+  body.appendChild(clone);
+  
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTestimonialModal() {
+  const modal = document.getElementById('testimonialZoomModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+// Close modals when clicking outside
+window.addEventListener('click', (e) => {
+  const zoomModal = document.getElementById('testimonialZoomModal');
+  if (e.target === zoomModal) {
+    closeTestimonialModal();
+  }
+});
+
+// ============================================================
+// ACETERNITY UI CARD STACK - Vanilla JS Implementation
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  // Infinite Moving Cards logic (Vanilla JS)
+  const scrollerContainer = document.querySelector(".bb-scroller-box");
+  const scrollerList = document.querySelector(".bb-scroller-track");
+  
+  if (scrollerContainer && scrollerList) {
+    // Clone all items in the list to create the seamless infinite effect
+    const scrollerContent = Array.from(scrollerList.children);
+    scrollerContent.forEach((item) => {
+      const duplicatedItem = item.cloneNode(true);
+      // Remove any duplicate IDs if they exist to prevent HTML invalidation
+      duplicatedItem.removeAttribute('id');
+      scrollerList.appendChild(duplicatedItem);
+    });
+  }
+});
+
+function scrollToFeedback(e) {
+  if (e) e.preventDefault();
+  const el = document.getElementById('feedback');
+  if (el) {
+    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}

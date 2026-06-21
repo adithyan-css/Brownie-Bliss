@@ -9457,85 +9457,140 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
     opacity: 0.75;
 }
   .bb-reviews {
-    background: #fdf6ee;
-    padding: 64px 32px;
+    background: #fdf6ee; /* Theme cream */
+    padding: 100px 32px;
     font-family: 'Lato', sans-serif;
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-
+  
   .bb-reviews .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.18em;
+    font-size: 12px;
+    letter-spacing: 0.2em;
     color: #b07d3e;
     text-transform: uppercase;
-    margin: 0 0 12px;
+    margin-bottom: 12px;
+    display: inline-block;
+    border-bottom: 1px solid #b07d3e;
+    padding-bottom: 4px;
+    background: transparent;
   }
 
   .bb-reviews h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 34px;
-    font-weight: 500;
+    font-size: 38px;
     color: #3b1f0a;
-    margin: 0 0 48px;
-    line-height: 1.25;
+    margin-bottom: 40px;
   }
 
   .bb-reviews h2 em {
-    color: #b07d3e;
     font-style: italic;
+    color: #b07d3e;
   }
 
-  .reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
+  .bb-scroller-box {
+    position: relative;
+    z-index: 20;
+    max-width: 1000px;
+    margin: 40px auto 20px auto;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, white 15%, white 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, white 15%, white 85%, transparent);
   }
 
-  .review-card {
+  .bb-scroller-track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    flex-wrap: nowrap;
+    gap: 24px;
+    padding: 20px 0;
+    animation: infinite-scroll 80s linear infinite reverse;
+  }
+
+  .bb-scroller-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes infinite-scroll {
+    to {
+      transform: translateX(calc(-50% - 12px));
+    }
+  }
+
+  .bb-review-item {
     background: #fff8f0;
-    border: 0.5px solid #e8d0b0;
-    border-radius: 16px;
-    padding: 24px 20px;
+    color: #5c3d1e;
+    border: 1px solid #e8d0b0;
+    border-radius: 24px;
+    padding: 40px;
     text-align: left;
     position: relative;
+    width: 400px;
+    max-width: 90vw;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+    box-sizing: border-box;
+    transition: all 0.4s ease;
+    height: auto;
+    min-height: 250px;
   }
 
-  .review-card .quote-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 56px;
-    color: #e8d0b0;
-    line-height: 0.6;
-    display: block;
-    margin-bottom: 4px;
+  /* Aceternity Focus Cards Effect */
+  .bb-scroller-track:hover .bb-review-item {
+    filter: blur(4px) brightness(0.8);
+    transform: scale(0.96);
   }
 
-  .review-card .stars {
-    color: #d4882a;
-    font-size: 15px;
-    letter-spacing: 2px;
+  .bb-scroller-track .bb-review-item:hover {
+    filter: blur(0px) brightness(1);
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
   }
 
-  .review-card .review-text {
-    font-size: 14px;
-    line-height: 1.65;
+  .bb-review-item .review-text {
+    font-size: 18px;
+    line-height: 1.6;
     color: #5c3d1e;
     margin: 0;
-    flex: 1;
+    font-weight: 400;
+  }
+
+  .highlight {
+    font-weight: 700;
+    background-color: rgba(176, 125, 62, 0.15); /* #b07d3e with opacity */
+    color: #b07d3e; 
+    padding: 2px 6px;
+    border-radius: 4px;
   }
 
   .review-card .reviewer {
+    border-top: none;
+    padding-top: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
-    border-top: 0.5px solid #e8d0b0;
-    padding-top: 14px;
-    margin-top: 4px;
+    gap: 12px;
   }
+
+  .reviewer-name {
+    color: #3b1f0a;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  
+  .reviewer-location {
+    color: rgba(92, 61, 30, 0.6);
+    font-size: 14px;
+  }
+
+
 
   .reviewer-avatar {
     width: 36px;
@@ -9565,13 +9620,12 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
     margin: 0;
   }
 
-  .review-card.featured {
+  .bb-review-item.featured {
     border-color: #c9923a;
     background: #fff3e4;
-    grid-column: span 2;
   }
 
-  .review-card.featured .review-text {
+  .bb-review-item.featured .review-text {
     font-size: 15px;
   }
 
@@ -9587,6 +9641,51 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
     padding: 4px 10px;
     border-radius: 20px;
     font-weight: 700;
+  }
+
+  .review-cta-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    transition: all 0.3s ease;
+  }
+
+  .review-cta-wrapper.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+  }
+
+  .zoom-modal-content {
+    background: #fff8f0;
+    max-width: 650px;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: left;
+  }
+
+  .zoom-modal-content .bb-review-item {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+    cursor: default;
+    padding: 0;
+  }
+
+  .zoom-modal-content .bb-review-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .zoom-modal-content .review-text {
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+  .zoom-modal-content .quote-mark {
+    font-size: 80px;
+    margin-bottom: 10px;
   }
 
   .bb-overall {
@@ -9614,7 +9713,7 @@ html.dark .theme-toggle-btn:hover    { background: var(--gold); }
   }
 
   @media (max-width: 500px) {
-    .review-card.featured { grid-column: span 1; }
+    .bb-review-item.featured { grid-column: span 1; }
   }
 
 .customize-modal {
@@ -10410,195 +10509,7 @@ html.dark .topping-price {
 }
 
 } 
-/* ===== Reviews Section ===== */
 
-.bb-reviews {
-  padding: 80px 40px;
-  background: #fffaf5;
-  text-align: center;
-}
-
-.bb-reviews .eyebrow {
-  color: #c49b3f;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.bb-reviews h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
-  margin-bottom: 50px;
-  color: #3e2723;
-}
-
-.bb-reviews h2 em {
-  color: #c49b3f;
-  font-style: italic;
-}
-
-/* ===== Horizontal Scroll Layout ===== */
-
-.reviews-grid {
-  display: flex;
-  gap: 25px;
-  overflow-x: auto;
-  padding-bottom: 20px;
-  scroll-behavior: smooth;
-}
-
-/* Hide scrollbar */
-
-.reviews-grid::-webkit-scrollbar {
-  height: 8px;
-}
-
-.reviews-grid::-webkit-scrollbar-thumb {
-  background: #c49b3f;
-  border-radius: 20px;
-}
-
-.review-card {
-  min-width: 320px;
-  max-width: 320px;
-  background: white;
-  border: 2px solid #f1e3d3;
-  border-radius: 22px;
-  padding: 28px;
-  position: relative;
-  text-align: left;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  transition: 0.3s ease;
-  flex-shrink: 0;
-}
-
-.review-card:hover {
-  transform: translateY(-8px);
-  border-color: #c49b3f;
-  box-shadow: 0 18px 30px rgba(0,0,0,0.1);
-}
-
-/* Featured Card */
-
-.review-card.featured {
-  border: 2px solid #c49b3f;
-  background: linear-gradient(to bottom right, #fffaf2, #fff);
-}
-
-.featured-badge {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: #c49b3f;
-  color: white;
-  padding: 5px 12px;
-  border-radius: 30px;
-  font-size: 0.7rem;
-  font-weight: bold;
-}
-
-/* Quote */
-
-.quote-mark {
-  font-size: 4rem;
-  color: #e6d3b3;
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  font-family: serif;
-}
-
-/* Stars */
-
-.stars {
-  color: #f4b400;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  margin-top: 25px;
-}
-
-/* Review Text */
-
-.review-text {
-  font-size: 0.95rem;
-  color: #5f4b42;
-  line-height: 1.7;
-  margin-bottom: 25px;
-}
-
-/* Reviewer */
-
-.reviewer {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.reviewer-avatar {
-  width: 50px;
-  height: 50px;
-  background: #c49b3f;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.reviewer-name {
-  font-weight: 700;
-  color: #3e2723;
-  margin: 0;
-}
-
-.reviewer-location {
-  color: #8a7468;
-  font-size: 0.85rem;
-  margin-top: 2px;
-}
-
-/* Overall Rating */
-
-.bb-overall {
-  margin-top: 50px;
-}
-
-.stars-big {
-  font-size: 2rem;
-  color: #f4b400;
-}
-
-.rating-text {
-  margin-top: 10px;
-  color: #5f4b42;
-  font-size: 1rem;
-}
-
-/* ===== Dark Mode ===== */
-
-.dark-mode .bb-reviews {
-  background: #1f1b18;
-}
-
-.dark-mode .review-card {
-  background: #2c2521;
-  border-color: #4b3d34;
-}
-
-.dark-mode .review-text,
-.dark-mode .reviewer-location,
-.dark-mode .rating-text {
-  color: rgba(255,255,255,0.75);
-}
-
-.dark-mode .reviewer-name,
-.dark-mode .bb-reviews h2 {
-  color: white;
-}
 /* =========================================
    BROWNIE BLISS GLOW CURSOR
 
