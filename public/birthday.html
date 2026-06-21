@@ -24,35 +24,50 @@
 
 <body>
 
-  <!-- ANNOUNCEMENT -->
-  <div class="announcement"
-    style="background: var(--brown); color: var(--cream); text-align: center; padding: 10px; font-size: 12px; letter-spacing: 1px;">
-    ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY
-    BITE &nbsp; ✨</div>
+  <div class="announcement">
+    &#127790; &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;|&nbsp; HAPPINESS IN EVERY BITE &nbsp; &#127790;
+  </div>
 
-  <!-- NAVBAR (Updated to match index.html design) -->
-  <nav class="navbar">
-    <div class="nav-inner">
-      <a href="index.html" class="brand">
-        <span class="brand-icon">🍫</span>
-        <div>
-          <div class="brand-name">Brownie Bliss</div>
-          <div class="brand-tagline">Baked with Love</div>
-        </div>
+  <header>
+    <div class="header-inner">
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">&#9776;</button>
+
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
       </a>
-      <div class="nav-links">
+
+      <nav>
         <a href="index.html">Home</a>
+        <a href="about.html">About</a>
         <a href="products.html">Products</a>
-        <a href="birthday.html" class="active">Birthday</a>
+        <a href="birthday.html" class="active">Birthday Cakes</a>
         <a href="#feedback">Feedback</a>
         <a href="favourites.html">Favourites</a>
         <a href="contact.html">Contact</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span id="themeIcon">&#9790;</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          &#128722; Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
       </div>
-      <button class="cart-trigger" onclick="openCart()">
-        🛒 <span id="cartBadge">0</span>
-      </button>
     </div>
-  </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="birthday.html">Birthday Cakes</a>
+    <a href="favourites.html">Favourites</a>
+    <a href="contact.html">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
   <section class="birthday-section" id="birthday"
@@ -574,6 +589,7 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
+  <script src="js/navbar.js"></script>
   <script src="script.js"></script>
   <div id="bb-cursor"></div>
   <script>

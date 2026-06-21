@@ -105,87 +105,6 @@
     }
 
     /* =========================
-       NAVBAR
-    ========================= */
-
-    header{
-      position:fixed;
-      width:100%;
-      top:0;
-      z-index:1000;
-
-      backdrop-filter:blur(18px);
-
-      background:
-      rgba(255,250,244,0.92);
-
-      border-bottom:
-      1px solid rgba(0,0,0,0.05);
-    }
-
-    .navbar{
-      max-width:1450px;
-      margin:auto;
-
-      padding:10px 60px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .logo{
-      text-decoration:none;
-    }
-
-    .logo h1{
-      font-size:34px;
-      color:var(--dark);
-      font-family:'Cormorant Garamond',serif;
-      line-height:1;
-    }
-
-    .logo span{
-      color:var(--gold);
-      font-size:9px;
-      letter-spacing:5px;
-    }
-
-    nav{
-      display:flex;
-      gap:38px;
-    }
-
-    nav a{
-      text-decoration:none;
-      color:var(--dark);
-      font-size:14px;
-      font-weight:500;
-      letter-spacing:1px;
-      position:relative;
-      transition:0.4s ease;
-    }
-
-    nav a::after{
-      content:'';
-      position:absolute;
-      left:0;
-      bottom:-8px;
-      width:0%;
-      height:2px;
-      background:var(--gold);
-      transition:0.4s ease;
-    }
-
-    nav a:hover{
-      color:var(--gold);
-    }
-
-    nav a:hover::after{
-      width:100%;
-    }
-
-    /* =========================
        HERO
     ========================= */
 
@@ -1089,27 +1008,6 @@
 
     }
 
-    @media(max-width:900px){
-
-      nav{
-        display:none;
-      }
-
-      .hero-wrapper,
-      .footer-grid{
-        grid-template-columns:1fr;
-      }
-
-      .story-grid{
-        grid-template-columns:1fr;
-      }
-
-      .hero-images{
-        margin-top:40px;
-      }
-
-    }
-
     @media(max-width:700px){
 
       .premium-features-wrapper{
@@ -1119,10 +1017,6 @@
     }
 
     @media(max-width:600px){
-
-      .navbar{
-        padding:20px;
-      }
 
       .hero,
       .story,
@@ -1171,26 +1065,6 @@
 
     html.dark body::before{
       opacity:0.03;
-    }
-
-    html.dark header{
-      background:rgba(20,13,8,0.92);
-      border-bottom:1px solid rgba(212,165,55,0.16);
-    }
-
-    html.dark .logo h1,
-    html.dark .logo-name,
-    html.dark nav a{
-      color:var(--text-dark);
-    }
-
-    html.dark .logo span,
-    html.dark .logo-sub{
-      color:var(--gold);
-    }
-
-    html.dark nav a:hover{
-      color:var(--gold);
     }
 
     html.dark .large-card,
@@ -2193,6 +2067,7 @@
   </footer>
 
   <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+  <script src="js/navbar.js"></script>
   <script src="script.js"></script>
   <div id="bb-cursor"></div>
   <script>
