@@ -1328,8 +1328,8 @@ html {
 }
 
 .whatsapp-btn {
-  width: 100%;
-  padding: 16px;
+  width: max-content;
+  padding: 10px 20px;
   background: #25d366;
   color: white;
   border: none;
@@ -1356,6 +1356,7 @@ html {
 
 .whatsapp-icon {
   font-size: 20px;
+  fill: #ffffff;
 }
 
 .whatsapp-note {
