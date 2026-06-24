@@ -1408,7 +1408,19 @@ function goToConfirm() {
   showCheckoutStep(4);
 }
 
+let isSubmitting = false; // module-level lock to prevent duplicate submissions
+
 async function placeOrder() {
+  if (isSubmitting) return; // guard: ignore clicks while a request is in flight
+  isSubmitting = true;
+
+  const placeOrderBtn = document.querySelector('#checkStep4 .whatsapp-btn');
+  const originalBtnText = placeOrderBtn ? placeOrderBtn.innerHTML : '';
+  if (placeOrderBtn) {
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.innerHTML = 'Processing...';
+  }
+
   const itemsSnap = cart.map((i) => ({ ...i })); // snapshot before clearing
   const orderTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
@@ -1453,6 +1465,12 @@ async function placeOrder() {
     }
   } catch {
     showToast('Error placing order. Please try again.');
+  } finally {
+    isSubmitting = false;
+    if (placeOrderBtn) {
+      placeOrderBtn.disabled = false;
+      placeOrderBtn.innerHTML = originalBtnText;
+    }
   }
 }
 
