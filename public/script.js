@@ -1705,10 +1705,51 @@ function fallbackCopyText(text) {
   }
 }
 
+function copyCouponCode(code) {
+  const showCopied = () => showToast(`Coupon code ${code} copied!`);
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code)
+      .then(showCopied)
+      .catch(() => {
+        try {
+          const textArea = document.createElement('textarea');
+          textArea.value = code;
+          textArea.style.position = 'fixed';
+          textArea.style.opacity = '0';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          const copied = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          showToast(copied ? `Coupon code ${code} copied!` : 'Failed to copy coupon code');
+        } catch {
+          showToast('Failed to copy coupon code');
+        }
+      });
+  } else {
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = code;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const copied = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      showToast(copied ? `Coupon code ${code} copied!` : 'Failed to copy coupon code');
+    } catch {
+      showToast('Failed to copy coupon code');
+    }
+  }
+}
+
 // --- GLOBAL BINDINGS ---
 window.openCart = openCart;
 window.closeCart = closeCart;
 window.copyProductLink = copyProductLink;
+window.copyCouponCode = copyCouponCode;
 window.addToCart = addToCart;
 window.changeQty = changeQty;
 window.removeFromCart = removeFromCart;
