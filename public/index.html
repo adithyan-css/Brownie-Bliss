@@ -41,6 +41,7 @@
         <a href="about.html">About</a>
         <a href="products.html">Products</a>
         <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#offers">Offers</a>
         <a href="#feedback">Feedback</a>
         <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count
             style="display:none">0</span></a>
@@ -67,6 +68,7 @@
     <a href="index.html#home">Home</a>
     <a href="products.html">Products</a>
     <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="index.html#offers">Offers</a>
     <a href="index.html#contact">Contact</a>
     <a href="track.html">Track Order</a>
   </div>
@@ -185,6 +187,51 @@
 
     </div>
   </div>
+  <!-- OFFERS SECTION -->
+  <section class="offers-section" id="offers">
+    <div class="offers-inner">
+      <div class="section-header">
+        <span class="section-label">Fresh deals</span>
+        <h2 class="section-title">Available <em>Offers</em></h2>
+      </div>
+
+      <div class="offers-grid">
+        <article class="offer-card">
+          <div class="offer-tag">Combo</div>
+          <h3>Brownie Box Treat</h3>
+          <p>Buy any 4 brownies and get 1 chocolate chip cookie free.</p>
+          <div class="coupon-code">
+            <span>BROWNIE4</span>
+            <button type="button" onclick="copyCouponCode('BROWNIE4')">Copy Code</button>
+          </div>
+          <a href="products.html" class="offer-link">Shop Brownies</a>
+        </article>
+
+        <article class="offer-card">
+          <div class="offer-tag">Birthday</div>
+          <h3>Cake Celebration Deal</h3>
+          <p>Get free basic birthday message customization on every 1 kg cake order.</p>
+          <div class="coupon-code">
+            <span>BDAYBLISS</span>
+            <button type="button" onclick="copyCouponCode('BDAYBLISS')">Copy Code</button>
+          </div>
+          <a href="#birthday" class="offer-link">Choose Cake</a>
+        </article>
+
+        <article class="offer-card">
+          <div class="offer-tag">Desserts</div>
+          <h3>Sweet Box Saver</h3>
+          <p>Save 10% on dessert boxes of 6 or more pieces.</p>
+          <div class="coupon-code">
+            <span>SWEET10</span>
+            <button type="button" onclick="copyCouponCode('SWEET10')">Copy Code</button>
+          </div>
+          <a href="products.html" class="offer-link">View Desserts</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- PRODUCTS SECTION -->
   <section class="products-section" id="products" style="padding: 100px 30px; background: var(--cream);">
     <div class="products-inner">
@@ -706,6 +753,8 @@
           </div>
         </div>
 
+      </div>
+
         <div class="review-card">
           <span class="quote-mark">"</span>
           <div class="stars">★★★★★</div>
@@ -720,6 +769,8 @@
               <p class="reviewer-name">Rahul M.</p>
               <p class="reviewer-location">Krishnagiri</p>
             </div>
+          </div>
+        </div>
 
             <div class="review-card">
               <span class="quote-mark">"</span>
@@ -735,6 +786,8 @@
                   <p class="reviewer-name">Divya R.</p>
                   <p class="reviewer-location">Krishnagiri</p>
                 </div>
+              </div>
+            </div>
 
                 <div class="review-card">
                   <span class="quote-mark">"</span>
@@ -753,6 +806,8 @@
 
                   </div>
 
+                </div>
+
                   <div class="review-card">
                     <span class="quote-mark">"</span>
                     <div class="stars">★★★★★</div>
@@ -767,16 +822,15 @@
                         <p class="reviewer-name">Sriram P.</p>
                         <p class="reviewer-location">Krishnagiri</p>
                       </div>
+                    </div>
                       <h3
                         style="font-family: 'Playfair Display', serif; font-size: 26px; color: #3C1E14; margin-bottom: 8px; font-weight: 500;">
                         Share Your Experience</h3>
                       <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love
                         to hear your thoughts and suggestions.</p>
 
-                      <form
-                        onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();"
-                        style="display: inline-block;">
-                        <button class="hero-cta premium-write-btn" type="submit">
+                      <div style="display: inline-block;">
+                        <button class="hero-cta premium-write-btn" type="button" onclick="openReviewModal()">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" style="margin-right: 4px;">
                             <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
@@ -785,11 +839,11 @@
                           </svg>
                           Write a Review
                         </button>
-                      </form>
+                      </div>
                     </div>
                   </div>
 
-                </div>
+    </div>
   </section>
 
     <div id="reviewModal" class="modal">
@@ -808,9 +862,6 @@
       </div>
     </div>
 
-      </div>
-    </section>
-
   <!-- FOOTER -->
   <footer id="contact">
     <div class="footer-inner">
@@ -828,6 +879,7 @@
           <a href="#home">Home</a>
           <a href="products.html">Our Products</a>
           <a href="#birthday">Birthday Cakes</a>
+          <a href="#offers">Offers</a>
           <a href="favourites.html">Favourites</a>
           <a href="track.html">Track Order</a>
           <a href="contact.html">Contact Us</a>
@@ -960,3 +1012,4 @@ document.addEventListener("mouseenter", () => {
 </body>
 
 </html>
+
