@@ -10978,10 +10978,50 @@ button,
   display:none;
 }
 
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 998;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--white);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+
+
+
 #scrollTopBtn:hover {
   background-color: #8b5a3c;
   transform: scale(1.1);
 }
+
+html.dark #scrollTopBtn {
+  background-color: var(--brown-dark, #f5e6ca);
+  color: var(--text-dark);
+}
+
+@media (max-width: 768px) {
+  #scrollTopBtn {
+    width: 42px;
+    height: 42px;
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+
 
 /* ============================================================
    DARK MODE FINAL PATCH — Brownie Bliss
