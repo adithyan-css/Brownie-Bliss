@@ -41,19 +41,36 @@ async function sendOtp(req, res) {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 }
+const MAX_VERIFY_ATTEMPTS = 5;
 
 async function verifyOtp(req, res) {
   try {
     const { phone, otp } = req.body;
 
+    // Look up by phone only (not by otp) so failed guesses still resolve to
+    // a record we can track attempts against.
     const record = await Otp.findOne({
       phone,
-      otp,
       used: false,
       expires_at: { $gt: new Date() },
     }).sort({ created_at: -1 });
 
     if (!record) {
+      return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+    }
+
+    if (record.attempts >= MAX_VERIFY_ATTEMPTS) {
+      record.used = true; // lock this OTP out; caller must request a new one
+      await record.save();
+      return res.status(429).json({
+        success: false,
+        message: 'Too many incorrect attempts. Please request a new OTP.',
+      });
+    }
+
+    if (record.otp !== otp) {
+      record.attempts += 1;
+      await record.save();
       return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
     }
 
