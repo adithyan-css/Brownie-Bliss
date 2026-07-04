@@ -9234,10 +9234,6 @@ a.logo {
   font-size: 13px !important;
   border-radius: 6px !important;
   background: var(--gold) !important;
-
- .some-class {
-  color: var(--brown-dark) !important;
-}
 }
 html.dark {
   --cream: #1a1008;
@@ -10289,6 +10285,98 @@ html.dark .topping-price {
 /* Birthday Slider */
 .birthday-slider::-webkit-scrollbar {
   display: none;
+}
+
+/* Carousel arrow buttons */
+.bday-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: var(--white);
+  color: var(--brown-dark);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  box-shadow: var(--shadow);
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.bday-slider-arrow:hover {
+  background: var(--gold);
+  color: var(--white);
+}
+
+.bday-slider-arrow:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.bday-slider-arrow[disabled] {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.bday-slider-arrow-prev {
+  left: -6px;
+}
+
+.bday-slider-arrow-next {
+  right: -6px;
+}
+
+@media (max-width: 900px) {
+  .bday-slider-arrow-prev {
+    left: 6px;
+  }
+
+  .bday-slider-arrow-next {
+    right: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bday-slider-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+}
+
+/* Carousel pagination dots */
+.bday-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: var(--cream-dark);
+  cursor: pointer;
+  transition: background 0.2s ease, width 0.2s ease, border-radius 0.2s ease;
+}
+
+.bday-dot:hover {
+  background: var(--gold);
+  opacity: 0.7;
+}
+
+.bday-dot.active {
+  background: var(--gold);
+  width: 22px;
+  border-radius: 5px;
+}
+
 .price-filter {
   display: flex;
   align-items: center;
@@ -10409,7 +10497,6 @@ html.dark .topping-price {
   color: #5c372c !important;
 }
 
-} 
 /* ===== Reviews Section ===== */
 
 .bb-reviews {
@@ -10978,6 +11065,30 @@ button,
   display:none;
 }
 
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+
+  background-color: var(--brown-dark, #5c372c);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
 #scrollTopBtn:hover {
   background-color: #8b5a3c;
   transform: scale(1.1);
@@ -11318,6 +11429,8 @@ html.dark .copy-btn:hover {
   background: var(--gold);
   color: var(--brown);
   border-color: var(--gold);
+}
+
 /* Navbar Container */
 .navbar {
   display: flex;
