@@ -11,7 +11,15 @@ const otpRateLimiter = rateLimit({
   message: { success: false, message: 'Too many requests from this IP, please try again after 15 minutes' },
 });
 
+const otpVerifyRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // matches OTP validity window
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many verification attempts, please request a new OTP' },
+});
+
 router.post('/send-otp', otpRateLimiter, sendOtp);
-router.post('/verify-otp', verifyOtp);
+router.post('/verify-otp', otpVerifyRateLimiter, verifyOtp);
 
 module.exports = router;
