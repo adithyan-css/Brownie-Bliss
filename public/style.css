@@ -10857,6 +10857,12 @@ button,
 /* ============================= */
 
 @media (max-width: 900px) {
+  .header-inner {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
 
   nav {
     display: none;
@@ -10864,9 +10870,12 @@ button,
 
   .menu-toggle {
     display: block;
+    order: -1;
   }
 
   .header-actions {
+    width: 100%;
+    justify-content: flex-end;
     gap: 10px;
   }
 
@@ -10884,6 +10893,25 @@ button,
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
+  display: none;
+  flex-direction: column;
+  background: var(--white);
+  padding: 15px 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 999;
+}
+
+.mobile-menu.show {
+  display: flex !important;
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: var(--brown-dark);
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  width: 100%;
 }
 
 /* ============================= */
@@ -10974,8 +11002,10 @@ button,
   }
 
 }
-.menu-toggle{
-  display:none;
+@media (min-width:901px) {
+  .menu-toggle{
+    display:none;
+  }
 }
 
 #scrollTopBtn:hover {
