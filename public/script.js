@@ -33,6 +33,7 @@ let recentSearches = JSON.parse(
   localStorage.getItem('brownie_recent_searches') || '[]'
 );
 let selectedWeight = '1.0';
+const DEFAULT_PRODUCT_IMAGE = 'assets/image-placeholder.svg';
 const BIRTHDAY_BASE_PRICES = {
   0.5: 450,
   '1.0': 850,
@@ -112,6 +113,18 @@ const DEFAULT_BDAY_CAKES = {
   },
 };
 
+function dedupeProducts(productList) {
+  const seenIds = new Set();
+  return productList.filter((product) => {
+    const productId = product.id ?? product.id_ref ?? `${product.name}:${product.category}`;
+    if (seenIds.has(productId)) {
+      return false;
+    }
+    seenIds.add(productId);
+    return true;
+  });
+}
+
 function buildCatalogFromList(list) {
     if (!Array.isArray(list) || list.length === 0) {
         products = DEFAULT_PRODUCTS;
@@ -119,7 +132,7 @@ function buildCatalogFromList(list) {
         return;
     }
 
-    products = list
+    const standardProducts = list
         .filter(p => p.type === 'standard')
         .map(p => ({
             id: p.id_ref,
@@ -133,6 +146,8 @@ function buildCatalogFromList(list) {
             shelfLife: p.shelfLife || 'Best consumed within 3 days',
 
         }));
+
+    products = dedupeProducts(standardProducts);
 
     bdayCakes = {};
     list.filter(p => p.type === 'birthday').forEach(p => {
@@ -375,7 +390,7 @@ function renderFavouritesPage() {
       .map(
         (bakery) => `
       <article class="favourite-bakery-card">
-        <img src="${bakery.img}" alt="${bakery.name}">
+        <img src="${bakery.img || DEFAULT_PRODUCT_IMAGE}" alt="${bakery.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
         <div class="favourite-bakery-info">
           <div class="product-category">${bakery.category || ''}</div>
           <h3>${bakery.name}</h3>
@@ -397,7 +412,7 @@ function renderFavouritesPage() {
         (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
-          <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
+          <img src="${dish.img || DEFAULT_PRODUCT_IMAGE}" alt="${dish.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
           <button class="favorite-btn active" type="button"
             data-fav-type="dishes" data-fav-id="${dish.id}"
             aria-label="Remove ${dish.name} from favourites" aria-pressed="true"
@@ -433,7 +448,7 @@ async function loadProducts() {
     const data = await res.json();
 
     if (data.success && Array.isArray(data.products) && data.products.length) {
-      products = data.products
+      const standardProducts = data.products
         .filter((p) => p.type === 'standard')
         .map((p) => ({
           id: p.id_ref,
@@ -448,6 +463,8 @@ async function loadProducts() {
             shelfLife: p.shelfLife || 'Best consumed within 3 days',
 
         }));
+
+      products = dedupeProducts(standardProducts);
 
       bdayCakes = {};
       const bd = data.products.filter((p) => p.type === 'birthday');
@@ -481,15 +498,42 @@ async function loadProducts() {
 }
 
 // --- CART STATE ---
-let cart = [];
-try {
-  cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
-  if (!Array.isArray(cart)) cart = [];
-} catch (e) {
-  console.error('Error parsing cart from localStorage:', e);
+function normalizeCartItem(item) {
+  if (!item || typeof item !== 'object') return null;
 
+  const qtyValue = item.qty ?? item.quantity ?? 1;
+  const qty = Number(qtyValue);
+  const normalizedQty = Number.isFinite(qty) && qty > 0 ? qty : 1;
 
+  const normalizedItem = {
+    ...item,
+    qty: normalizedQty,
+  };
+
+  if ('quantity' in normalizedItem) {
+    delete normalizedItem.quantity;
+  }
+
+  return normalizedItem;
 }
+
+function loadCart() {
+  const rawCart = localStorage.getItem('brownie_bliss_cart');
+  if (!rawCart) return [];
+
+  try {
+    const parsed = JSON.parse(rawCart);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(normalizeCartItem)
+      .filter((item) => item !== null);
+  } catch (e) {
+    console.error('Error parsing cart from localStorage:', e);
+    return [];
+  }
+}
+
+let cart = loadCart();
 
 let checkoutState = {
   name: '',
@@ -503,11 +547,18 @@ let checkoutState = {
 
 function saveCart() {
   try {
-    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+    const cartToSave = cart.map((item) => {
+      const cleanItem = { ...item };
+      if ('quantity' in cleanItem) delete cleanItem.quantity;
+      return cleanItem;
+    });
+    localStorage.setItem('brownie_bliss_cart', JSON.stringify(cartToSave));
   } catch (e) {
     console.error('Error saving cart to localStorage:', e);
   }
 }
+
+window.addEventListener('beforeunload', saveCart);
 
 const cartFooter = document.getElementById('cartFooter');
 const cartTotal = document.getElementById('cartTotal');
@@ -553,7 +604,7 @@ function updateCartUI() {
         }
         return `
             <div class="cart-item">
-                <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+                <img src="${item.img || DEFAULT_PRODUCT_IMAGE}" alt="${item.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
                 <div class="cart-item-info">
                     <div class="cart-item-name">${item.name}</div>
                     <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
@@ -605,10 +656,14 @@ function addToCart(product) {
   });
 
   if (existing) {
-    existing.qty++;
+    existing.qty = Number(existing.qty) + 1;
   } else {
     const newItem = { ...product };
-    if (!newItem.qty) newItem.qty = 1;
+    const qtyValue = newItem.qty ?? newItem.quantity ?? 1;
+    let qty = Number(qtyValue);
+    if (!Number.isFinite(qty) || qty <= 0) qty = 1;
+    newItem.qty = qty;
+    if ('quantity' in newItem) delete newItem.quantity;
     cart.push(newItem);
   }
 
@@ -620,8 +675,10 @@ function addToCart(product) {
 // FIXED QTY
 function changeQty(index, delta) {
   if (!cart[index]) return;
-  cart[index].qty += delta;
-  if (cart[index].qty <= 0) cart.splice(index, 1);
+  cart[index].qty = Number(cart[index].qty) + delta;
+  if (!Number.isFinite(cart[index].qty) || cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
   saveCart();
   updateCartUI();
 }
@@ -799,10 +856,9 @@ function renderRecentSearches() {
     return;
   }
 
-  container.innerHTML = `
-        ${recentSearches
-      .map(
-        (search) => `
+  container.innerHTML = recentSearches
+    .map(
+      (search) => `
             <div
                 class="recent-search-tag"
                 onclick="selectSuggestion('${search.replace(/'/g, "\\'")}')"
@@ -810,41 +866,8 @@ function renderRecentSearches() {
                 ${search}
             </div>
         `
-      )
-      .join('')}
-    `;
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card">
-            <div class="product-img-wrap">
-                <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
-                    type="button"
-                    data-fav-type="dishes"
-                    data-fav-id="${p.id}"
-                    aria-label="Toggle ${p.name} favourite"
-                    aria-pressed="${isFavourite('dishes', p.id) ? 'true' : 'false'}"
-                    title="${isFavourite('dishes', p.id) ? 'Remove from favourites' : 'Add to favourites'}"
-                    onclick='event.stopPropagation(); toggleFavourite("dishes", ${JSON.stringify(p)})'>
-                    ${isFavourite('dishes', p.id) ? '&hearts;' : '&#9825;'}
-                </button>
-                ${p.id < 4 ? '<div class="bestseller-badge">⭐ Bestseller</div>' : ''}
-            </div>
-            <div class="product-info">
-                <div class="product-category">${p.category}</div>
-                <div class="product-name">${p.name}</div>
-                ${p.description ? `<div class="product-desc">${p.description}</div>` : ''}
-                <div class="product-price">₹${p.price}</div>
-                <button type="button" class="add-to-cart" data-product-id="${String(p.id)}">Add to Cart</button>
-                <button
-                    type="button"
-                    class="customize-and-add"
-                    onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-                <button class="add-to-cart">
-                    Customize & Add
-                </button>
-            </div>
-        </div>
-    `).join('');
+    )
+    .join('');
 }
 
 function updatePriceFilter() {
@@ -880,7 +903,7 @@ function filterProducts(category = 'all', btn = null) {
       : products.filter((p) => p.category === category);
 
   if (currentSearchTerm.trim()) {
-    const term = currentSearchTerm.toLowerCase();
+    const term = currentSearchTerm.trim().toLowerCase();
 
     filtered = filtered.filter((product) => {
       return (
@@ -904,7 +927,7 @@ function filterProducts(category = 'all', btn = null) {
 
     <div class="product-img-wrap">
 
-      <img src="${p.img}" alt="${p.name}">
+      <img src="${p.img || DEFAULT_PRODUCT_IMAGE}" alt="${p.name}" onerror="this.onerror=null;this.src='${DEFAULT_PRODUCT_IMAGE}';">
 
       <button
         class="favorite-btn ${isFavourite('dishes', p.id) ? 'active' : ''}"
@@ -1279,7 +1302,18 @@ function injectCheckoutModal() {
             <label>Phone Number</label>
             <div class="phone-input-group">
               <span class="prefix">+91</span>
-              <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10">
+              <input
+                type="tel"
+                id="custPhone"
+                placeholder="10-digit number"
+                maxlength="10"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                required
+                autocomplete="tel"
+                oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number.')"
+                oninput="this.setCustomValidity('')"
+              >
             </div>
           </div>
           <button class="hero-cta" style="width:100%;margin-top:20px;" onclick="sendOTP()">
@@ -1342,7 +1376,7 @@ function injectCheckoutModal() {
               </div>
             </div>
           </div>
-          <button class="whatsapp-btn" style="border-radius:0;" onclick="placeOrder()">
+          <button id="placeOrderBtn" class="whatsapp-btn" style="border-radius:0;" onclick="placeOrder()">
             Place Order &amp; Confirm via WhatsApp &rarr;
           </button>
         </div>
@@ -1492,6 +1526,12 @@ async function verifyOTP() {
 }
 
 function goToConfirm() {
+  if (!checkoutState.verified) {
+    showToast('Verify your phone number before reviewing your order.');
+    showCheckoutStep(2);
+    return;
+  }
+
   const addr = document.getElementById('custAddr').value.trim();
   const city = document.getElementById('custCity').value.trim();
   const pin = document.getElementById('custPin').value.trim();
@@ -1537,6 +1577,12 @@ function goToConfirm() {
 }
 
 async function placeOrder() {
+  if (!checkoutState.verified || !checkoutState.phone || checkoutState.phone.length !== 10 || !/^\d{10}$/.test(checkoutState.phone)) {
+    showToast('Please verify a valid 10-digit phone number before placing the order.');
+    showCheckoutStep(checkoutState.verified ? 4 : 2);
+    return;
+  }
+
   const itemsSnap = cart.map((i) => ({ ...i })); // snapshot before clearing
   const orderTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
@@ -1557,6 +1603,12 @@ async function placeOrder() {
     })),
     total: orderTotal,
   };
+
+  const placeOrderBtn = document.getElementById('placeOrderBtn');
+  if (placeOrderBtn) {
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.textContent = '⏳ Placing order...';
+  }
 
   try {
     const res = await fetch(`${API_BASE}/orders`, {
@@ -1581,6 +1633,11 @@ async function placeOrder() {
     }
   } catch {
     showToast('Error placing order. Please try again.');
+  } finally {
+    if (placeOrderBtn) {
+      placeOrderBtn.disabled = false;
+      placeOrderBtn.textContent = 'Place Order & Confirm via WhatsApp →';
+    }
   }
 }
 
