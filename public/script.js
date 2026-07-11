@@ -193,14 +193,14 @@ function toggleFavourite(type, item) {
   const idx = favouriteItems[type].findIndex((f) => f.id === item.id);
   if (idx >= 0) {
     favouriteItems[type].splice(idx, 1);
-    showToast('Removed from favourites 💔');
+    showToast('Removed from favourites 💔', 'error');
   } else {
     const exists = favouriteItems[type].some((f) => f.id === item.id);
 
     if (!exists) {
-      favouriteItems[type].push(item);
+      favouriteItems[type].push({ ...item, addedAt: Date.now() });
     }
-    showToast('Added to favourites ❤️');
+    showToast('Added to favourites ❤️', 'success');
   }
   saveFavourites();
   updateFavouriteButtons(type, item.id);
@@ -230,6 +230,10 @@ function updateFavouritesCount() {
     .forEach((el) => {
       el.textContent = total;
       el.style.display = total ? 'inline-block' : 'none';
+      // restart the pop animation on every count change
+      el.classList.remove('badge-pop');
+      void el.offsetWidth;
+      el.classList.add('badge-pop');
     });
 }
 
@@ -241,26 +245,135 @@ function toggleBirthdayFavourite() {
   toggleFavourite('dishes', getBirthdayFavouriteItem());
 }
 
+// --- ADVANCED FAVOURITES: search, filter & sort state ---
+let favSearchTerm = '';
+let favFilterCategory = 'all';
+let favSortBy = 'latest';
+
+function favMatchesSearch(item) {
+  if (!favSearchTerm) return true;
+  return (item.name || '').toLowerCase().includes(favSearchTerm.toLowerCase());
+}
+
+function favMatchesCategory(item, isBakery) {
+  if (favFilterCategory === 'all') return true;
+  if (favFilterCategory === 'bakery') return isBakery;
+  if (isBakery) return false;
+  return (item.category || '').toLowerCase() === favFilterCategory;
+}
+
+function favSortItems(list) {
+  const sorted = [...list];
+  switch (favSortBy) {
+    case 'price-asc':
+      sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+      break;
+    case 'price-desc':
+      sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+      break;
+    case 'alpha':
+      sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+      break;
+    case 'latest':
+    default:
+      sorted.sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0));
+  }
+  return sorted;
+}
+
+function handleFavSearch(value) {
+  favSearchTerm = value || '';
+  renderFavouritesPage();
+}
+
+function setFavFilter(category, btnEl) {
+  favFilterCategory = category;
+  document.querySelectorAll('.fav-filter-chip').forEach((chip) => {
+    chip.classList.toggle('active', chip === btnEl);
+  });
+  renderFavouritesPage();
+}
+
+function setFavSort(value) {
+  favSortBy = value;
+  renderFavouritesPage();
+}
+
+function updateClearAllVisibility(total) {
+  const btn = document.getElementById('clearAllFavBtn');
+  if (btn) btn.style.display = total > 0 ? 'inline-flex' : 'none';
+}
+
+function openClearFavouritesModal() {
+  const modal = document.getElementById('clearFavModal');
+  if (modal) modal.classList.add('show');
+}
+
+function closeClearFavouritesModal() {
+  const modal = document.getElementById('clearFavModal');
+  if (modal) modal.classList.remove('show');
+}
+
+function confirmClearAllFavourites() {
+  favouriteItems = { bakeries: [], dishes: [] };
+  saveFavourites();
+  updateFavouritesCount();
+  document.querySelectorAll('.favorite-btn.active').forEach((btn) => {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-pressed', 'false');
+    btn.innerHTML = '&#9825;';
+  });
+  closeClearFavouritesModal();
+  renderFavouritesPage();
+  showToast('All favourites cleared 🗑️', 'error');
+}
+
 function renderFavouritesPage() {
   const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
   const dishesGrid = document.getElementById('favouriteDishesGrid');
   const emptyState = document.getElementById('favouritesEmpty');
+  const noResults = document.getElementById('favouritesNoResults');
+  const toolbar = document.getElementById('favouritesToolbar');
+  const bakeryGroup = document.getElementById('favouriteBakeriesGroup');
+  const dishesGroup = document.getElementById('favouriteDishesGroup');
 
-  const hasBakeries = favouriteItems.bakeries?.length > 0;
-  const hasDishes = favouriteItems.dishes?.length > 0;
-
-  const hasAnyFavourites = hasBakeries || hasDishes;
-
-  if (emptyState) {
-    emptyState.style.display = hasAnyFavourites ? 'none' : 'block';
-  }
   if (!bakeryGrid && !dishesGrid) return;
 
+  const totalFavourites =
+    (favouriteItems.bakeries?.length || 0) + (favouriteItems.dishes?.length || 0);
+  const hasAnyFavourites = totalFavourites > 0;
+
+  if (emptyState) emptyState.style.display = hasAnyFavourites ? 'none' : 'block';
+  if (toolbar) toolbar.style.display = hasAnyFavourites ? 'flex' : 'none';
+  updateClearAllVisibility(totalFavourites);
+
+  if (!hasAnyFavourites) {
+    if (noResults) noResults.style.display = 'none';
+    if (bakeryGroup) bakeryGroup.style.display = 'none';
+    if (dishesGroup) dishesGroup.style.display = 'none';
+    return;
+  }
+
+  const filteredBakeries = favSortItems(
+    (favouriteItems.bakeries || []).filter(
+      (b) => favMatchesSearch(b) && favMatchesCategory(b, true)
+    )
+  );
+  const filteredDishes = favSortItems(
+    (favouriteItems.dishes || []).filter(
+      (d) => favMatchesSearch(d) && favMatchesCategory(d, false)
+    )
+  );
+
+  const noMatches = filteredBakeries.length === 0 && filteredDishes.length === 0;
+  if (noResults) noResults.style.display = noMatches ? 'block' : 'none';
+  if (bakeryGroup) bakeryGroup.style.display = filteredBakeries.length ? '' : 'none';
+  if (dishesGroup) dishesGroup.style.display = filteredDishes.length ? '' : 'none';
+
   if (bakeryGrid) {
-    bakeryGrid.innerHTML =
-      favouriteItems.bakeries
-        .map(
-          (bakery) => `
+    bakeryGrid.innerHTML = filteredBakeries
+      .map(
+        (bakery) => `
       <article class="favourite-bakery-card">
         <img src="${bakery.img}" alt="${bakery.name}">
         <div class="favourite-bakery-info">
@@ -274,15 +387,14 @@ function renderFavouritesPage() {
         </div>
       </article>
     `
-        )
-        .join('') || '<p>No favourite bakeries yet.</p>';
+      )
+      .join('');
   }
 
   if (dishesGrid) {
-    dishesGrid.innerHTML =
-      favouriteItems.dishes
-        .map(
-          (dish) => `
+    dishesGrid.innerHTML = filteredDishes
+      .map(
+        (dish) => `
       <div class="product-card">
         <div class="product-img-wrap">
           <img src="${dish.img || 'https://via.placeholder.com/300'}" alt="${dish.name}">
@@ -309,8 +421,8 @@ function renderFavouritesPage() {
         </div>
       </div>
     `
-        )
-        .join('') || '<p>No favourite dishes yet.</p>';
+      )
+      .join('');
   }
 }
 
@@ -1044,12 +1156,28 @@ if (typeof AOS !== 'undefined') {
 // ============================================================
 const BIRTHDAY_FALLBACKS = DEFAULT_BDAY_CAKES;
 
-function showToast(msg) {
+function showToast(msg, type) {
   const t = document.getElementById('toast');
   if (!t) return;
-  t.innerHTML = msg; // innerHTML to allow the track-order anchor
+
+  if (!type) {
+    const negative = /fail|invalid|error|sold out|empty|❌|⚠/i.test(msg);
+    type = negative ? 'error' : 'success';
+  }
+
+  const icons = { success: '✅', error: '⚠️' };
+
+  t.innerHTML = `<span class="toast-icon">${icons[type] || icons.success}</span><span class="toast-msg">${msg}</span>`;
+  t.classList.remove('toast-success', 'toast-error');
+  t.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
+
+  // restart the show animation even if a toast is already visible
+  t.classList.remove('show');
+  void t.offsetWidth;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 5000);
+
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), 3500);
 }
 
 function addBirthdayToCart() {
@@ -1739,6 +1867,13 @@ window.updatePriceFilter = updatePriceFilter;
 window.selectSuggestion = selectSuggestion;
 window.toggleBakeryFavourite = toggleBakeryFavourite;
 window.toggleBirthdayFavourite = toggleBirthdayFavourite;
+window.toggleFavourite = toggleFavourite;
+window.handleFavSearch = handleFavSearch;
+window.setFavFilter = setFavFilter;
+window.setFavSort = setFavSort;
+window.openClearFavouritesModal = openClearFavouritesModal;
+window.closeClearFavouritesModal = closeClearFavouritesModal;
+window.confirmClearAllFavourites = confirmClearAllFavourites;
 window.scrollToTop = scrollToTop;
 window.trackOrder = trackOrder;
 window.showToast = showToast;

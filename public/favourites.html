@@ -77,6 +77,48 @@
           <a href="index.html#products" class="hero-cta">Browse Menu &rarr;</a>
         </div>
 
+        <!-- SEARCH / FILTER / SORT / CLEAR-ALL TOOLBAR -->
+        <div class="fav-toolbar" id="favouritesToolbar" style="display:none">
+          <div class="fav-toolbar-row">
+            <div class="fav-search-box">
+              <span class="fav-search-icon">&#128269;</span>
+              <input type="text" id="favSearchInput" class="fav-search-input"
+                placeholder="Search your favourites..." aria-label="Search favourites"
+                oninput="handleFavSearch(this.value)">
+            </div>
+
+            <div class="fav-sort-box">
+              <label for="favSortSelect" class="fav-sort-label">Sort</label>
+              <select id="favSortSelect" class="fav-sort-select" onchange="setFavSort(this.value)">
+                <option value="latest">Latest Added</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="alpha">Alphabetical (A-Z)</option>
+              </select>
+            </div>
+
+            <button type="button" class="fav-clear-btn" id="clearAllFavBtn" onclick="openClearFavouritesModal()">
+              &#128465;&#65039; Clear All
+            </button>
+          </div>
+
+          <div class="fav-filter-chips" role="group" aria-label="Filter favourites by category">
+            <button type="button" class="fav-filter-chip active" data-filter="all" onclick="setFavFilter('all', this)">All</button>
+            <button type="button" class="fav-filter-chip" data-filter="bakery" onclick="setFavFilter('bakery', this)">Bakery</button>
+            <button type="button" class="fav-filter-chip" data-filter="brownies" onclick="setFavFilter('brownies', this)">Brownies</button>
+            <button type="button" class="fav-filter-chip" data-filter="cakes" onclick="setFavFilter('cakes', this)">Cakes</button>
+            <button type="button" class="fav-filter-chip" data-filter="cookies" onclick="setFavFilter('cookies', this)">Cookies</button>
+            <button type="button" class="fav-filter-chip" data-filter="desserts" onclick="setFavFilter('desserts', this)">Desserts</button>
+          </div>
+        </div>
+
+        <!-- NO SEARCH/FILTER RESULTS STATE -->
+        <div id="favouritesNoResults" class="favourites-no-results" style="display:none">
+          <span class="cart-empty-icon">&#128269;</span>
+          <h3>No matches found</h3>
+          <p>Try a different search term or pick another filter.</p>
+        </div>
+
         <div class="favourites-group" id="favouriteBakeriesGroup">
           <div class="section-header">
             <span class="section-label">Bakery</span>
@@ -154,6 +196,19 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- CLEAR ALL FAVOURITES CONFIRMATION MODAL -->
+  <div class="fav-modal-overlay" id="clearFavModal" role="dialog" aria-modal="true" aria-labelledby="clearFavModalTitle">
+    <div class="fav-modal">
+      <div class="fav-modal-icon">&#9888;&#65039;</div>
+      <h3 id="clearFavModalTitle">Clear all favourites?</h3>
+      <p>This will remove all saved bakeries and dishes from your favourites. This action can't be undone.</p>
+      <div class="fav-modal-actions">
+        <button type="button" class="fav-modal-cancel" onclick="closeClearFavouritesModal()">Cancel</button>
+        <button type="button" class="fav-modal-confirm" onclick="confirmClearAllFavourites()">Yes, Clear All</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
   <div id="bb-cursor"></div>
