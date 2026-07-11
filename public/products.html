@@ -272,7 +272,7 @@
 
   <div class="products-inner" style="padding: 0 30px 80px;">
     <!-- Search Bar -->
-<div class="search-wrapper">
+<!--<div class="search-wrapper">
   <input
     type="text"
     id="searchInput"
@@ -280,18 +280,9 @@
     onkeyup="searchProducts()"
   />
 </div>
-    <!-- Price Filter from main branch -->
-    <div class="price-filter-wrapper">
-      <div class="price-filter">
-        <label for="priceFilter">Filter by Price</label>
-        <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
-          <option value="all">All Prices</option>
-          <option value="under200">Under ₹200</option>
-          <option value="200to500">₹200 - ₹500</option>
-          <option value="above500">Above ₹500</option>
-        </select>
-      </div>
-  <head>
+-->
+    
+  <!--<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brownie Bliss — Our Full Range</title>
@@ -309,7 +300,7 @@
         } catch (_) {}
       })();
     </script>
-
+  -->
     <style>
       /* ─── DESIGN TOKENS ─────────────────────────────────────────────── */
       :root {
@@ -1535,6 +1526,7 @@
     </style>
   </head>
   <body>
+    <!--
     <div class="announcement">
       ✦ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
       HAPPINESS IN EVERY BITE &nbsp; ✦
@@ -1589,9 +1581,9 @@
         <span></span>
       </div>
     </div>
-
+  -->
     <div class="products-inner" style="padding: 0 36px 80px">
-      <!-- Live Search -->
+      
       <div class="search-section">
         <div class="search-box">
           <span class="search-icon">🔍</span>
@@ -1613,15 +1605,26 @@
             ✕
           </button>
         </div>
-
-        <!-- Search Suggestions -->
+        <br>
+        <!-- Price Filter from main branch -->
+    <div class="price-filter-wrapper">
+      <div class="price-filter">
+        <label for="priceFilter">Filter by Price</label>
+        <select id="priceFilter" class="custom-price-filter" onchange="updatePriceFilter()">
+          <option value="all">All Prices</option>
+          <option value="under200">Under ₹200</option>
+          <option value="200to500">₹200 - ₹500</option>
+          <option value="above500">Above ₹500</option>
+        </select>
+      </div>
+        
         <div id="searchSuggestions" class="search-suggestions"></div>
 
-        <!-- Recent Searches -->
+        
         <div id="recentSearches" class="recent-searches"></div>
       </div>
 
-      <!-- Product grid -->
+      
       <div class="all-products-grid" id="productsGrid"></div>
 
       <div id="noProductsFound" class="no-products-found" style="display: none">
@@ -1629,7 +1632,7 @@
         <p>Try searching for another brownie, cake, or dessert.</p>
       </div>
     </div>
-
+  
     <footer id="contact">
       <div class="footer-inner">
         <div class="footer-top">
@@ -1670,7 +1673,7 @@
           <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
           <span>Made with ❤️ in Krishnagiri</span>
         </div>
-      `).join('');
+     <!-- `).join('');
     }
 
     window.addToCartFromProducts = function(id, name, price) {
@@ -1684,12 +1687,12 @@
     };
 
     document.addEventListener('DOMContentLoaded', function() {
-      renderAllProducts();
+      filterProducts('all');
       if (typeof updateCartBadge === 'function') updateCartBadge();
       if (typeof updateThemeIcon === 'function') updateThemeIcon();
     });
-  </script>
-  <script>
+  </script>-->
+  <!--<script>
   function searchProducts() {
 
     const input = document
@@ -1733,7 +1736,7 @@
       </div>
     `).join('');
   }
-</script>
+</script>-->
 <script>
 
 const themeToggle = document.getElementById("themeToggle");
@@ -1776,7 +1779,7 @@ window.addEventListener("load", () => {
 });
 
 </script>
-<div id="bb-cursor"></div>
+<!--<div id="bb-cursor"></div>-->
 <script>
   /* =========================================
    BROWNIE BLISS ANIMATED CURSOR

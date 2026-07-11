@@ -11406,11 +11406,11 @@ html.dark .copy-btn:hover {
 /* ── Floating WhatsApp Quick-Order Button ── */
 .whatsapp-float {
   position: fixed;
-  bottom: 80px;          /* sits above the back-to-top ↑ button */
-  right: 24px;
+  bottom: 20px;          /* sits above the back-to-top ↑ button */
+  right: 20px;
   z-index: 9999;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   background-color: #25D366;
   border-radius: 50%;
   display: flex;
