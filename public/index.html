@@ -23,6 +23,7 @@
 </head>
 
   <body id="home">
+    <a href="#home" class="skip-link">Skip to content</a>
     <!-- ANNOUNCEMENT -->
     <div class="announcement">
       ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
@@ -36,7 +37,7 @@
         <span class="logo-name">Brownie Bliss</span>
         <span class="logo-sub">Homemade Treats</span>
       </a>
-      <nav>
+      <nav aria-label="Main navigation">
         <a href="index.html#home">Home</a>
         <a href="about.html">About</a>
         <a href="products.html">Products</a>
@@ -48,7 +49,7 @@
         <a href="contact.html">Contact Us</a>
         <a href="track.html">Track Order</a>
       </nav>
-      <button class="menu-toggle" onclick="toggleMenu()">
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
         ☰
       </button>
       <div class="header-actions">
@@ -56,14 +57,14 @@
           title="Toggle dark mode">
           <span id="themeIcon">🌙</span>
         </button>
-        <button class="cart-btn" onclick="openCart()">
+        <button class="cart-btn" onclick="openCart()" aria-label="Open shopping cart">
           🛒 Cart
           <span class="cart-count" id="cartBadge">0</span>
         </button>
       </div>
     </div>
   </header>
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
     <a href="index.html#home">Home</a>
     <a href="products.html">Products</a>
     <a href="index.html#birthday">Birthday Cakes</a>
@@ -812,7 +813,7 @@
     </section>
 
   <!-- FOOTER -->
-  <footer id="contact">
+  <footer id="contact" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-top">
         <div class="footer-brand">
