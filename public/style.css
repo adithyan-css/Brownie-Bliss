@@ -586,6 +586,40 @@ nav a:hover {
 }
 
 /* Responsive adjustments */
+
+
+/* Accessibility: focus-visible styles for keyboard navigation */
+nav a:focus-visible,
+.mobile-menu a:focus-visible,
+.cart-btn:focus-visible,
+.menu-toggle:focus-visible,
+.theme-toggle-btn:focus-visible,
+.footer-col a:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #d4a053;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to content link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d4a053;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 0 0 8px 8px;
+  z-index: 10000;
+  font-weight: 500;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 @media (max-width: 768px) {
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
