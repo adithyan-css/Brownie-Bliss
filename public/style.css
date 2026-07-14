@@ -10447,6 +10447,8 @@ html.dark .topping-price {
   overflow-x: auto;
   padding-bottom: 20px;
   scroll-behavior: smooth;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Hide scrollbar */
@@ -10461,8 +10463,9 @@ html.dark .topping-price {
 }
 
 .review-card {
-  min-width: 320px;
+  min-width: 300px;
   max-width: 320px;
+  width: 320px;
   background: white;
   border: 2px solid #f1e3d3;
   border-radius: 22px;
@@ -10472,6 +10475,8 @@ html.dark .topping-price {
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   transition: 0.3s ease;
   flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .review-card:hover {
@@ -10807,7 +10812,14 @@ video {
 
   /* Review grid */
   .reviews-grid {
-    grid-template-columns: 1fr !important;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .review-card {
+    min-width: unset;
+    max-width: 100%;
+    width: 100%;
   }
 
   /* Feedback section */
