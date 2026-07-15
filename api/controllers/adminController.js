@@ -15,6 +15,9 @@ function login(req, res) {
       .json({ success: false, message: "Admin auth not configured" });
   }
 
+  // Fail fast (and loudly, in the server logs) if ADMIN_PASSWORD isn't a bcrypt
+  // hash. This removes the old plaintext-comparison fallback entirely, so a
+  // misconfigured .env can no longer silently downgrade auth to `===`.
   const isBcryptHash = /^\$2[aby]\$\d{2}\$/.test(ADMIN_PASSWORD);
   if (!isBcryptHash) {
     console.error(
