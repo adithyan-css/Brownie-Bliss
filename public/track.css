@@ -41,15 +41,11 @@ a{
 
     width:100%;
     height:82px;
-
     padding:0px 5%;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     background:#ffffff;
-
     position:sticky;
     top:0;
     z-index:1000;
@@ -57,7 +53,6 @@ a{
     border-bottom:1px solid #f1e4d7;
 
     box-shadow:0 4px 20px rgba(44,24,16,0.06);
-
 }
 
 .premium-logo h1{
@@ -880,6 +875,26 @@ a{
     }
 
 }
+
+.header-inner{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    display:flex;
+    flex-direction:column;
+    text-decoration:none;
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
 
 @media(max-width:768px){
 
