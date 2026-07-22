@@ -228,21 +228,25 @@
     </section>
 
   <!-- BIRTHDAY & DESSERT SLIDER SECTION -->
-  <section class="birthday-section" data-aos="fade-up"></section>
+<section class="birthday-section" id="birthday" data-aos="fade-up"
   style="padding: 100px 0; background: var(--cream-dark); min-height: 80vh; overflow: hidden;">
 
   <!-- Slider Hint -->
   <div
     style="text-align: center; margin-bottom: 20px; font-size: 12px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; opacity: 0.7;">
-    Swipe to see Desserts &nbsp; ⟷
+    Swipe or use the arrows to browse Cakes, Desserts, Brownies &amp; Cookies &nbsp; ⟷
   </div>
 
-  <div class="birthday-slider"
-    style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
+  <div class="birthday-slider-wrapper" style="position: relative; max-width: 1300px; margin: 0 auto;">
+
+    <button type="button" class="bday-slider-arrow bday-slider-arrow-prev" id="bdaySliderPrev"
+      aria-label="Previous product category" onclick="moveBdaySlide(-1)">&#10094;</button>
+
+    <div class="birthday-slider" id="bdaySlider" role="region" aria-label="Product category carousel"
+      style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
 
     <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 30px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="birthdayCakeImg" src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860"
@@ -344,8 +348,7 @@
     </div>
 
     <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 30px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
@@ -423,8 +426,7 @@
     </div>
 
     <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 30px; box-sizing: border-box; scroll-snap-align: start;">
       <div class="birthday-grid">
         <div class="birthday-visual">
           <img id="brownieImg" src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338"
@@ -505,8 +507,7 @@
     </div>
 
     <!-- SLIDE 4: COOKIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
+    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 30px; box-sizing: border-box; scroll-snap-align: start;">
       <div
         style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 60px; align-items: center;">
         <div class="birthday-visual">
@@ -579,18 +580,19 @@
 
   </div>
 
+    <button type="button" class="bday-slider-arrow bday-slider-arrow-next" id="bdaySliderNext"
+      aria-label="Next product category" onclick="moveBdaySlide(1)">&#10095;</button>
+
+  </div>
+
   <!-- Slider Navigation Dots -->
-  <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
-    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--gold); cursor: pointer;"></div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
-    <div
-      style="width: 8px; height: 8px; border-radius: 50%; background: var(--cream-dark); border: 1px solid var(--gold); cursor: pointer;">
-    </div>
+  <div class="bday-slider-dots" id="bdaySliderDots"
+    style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+    <button type="button" class="bday-dot active" aria-label="Go to Birthday Cakes slide"
+      onclick="goToBdaySlide(0)"></button>
+    <button type="button" class="bday-dot" aria-label="Go to Desserts slide" onclick="goToBdaySlide(1)"></button>
+    <button type="button" class="bday-dot" aria-label="Go to Brownies slide" onclick="goToBdaySlide(2)"></button>
+    <button type="button" class="bday-dot" aria-label="Go to Cookies slide" onclick="goToBdaySlide(3)"></button>
   </div>
 
   </section>

@@ -1734,6 +1734,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   }
+
+  initBdaySlider();
 });
 
 window.addEventListener('scroll', function () {
@@ -1833,7 +1835,101 @@ function fallbackCopyText(text) {
   }
 }
 
+// --- PRODUCT CATEGORY CAROUSEL ("Our Full Range" slider) ---
+let bdaySlideIndex = 0;
+
+function getBdaySliderEls() {
+  const slider = document.getElementById('bdaySlider');
+  if (!slider) return null;
+
+  return {
+    slider,
+    slides: Array.from(slider.querySelectorAll('.bday-slide')),
+    dots: Array.from(document.querySelectorAll('#bdaySliderDots .bday-dot')),
+    prevBtn: document.getElementById('bdaySliderPrev'),
+    nextBtn: document.getElementById('bdaySliderNext'),
+  };
+}
+
+function updateBdaySliderUI(index) {
+  const els = getBdaySliderEls();
+  if (!els) return;
+
+  const { slides, dots, prevBtn, nextBtn } = els;
+
+  bdaySlideIndex = Math.max(0, Math.min(index, slides.length - 1));
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === bdaySlideIndex);
+    dot.setAttribute('aria-current', i === bdaySlideIndex ? 'true' : 'false');
+  });
+
+  if (prevBtn) prevBtn.disabled = bdaySlideIndex === 0;
+  if (nextBtn) nextBtn.disabled = bdaySlideIndex === slides.length - 1;
+}
+
+function goToBdaySlide(index) {
+  const els = getBdaySliderEls();
+  if (!els) return;
+
+  const { slider, slides } = els;
+  if (!slides[index]) return;
+
+  slider.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+  updateBdaySliderUI(index);
+}
+
+function moveBdaySlide(direction) {
+  goToBdaySlide(bdaySlideIndex + direction);
+}
+
+function initBdaySlider() {
+  const els = getBdaySliderEls();
+  if (!els) return;
+
+  const { slider, slides } = els;
+  if (!slides.length) return;
+
+  updateBdaySliderUI(0);
+
+  // Keep dots/arrows in sync when the user swipes or drags the slider manually
+  let scrollTimeout = null;
+  slider.addEventListener('scroll', () => {
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      slides.forEach((slide, i) => {
+        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+        const distance = Math.abs(sliderCenter - slideCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
+        }
+      });
+
+      updateBdaySliderUI(closestIndex);
+    }, 100);
+  });
+
+  // Re-align on resize so offsets stay accurate
+  window.addEventListener('resize', () => {
+    goToBdaySlide(bdaySlideIndex);
+  });
+
+  // Keyboard support when the carousel is focused
+  slider.setAttribute('tabindex', '0');
+  slider.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') moveBdaySlide(-1);
+    if (e.key === 'ArrowRight') moveBdaySlide(1);
+  });
+}
+
 // --- GLOBAL BINDINGS ---
+window.goToBdaySlide = goToBdaySlide;
+window.moveBdaySlide = moveBdaySlide;
 window.openCart = openCart;
 window.closeCart = closeCart;
 window.copyProductLink = copyProductLink;
