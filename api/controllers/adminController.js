@@ -1,4 +1,5 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 function login(req, res) {
   const { username, password } = req.body || {};
@@ -6,31 +7,46 @@ function login(req, res) {
   const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
   const ADMIN_JWT_SECRET = process.env.ADMIN_JWT_SECRET;
-  const ADMIN_JWT_EXPIRES_IN = process.env.ADMIN_JWT_EXPIRES_IN || '2h';
+  const ADMIN_JWT_EXPIRES_IN = process.env.ADMIN_JWT_EXPIRES_IN || "2h";
 
   if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_JWT_SECRET) {
-    return res.status(500).json({ success: false, message: 'Admin auth not configured' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Admin auth not configured" });
+  }
+
+  // Fail fast (and loudly, in the server logs) if ADMIN_PASSWORD isn't a bcrypt
+  // hash. This removes the old plaintext-comparison fallback entirely, so a
+  // misconfigured .env can no longer silently downgrade auth to `===`.
+  const isBcryptHash = /^\$2[aby]\$\d{2}\$/.test(ADMIN_PASSWORD);
+  if (!isBcryptHash) {
+    console.error(
+      "[admin-auth] ADMIN_PASSWORD is not a bcrypt hash. Generate one with " +
+        "`node -e \"console.log(require('bcryptjs').hashSync(process.argv[1], 12))\" yourPassword` " +
+        "and set the result as ADMIN_PASSWORD.",
+    );
+    return res
+      .status(500)
+      .json({ success: false, message: "Admin auth not configured" });
   }
 
   if (!username || !password) {
-    return res.status(400).json({ success: false, message: 'Username and password are required' });
+    return res
+      .status(400)
+      .json({ success: false, message: "Username and password are required" });
   }
 
-  const bcrypt = require('bcryptjs');
-  const isBcrypt = ADMIN_PASSWORD.startsWith('$2a$') || ADMIN_PASSWORD.startsWith('$2b$');
-  const passwordMatch = isBcrypt 
-    ? bcrypt.compareSync(password, ADMIN_PASSWORD) 
-    : password === ADMIN_PASSWORD;
+  const passwordMatch = bcrypt.compareSync(password, ADMIN_PASSWORD);
 
   if (username !== ADMIN_USERNAME || !passwordMatch) {
-    return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid credentials" });
   }
 
-  const token = jwt.sign(
-    { username: ADMIN_USERNAME },
-    ADMIN_JWT_SECRET,
-    { expiresIn: ADMIN_JWT_EXPIRES_IN }
-  );
+  const token = jwt.sign({ username: ADMIN_USERNAME }, ADMIN_JWT_SECRET, {
+    expiresIn: ADMIN_JWT_EXPIRES_IN,
+  });
 
   return res.json({ success: true, token, expiresIn: ADMIN_JWT_EXPIRES_IN });
 }
