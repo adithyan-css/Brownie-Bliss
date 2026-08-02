@@ -813,7 +813,7 @@ function renderRecentSearches() {
       )
       .join('')}
     `;
-    grid.innerHTML = filtered.map(p => `
+    grid.innerHTML = (filtered ?? []).map(p => `
         <div class="product-card">
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
