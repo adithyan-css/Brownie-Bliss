@@ -813,7 +813,7 @@ function renderRecentSearches() {
       )
       .join('')}
     `;
-    grid.innerHTML = filtered.map(p => `
+    grid.innerHTML = (filtered ?? []).map(p => `
         <div class="product-card">
             <div class="product-img-wrap">
                 <img src="${p.img}" alt="${p.name}" style="cursor:pointer" onclick='openCustomizeModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
@@ -1879,8 +1879,7 @@ function initStarRatings() {
       container.getAttribute('data-inactive-color') || '#ccc';
 
     // Set explicit colors initially based on current rating attribute
-    const initialRating = parseInt(
-      container.getAttribute('data-rating') || '4',
+    const initialRating = parseInt(container.getAttribute('data-rating', 10) || '4',
       10
     );
     stars.forEach((star, index) => {
@@ -1897,8 +1896,7 @@ function initStarRatings() {
 
       // Mouse out restores current rating
       star.addEventListener('mouseout', () => {
-        const rating = parseInt(
-          container.getAttribute('data-rating') || '0',
+        const rating = parseInt(container.getAttribute('data-rating', 10) || '0',
           10
         );
         stars.forEach((s, idx) => {
