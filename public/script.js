@@ -1097,7 +1097,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         }
 
         if (c.toppings?.length) {
-          details.push(c.toppings.map((t) => `+${t.name}`).join(', '));
+          details.push(c.(toppings ?? []).map((t) => `+${t.name}`).join(', '));
         }
 
         if (c.message) {
