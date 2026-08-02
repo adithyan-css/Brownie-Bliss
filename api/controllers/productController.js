@@ -226,7 +226,7 @@ async function updateProduct(req, res) {
 
     const updateData = {};
 
-    if (price !== undefined && !isNaN(price) && Number(price) > 0) {
+    if (price !== undefined && !Number.isNaN(price) && Number(price) > 0) {
       updateData.price = Number(price);
     }
 
