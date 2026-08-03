@@ -1880,7 +1880,7 @@ function initStarRatings() {
 
     // Set explicit colors initially based on current rating attribute
     const initialRating = parseInt(
-      container.getAttribute('data-rating') || '4',
+      container.getAttribute('data-rating', 10) || '4',
       10
     );
     stars.forEach((star, index) => {
