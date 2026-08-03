@@ -37,7 +37,7 @@ function getTransport() {
 }
 
 function normalizeEmail(raw) {
-  if (raw == null) return '';
+  if (raw === null) return '';
   return String(raw).trim().toLowerCase().slice(0, 254);
 }
 
