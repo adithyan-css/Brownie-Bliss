@@ -322,7 +322,7 @@ async function createOrder(req, res) {
     const clientTotal = Number(total);
     const finalTotal =
       Number.isFinite(clientTotal) && Math.abs(clientTotal - computedTotal) <= 2
-        ? Math.round(clientTotal * 100) / 100
+        ? Math.round(clientTotal * 100 + Number.EPSILON) / 100
         : Math.round(computedTotal * 100) / 100;
 
     const order_id = generateOrderId();
