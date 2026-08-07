@@ -763,19 +763,15 @@
                       <p style="color: var(--text-mid); font-size: 15px; margin-bottom: 24px; opacity: 0.8;">We'd love
                         to hear your thoughts and suggestions.</p>
 
-                      <form
-                        onsubmit="event.preventDefault(); showToast('Thank you for your feedback! ⭐'); this.reset();"
-                        style="display: inline-block;">
-                        <button class="hero-cta premium-write-btn" type="submit">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     <button class="hero-cta premium-write-btn" type="button" onclick="openReviewModal()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" style="margin-right: 4px;">
                             <path d="M12 20h9" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round"
                               stroke-linejoin="round" />
-                          </svg>
+                        </svg>
                           Write a Review
-                        </button>
-                      </form>
+                      </button>
                     </div>
                   </div>
 
@@ -831,8 +827,16 @@
           <h4>Get In Touch</h4>
           <a href="tel:08072596340">+91 8072596340</a>
           <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
-          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram:
-            @brownie_bliss_</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer"
+            class="footer-social-link" aria-label="Visit Brownie Bliss on Instagram (opens in a new tab)">
+            <svg class="footer-social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>Instagram: @brownie_bliss_</span>
+          </a>
         </div>
       </div>
       <div class="footer-bottom">
