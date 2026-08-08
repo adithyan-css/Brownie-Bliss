@@ -1367,6 +1367,42 @@ html {
   font-family: "DM Sans", sans-serif;
 }
 
+.whatsapp-float {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+
+  width: 55px;
+  height: 55px;
+
+  background: #25d366;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+
+  box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+
+  opacity: 0;
+  transform: scale(0);
+
+  transition: all 0.3s ease;
+}
+
+.whatsapp-float.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.whatsapp-float svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
+}
+
 /* TOAST */
 .toast {
   position: fixed;
