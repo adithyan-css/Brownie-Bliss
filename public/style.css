@@ -11318,6 +11318,7 @@ html.dark .copy-btn:hover {
   background: var(--gold);
   color: var(--brown);
   border-color: var(--gold);
+}
 /* Navbar Container */
 .navbar {
   display: flex;
