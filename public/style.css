@@ -11409,8 +11409,8 @@ html.dark .copy-btn:hover {
   bottom: 80px;          /* sits above the back-to-top ↑ button */
   right: 24px;
   z-index: 9999;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   background-color: #25D366;
   border-radius: 50%;
   display: flex;
@@ -11436,8 +11436,8 @@ html.dark .copy-btn:hover {
 }
 
 .whatsapp-float svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   fill: #ffffff;
 }
 
@@ -11878,4 +11878,38 @@ html.dark .fav-modal-cancel {
     width: 15px;
     height: 15px;
   }
+}
+/* WhatsApp floating button - fix */
+a.whatsapp-float {
+    position: fixed !important;
+    bottom: 80px !important;
+    right: 24px !important;
+
+    width: 48px !important;
+    height: 48px !important;
+
+    min-width: 48px !important;
+    max-width: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background-color: #25D366 !important;
+    border-radius: 50% !important;
+
+    z-index: 9999 !important;
+}
+
+a.whatsapp-float svg {
+    width: 24px !important;
+    height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+    display: block !important;
 }
