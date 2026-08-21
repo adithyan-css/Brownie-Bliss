@@ -145,11 +145,13 @@ function buildCatalogFromList(list) {
 }
 
 function useFallbackProducts() {
-    buildCatalogFromList(null);
+  products = [...DEFAULT_PRODUCTS];
+  bdayCakes = { ...DEFAULT_BDAY_CAKES };
 
   if (document.getElementById('productsGrid')) {
     filterProducts('all');
   }
+
   if (document.getElementById('cakePrice')) {
     calculateBdayPrice();
   }
