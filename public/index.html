@@ -107,20 +107,24 @@
       </div>
 
       <div class="hero-visual" data-aos="fade-left">
-
         <div class="hero-card">
+          <a href="#signature-cakes">
 
           <img src="https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860" alt="Red Velvet Cake">
+          </a>
 
           <div class="hero-card-label">
             🎂 Signature Cakes
           </div>
 
         </div>
+  
 
         <div class="hero-card">
+          <a href="#brownies">
 
           <img src="https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338" alt="Brownies">
+          </a>
 
           <div class="hero-card-label">
             🍫 Brownies
@@ -129,8 +133,10 @@
         </div>
 
         <div class="hero-card">
+          <a href="#desserts">
 
           <img src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts">
+          </a>
 
           <div class="hero-card-label">
             🍮 Desserts
@@ -241,7 +247,8 @@
     style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;">
 
     <!-- SLIDE 1: BIRTHDAY CAKES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+
+    <div id="signature-cakes" class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
       padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
@@ -342,88 +349,8 @@
         </div>
       </div>
     </div>
-
-    <!-- SLIDE 2: DESSERTS -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
-      padding: 0 30px;">
-      <div class="birthday-grid">
-        <div class="birthday-visual">
-          <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
-            style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
-        </div>
-        <div class="birthday-card"
-          style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
-          <span class="section-label">Sweet Treats</span>
-          <h2 class="section-title" style="margin-bottom: 20px;">Exquisite <em>Desserts</em></h2>
-          <p
-            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
-            Indulge in our curated collection of fine desserts. From macarons to cheesecakes, every bite is a
-            celebration of flavor and craftsmanship.
-          </p>
-
-          <div style="margin-bottom: 24px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
-              Variety</label>
-            <div class="responsive-grid" style="display: grid; gap: 10px;">
-              <button class="filter-tab active">Macarons</button>
-              <button class="filter-tab">Tarts</button>
-              <button class="filter-tab">Pastries</button>
-              <button class="filter-tab">Cupcakes</button>
-              <button class="filter-tab">Mousse</button>
-              <button class="filter-tab">Donuts</button>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
-              Size</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-              <button class="filter-tab">Box of 2</button>
-              <button class="filter-tab active">Box of 4</button>
-              <button class="filter-tab">Box of 6</button>
-              <button class="filter-tab">Box of 12</button>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 30px;">
-            <label
-              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special
-              Request</label>
-            <input type="text" placeholder="e.g. Less sugar, Eggless"
-              style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
-          </div>
-
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div>
-                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
-                  starts
-                  from</span>
-                <span
-                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
-                  350</span>
-              </div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
-                Add to Cart 🛒
-              </button>
-              <button class="hero-cta"
-                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
-                onclick="openCheckout()">
-                Order Now &rarr;
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 3: BROWNIES -->
-    <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+    <!-- SLIDE 2: BROWNIES -->
+    <div id="brownies" class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
       padding: 0 30px;">
       <div class="birthday-grid">
         <div class="birthday-visual">
@@ -503,6 +430,88 @@
         </div>
       </div>
     </div>
+
+
+    <!-- SLIDE 3: DESSERTS -->
+    <div id="desserts" class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
+      padding: 0 30px;">
+      <div class="birthday-grid">
+        <div class="birthday-visual">
+          <img id="dessertImg" src="https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427" alt="Desserts"
+            style="width: 100%; height: clamp(250px, 60vw, 550px); object-fit: cover; border-radius: 4px; box-shadow: var(--shadow);">
+        </div>
+        <div class="birthday-card"
+          style="background: var(--white); padding: 50px; border-radius: 4px; box-shadow: var(--shadow); border-top: 5px solid var(--gold);">
+          <span class="section-label">Sweet Treats</span>
+          <h2 class="section-title" style="margin-bottom: 20px;">Exquisite <em>Desserts</em></h2>
+          <p
+            style="margin-bottom: 30px; color: var(--text-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px;">
+            Indulge in our curated collection of fine desserts. From macarons to cheesecakes, every bite is a
+            celebration of flavor and craftsmanship.
+          </p>
+
+          <div style="margin-bottom: 24px;">
+            <label
+              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Select
+              Variety</label>
+            <div class="responsive-grid" style="display: grid; gap: 10px;">
+              <button class="filter-tab active">Macarons</button>
+              <button class="filter-tab">Tarts</button>
+              <button class="filter-tab">Pastries</button>
+              <button class="filter-tab">Cupcakes</button>
+              <button class="filter-tab">Mousse</button>
+              <button class="filter-tab">Donuts</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <label
+              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Box
+              Size</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+              <button class="filter-tab">Box of 2</button>
+              <button class="filter-tab active">Box of 4</button>
+              <button class="filter-tab">Box of 6</button>
+              <button class="filter-tab">Box of 12</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <label
+              style="display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 700;">Special
+              Request</label>
+            <input type="text" placeholder="e.g. Less sugar, Eggless"
+              style="width: 100%; padding: 14px; border: 1px solid var(--cream-dark); outline: none; font-family: 'DM Sans', sans-serif;">
+          </div>
+
+          <div
+            style="display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--cream-dark);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div>
+                <span style="display: block; font-size: 12px; color: var(--text-mid); opacity: 0.7;">Pricing
+                  starts
+                  from</span>
+                <span
+                  style="font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown-dark);">₹
+                  350</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="hero-cta" style="padding: 14px; font-size: 12px;" onclick="addDessertToCart()">
+                Add to Cart 🛒
+              </button>
+              <button class="hero-cta"
+                style="padding: 14px; font-size: 12px; background: var(--brown-dark); color: var(--white);"
+                onclick="openCheckout()">
+                Order Now &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
 
     <!-- SLIDE 4: COOKIES -->
     <div class="bday-slide" style="flex: 0 0 100%; padding: 0 20px; box-sizing: border-box;" ; scroll-snap-align: start;
