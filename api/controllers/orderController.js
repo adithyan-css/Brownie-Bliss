@@ -25,7 +25,7 @@ const STATIC_CATALOG = [
     category: 'cakes',
     price: 850,
     emoji: '🎂',
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -34,7 +34,7 @@ const STATIC_CATALOG = [
     category: 'cakes',
     price: 950,
     emoji: '🍰',
-    img: 'https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -43,7 +43,7 @@ const STATIC_CATALOG = [
     category: 'cakes',
     price: 675,
     emoji: '🍍',
-    img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -52,7 +52,7 @@ const STATIC_CATALOG = [
     category: 'brownies',
     price: 120,
     emoji: '🍫',
-    img: 'https://theobroma.in/cdn/shop/files/OverloadBrownie_400x400.jpg?v=1711183338',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -61,7 +61,7 @@ const STATIC_CATALOG = [
     category: 'brownies',
     price: 95,
     emoji: '🥜',
-    img: 'https://theobroma.in/cdn/shop/files/WalnutBrownie_400x400.jpg?v=1711183181',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -70,7 +70,7 @@ const STATIC_CATALOG = [
     category: 'brownies',
     price: 80,
     emoji: '🍫',
-    img: 'https://theobroma.in/cdn/shop/files/eggless-theo-overload-brownie-6.jpg?v=1681320427',
+    img: 'assets/classic_choco.png',
   },
   {
     type: 'standard',
@@ -79,7 +79,7 @@ const STATIC_CATALOG = [
     category: 'desserts',
     price: 150,
     emoji: '🍮',
-    img: 'https://theobroma.in/cdn/shop/files/Delicacies-04.jpg?v=1681320427',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'standard',
@@ -88,7 +88,7 @@ const STATIC_CATALOG = [
     category: 'desserts',
     price: 180,
     emoji: '☕',
-    img: 'https://theobroma.in/cdn/shop/files/TiramisuPastry_400x400.jpg?v=1711125219',
+    img: 'assets/tiramisu_jar.png',
   },
   {
     type: 'standard',
@@ -97,7 +97,7 @@ const STATIC_CATALOG = [
     category: 'cookies',
     price: 250,
     emoji: '🍪',
-    img: 'https://theobroma.in/cdn/shop/files/Cookie-04_400x400.jpg?v=1701416744',
+    img: 'assets/choco_chip_cookies.png',
   },
   {
     type: 'standard',
@@ -106,7 +106,7 @@ const STATIC_CATALOG = [
     category: 'cookies',
     price: 300,
     emoji: '🥖',
-    img: 'https://theobroma.in/cdn/shop/files/Cookie-01_400x400.jpg?v=1681320427',
+    img: 'assets/almond_biscotti.png',
   },
   {
     type: 'birthday',
@@ -114,7 +114,7 @@ const STATIC_CATALOG = [
     name: 'Red Velvet',
     price: 850,
     emoji: '🎂',
-    img: 'https://theobroma.in/cdn/shop/files/redvelvet-theo.jpg?v=1701321860',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -122,7 +122,7 @@ const STATIC_CATALOG = [
     name: 'Dutch Truffle',
     price: 950,
     emoji: '🍰',
-    img: 'https://theobroma.in/cdn/shop/files/DutchTruffleCakehalfkg_Square_400x400.jpg?v=1711124619',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -130,7 +130,7 @@ const STATIC_CATALOG = [
     name: 'Pineapple',
     price: 675,
     emoji: '🍍',
-    img: 'https://theobroma.in/cdn/shop/files/FreshCreamPineappleCakehalfkg_5e299618-cc46-4daf-953d-65616ca0299f_400x400.jpg?v=1711124785',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -138,7 +138,7 @@ const STATIC_CATALOG = [
     name: 'Chocoholic',
     price: 900,
     emoji: '🍫',
-    img: 'https://theobroma.in/cdn/shop/files/ChocoholicPastry_400x400.jpg?v=1711096267',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -146,7 +146,7 @@ const STATIC_CATALOG = [
     name: 'Black Forest',
     price: 750,
     emoji: '🌲',
-    img: 'https://theobroma.in/cdn/shop/files/BlackForestCakehalfkg_Square_400x400.jpg?v=1711124458',
+    img: 'assets/dutch_truffle.png',
   },
   {
     type: 'birthday',
@@ -154,7 +154,7 @@ const STATIC_CATALOG = [
     name: 'Cheesecake',
     price: 1200,
     emoji: '🧀',
-    img: 'https://theobroma.in/cdn/shop/files/BlueberryCheesecakeCup_400x400.jpg?v=1711514632',
+    img: 'assets/dutch_truffle.png',
   },
 ];
 
