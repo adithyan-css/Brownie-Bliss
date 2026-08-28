@@ -13,42 +13,44 @@
 <body>
 <!-- ANNOUNCEMENT -->
 <div class="announcement">
-  ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES
-  &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨
-</div>
-
-<!-- HEADER -->
-<header>
-  <div class="header-inner">
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <a href="index.html" class="logo">
-      <span class="logo-name">Brownie Bliss</span>
-      <span class="logo-sub">Homemade Treats</span>
-    </a>
-
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="products.html">Products</a>
-      <a href="birthday.html">Birthday Cakes</a>
-      <a href="favourites.html">Favourites</a>
-      <a href="contact.html">Contact</a>
-      <a href="track.html">Track Order</a>
-    </nav>
-
-    <div class="header-actions">
-      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()"
-        aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 Cart
-        <span class="cart-count" id="cartBadge">0</span>
-      </button>
+      ✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp;
+      HAPPINESS IN EVERY BITE &nbsp; ✨
     </div>
 
-  </div>
-</header>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html#home">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count
+            style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">
+        ☰
+      </button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode"
+          title="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="openCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html#home">Home</a>
   <a href="index.html#products">Products</a>
@@ -889,8 +891,8 @@
     .luxury-banner{
 
       position:relative;
-
-      height:85vh;
+      margin-top: 60px;
+      height:100vh;
 
       background:
       url('https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1600&auto=format&fit=crop');
@@ -2093,7 +2095,7 @@
     <div class="luxury-overlay"></div>
 
     <div class="luxury-content">
-
+      <br><br>
       <span>Brownie Bliss Experience</span>
 
       <h2>
@@ -2109,7 +2111,6 @@
       <a href="products.html" class="primary-btn">
         Explore Desserts →
       </a>
-
     </div>
 
   </section>
@@ -2141,53 +2142,43 @@
   </div>
 
   <!-- FOOTER -->
-
-  <footer>
-
-    <div class="footer-grid">
-
-      <div class="footer-brand">
-
-        <h2>Brownie Bliss</h2>
-
-        <p>
-          A luxury dessert boutique creating handcrafted cakes,
-          premium brownies, and unforgettable chocolate experiences.
-        </p>
-
+<footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes,
+            and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#home">Home</a>
+          <a href="products.html">Our Products</a>
+          <a href="#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col" style="display: none;">
+          <h4>Information</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Refund Policy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram:
+            @brownie_bliss_</a>
+        </div>
       </div>
-
-      <div class="footer-links">
-
-        <h4>EXPLORE</h4>
-
-        <a href="about.html">About Us</a>
-        <a href="products.html">Desserts</a>
-        <a href="birthday.html">Custom Cakes</a>
-        <a href="contact.html">Contact</a>
-
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
       </div>
-      <div class="footer-links">
-        <h4>Information</h4>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-service.html">Terms of Service</a>
-        <a href="refund-policy.html">Refund Policy</a>
-      </div>
-
-      <div class="footer-links">
-
-        <h4>CONTACT</h4>
-
-        <a href="#">+91 9876543210</a>
-        <a href="#">orders@browniebliss.com</a>
-        <a href="#">Chennai, India</a>
-
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      © 2026 Brownie Bliss • Happiness In Every Bite
     </div>
 
   </footer>
