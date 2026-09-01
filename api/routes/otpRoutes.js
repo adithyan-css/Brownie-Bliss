@@ -1,17 +1,15 @@
 const express = require('express');
-const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const { sendOtp, verifyOtp } = require('../controllers/otpController');
+const validate = require('../middlewares/validate');
+const { sendOtpSchema, verifyOtpSchema } = require('../validators/otpValidator');
+const { otpSendLimiter, otpVerifyLimiter } = require('../services/rateLimiters');
 
-const otpRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { success: false, message: 'Too many requests from this IP, please try again after 15 minutes' },
-});
+// ─── OTP send: 5 attempts / 15 min ─────────────────────────────────────────
+router.post('/send-otp',   otpSendLimiter,   validate(sendOtpSchema),   sendOtp);
 
-router.post('/send-otp', otpRateLimiter, sendOtp);
-router.post('/verify-otp', verifyOtp);
+// ─── OTP verify: 10 failed attempts / 15 min (successful requests skipped) ─
+router.post('/verify-otp', otpVerifyLimiter, validate(verifyOtpSchema), verifyOtp);
 
 module.exports = router;
+
