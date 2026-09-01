@@ -1950,7 +1950,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btn.className = "whatsapp-float";
   btn.setAttribute("aria-label", "Quick Order via WhatsApp");
   btn.innerHTML = `
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15
                -.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075
                -.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059
