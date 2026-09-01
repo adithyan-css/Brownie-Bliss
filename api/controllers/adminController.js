@@ -29,7 +29,7 @@ function login(req, res) {
   const token = jwt.sign(
     { username: ADMIN_USERNAME },
     ADMIN_JWT_SECRET,
-    { expiresIn: ADMIN_JWT_EXPIRES_IN }
+    { expiresIn: ADMIN_JWT_EXPIRES_IN, algorithm: 'HS256' }
   );
 
   return res.json({ success: true, token, expiresIn: ADMIN_JWT_EXPIRES_IN });
