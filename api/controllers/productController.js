@@ -184,9 +184,10 @@ async function createProduct(req, res) {
 
     let id_ref;
     if (type === 'standard') {
-      const lastProduct = await Product.findOne({ type: 'standard' }).sort({
-        id_ref: -1,
-      });
+      const lastProduct = await Product.findOne({ type: 'standard' })
+        .select('id_ref')
+        .sort({ id_ref: -1 })
+        .lean();
       id_ref =
         lastProduct && typeof lastProduct.id_ref === 'number'
           ? lastProduct.id_ref + 1
