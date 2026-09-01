@@ -97,6 +97,50 @@ npm run dev
 
 ---
 
+## 🔄 Customer Order Workflow Diagram
+
+The following workflow illustrates the complete customer ordering lifecycle from product selection to delivery and admin processing.
+
+```mermaid
+flowchart TD
+
+    A[Customer Visits Website] --> B[Browse Products]
+
+    B --> C[Add Products to Cart]
+
+    C --> D[Proceed to Checkout]
+
+    D --> E[Enter Name and WhatsApp Number]
+
+    E --> F[OTP Verification]
+
+    F -->|Verified| G[Enter Delivery Address]
+
+    G --> H[Review Order Summary]
+
+    H --> I[Place Order]
+
+    I --> J[WhatsApp Order Sent to Business]
+
+    J --> K[Backend API Processing]
+
+    K --> L[(MongoDB Database)]
+
+    L --> M[Admin Dashboard]
+
+    M --> N[View Orders]
+
+    N --> O[Confirm Payment]
+
+    O --> P[Generate Receipt]
+
+    P --> Q[Update Order Status]
+
+    Q --> R[Order Delivered]
+```
+
+---
+
 ## 👨‍💼 Admin Panel Features
 - **Stats Dashboard**: Total orders, pending, paid, revenue
 - **Orders Table**: All orders with customer details
