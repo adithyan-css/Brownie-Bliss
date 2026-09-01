@@ -566,132 +566,175 @@
 
       font-size:15px;
     }
+/* =========================
+   STORY SECTION
+========================= */
 
-    /* =========================
-       STORY
-    ========================= */
+.story{
+  width:100%;
+  padding:120px 6%;
+  background:var(--light);
+}
 
-    .story{
+.section-title{
+  text-align:center;
+  margin-bottom:70px;
+}
 
-      padding:160px 8%;
+.section-title span{
+  color:var(--gold);
+  letter-spacing:4px;
+  font-size:12px;
+  text-transform:uppercase;
+}
 
-      background:var(--light);
-    }
+.section-title h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:64px;
+  line-height:1.1;
+  margin-top:16px;
+  color:var(--dark);
+}
 
-    .section-title{
-      text-align:center;
-      margin-bottom:90px;
-    }
+.section-title h2 em{
+  color:var(--brown2);
+  font-style:italic;
+}
 
-    .section-title span{
+/* GRID */
 
-      color:var(--gold);
+.story-grid{
+  width:100%;
+  max-width:1300px;
+  margin:0 auto;
 
-      letter-spacing:5px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
 
-      font-size:12px;
-    }
+  gap:30px;
+}
 
-    .section-title h2{
+/* CARD */
 
-      font-family:'Cormorant Garamond',serif;
+.story-card{
+  background:#fff;
 
-      font-size:82px;
+  border-radius:24px;
 
-      margin-top:20px;
+  padding:40px 32px;
 
-      color:var(--dark);
-    }
+  position:relative;
 
-    .section-title h2 em{
-      color:var(--brown2);
-      font-style:italic;
-    }
+  overflow:hidden;
 
-    .story-grid{
+  min-height:280px;
 
-      max-width:1450px;
+  transition:0.35s ease;
 
-      margin:auto;
+  box-shadow:
+  0 10px 25px rgba(0,0,0,0.08);
+}
 
-      display:grid;
+.story-card:hover{
+  transform:translateY(-8px);
 
-      grid-template-columns:repeat(3,1fr);
+  box-shadow:
+  0 18px 40px rgba(0,0,0,0.12);
+}
 
-      gap:35px;
-    }
+.story-card::before{
+  content:'';
 
-    .story-card{
+  position:absolute;
 
-      background:white;
+  width:180px;
+  height:180px;
 
-      border-radius:28px;
+  border-radius:50%;
 
-      padding:55px 45px;
+  background:rgba(212,165,55,0.08);
 
-      position:relative;
+  top:-80px;
+  right:-80px;
+}
 
-      overflow:hidden;
+/* NUMBER */
 
-      transition:0.6s ease;
+.story-number{
+  font-size:48px;
 
-      box-shadow:
-      0 15px 40px rgba(0,0,0,0.08);
-    }
+  line-height:1;
 
-    .story-card::before{
-      content:'';
+  margin-bottom:16px;
 
-      position:absolute;
+  color:rgba(212,165,55,0.35);
 
-      width:220px;
-      height:220px;
+  font-family:'Cormorant Garamond',serif;
+}
 
-      border-radius:50%;
+/* HEADING */
 
-      background:
-      rgba(212,165,55,0.08);
+.story-card h3{
+  font-size:30px;
 
-      top:-100px;
-      right:-100px;
-    }
+  line-height:1.2;
 
-    .story-card:hover{
-      transform:translateY(-14px);
+  margin-bottom:16px;
 
-      box-shadow:
-      0 30px 60px rgba(0,0,0,0.12);
-    }
+  color:var(--dark);
 
-    .story-number{
+  font-family:'Cormorant Garamond',serif;
+}
 
-      font-size:60px;
+/* TEXT */
 
-      color:rgba(212,165,55,0.25);
+.story-card p{
+  font-size:15px;
 
-      font-family:'Cormorant Garamond',serif;
+  line-height:1.8;
 
-      margin-bottom:25px;
-    }
+  color:#6d4b42;
+}
 
-    .story-card h3{
+/* TABLET */
 
-      font-size:40px;
+@media(max-width:992px){
 
-      color:var(--dark);
+  .story-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-      margin-bottom:22px;
+  .section-title h2{
+    font-size:52px;
+  }
 
-      font-family:'Cormorant Garamond',serif;
-    }
+}
 
-    .story-card p{
+/* MOBILE */
 
-      color:#6d4b42;
+@media(max-width:768px){
 
-      line-height:2;
+  .story{
+    padding:90px 20px;
+  }
 
-      font-size:16px;
+  .story-grid{
+    grid-template-columns:1fr;
+  }
+
+  .section-title h2{
+    font-size:40px;
+  }
+
+  .story-card{
+    padding:32px 24px;
+  }
+
+  .story-card h3{
+    font-size:26px;
+  }
+
+
     }
 
     /* =========================
@@ -1910,8 +1953,27 @@
         </p>
 
       </div>
+
+      </div>
+      </section>  
+
+  <!-- Nav -->
+  <nav>
+    <a href="index.html" class="nav-logo">Brownie Bliss <span>Homemade Treats</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">about</a></li>
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#birthday">Birthday Cakes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="track.html">Track Order</a></li>
+    </ul>
+    <button class="nav-cart">🛒 Cart 0</button>
+  </nav>
+
     </div>
     </section>
+
 
   <!-- Hero -->
   <section class="hero story-hero">
