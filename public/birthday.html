@@ -513,8 +513,19 @@
         <div class="form-group"><label>Full Name *</label><input type="text" id="custName" placeholder="Your full name"
             class="form-input"></div>
         <div class="form-group"><label>WhatsApp Number *</label>
-          <div class="phone-row"><span class="phone-code">+91</span><input type="tel" id="custPhone"
-              placeholder="9876543210" maxlength="10" class="form-input"></div>
+          <div class="phone-row"><span class="phone-code">+91</span><input
+              type="tel"
+              id="custPhone"
+              placeholder="9876543210"
+              maxlength="10"
+              class="form-input"
+              inputmode="numeric"
+              pattern="[0-9]{10}"
+              required
+              autocomplete="tel"
+              oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number.')"
+              oninput="this.setCustomValidity('')"
+            ></div>
         </div>
         <button class="btn-primary full-w" onclick="sendOTP()">Send OTP →</button>
       </div>
