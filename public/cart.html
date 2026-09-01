@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <title>Your Cart — Brownie Bliss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('bb_theme') || 'light';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch (_) {}
+    })();
+  </script>
+  <style>
+    /* Additional cart page specific styles */
+    .cart-page {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 24px;
+      min-height: 60vh;
+    }
+    .cart-page h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--brown-dark);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .cart-sub {
+      text-align: center;
+      color: var(--text-mid);
+      margin-bottom: 48px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+    }
+    .cart-container {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      border: 1px solid var(--cream-dark);
+    }
+    .cart-header-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1.5fr 0.5fr;
+      background: var(--cream-dark);
+      padding: 16px 24px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      border-bottom: 1px solid var(--cream-dark);
+    }
+    .cart-item-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1.5fr 0.5fr;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--cream-dark);
+      transition: background 0.2s;
+    }
+    .cart-item-row:hover {
+      background: rgba(212, 175, 55, 0.04);
+    }
+    .cart-product-info {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .cart-product-info img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--cream);
+    }
+    .cart-product-details h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: var(--brown-dark);
+      margin-bottom: 4px;
+    }
+    .cart-product-details p {
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+    .cart-custom-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .cart-custom-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .cart-price {
+      font-weight: 600;
+      color: var(--brown-warm);
+      font-size: 16px;
+    }
+    .cart-quantity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .qty-btn-cart {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--cream-dark);
+      background: var(--white);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .qty-btn-cart:hover {
+      background: var(--gold);
+      color: var(--brown-dark);
+      border-color: var(--gold);
+    }
+    .cart-qty-num {
+      font-size: 16px;
+      font-weight: 600;
+      min-width: 30px;
+      text-align: center;
+    }
+    .cart-remove-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-mid);
+      transition: color 0.2s;
+    }
+    .cart-remove-btn:hover {
+      color: #d32f2f;
+    }
+    .cart-empty-message {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-mid);
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+    }
+    .cart-footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px;
+      background: var(--cream);
+      border-top: 1px solid var(--cream-dark);
+    }
+    .cart-grand-total {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--brown-dark);
+    }
+    .cart-grand-total span {
+      font-size: 14px;
+      font-weight: normal;
+      color: var(--text-mid);
+      margin-right: 10px;
+    }
+    .cart-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    .btn-secondary {
+      background: none;
+      border: 2px solid var(--brown-dark);
+      padding: 12px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--brown-dark);
+    }
+    .btn-secondary:hover {
+      background: var(--brown-dark);
+      color: var(--white);
+    }
+    .btn-primary {
+      background: var(--gold);
+      border: none;
+      padding: 12px 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--brown-dark);
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(212, 175, 55, 0.3);
+    }
+    @media (max-width: 768px) {
+      .cart-header-row {
+        display: none;
+      }
+      .cart-item-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 20px;
+      }
+      .cart-product-info {
+        flex-direction: column;
+        text-align: center;
+      }
+      .cart-quantity {
+        justify-content: center;
+      }
+      .cart-footer-actions {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .cart-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      .cart-buttons button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR (same as index) -->
+  <div class="announcement">✨ &nbsp; DELICIOUS HOMEMADE BROWNIES, CAKES & COOKIES &nbsp;·&nbsp; HAPPINESS IN EVERY BITE &nbsp; ✨</div>
+
+  <!-- HEADER (exact copy from index.html) -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">Brownie Bliss</span>
+        <span class="logo-sub">Homemade Treats</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="index.html#birthday">Birthday Cakes</a>
+        <a href="index.html#feedback">Feedback</a>
+        <a href="favourites.html">Favourites <span class="nav-count" data-favourites-count style="display:none">0</span></a>
+        <a href="index.html#contact">Contact</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="track.html">Track Order</a>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="cart-btn" onclick="window.location.href='cart.html'">
+          🛒 Cart
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="index.html#birthday">Birthday Cakes</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="track.html">Track Order</a>
+  </div>
+
+  <!-- MAIN CART PAGE CONTENT -->
+  <div class="cart-page">
+    <h1>Your Cart</h1>
+    <p class="cart-sub">Review your treats before checkout</p>
+
+    <div class="cart-container" id="cartContainer">
+      <!-- dynamic content will be inserted here -->
+    </div>
+  </div>
+
+  <!-- FOOTER (exact copy from index.html) -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-name">Brownie Bliss</span>
+            <span class="logo-sub">Homemade Treats · Happiness in every bite</span>
+          </div>
+          <p>Hand-crafted with love by A.R. Shanmugapriya. Bringing you the finest homemade brownies, cakes, and cookies in Krishnagiri.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="products.html">Our Products</a>
+          <a href="index.html#birthday">Birthday Cakes</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="track.html">Track Order</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <a href="tel:08072596340">+91 8072596340</a>
+          <a href="mailto:gpriya26185@gmail.com">gpriya26185@gmail.com</a>
+          <a href="https://instagram.com/brownie_bliss_" target="_blank" rel="noopener noreferrer">Instagram: @brownie_bliss_</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Brownie Bliss. All Rights Reserved.</span>
+        <span>Made with ❤️ in Krishnagiri</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR (same as index, but we won't use it on this page – kept for compatibility) -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span class="cart-title">Your Cart 🛒</span>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Amount</span>
+        <span class="cart-total-amt" id="cartTotal">₹0</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendToWhatsApp()">Order via WhatsApp</button>
+      <p class="whatsapp-note">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+  <script src="script.js"></script>
+  <script>
+    // Custom cart page rendering that uses the same global cart array and localStorage
+    function renderCartPage() {
+      const container = document.getElementById('cartContainer');
+      if (!container) return;
+
+      // Fetch latest cart from localStorage (ensures sync with other pages)
+      let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+
+      if (!cart.length) {
+        container.innerHTML = `
+          <div class="cart-empty-message">
+            🍫 Your cart is empty<br>
+            <a href="products.html" style="color: var(--gold); margin-top: 16px; display: inline-block;">Continue Shopping →</a>
+          </div>
+        `;
+        return;
+      }
+
+      let headerRow = `
+        <div class="cart-header-row">
+          <div>Product</div>
+          <div>Price</div>
+          <div>Quantity</div>
+          <div>Action</div>
+        </div>
+      `;
+
+      let itemsHtml = '';
+      let total = 0;
+
+      cart.forEach((item, idx) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+
+        let customBadges = '';
+        if (item.customizations) {
+          const c = item.customizations;
+          if (c.dietary) customBadges += `<span class="cart-custom-badge">${c.dietary === 'eggless' ? '🌱 Eggless' : '🥚 Egg'}</span>`;
+          if (c.toppings && c.toppings.length) customBadges += c.toppings.map(t => `<span class="cart-custom-badge">+ ${t.name}</span>`).join('');
+          if (c.message) customBadges += `<span class="cart-custom-badge cart-custom-msg">✉ "${c.message}"</span>`;
+        } else if (item.message) {
+          customBadges = `<span class="cart-custom-badge cart-custom-msg">✉ "${item.message}"</span>`;
+        }
+
+        itemsHtml += `
+          <div class="cart-item-row" data-index="${idx}">
+            <div class="cart-product-info">
+              <img src="${item.img || 'https://via.placeholder.com/70'}" alt="${item.name}">
+              <div class="cart-product-details">
+                <h4>${item.name}</h4>
+                ${customBadges ? `<div class="cart-custom-tags">${customBadges}</div>` : ''}
+              </div>
+            </div>
+            <div class="cart-price">₹${item.price.toLocaleString('en-IN')}</div>
+            <div class="cart-quantity">
+              <button class="qty-btn-cart" onclick="updateCartItemQty(${idx}, -1)">−</button>
+              <span class="cart-qty-num">${item.qty}</span>
+              <button class="qty-btn-cart" onclick="updateCartItemQty(${idx}, 1)">+</button>
+            </div>
+            <div>
+              <button class="cart-remove-btn" onclick="removeCartItem(${idx})" title="Remove item">✕</button>
+            </div>
+          </div>
+        `;
+      });
+
+      const footer = `
+        <div class="cart-footer-actions">
+          <div class="cart-grand-total">
+            <span>Total Amount</span> ₹${total.toLocaleString('en-IN')}
+          </div>
+          <div class="cart-buttons">
+            <button class="btn-secondary" onclick="window.location.href='products.html'">← Continue Shopping</button>
+            <button class="btn-primary" onclick="proceedToCheckout()">Proceed to Checkout →</button>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = headerRow + itemsHtml + footer;
+    }
+
+    // Update quantity (same logic as changeQty in script.js)
+    window.updateCartItemQty = function(index, delta) {
+      let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+      if (!cart[index]) return;
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+      // Update cart badge everywhere
+      if (typeof updateCartUI === 'function') updateCartUI();
+      else if (typeof updateCartBadge === 'function') updateCartBadge();
+      renderCartPage();
+      // Also update sidebar if it exists (for consistency)
+      if (typeof updateCartUI === 'function') updateCartUI();
+    };
+
+    window.removeCartItem = function(index) {
+      let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('brownie_bliss_cart', JSON.stringify(cart));
+      if (typeof updateCartUI === 'function') updateCartUI();
+      renderCartPage();
+    };
+
+    window.proceedToCheckout = function() {
+      let cart = JSON.parse(localStorage.getItem('brownie_bliss_cart') || '[]');
+      if (cart.length === 0) {
+        if (typeof showToast === 'function') showToast('Your cart is empty!');
+        else alert('Your cart is empty');
+        return;
+      }
+      // Reuse the existing checkout modal from script.js if available
+      if (typeof openCheckout === 'function') {
+        openCheckout();
+      } else {
+        // Fallback – redirect to WhatsApp direct order
+        let total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        let items = cart.map(i => `${i.name} × ${i.qty} = ₹${i.price * i.qty}`).join('\n');
+        let msg = `🍫 *New Order from Cart Page*%0A%0A${encodeURIComponent(items)}%0A%0ATotal: ₹${total}`;
+        window.open(`https://wa.me/918072596340?text=${msg}`, '_blank');
+      }
+    };
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartPage();
+      // Ensure cart badge updates on load
+      if (typeof updateCartUI === 'function') updateCartUI();
+      else if (typeof updateCartBadge === 'function') updateCartBadge();
+    });
+  </script>
+</body>
+</html>
