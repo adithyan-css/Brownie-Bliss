@@ -1976,3 +1976,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.classList.add("visible");
   }, 2000);
 })();
+
+const cartBtn = document.getElementById("cart-btn");
+
+if (cartBtn) {
+    cartBtn.addEventListener("click", toggleCart);
+}
