@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { login } = require('../controllers/adminController');
+const { login } = require("../controllers/adminController");
+const { adminLoginLimiter } = require("../middlewares/adminLoginLimiter");
 
-router.post('/login', login);
+router.post("/login", adminLoginLimiter, login);
 
 module.exports = router;
