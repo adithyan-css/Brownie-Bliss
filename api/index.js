@@ -7,14 +7,19 @@ const serverless = require('serverless-http');
 
 const { connectDB } = require('./config/db');
 const adminRoutes = require('./routes/adminRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
 const otpRoutes = require('./routes/otpRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminAuth = require('../middlewares/adminAuth');
 const { getStats } = require('./controllers/orderController');
+const monitoringMiddleware = require('./middlewares/monitoringMiddleware');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Centralized monitoring middleware
+app.use(monitoringMiddleware);
 
 // Security Enhancements
 app.use(helmet());
@@ -48,6 +53,14 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (err) {
+    const metrics = require('./services/metricsService');
+    metrics.trackEvent({
+      event_type: 'database_failure',
+      severity: 'high',
+      description: `Database connection failed: ${err.message}`,
+      ip: req.ip || null,
+      metadata: { stack: err.stack }
+    });
     res.status(500).json({ success: false, message: `Database connection failed: ${err.message}` });
   }
 });
@@ -57,6 +70,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', otpRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/checkout', checkoutRoutes);
 app.get('/api/stats', adminAuth, getStats);
 
 // ─── STATIC FALLBACK ────────────────────────────────────────────────────────────
@@ -67,7 +81,26 @@ app.get('*', (req, res) => {
 // ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Something went wrong!' });
+  
+  const metrics = require('./services/metricsService');
+  const isDbError = err.name === 'MongoError' || err.name === 'MongooseError' || (err.message && err.message.includes('Mongo'));
+  const event_type = isDbError ? 'database_failure' : 'unhandled_exception';
+  const severity = isDbError ? 'high' : 'critical';
+  
+  metrics.trackEvent({
+    event_type,
+    severity,
+    description: `Unhandled exception: ${err.message}`,
+    ip: req.ip || null,
+    metadata: { stack: err.stack, path: req.path, method: req.method }
+  });
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.status(err.status || 500).json({ 
+    success: false, 
+    message: err.message || 'Something went wrong!',
+    ...( !isProduction && { stack: err.stack } )
+  });
 });
 
 // ─── LOCAL SERVER ───────────────────────────────────────────────────────────────
@@ -88,7 +121,7 @@ function startServer(port) {
   });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
   startServer(PORT);
 }
 
