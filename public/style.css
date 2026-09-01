@@ -127,6 +127,10 @@ nav a {
   position: relative;
 }
 
+nav a:visited {
+  color: var(--text-mid);
+}
+
 nav a::after {
   content: "";
   position: absolute;
@@ -2718,6 +2722,7 @@ a.logo {
   top: 0;
   z-index: 999;
 }
+.mobile-menu.open,
 .mobile-menu.show {
   display: flex !important;
   flex-direction: column;
@@ -2731,6 +2736,10 @@ a.logo {
 }
 
 @media (max-width: 900px) {
+  header {
+    position: relative;
+  }
+
   nav {
     display: none !important; /* add !important */
   }
