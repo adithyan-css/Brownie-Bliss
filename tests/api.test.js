@@ -43,7 +43,7 @@ process.env.ADMIN_JWT_SECRET = 'secret_test_key_123';
 process.env.NODE_ENV = 'test';
 
 // Load the express app
-const { app } = require('../api/index');
+const app = require('../api/index');
 
 describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
   // Clear mock history before each test
@@ -71,7 +71,7 @@ describe('Brownie-Bliss API Security & Endpoint Integration Tests', () => {
         .expect(400);
 
       expect(res.body.success).toBe(false);
-      expect(res.body.message).toContain('required');
+      expect(JSON.stringify(res.body.errors)).toContain('required');
     });
 
     it('should reject invalid credentials with HTTP 401', async () => {

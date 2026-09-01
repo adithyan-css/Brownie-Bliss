@@ -7,10 +7,16 @@ function generateOTP() {
 
 async function sendOtp(req, res) {
   try {
-    const { phone } = req.body;
+    const phone = String(req.body.phone || '').trim();
 
     if (!phone || phone.length < 10) {
       return res.status(400).json({ success: false, message: 'Invalid phone number' });
+    }
+
+    // DB-level rate limiting: prevent generating an OTP if one was created in the last 1 minute
+    const recentOtp = await Otp.findOne({ phone, created_at: { $gt: new Date(Date.now() - 60 * 1000) } });
+    if (recentOtp) {
+      return res.status(429).json({ success: false, message: 'Please wait before requesting a new OTP' });
     }
 
     await Otp.updateMany({ phone, used: false }, { used: true });
@@ -18,7 +24,7 @@ async function sendOtp(req, res) {
     const otp = generateOTP();
     const expires_at = new Date(Date.now() + 5 * 60 * 1000);
 
-    await Otp.create({ phone, otp, expires_at });
+    await Otp.create({ phone, otp, expires_at, attempts: 0 });
 
     const apiKey = process.env.FAST2SMS_API_KEY;
     if (apiKey && apiKey !== 'your_actual_api_key_here') {
@@ -44,17 +50,30 @@ async function sendOtp(req, res) {
 
 async function verifyOtp(req, res) {
   try {
-    const { phone, otp } = req.body;
+    const phone = String(req.body.phone || '').trim();
+    const otp = String(req.body.otp || '').trim();
 
+    // Find the most recent active OTP for this phone
     const record = await Otp.findOne({
       phone,
-      otp,
       used: false,
       expires_at: { $gt: new Date() },
     }).sort({ created_at: -1 });
 
     if (!record) {
-      return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+      return res.status(400).json({ success: false, message: 'No valid OTP found or OTP expired' });
+    }
+
+    if (record.attempts >= 3) {
+      record.used = true; // invalidate it
+      await record.save();
+      return res.status(429).json({ success: false, message: 'Too many failed attempts, please request a new OTP' });
+    }
+
+    if (record.otp !== otp) {
+      record.attempts += 1;
+      await record.save();
+      return res.status(400).json({ success: false, message: 'Invalid OTP' });
     }
 
     record.used = true;
