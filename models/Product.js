@@ -10,4 +10,8 @@ const productSchema = new mongoose.Schema({
   img: { type: String }
 });
 
+// ── INDEXES ─────────────────────────────────────────────────────────────────
+// Per-item price resolution during checkout: type + id_ref in one covered query
+productSchema.index({ type: 1, id_ref: 1 });
+
 module.exports = mongoose.model('Product', productSchema);
