@@ -64,6 +64,32 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// ─── SERVER INITIALIZATION CORE ────────────────────────────────────────────────
+const serverless = require('serverless-http');
+
+function startServer(portToTry) {
+  const server = app.listen(portToTry, () => {
+    console.log(`🚀 Server running smoothly on port ${portToTry}`);
+    if (!process.env.MONGODB_URI) {
+      console.warn('⚠️ Warning: MONGODB_URI is missing from environment variables.');
+    }
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`📡 Port ${portToTry} is busy, shifting up to ${portToTry + 1}...`);
+      startServer(portToTry + 1);
+    } else {
+      console.error('❌ Server encountered a fatal error:', err);
+    }
+  });
+}
+
+// ─── EXECUTION ENVIRONMENT TRIGGER ─────────────────────────────────────────────
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production' && require.main === module) {
+  startServer(Number(PORT));
 // ─── GLOBAL ERROR HANDLER ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -92,5 +118,6 @@ if (process.env.NODE_ENV !== 'production') {
   startServer(PORT);
 }
 
+// ─── PRODUCTION EXPORTS ────────────────────────────────────────────────────────
 module.exports = app;
 module.exports.handler = serverless(app);
