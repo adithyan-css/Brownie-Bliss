@@ -15,7 +15,7 @@ function adminAuth(req, res, next) {
   }
 
   try {
-    const payload = jwt.verify(token, ADMIN_JWT_SECRET);
+    const payload = jwt.verify(token, ADMIN_JWT_SECRET, { algorithms: ['HS256'] });
     req.admin = payload;
     return next();
   } catch (err) {
